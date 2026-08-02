@@ -1,0 +1,108 @@
+{
+  "schema_version": "1.0-stage4",
+  "scenario_id": "edge_case_latent_confounder_seed_543",
+  "source_observed_file": "observed.csv",
+  "source_truth_file": "truth.csv",
+  "split_seed": 20240701,
+  "ratios_requested": {
+    "train": 0.6,
+    "validation": 0.2,
+    "test": 0.2
+  },
+  "split_method": "random_60_20_20",
+  "row_id_definition": "zero-based positional index in source observable file after dropping truth columns if present",
+  "n_total": 2000,
+  "splits": {
+    "train": {
+      "n_rows": 1200,
+      "fraction_actual": 0.6,
+      "row_id_min": 1,
+      "row_id_max": 1999,
+      "row_id_sha256": "f4e3ab218aa68b79e4acb541fe8a0ab585fb0b118ad9863cc0a1239aac884686",
+      "file": "observed_train.csv",
+      "file_sha256": "65164252f4e4aa96fea66b44f389ca49c300c10bbe254b99a28c5a8a51c7b22e",
+      "balance": {
+        "X8": {
+          "n_unique": 1200,
+          "mean": -0.019065842137237114,
+          "std": 3.4769020757822418,
+          "min": -11.394865784422873,
+          "max": 11.52716613968492
+        },
+        "X9": {
+          "n_unique": 1200,
+          "mean": 0.06625216703139694,
+          "std": 7.031132358786018,
+          "min": -22.034394186331827,
+          "max": 23.4658400921078
+        }
+      },
+      "truth_file": "truth_train.csv",
+      "truth_file_sha256": "e917e775aa0920470f504267c70450f838e1439412a5264ed16a207dd0419de2",
+      "truth_rows_aligned": true
+    },
+    "validation": {
+      "n_rows": 400,
+      "fraction_actual": 0.2,
+      "row_id_min": 0,
+      "row_id_max": 1997,
+      "row_id_sha256": "644852e9c8005319c5731368e257c9a85369f044225a69c7f6e90624f5f37dc3",
+      "file": "observed_validation.csv",
+      "file_sha256": "b8423270b482c77e85ef81e57895640e0df43c1f71adf5138683771a861ce299",
+      "balance": {
+        "X8": {
+          "n_unique": 400,
+          "mean": -0.26256992936176493,
+          "std": 3.2785235681272953,
+          "min": -12.003617793049935,
+          "max": 9.805984905507776
+        },
+        "X9": {
+          "n_unique": 400,
+          "mean": 0.525440081400791,
+          "std": 6.5574048975982695,
+          "min": -19.35626983923693,
+          "max": 22.737835078902688
+        }
+      },
+      "truth_file": "truth_validation.csv",
+      "truth_file_sha256": "db2ad074c5b737039edc68fa5e5bc9204df273d22a4620e2dd90838c4e93ec48",
+      "truth_rows_aligned": true
+    },
+    "test": {
+      "n_rows": 400,
+      "fraction_actual": 0.2,
+      "row_id_min": 3,
+      "row_id_max": 1994,
+      "row_id_sha256": "d9aaad61bfe62b97f6e47242ef8e8c6ef9d80070ce6d00395e9fd5818eb22800",
+      "file": "observed_test.csv",
+      "file_sha256": "afe5baf6511347aa6f748dc5e55a892bf20432b37ee3eb8287affb2557c1f8ef",
+      "balance": {
+        "X8": {
+          "n_unique": 400,
+          "mean": 0.08664493625180668,
+          "std": 3.533512079548289,
+          "min": -9.388421087347,
+          "max": 13.39364380259445
+        },
+        "X9": {
+          "n_unique": 400,
+          "mean": -0.17987040914423466,
+          "std": 7.240480471702661,
+          "min": -29.069546419041654,
+          "max": 19.76181698816253
+        }
+      },
+      "truth_file": "truth_test.csv",
+      "truth_file_sha256": "0c2d99ff1c149eb9527a92dc70c0c1b709025b4cd900f9f86cc66055c99d146c",
+      "truth_rows_aligned": true
+    }
+  },
+  "validation": {
+    "covers_all_rows": true,
+    "no_overlap": true,
+    "n_rows_sum": 2000,
+    "expected_n_rows": 2000,
+    "has_truth_splits": true
+  }
+}

@@ -1,0 +1,57 @@
+# Autograder tolerances for Serie A (calibrate against reference solution).
+# Truth is used only by autograder / final evaluation cells.
+# Paths are relative to 03_notebooks_caso_estudio/ (no machine-specific roots).
+
+a1_jobs:
+  scenario: real/jobs
+  scenario_id: real_jobs
+  ate_true: 1600.26
+  max_abs_error_ols: 250.0
+  max_abs_error_pds: 250.0
+  min_propensity: 0.01
+  max_propensity: 0.99
+  min_frac_propensity_interior: 0.95
+  # Plan split sizes (observed)
+  n_train: 1033
+  n_validation: 344
+  n_test: 345
+
+a2_ihdp_medium:
+  scenario: synthetic/inference/ihdp_medium
+  scenario_id: synthetic_inference_ihdp_medium
+  ate_true: 3.9685
+  max_abs_error_dml: 0.5
+  # Soft CI coverage: informational in grade_a2 (AE is hard check)
+  require_artifact: artifacts/A2/dml_estimator.joblib
+  feature_list: artifacts/A2/feature_list.json
+  training_meta: artifacts/A2/training_meta.json
+  n_features: 25
+  n_train: 1200
+  n_validation: 400
+  n_test: 400
+  n_folds: 5
+  seed: 42
+
+a3_ihdp:
+  scenario: real/ihdp
+  scenario_id: real_ihdp
+  ate_true: 3.9185
+  max_pehe_t_learner: 8.0
+  max_abs_ate_placebo: 0.5
+  require_artifact: artifacts/A3/cate_scores_test.csv
+  n_train: 448
+  n_validation: 149
+  n_test: 150
+  method_selected_default: t_learner
+
+a4_ihdp:
+  scenario: real/ihdp
+  scenario_id: real_ihdp
+  budget_fraction: 0.20
+  budget_tolerance: 0.02
+  require_artifact: artifacts/A4/policy.joblib
+  policy_card: artifacts/A4/policy_card.md
+  equity_table: artifacts/A4/equity_table.csv
+  welfare_beats_random: true
+  welfare_slack: 0.0
+  seed: 42

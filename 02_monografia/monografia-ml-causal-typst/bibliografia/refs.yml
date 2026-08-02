@@ -1,0 +1,746 @@
+# Bibliografía — Monografía Machine Learning Causal para Economistas
+# Convertido manualmente desde BibLaTeX a Hayagriva YAML
+# 67 entradas
+
+neyman1923:
+  type: article
+  author: Neyman, Jerzy
+  title: On the Application of Probability Theory to Agricultural Experiments
+  parent:
+    title: Annals of Agricultural Sciences
+  volume: 5
+  page-range: 1-51
+  date: 1923
+
+rubin1974:
+  type: article
+  author: Rubin, Donald B.
+  title: Estimating Causal Effects of Treatments in Randomized and Nonrandomized Studies
+  parent:
+    title: Journal of Educational Psychology
+  volume: 66
+  issue: 5
+  page-range: 688-701
+  date: 1974
+
+imbens2015causal:
+  type: book
+  author: [Imbens, Guido W., Rubin, Donald B.]
+  title: Causal Inference for Statistics, Social, and Biomedical Sciences
+  publisher: Cambridge University Press
+  date: 2015
+
+pearl2009causality:
+  type: book
+  author: Pearl, Judea
+  title: "Causality: Models, Reasoning and Inference"
+  edition: 2
+  publisher: Cambridge University Press
+  date: 2009
+
+hernan2020whatif:
+  type: book
+  author: [Hernán, Miguel A., Robins, James M.]
+  title: "Causal Inference: What If"
+  publisher: "Boca Raton: Chapman & Hall/CRC"
+  date: 2020
+
+spirtes2000causation:
+  type: book
+  author: [Spirtes, Peter, Glymour, Clark, Scheines, Richard]
+  title: Causation, Prediction, and Search
+  publisher: MIT Press
+  date: 2000
+
+aronow2017:
+  type: book
+  author: [Aronow, Peter M., Miller, Benjamin T.]
+  title: Foundations of Agnostic Statistics
+  publisher: Cambridge University Press
+  date: 2017
+
+bickel1993efficient:
+  type: book
+  author: [Bickel, Peter J., Klaassen, Chris A. J., Ritov, "Ya'acov", Wellner, Jon A.]
+  title: Efficient and Adaptive Estimation for Semiparametric Models
+  publisher: Johns Hopkins University Press
+  date: 1993
+
+card1995:
+  type: article
+  author: Card, David
+  title: Using Geographic Variation in College Proximity to Estimate the Return to Schooling
+  parent:
+    title: Aspects of Labour Economics
+  page-range: 201-222
+  date: 1995
+
+angrist1991:
+  type: article
+  author: [Angrist, Joshua D., Krueger, Alan B.]
+  title: Does Compulsory School Attendance Affect Schooling and Earnings?
+  parent:
+    title: Quarterly Journal of Economics
+  volume: 106
+  issue: 4
+  page-range: 979-1014
+  date: 1991
+
+lalonde1986:
+  type: article
+  author: LaLonde, Robert J.
+  title: Evaluating the Econometric Evaluations of Training Programs with Experimental Data
+  parent:
+    title: American Economic Review
+  volume: 76
+  page-range: 604-620
+  date: 1986
+
+dehejia1999causal:
+  type: article
+  author: [Dehejia, Rajeev H., Wahba, Sadek]
+  title: "Causal Effects in Nonexperimental Studies: Reevaluating the Evaluation of Training Programs"
+  parent:
+    title: Journal of the American Statistical Association
+  volume: 94
+  page-range: 1053-1062
+  date: 1999
+
+abadie2003economic:
+  type: article
+  author: [Abadie, Alberto, Gardeazabal, Javier]
+  title: "The Economic Costs of Conflict: A Case Study of the Basque Country"
+  parent:
+    title: American Economic Review
+  volume: 93
+  issue: 1
+  page-range: 113-132
+  date: 2003
+
+abadie2010synthetic:
+  type: article
+  author: [Abadie, Alberto, Diamond, Alexis, Hainmueller, Jens]
+  title: "Synthetic Control Methods for Comparative Case Studies: Estimating the Effect of California's Tobacco Control Program"
+  parent:
+    title: Journal of the American Statistical Association
+  volume: 105
+  issue: 490
+  page-range: 493-505
+  date: 2010
+
+athey2017beyond:
+  type: article
+  author: Athey, Susan
+  title: "Beyond Prediction: Using Big Data for Policy Problems"
+  parent:
+    title: Science
+  volume: 355
+  issue: 6324
+  page-range: 483-485
+  date: 2017
+
+athey2019econometric:
+  type: article
+  author: [Athey, Susan, Imbens, Guido W.]
+  title: Machine Learning Methods That Economists Should Know About
+  parent:
+    title: Annual Review of Economics
+  volume: 11
+  page-range: 685-725
+  date: 2019
+
+athey2016recursive:
+  type: article
+  author: [Athey, Susan, Imbens, Guido]
+  title: Recursive Partitioning for Heterogeneous Causal Effects
+  parent:
+    title: Proceedings of the National Academy of Sciences
+  volume: 113
+  issue: 27
+  page-range: 7353-7360
+  date: 2016
+
+athey2019generalized:
+  type: article
+  author: [Athey, Susan, Tibshirani, Julie, Wager, Stefan]
+  title: Generalized Random Forests
+  parent:
+    title: Annals of Statistics
+  volume: 47
+  issue: 2
+  page-range: 1148-1178
+  date: 2019
+
+wager2018estimation:
+  type: article
+  author: [Wager, Stefan, Athey, Susan]
+  title: Estimation and Inference of Heterogeneous Treatment Effects using Random Forests
+  parent:
+    title: Journal of the American Statistical Association
+  volume: 113
+  issue: 523
+  page-range: 1228-1242
+  date: 2018
+
+athey2021policy:
+  type: article
+  author: [Athey, Susan, Wager, Stefan]
+  title: Policy Learning With Observational Data
+  parent:
+    title: Econometrica
+  volume: 89
+  issue: 1
+  page-range: 133-161
+  date: 2021
+
+chernozhukov2018double:
+  type: article
+  author: [Chernozhukov, Victor, Chetverikov, Denis, Demirer, Mert, Duflo, Esther, Hansen, Christian, Newey, Whitney, Robins, James]
+  title: Double/Debiased Machine Learning for Treatment and Structural Parameters
+  parent:
+    title: The Econometrics Journal
+  volume: 21
+  issue: 1
+  page-range: C1-C68
+  date: 2018
+
+chernozhukov2018applied:
+  type: article
+  author: [Chernozhukov, Victor, Chetverikov, Denis, Demirer, Mert, Duflo, Esther, Hansen, Christian, Newey, Whitney]
+  title: Applied Causal Inference Inspired by Machine Learning
+  parent:
+    title: Working paper, MIT
+  date: 2018
+
+chernozhukov2016locally:
+  type: article
+  author: [Chernozhukov, Victor, Goldman, Matt, Taddy, Matt]
+  title: Locally Robust Semiparametric Estimation
+  parent:
+    title: arXiv preprint arXiv:1608.00033
+  date: 2016
+
+belloni2014inference:
+  type: article
+  author: [Belloni, Alexandre, Chernozhukov, Victor, Hansen, Christian]
+  title: Inference on Treatment Effects After Selection Among High-Dimensional Controls
+  parent:
+    title: Review of Economic Studies
+  volume: 81
+  issue: 2
+  page-range: 608-650
+  date: 2014
+
+belloni2012sparse:
+  type: article
+  author: [Belloni, Alexandre, Chen, Daniel, Chernozhukov, Victor, Hansen, Christian]
+  title: "Sparse Models and Methods for Optimal Instruments With an Application to Eminent Domain"
+  parent:
+    title: Econometrica
+  volume: 80
+  issue: 6
+  page-range: 2369-2429
+  date: 2012
+
+newey1994asymmetric:
+  type: article
+  author: Newey, Whitney K.
+  title: The Asymptotic Variance of Semiparametric Estimators
+  parent:
+    title: Econometrica
+  volume: 62
+  issue: 6
+  page-range: 1349-1382
+  date: 1994
+
+robins1994estimation:
+  type: article
+  author: [Robins, James M., Rotnitzky, Andrea, Zhao, Lue Ping]
+  title: Estimation of Regression Coefficients When Some Regressors Are Not Always Observed
+  parent:
+    title: Journal of the American Statistical Association
+  volume: 89
+  page-range: 846-866
+  date: 1994
+
+robins1995semiparametric:
+  type: article
+  author: [Robins, James M., Rotnitzky, Andrea]
+  title: Semiparametric Efficiency in Double Robustness Regression
+  parent:
+    title: Journal of the American Statistical Association
+  volume: 90
+  page-range: 122-129
+  date: 1995
+
+neyman1959:
+  type: article
+  author: Neyman, Jerzy
+  title: Optimal Asymptotic Tests of Composite Statistical Hypotheses
+  parent:
+    title: Probability and Statistics
+  page-range: 213-234
+  date: 1959
+
+tibshirani1996lasso:
+  type: article
+  author: Tibshirani, Robert
+  title: Regression Shrinkage and Selection via the Lasso
+  parent:
+    title: "Journal of the Royal Statistical Society: Series B"
+  volume: 58
+  issue: 1
+  page-range: 267-288
+  date: 1996
+
+hoerl1970ridge:
+  type: article
+  author: [Hoerl, Arthur E., Kennard, Robert W.]
+  title: "Ridge Regression: Biased Estimation for Nonorthogonal Problems"
+  parent:
+    title: Technometrics
+  volume: 12
+  page-range: 55-67
+  date: 1970
+
+zou2005elasticnet:
+  type: article
+  author: [Zou, Hui, Hastie, Trevor]
+  title: Regularization and Variable Selection via the Elastic Net
+  parent:
+    title: "Journal of the Royal Statistical Society: Series B"
+  volume: 67
+  issue: 2
+  page-range: 301-320
+  date: 2005
+
+leeb2006can:
+  type: article
+  author: [Leeb, Hannes, Pötscher, Benedikt M.]
+  title: Can One Estimate the Conditional Distribution of Post-Model-Selection Estimators?
+  parent:
+    title: Econometric Theory
+  volume: 24
+  issue: 6
+  page-range: 1915-1933
+  date: 2006
+
+potscher2009confidence:
+  type: article
+  author: [Pötscher, Benedikt M., Leeb, Hannes]
+  title: On the Distribution of Penalized Estimators
+  parent:
+    title: Statistics and Decisions
+  volume: 27
+  page-range: 1-30
+  date: 2009
+
+bickel2009simultaneous:
+  type: article
+  author: [Bickel, Peter J., Ritov, "Ya'acov", Tsybakov, Alexandre B.]
+  title: Simultaneous Analysis of Lasso and Dantzig Selector
+  parent:
+    title: Annals of Statistics
+  volume: 37
+  issue: 4
+  page-range: 1705-1732
+  date: 2009
+
+kunzel2019metalearners:
+  type: article
+  author: [Künzel, Sören R., Sekhon, Jasjeet S., Bickel, Peter J., Yu, Bin]
+  title: Metalearners for Estimating Heterogeneous Treatment Effects Using Machine Learning
+  parent:
+    title: Proceedings of the National Academy of Sciences
+  volume: 116
+  issue: 10
+  page-range: 4156-4165
+  date: 2019
+
+nie2021quasi:
+  type: article
+  author: [Nie, Xinkun, Wager, Stefan]
+  title: Quasi-Oracle Estimation of Heterogeneous Treatment Effects
+  parent:
+    title: Biometrika
+  volume: 108
+  issue: 2
+  page-range: 299-319
+  date: 2021
+
+foster2019orthogonal:
+  type: article
+  author: [Foster, Dylan J., Syrgkanis, Vasilis]
+  title: Orthogonal Statistical Learning
+  parent:
+    title: arXiv preprint arXiv:1901.09036
+  date: 2019
+
+foster2023orthogonal:
+  type: article
+  author: [Foster, Dylan J., Syrgkanis, Vasilis, Kazus, Eva]
+  title: Orthogonal Deep Learning to Recover the Blanchard-Qua Decomposition
+  parent:
+    title: arXiv preprint
+  date: 2023
+
+shalit2017estimating:
+  type: article
+  author: [Shalit, Uri, Johansson, Fredrik D., Sontag, David]
+  title: "Estimating Individual Treatment Effect: Generalization Bounds and Algorithms"
+  parent:
+    title: Proceedings of the 34th International Conference on Machine Learning (ICML)
+  date: 2017
+
+hartford2017deep:
+  type: article
+  author: [Hartford, Jason, Lewis, Greg, Leyton-Brown, Kevin, Taddy, Matt]
+  title: "Deep IV: A Flexible Approach for Counterfactual Prediction"
+  parent:
+    title: Proceedings of the 34th International Conference on Machine Learning (ICML)
+  date: 2017
+
+louizos2017causal:
+  type: article
+  author: [Louizos, Christos, Shalit, Uri, Mooij, Joris M., Sontag, David, Zemel, Richard, Welling, Max]
+  title: Causal Effect Inference with Deep Latent-Variable Models
+  parent:
+    title: Advances in Neural Information Processing Systems 30 (NeurIPS)
+  date: 2017
+
+shi2019adaptively:
+  type: article
+  author: [Shi, Claudia, Blei, David, Veitch, Victor]
+  title: Adapting Neural Networks for the Estimation of Treatment Effects
+  parent:
+    title: NeurIPS
+  date: 2019
+
+zheng2018dags:
+  type: article
+  author: [Zheng, Yue, Wu, Peng, Yang, Yong, Han, Zhe, Liu, Yueying, Yu, Pu]
+  title: "DAGs with NO TEARS: Continuous Optimization for Structure Learning"
+  parent:
+    title: Advances in Neural Information Processing Systems 31 (NeurIPS)
+  date: 2018
+
+athey2021matrix:
+  type: article
+  author: [Athey, Susan, Bayati, Mohsen, Doudchenko, Nikolay, Imbens, Guido, Khosravi, Khashayar]
+  title: Matrix Completion Methods for Causal Panel Data Models
+  parent:
+    title: Journal of the American Statistical Association
+  volume: 116
+  issue: 536
+  page-range: 1716-1730
+  date: 2021
+
+arkhangelsky2021synthetic:
+  type: article
+  author: [Arkhangelsky, Dmitry, Athey, Susan, Hirshberg, David A., Imbens, Guido W., Wager, Stefan]
+  title: Synthetic Difference in Differences
+  parent:
+    title: American Economic Review
+  volume: 111
+  issue: 12
+  page-range: 4088-4118
+  date: 2021
+
+callaway2021difference:
+  type: article
+  author: [Callaway, Brantly, Sant'Anna, Pedro H. C.]
+  title: Difference-in-Differences with Multiple Time Periods
+  parent:
+    title: Journal of Econometrics
+  volume: 225
+  issue: 2
+  page-range: 200-230
+  date: 2021
+
+freyaldenhoven2021local:
+  type: article
+  author: [Freyaldenhoven, Simon, Hansen, Christian, Shapiro, Jesse M.]
+  title: Pre-Event Trends in the Panel Event-Study Design
+  parent:
+    title: American Economic Review
+  volume: 109
+  page-range: 3307-3338
+  date: 2019
+
+kitagawa2018should:
+  type: article
+  author: [Kitagawa, Toru, Tetenov, Aleksey]
+  title: "Who Should Be Treated? Empirical Welfare Maximization Methods for Treatment Choice"
+  parent:
+    title: Econometrica
+  volume: 86
+  issue: 2
+  page-range: 591-616
+  date: 2018
+
+kitagawa2021equality:
+  type: article
+  author: [Kitagawa, Toru, Wang, Tetsuya]
+  title: Causal Estimation of Equality of Opportunity
+  parent:
+    title: Working paper
+  date: 2021
+
+radcliffe2007using:
+  type: article
+  author: Radcliffe, Nicholas J.
+  title: "Using Control Groups to Target on Predicted Lift: Building and Assessing Uplift Models"
+  parent:
+    title: Direct Marketing Analytics Journal
+  date: 2007
+
+gutierrez2017causal:
+  type: article
+  author: [Gutierrez, Pierre, Gérardy, Jean-Yves]
+  title: "Causal Inference and Uplift Modelling: A Review of the Literature"
+  parent:
+    title: CEUR Workshop Proceedings
+  volume: 1846
+  date: 2017
+
+athey2019using:
+  type: article
+  author: [Athey, Susan, Wager, Stefan]
+  title: "Estimating Treatment Effects with Causal Forests: An Application"
+  parent:
+    title: Observational Studies
+  date: 2019
+
+schuler2018comparison:
+  type: article
+  author: [Schuler, Alejandro, Jung, Ken, Tibshirani, Robert, Hastie, Trevor, Subramanian, Nigam]
+  title: A Comparison of Methods for Model Selection When Estimating Individual Treatment Effects
+  parent:
+    title: arXiv preprint arXiv:1804.05146
+  date: 2018
+
+zhang2012estimating:
+  type: article
+  author: [Zhang, Baqun, Tsiatis, Anastasios A., Laber, Eric B., Davidian, Marie]
+  title: Estimating Optimal Treatment Regimes from a Classification Perspective
+  parent:
+    title: Stat
+  volume: 1
+  page-range: 1-17
+  date: 2012
+
+kuo2014causalml:
+  type: article
+  author: [Kuo, Huigang, Pillai, Isha, Lai, Shou-De, Zeng, Jin]
+  title: "CausalML: Python Package for Causal Machine Learning"
+  parent:
+    title: GitHub repository
+  date: 2018
+
+bach2021doubleml:
+  type: article
+  author: [Bach, Philipp, Chernozhukov, Victor, Kurz, Malte S., Spindler, Martin]
+  title: "DoubleML--An Object-Oriented Implementation of Double Machine Learning in Python"
+  parent:
+    title: Journal of Machine Learning Research
+  volume: 23
+  issue: 53
+  page-range: 1-6
+  date: 2022
+
+battocchi2023econml:
+  type: article
+  author: [Battocchi, Keith, Dillon, Eleanor, Hei, Maggie, Lewis, Greg, Oka, Paul, Oprescu, Miruna, Syrgkanis, Vasilis]
+  title: "EconML: A Python Package for ML-Based Heterogeneous Treatment Effects Estimation"
+  parent:
+    title: "GitHub repository, Microsoft Research"
+  date: 2019
+
+oprescu2023econml:
+  type: article
+  author: [Oprescu, Miruna, Syrgkanis, Vasilis, Wu, Zhiwei]
+  title: EconML Documentation
+  parent:
+    title: Microsoft Research
+  date: 2023
+
+sharma2020dowhy:
+  type: article
+  author: [Sharma, Amit, Kiciman, Emre]
+  title: "DoWhy: An End-to-End Library for Causal Inference"
+  parent:
+    title: "GitHub repository, Microsoft Research"
+  date: 2020
+
+lundberg2017unified:
+  type: article
+  author: [Lundberg, Scott M., Lee, Su-In]
+  title: A Unified Approach to Interpreting Model Predictions
+  parent:
+    title: NeurIPS
+  date: 2017
+
+barocas2019fairness:
+  type: book
+  author: [Barocas, Solon, Hardt, Moritz, Narayanan, Arvind]
+  title: Fairness and Machine Learning
+  publisher: fairmlbook.org
+  date: 2019
+
+spiegelhalter2017art:
+  type: article
+  author: Spiegelhalter, David
+  title: "The Art of Statistics: Learning from Data"
+  parent:
+    title: Pelican Books
+  date: 2019
+
+mullainathan2017machine:
+  type: article
+  author: [Mullainathan, Sendhil, Spiess, Jann]
+  title: "Machine Learning: An Applied Econometric Approach"
+  parent:
+    title: Journal of Economic Perspectives
+  volume: 31
+  issue: 2
+  page-range: 87-106
+  date: 2017
+
+hastie2015statistical:
+  type: book
+  author: [Hastie, Trevor, Tibshirani, Robert, Wainwright, Martin]
+  title: "Statistical Learning with Sparsity: The Lasso and Generalizations"
+  publisher: CRC Press
+  date: 2015
+
+recht2010guaranteed:
+  type: article
+  author: [Recht, Benjamin, Fazel, Maryam, Parrilo, Pablo A.]
+  title: Guaranteed Minimum-Rank Solutions of Linear Matrix Equations via Nuclear Norm Minimization
+  parent:
+    title: SIAM Review
+  volume: 52
+  issue: 3
+  page-range: 471-501
+  date: 2010
+
+neurise2023deep:
+  type: article
+  author: NeurIPS Workshop Organizers
+  title: Causal Learning and Reasoning
+  parent:
+    title: NeurIPS Workshop
+  date: 2023
+
+holland1986:
+  type: article
+  author: Holland, Paul W.
+  title: Statistics and Causal Inference
+  parent:
+    title: Journal of the American Statistical Association
+  volume: 81
+  issue: 396
+  page-range: 945-960
+  date: 1986
+
+pearlmackenzie2018:
+  type: book
+  author: [Pearl, Judea, Mackenzie, Dana]
+  title: The Book of Why. The New Science of Cause and Effect
+  publisher: Basic Books
+  date: 2018
+
+bareinboim2025causalai:
+  type: book
+  author: Bareinboim, Elias
+  title: "Causal Artificial Intelligence: A Roadmap for Building Causally Intelligent Systems"
+  publisher: Columbia CausalAI Lab
+  date: 2025
+
+simpson1951:
+  type: article
+  author: Simpson, Edward H.
+  title: The Interpretation of Interaction in Contingency Tables
+  parent:
+    title: Journal of the Royal Statistical Society, Series B
+  volume: 13
+  issue: 2
+  page-range: 238-241
+  date: 1951
+
+huyen2022dmls:
+  type: book
+  author: Huyen, Chip
+  title: "Designing Machine Learning Systems: An Iterative Process for Production-Ready Applications"
+  publisher: O'Reilly Media
+  date: 2022
+
+kastner2024mlip:
+  type: web
+  author: [Kästner, Christian, Kang, Eunsuk, Hilton, Michael]
+  title: "Machine Learning in Production: From Models to Products"
+  url:
+    value: https://mlip-cmu.github.io/book/
+  date: 2024
+
+mitchell2019modelcards:
+  type: article
+  author: [Mitchell, Margaret, Wu, Simone, Zaldivar, Andrew, Barnes, Parker, Vasserman, Lucy, Hutchinson, Ben, Spitzer, Elena, Raji, Inioluwa Deborah, Gebru, Timnit]
+  title: Model Cards for Model Reporting
+  parent:
+    title: Proceedings of the Conference on Fairness, Accountability, and Transparency (FAT*)
+  page-range: 220-229
+  date: 2019
+
+arnold2019factsheets:
+  type: article
+  author: [Arnold, Matthew, Bellamy, Rachel K. E., Hind, Michael, Houde, Stephanie, Mehta, Sameep, Mojsilović, Aleksandra, Nair, Ravi, Ramamurthy, Karthikeyan Natesan, Olteanu, Alexandra, Piorkowski, David, Reimer, Darrell, Richards, John, Tsay, Jason, Varshney, Kush R.]
+  title: "FactSheets: Increasing Trust in AI Services through Supplier's Declarations of Conformity"
+  parent:
+    title: IBM Journal of Research and Development
+  volume: 63
+  issue: "4/5"
+  date: 2019
+
+kusner2017counterfactual:
+  type: article
+  author: [Kusner, Matt J., Loftus, Joshua, Russell, Chris, Silva, Ricardo]
+  title: Counterfactual Fairness
+  parent:
+    title: Advances in Neural Information Processing Systems 30 (NeurIPS)
+  date: 2017
+
+bareinboimpearl2013transportability:
+  type: article
+  author: [Bareinboim, Elias, Pearl, Judea]
+  title: "A General Algorithm for Deciding Transportability of Experimental Results"
+  parent:
+    title: Journal of Causal Inference
+  volume: 1
+  issue: 1
+  page-range: 107-134
+  date: 2013
+
+bareinboim2015bandits:
+  type: article
+  author: [Bareinboim, Elias, Forney, Andrew, Pearl, Judea]
+  title: "Bandits with Unobserved Confounders: A Causal Approach"
+  parent:
+    title: Advances in Neural Information Processing Systems 28 (NeurIPS)
+  date: 2015
+
+sculley2015hiddendebt:
+  type: article
+  author: [Sculley, D., Holt, Gary, Golovin, Daniel, Davydov, Eugene, Phillips, Todd, Ebner, Dietmar, Chaudhary, Vinay, Young, Michael, Crespo, Jean-Francois, Dennison, Dan]
+  title: Hidden Technical Debt in Machine Learning Systems
+  parent:
+    title: Advances in Neural Information Processing Systems 28 (NeurIPS)
+  date: 2015
+
+breck2017mltestscore:
+  type: article
+  author: [Breck, Eric, Cai, Shanqing, Nielsen, Eric, Salib, Michael, Sculley, D.]
+  title: "The ML Test Score: A Rubric for ML Production Readiness and Technical Debt Reduction"
+  parent:
+    title: IEEE International Conference on Big Data
+  date: 2017

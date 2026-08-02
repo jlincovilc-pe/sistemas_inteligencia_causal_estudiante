@@ -1,0 +1,29 @@
+# Plantilla educativa (B2) — humo B1.
+# Uso local: copiar a .github/workflows/ solo si el estudiante monta CI en SU repo.
+# Este monorepo del curso es LOCAL; no se publica a GitHub.
+
+name: b1-smoke
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "04_notebooks_produccion_hf/B1_fastapi_dml/**"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 04_notebooks_produccion_hf/B1_fastapi_dml
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install + test
+        run: |
+          python -m pip install -r requirements.txt
+          python scripts/sync_a2_artifacts.py || true
+          pytest tests/ -q
+          python ../autograder/grade_b1.py

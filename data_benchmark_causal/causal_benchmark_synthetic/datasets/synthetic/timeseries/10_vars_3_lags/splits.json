@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0-stage4",
+  "scenario_id": "synthetic_timeseries_10_vars_3_lags",
+  "source_observed_file": "data.csv",
+  "source_truth_file": null,
+  "split_seed": 20240701,
+  "ratios_requested": {
+    "train": 0.6,
+    "validation": 0.2,
+    "test": 0.2
+  },
+  "split_method": "temporal_ordered_60_20_20",
+  "row_id_definition": "zero-based positional index in source observable file after dropping truth columns if present",
+  "n_total": 2000,
+  "splits": {
+    "train": {
+      "n_rows": 1200,
+      "fraction_actual": 0.6,
+      "row_id_min": 0,
+      "row_id_max": 1199,
+      "row_id_sha256": "35c06faf32a999dfd966020ab491b7694d8c08c57309e1369d4fac23f3ad8a1f",
+      "file": "observed_train.csv",
+      "file_sha256": "993f2fdfaec501b30442af5381f886ce4148c38f28bcfff39f48657135476098",
+      "balance": {}
+    },
+    "validation": {
+      "n_rows": 400,
+      "fraction_actual": 0.2,
+      "row_id_min": 1200,
+      "row_id_max": 1599,
+      "row_id_sha256": "9175c6f880a5696f38ae41a6c51d4e58f2f1ba1283f539f1387e37354ccfbb55",
+      "file": "observed_validation.csv",
+      "file_sha256": "0cad45c5ae707d939ce732d6ec3ab161c31b63cb95b3cce2cde20c20d22ec410",
+      "balance": {}
+    },
+    "test": {
+      "n_rows": 400,
+      "fraction_actual": 0.2,
+      "row_id_min": 1600,
+      "row_id_max": 1999,
+      "row_id_sha256": "7e99b450f0026b6f9c54fb9fb353260fa145bf0fd2bd3fcc8f6dbf18374d3112",
+      "file": "observed_test.csv",
+      "file_sha256": "09614bdd63c63114917456b62568da809d5624edde556df4d1d6533bdfb6c131",
+      "balance": {}
+    }
+  },
+  "validation": {
+    "covers_all_rows": true,
+    "no_overlap": true,
+    "n_rows_sum": 2000,
+    "expected_n_rows": 2000,
+    "has_truth_splits": false
+  }
+}

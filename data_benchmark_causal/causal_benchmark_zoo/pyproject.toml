@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "causal-benchmark-zoo"
+version = "0.1.0"
+description = "Registry and loaders for causal inference benchmark datasets"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "PyYAML>=6.0",
+  "jsonschema>=4.0",
+  "pandas>=1.5",
+  "networkx>=3.0"
+]
+
+[project.optional-dependencies]
+dowhy = ["dowhy"]
+econml = ["econml", "scikit-learn"]
+dev = ["pytest"]
+
+[project.scripts]
+causal-benchmark-zoo = "causal_benchmark_zoo.fetch:main"
+
+[tool.setuptools.packages.find]
+include = ["causal_benchmark_zoo*"]

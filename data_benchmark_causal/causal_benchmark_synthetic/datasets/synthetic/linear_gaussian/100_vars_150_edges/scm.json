@@ -1,0 +1,1330 @@
+{
+  "schema_version": "1.0-stage3",
+  "scenario_id": "synthetic_linear_gaussian_100_vars_150_edges",
+  "dataset_path": "datasets/synthetic/linear_gaussian/100_vars_150_edges",
+  "data_generating_process": "linear_gaussian",
+  "source_of_truth": "derived_from_existing_dataset_files_and_metadata",
+  "no_new_data_generated": true,
+  "variables": [
+    {
+      "name": "X0",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X1",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X2",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X3",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X4",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X5",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X6",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X7",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X8",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X9",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X10",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X11",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X12",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X13",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X14",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X15",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X16",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X17",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X18",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X19",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X20",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X21",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X22",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X23",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X24",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X25",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X26",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X27",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X28",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X29",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X30",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X31",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X32",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X33",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X34",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X35",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X36",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X37",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X38",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X39",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X40",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X41",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X42",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X43",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X44",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X45",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X46",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X47",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X48",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X49",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X50",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X51",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X52",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X53",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X54",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X55",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X56",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X57",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X58",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X59",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X60",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X61",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X62",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X63",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X64",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X65",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X66",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X67",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X68",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X69",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X70",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X71",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X72",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X73",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X74",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X75",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X76",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X77",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X78",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X79",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X80",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X81",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X82",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X83",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X84",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X85",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X86",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X87",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X88",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X89",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X90",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X91",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X92",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X93",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X94",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X95",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X96",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X97",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X98",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "X99",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    }
+  ],
+  "graph": {
+    "available": true,
+    "edge_count": 150,
+    "edges": [
+      {
+        "source": "0",
+        "target": "44"
+      },
+      {
+        "source": "0",
+        "target": "52"
+      },
+      {
+        "source": "1",
+        "target": "29"
+      },
+      {
+        "source": "1",
+        "target": "47"
+      },
+      {
+        "source": "1",
+        "target": "93"
+      },
+      {
+        "source": "2",
+        "target": "61"
+      },
+      {
+        "source": "2",
+        "target": "87"
+      },
+      {
+        "source": "2",
+        "target": "92"
+      },
+      {
+        "source": "2",
+        "target": "93"
+      },
+      {
+        "source": "3",
+        "target": "52"
+      },
+      {
+        "source": "3",
+        "target": "66"
+      },
+      {
+        "source": "4",
+        "target": "37"
+      },
+      {
+        "source": "5",
+        "target": "52"
+      },
+      {
+        "source": "5",
+        "target": "58"
+      },
+      {
+        "source": "5",
+        "target": "68"
+      },
+      {
+        "source": "6",
+        "target": "36"
+      },
+      {
+        "source": "6",
+        "target": "37"
+      },
+      {
+        "source": "7",
+        "target": "41"
+      },
+      {
+        "source": "7",
+        "target": "58"
+      },
+      {
+        "source": "7",
+        "target": "62"
+      },
+      {
+        "source": "7",
+        "target": "99"
+      },
+      {
+        "source": "8",
+        "target": "51"
+      },
+      {
+        "source": "8",
+        "target": "58"
+      },
+      {
+        "source": "8",
+        "target": "75"
+      },
+      {
+        "source": "8",
+        "target": "95"
+      },
+      {
+        "source": "9",
+        "target": "39"
+      },
+      {
+        "source": "9",
+        "target": "44"
+      },
+      {
+        "source": "9",
+        "target": "69"
+      },
+      {
+        "source": "10",
+        "target": "20"
+      },
+      {
+        "source": "10",
+        "target": "47"
+      },
+      {
+        "source": "10",
+        "target": "48"
+      },
+      {
+        "source": "11",
+        "target": "15"
+      },
+      {
+        "source": "11",
+        "target": "25"
+      },
+      {
+        "source": "11",
+        "target": "44"
+      },
+      {
+        "source": "11",
+        "target": "70"
+      },
+      {
+        "source": "11",
+        "target": "82"
+      },
+      {
+        "source": "12",
+        "target": "29"
+      },
+      {
+        "source": "12",
+        "target": "68"
+      },
+      {
+        "source": "13",
+        "target": "27"
+      },
+      {
+        "source": "13",
+        "target": "46"
+      },
+      {
+        "source": "13",
+        "target": "51"
+      },
+      {
+        "source": "13",
+        "target": "74"
+      },
+      {
+        "source": "13",
+        "target": "88"
+      },
+      {
+        "source": "13",
+        "target": "96"
+      },
+      {
+        "source": "15",
+        "target": "36"
+      },
+      {
+        "source": "15",
+        "target": "61"
+      },
+      {
+        "source": "15",
+        "target": "62"
+      },
+      {
+        "source": "16",
+        "target": "20"
+      },
+      {
+        "source": "16",
+        "target": "40"
+      },
+      {
+        "source": "17",
+        "target": "40"
+      },
+      {
+        "source": "17",
+        "target": "61"
+      },
+      {
+        "source": "18",
+        "target": "33"
+      },
+      {
+        "source": "18",
+        "target": "41"
+      },
+      {
+        "source": "18",
+        "target": "58"
+      },
+      {
+        "source": "19",
+        "target": "60"
+      },
+      {
+        "source": "20",
+        "target": "37"
+      },
+      {
+        "source": "20",
+        "target": "64"
+      },
+      {
+        "source": "20",
+        "target": "70"
+      },
+      {
+        "source": "20",
+        "target": "93"
+      },
+      {
+        "source": "21",
+        "target": "73"
+      },
+      {
+        "source": "21",
+        "target": "99"
+      },
+      {
+        "source": "22",
+        "target": "30"
+      },
+      {
+        "source": "22",
+        "target": "74"
+      },
+      {
+        "source": "23",
+        "target": "35"
+      },
+      {
+        "source": "23",
+        "target": "72"
+      },
+      {
+        "source": "24",
+        "target": "39"
+      },
+      {
+        "source": "24",
+        "target": "62"
+      },
+      {
+        "source": "25",
+        "target": "83"
+      },
+      {
+        "source": "26",
+        "target": "63"
+      },
+      {
+        "source": "26",
+        "target": "71"
+      },
+      {
+        "source": "26",
+        "target": "83"
+      },
+      {
+        "source": "27",
+        "target": "55"
+      },
+      {
+        "source": "27",
+        "target": "65"
+      },
+      {
+        "source": "27",
+        "target": "81"
+      },
+      {
+        "source": "28",
+        "target": "30"
+      },
+      {
+        "source": "28",
+        "target": "33"
+      },
+      {
+        "source": "28",
+        "target": "43"
+      },
+      {
+        "source": "29",
+        "target": "48"
+      },
+      {
+        "source": "29",
+        "target": "53"
+      },
+      {
+        "source": "29",
+        "target": "71"
+      },
+      {
+        "source": "29",
+        "target": "73"
+      },
+      {
+        "source": "29",
+        "target": "89"
+      },
+      {
+        "source": "30",
+        "target": "49"
+      },
+      {
+        "source": "30",
+        "target": "56"
+      },
+      {
+        "source": "30",
+        "target": "62"
+      },
+      {
+        "source": "30",
+        "target": "68"
+      },
+      {
+        "source": "31",
+        "target": "51"
+      },
+      {
+        "source": "32",
+        "target": "39"
+      },
+      {
+        "source": "32",
+        "target": "67"
+      },
+      {
+        "source": "32",
+        "target": "75"
+      },
+      {
+        "source": "34",
+        "target": "52"
+      },
+      {
+        "source": "34",
+        "target": "78"
+      },
+      {
+        "source": "35",
+        "target": "52"
+      },
+      {
+        "source": "35",
+        "target": "67"
+      },
+      {
+        "source": "36",
+        "target": "61"
+      },
+      {
+        "source": "37",
+        "target": "51"
+      },
+      {
+        "source": "37",
+        "target": "70"
+      },
+      {
+        "source": "38",
+        "target": "92"
+      },
+      {
+        "source": "39",
+        "target": "69"
+      },
+      {
+        "source": "40",
+        "target": "67"
+      },
+      {
+        "source": "40",
+        "target": "76"
+      },
+      {
+        "source": "41",
+        "target": "58"
+      },
+      {
+        "source": "42",
+        "target": "54"
+      },
+      {
+        "source": "43",
+        "target": "91"
+      },
+      {
+        "source": "44",
+        "target": "48"
+      },
+      {
+        "source": "44",
+        "target": "54"
+      },
+      {
+        "source": "44",
+        "target": "89"
+      },
+      {
+        "source": "44",
+        "target": "92"
+      },
+      {
+        "source": "46",
+        "target": "50"
+      },
+      {
+        "source": "49",
+        "target": "58"
+      },
+      {
+        "source": "51",
+        "target": "56"
+      },
+      {
+        "source": "52",
+        "target": "58"
+      },
+      {
+        "source": "52",
+        "target": "60"
+      },
+      {
+        "source": "52",
+        "target": "95"
+      },
+      {
+        "source": "54",
+        "target": "60"
+      },
+      {
+        "source": "55",
+        "target": "90"
+      },
+      {
+        "source": "56",
+        "target": "65"
+      },
+      {
+        "source": "56",
+        "target": "93"
+      },
+      {
+        "source": "57",
+        "target": "66"
+      },
+      {
+        "source": "57",
+        "target": "97"
+      },
+      {
+        "source": "58",
+        "target": "89"
+      },
+      {
+        "source": "59",
+        "target": "80"
+      },
+      {
+        "source": "60",
+        "target": "98"
+      },
+      {
+        "source": "62",
+        "target": "68"
+      },
+      {
+        "source": "62",
+        "target": "70"
+      },
+      {
+        "source": "62",
+        "target": "73"
+      },
+      {
+        "source": "63",
+        "target": "92"
+      },
+      {
+        "source": "64",
+        "target": "69"
+      },
+      {
+        "source": "64",
+        "target": "93"
+      },
+      {
+        "source": "64",
+        "target": "99"
+      },
+      {
+        "source": "65",
+        "target": "96"
+      },
+      {
+        "source": "67",
+        "target": "70"
+      },
+      {
+        "source": "67",
+        "target": "78"
+      },
+      {
+        "source": "68",
+        "target": "77"
+      },
+      {
+        "source": "71",
+        "target": "98"
+      },
+      {
+        "source": "72",
+        "target": "82"
+      },
+      {
+        "source": "72",
+        "target": "90"
+      },
+      {
+        "source": "73",
+        "target": "88"
+      },
+      {
+        "source": "74",
+        "target": "97"
+      },
+      {
+        "source": "76",
+        "target": "93"
+      },
+      {
+        "source": "80",
+        "target": "84"
+      },
+      {
+        "source": "80",
+        "target": "93"
+      },
+      {
+        "source": "81",
+        "target": "86"
+      },
+      {
+        "source": "81",
+        "target": "96"
+      },
+      {
+        "source": "84",
+        "target": "89"
+      },
+      {
+        "source": "85",
+        "target": "92"
+      },
+      {
+        "source": "86",
+        "target": "92"
+      },
+      {
+        "source": "87",
+        "target": "97"
+      },
+      {
+        "source": "88",
+        "target": "95"
+      },
+      {
+        "source": "91",
+        "target": "95"
+      }
+    ],
+    "parameters_available": false,
+    "parameter_limitation": "True structural coefficients/noise terms were not stored in dataset files; not inferred or fabricated."
+  },
+  "time_series_links": {
+    "available": false,
+    "link_count": 0,
+    "links": []
+  },
+  "structural_equations": {
+    "available": false,
+    "limitation": "Original SCM equations/coefficients/noise draws are not fully serialized in the benchmark. This file documents available graph/data targets only."
+  },
+  "observed_data_file": "data.csv",
+  "full_data_file": "data.csv",
+  "metadata_file": "metadata.json"
+}

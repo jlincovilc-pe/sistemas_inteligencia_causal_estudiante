@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0-stage3",
+  "scenario_id": "synthetic_inference_ihdp_small",
+  "identification_status": "identifiable_by_design_all_simulated_confounders_observed_assumption",
+  "treatments": [],
+  "outcomes": [],
+  "latent_variables": [],
+  "valid_adjustment_sets": [
+    [
+      "x0",
+      "x1",
+      "x2",
+      "x3",
+      "x4",
+      "x5",
+      "x6",
+      "x7",
+      "x8",
+      "x9",
+      "x10",
+      "x11",
+      "x12",
+      "x13",
+      "x14",
+      "x15",
+      "x16",
+      "x17",
+      "x18",
+      "x19",
+      "x20",
+      "x21",
+      "x22",
+      "x23",
+      "x24"
+    ]
+  ],
+  "assumptions": [
+    "No causal claim should be made beyond the serialized graph/truth targets.",
+    "Where structural equations are unavailable, identification metadata is a benchmark annotation, not an independently proven property."
+  ],
+  "notes": [
+    "Adjustment set derived as all observed pre-treatment covariates by benchmark design; validate against SCM when full equations are serialized."
+  ]
+}

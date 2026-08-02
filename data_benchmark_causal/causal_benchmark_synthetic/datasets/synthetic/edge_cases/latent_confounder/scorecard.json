@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0-stage5",
+  "scenario_id": "edge_case_latent_confounder_seed_543",
+  "dataset": "datasets/synthetic/edge_cases/latent_confounder",
+  "baseline_results": {},
+  "limitations": [
+    "No scored target available for baseline scorecard from existing files.",
+    "Dataset marked non-estimable from observed data; scorecard should be used for abstention/QC, not ATE training."
+  ],
+  "task_type": "no_scored_target"
+}

@@ -1,0 +1,58 @@
+id: csuite_lingauss
+name: CSuite lingauss
+category: synthetic_sem
+version: csuite_v0.1_placeholder
+source:
+  homepage: https://github.com/microsoft/csuite
+  download_urls:
+  - https://github.com/microsoft/csuite/releases/download/v0.1/csuite_lingauss.zip
+  papers:
+  - 'CSuite: A Suite of Benchmark Datasets for Causality'
+license:
+  status: unknown
+  notes: Verify upstream repository license before vendoring data. Use on-demand download
+    until verified.
+schema:
+  treatment: null
+  outcome: null
+  covariates: []
+  effect_modifiers: []
+files:
+  raw:
+  - path: raw/csuite_lingauss.zip
+    status: manual
+    sha256: null
+    url: https://github.com/microsoft/csuite/releases/download/v0.1/csuite_lingauss.zip
+    description: CSuite lingauss archive. Automated download may fail in this platform
+      because GitHub release access returned 403; place the ZIP here manually if needed.
+  processed:
+  - path: processed/observational_train.parquet
+    status: pending
+    sha256: null
+    url: null
+    description: Processed observational training table extracted from CSuite archive.
+graph:
+  available: false
+  format: json
+  path: null
+  status: pending
+  description: Reference DAG/SEM graph is pending until an authorized official CSuite
+    ZIP is available and processed.
+ground_truth:
+  type: sem
+  path: null
+  status: pending
+  description: SEM ground truth is pending until an authorized official CSuite ZIP
+    is available and processed.
+intended_tasks:
+- ate_estimation
+- cate_estimation
+- causal_discovery
+limitations:
+- Manual/pending benchmark; CSuite ZIP is not bundled in this repository.
+- Automated GitHub release download returned HTTP 403 in this platform.
+- Only the official release URL is declared; unverified mirrors and substitute files
+  are not used.
+- Treatment/outcome columns will be set only after inspecting an authorized official
+  archive.
+- No processed table, graph, SEM, ATE, or CATE ground truth is available yet.

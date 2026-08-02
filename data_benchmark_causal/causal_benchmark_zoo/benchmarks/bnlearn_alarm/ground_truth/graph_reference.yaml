@@ -1,0 +1,12 @@
+type: graph
+status: available
+source: https://www.bnlearn.com/bnrepository/alarm/alarm.bif.gz
+node_count: 37
+edge_count: 46
+raw_sha256: f5860caa7137b5817e0c4f169cce0f1451ce6c246b96f5ce4fb4a8167993be29
+graph_json: graphs/graph.json
+graph_dot: graphs/graph.dot
+adjacency_csv: graphs/adjacency.csv
+notes: Reference graph parsed from the original bnlearn BIF file. No ATE/CATE is implied
+  by this graph-only benchmark.
+

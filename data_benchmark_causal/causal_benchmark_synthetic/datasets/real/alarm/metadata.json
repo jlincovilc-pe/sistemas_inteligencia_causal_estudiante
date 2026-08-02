@@ -1,0 +1,15 @@
+{
+  "name": "ALARM",
+  "reference": "Beinlich et al. (1989), Proc. European Conference on AI in Medicine",
+  "domain": "Medical monitoring (ICU)",
+  "num_variables": 37,
+  "num_edges": 46,
+  "original_type": "Discrete Bayesian Network",
+  "generated_samples": 20000,
+  "data_origin": "SYNTHETIC - generated via linear Gaussian SEM over published Bayesian network structure",
+  "what_is_real": "Bayesian network topology (37 nodes, 46 edges), variable names, medical ICU domain from Beinlich et al. (1989)",
+  "what_is_synthetic": "All numerical values are continuous approximations generated via SEM. Original ALARM is a discrete network.",
+  "note": "SYNTHETIC DATA. The Bayesian network structure is from the published paper; numeric values are SEM-generated continuous approximations.",
+  "schema_version": "1.0-stage2",
+  "scenario_id": "real_alarm"
+}

@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0-stage3",
+  "scenario_id": "synthetic_inference_lalonde_medium",
+  "source_of_truth": "computed_from_existing_truth_files_or_metadata",
+  "no_new_data_generated": true,
+  "targets": [
+    {
+      "type": "binary_treatment_effect",
+      "treatment": "treatment",
+      "outcome": "re78",
+      "estimand": "ATE/ATT/ITE",
+      "ate": 1601.9627578281095,
+      "att": 1647.8737546050463,
+      "tau_summary": {
+        "n": 2000,
+        "mean": 1601.9627578281095,
+        "std": 567.1482339024817,
+        "min": -552.546883575139,
+        "q25": 1208.3040515974376,
+        "median": 1594.0446796236997,
+        "q75": 1981.6618296553424,
+        "max": 3402.99121353633
+      },
+      "potential_outcomes_available": true,
+      "n_units": 2000,
+      "treatment_rate": 0.265,
+      "metadata_ate": 1601.9627578281095,
+      "metadata_att": 1647.8737546050463
+    }
+  ]
+}

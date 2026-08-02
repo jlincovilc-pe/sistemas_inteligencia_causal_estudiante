@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0-stage5",
+  "scenario_id": "synthetic_edge_cases_high_collinearity",
+  "dataset": "datasets/synthetic/edge_cases/high_collinearity",
+  "baseline_results": {
+    "discovery_empty_graph": {
+      "true_edges": 20,
+      "estimated_edges": 0,
+      "precision_skeleton": 0.0,
+      "recall_skeleton": 0.0,
+      "f1_skeleton": 0.0,
+      "precision_directed": 0.0,
+      "recall_directed": 0.0,
+      "f1_directed": 0.0,
+      "shd_directed_adjacency": 20,
+      "shd_skeleton": 20
+    },
+    "discovery_corr_threshold_0.30_order_oriented": {
+      "true_edges": 20,
+      "estimated_edges": 39,
+      "precision_skeleton": 0.41025641025641024,
+      "recall_skeleton": 0.8,
+      "f1_skeleton": 0.5423728813559321,
+      "precision_directed": 0.41025641025641024,
+      "recall_directed": 0.8,
+      "f1_directed": 0.5423728813559321,
+      "shd_directed_adjacency": 27,
+      "shd_skeleton": 27
+    }
+  },
+  "limitations": [],
+  "task_type": "structure_discovery"
+}

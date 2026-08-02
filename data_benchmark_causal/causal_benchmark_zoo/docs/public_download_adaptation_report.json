@@ -1,0 +1,43 @@
+{
+  "public_download_enabled": [
+    "bnlearn_asia",
+    "bnlearn_alarm",
+    "lalonde_nsw"
+  ],
+  "manual_remaining": [
+    "csuite_lingauss"
+  ],
+  "lalonde": {
+    "rows": 445,
+    "columns": 10,
+    "n_treated": 185,
+    "n_control": 260,
+    "ate": 1794.342404270271,
+    "standard_error": 670.9965463815241,
+    "confidence_interval_95": [
+      474.0104698178568,
+      3114.674338722685
+    ],
+    "p_value_two_sided": 0.00789297771451734,
+    "raw_files": [
+      [
+        "raw/nswre74_treated.txt",
+        "e7b742fe0ff07a0f45e129b4ff108bb9611cd83d53604732c48a8a0a3e20eda3"
+      ],
+      [
+        "raw/nswre74_control.txt",
+        "a1364cea459d953dc691a667d99194b4ad335d6d550354fe23a5d2dc58d729b5"
+      ]
+    ],
+    "processed_files": [
+      [
+        "processed/lalonde_nsw.parquet",
+        "8959b2b14531dff6c06834ca69818fc8b69a1da6572826112b964f89da4474c8"
+      ],
+      [
+        "processed/lalonde_nsw.csv",
+        "4c773801a2af3889277036b5dab929c556c7e92ae5b20833f052ded3cc6b092b"
+      ]
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+id: bnlearn_asia
+name: bnlearn Asia Bayesian network
+category: synthetic_bayesian_network
+version: downloaded_sha256_7d5e7b854983
+source:
+  homepage: https://www.bnlearn.com/bnrepository/discrete-small.html
+  download_urls:
+  - https://www.bnlearn.com/bnrepository/asia/asia.bif.gz
+  papers: []
+license:
+  status: unknown
+  notes: Verify bnlearn repository terms before redistributing downloaded graph files.
+schema:
+  treatment: null
+  outcome: null
+  covariates: []
+  effect_modifiers: []
+files:
+  raw:
+  - path: raw/asia.bif.gz
+    status: available
+    sha256: 7d5e7b8549834824c1b05f367eb7860fa3fca3adaf3649f0c7be6035af197197
+    url: https://www.bnlearn.com/bnrepository/asia/asia.bif.gz
+    description: Original gzipped BIF graph from bnlearn.
+  processed: []
+graph:
+  available: true
+  format: json
+  path: graphs/graph.json
+  status: available
+  description: Reference graph parsed from raw BIF; 8 nodes and 8 directed edges.
+  sha256: 693eb466264ac8fe3d3f5f4a49543a450560614b4a96bad8aad6a44d1ce13a1f
+ground_truth:
+  type: graph
+  path: ground_truth/graph_reference.yaml
+  status: available
+  description: Reference graph metadata; 8 nodes and 8 directed edges.
+  sha256: 43f936e60748645c2263a769fddbff2f9797ed577dad96c713fe3e9553169ec2
+intended_tasks:
+- causal_discovery
+limitations:
+- Skeleton manifest only; source graph has not been downloaded or converted.
+- No ATE/CATE is defined without an explicit intervention and outcome.

@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0-stage3",
+  "scenario_id": "synthetic_inference_ihdp_medium",
+  "source_of_truth": "computed_from_existing_truth_files_or_metadata",
+  "no_new_data_generated": true,
+  "targets": [
+    {
+      "type": "binary_treatment_effect",
+      "treatment": "treatment",
+      "outcome": "outcome",
+      "estimand": "ATE/ATT/ITE",
+      "ate": 3.968514117617547,
+      "att": 4.121291728508209,
+      "tau_summary": {
+        "n": 2000,
+        "mean": 3.968514117617547,
+        "std": 2.6878926486374266,
+        "min": -5.291721171133951,
+        "q25": 2.1779383075619205,
+        "median": 3.9801520150444536,
+        "q75": 5.778541899369364,
+        "max": 12.744162903190542
+      },
+      "potential_outcomes_available": true,
+      "n_units": 2000,
+      "treatment_rate": 0.381,
+      "metadata_ate": 3.968514117617547,
+      "metadata_att": 4.121291728508209
+    }
+  ]
+}

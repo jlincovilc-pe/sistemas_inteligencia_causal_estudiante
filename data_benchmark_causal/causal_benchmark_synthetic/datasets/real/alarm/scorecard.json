@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0-stage5",
+  "scenario_id": "real_alarm",
+  "dataset": "datasets/real/alarm",
+  "baseline_results": {
+    "discovery_empty_graph": {
+      "true_edges": 45,
+      "estimated_edges": 0,
+      "precision_skeleton": 0.0,
+      "recall_skeleton": 0.0,
+      "f1_skeleton": 0.0,
+      "precision_directed": 0.0,
+      "recall_directed": 0.0,
+      "f1_directed": 0.0,
+      "shd_directed_adjacency": 45,
+      "shd_skeleton": 45
+    },
+    "discovery_corr_threshold_0.30_order_oriented": {
+      "true_edges": 45,
+      "estimated_edges": 301,
+      "precision_skeleton": 0.11960132890365449,
+      "recall_skeleton": 0.8,
+      "f1_skeleton": 0.20809248554913296,
+      "precision_directed": 0.11960132890365449,
+      "recall_directed": 0.8,
+      "f1_directed": 0.20809248554913296,
+      "shd_directed_adjacency": 274,
+      "shd_skeleton": 274
+    }
+  },
+  "limitations": [],
+  "task_type": "structure_discovery"
+}

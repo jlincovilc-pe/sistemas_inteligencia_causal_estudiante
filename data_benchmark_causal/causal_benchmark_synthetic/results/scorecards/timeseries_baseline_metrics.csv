@@ -1,0 +1,6 @@
+dataset,timeseries_empty_links_f1,timeseries_empty_links_estimated_links,timeseries_lagged_corr_threshold_0.20_f1,timeseries_lagged_corr_threshold_0.20_estimated_links
+datasets/synthetic/timeseries/5_vars_nonlinear_ts,0.0,0,0.6,12
+datasets/synthetic/timeseries/10_vars_3_lags,0.0,0,0.6633165829145727,242
+datasets/synthetic/timeseries/5_vars_3_lags,0.0,0,0.6060606060606061,25
+datasets/synthetic/timeseries/5_vars_2_lags,0.0,0,0.7605633802816902,36
+datasets/synthetic/timeseries/10_vars_2_lags,0.0,0,0.7804878048780487,200

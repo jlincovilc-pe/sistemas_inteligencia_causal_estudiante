@@ -1,0 +1,270 @@
+{
+  "schema_version": "1.0-stage3",
+  "scenario_id": "real_child",
+  "dataset_path": "datasets/real/child",
+  "data_generating_process": "SYNTHETIC - generated via linear Gaussian SEM over published Bayesian network structure",
+  "source_of_truth": "derived_from_existing_dataset_files_and_metadata",
+  "no_new_data_generated": true,
+  "variables": [
+    {
+      "name": "BirthAsphyxia",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "Disease",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "Age",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "LVH",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "DuctFlow",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "CardiacMixing",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "LungParench",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "LungFlow",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "Sick",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "HypDistrib",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "HypoxiaInO2",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "CO2",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "ChestXray",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "Grunting",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "LVHresult",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "RUQO2",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "CO2Report",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "XrayReport",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "GruntingReport",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    },
+    {
+      "name": "HeadUS",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 10000
+    }
+  ],
+  "graph": {
+    "available": true,
+    "edge_count": 25,
+    "edges": [
+      {
+        "source": "BirthAsphyxia",
+        "target": "Disease"
+      },
+      {
+        "source": "BirthAsphyxia",
+        "target": "Age"
+      },
+      {
+        "source": "Disease",
+        "target": "LVH"
+      },
+      {
+        "source": "Disease",
+        "target": "DuctFlow"
+      },
+      {
+        "source": "Disease",
+        "target": "CardiacMixing"
+      },
+      {
+        "source": "Disease",
+        "target": "LungParench"
+      },
+      {
+        "source": "Disease",
+        "target": "LungFlow"
+      },
+      {
+        "source": "Age",
+        "target": "CardiacMixing"
+      },
+      {
+        "source": "LVH",
+        "target": "LVHresult"
+      },
+      {
+        "source": "DuctFlow",
+        "target": "Sick"
+      },
+      {
+        "source": "CardiacMixing",
+        "target": "HypDistrib"
+      },
+      {
+        "source": "CardiacMixing",
+        "target": "HypoxiaInO2"
+      },
+      {
+        "source": "LungParench",
+        "target": "HypoxiaInO2"
+      },
+      {
+        "source": "LungParench",
+        "target": "CO2"
+      },
+      {
+        "source": "LungParench",
+        "target": "ChestXray"
+      },
+      {
+        "source": "LungFlow",
+        "target": "Sick"
+      },
+      {
+        "source": "Sick",
+        "target": "HypDistrib"
+      },
+      {
+        "source": "HypDistrib",
+        "target": "RUQO2"
+      },
+      {
+        "source": "HypoxiaInO2",
+        "target": "CO2Report"
+      },
+      {
+        "source": "CO2",
+        "target": "XrayReport"
+      },
+      {
+        "source": "ChestXray",
+        "target": "XrayReport"
+      },
+      {
+        "source": "ChestXray",
+        "target": "GruntingReport"
+      },
+      {
+        "source": "Grunting",
+        "target": "GruntingReport"
+      },
+      {
+        "source": "Grunting",
+        "target": "HeadUS"
+      },
+      {
+        "source": "LVHresult",
+        "target": "HeadUS"
+      }
+    ],
+    "parameters_available": false,
+    "parameter_limitation": "True structural coefficients/noise terms were not stored in dataset files; not inferred or fabricated."
+  },
+  "time_series_links": {
+    "available": false,
+    "link_count": 0,
+    "links": []
+  },
+  "structural_equations": {
+    "available": false,
+    "limitation": "Original SCM equations/coefficients/noise draws are not fully serialized in the benchmark. This file documents available graph/data targets only."
+  },
+  "observed_data_file": "data.csv",
+  "full_data_file": "data.csv",
+  "metadata_file": "metadata.json"
+}

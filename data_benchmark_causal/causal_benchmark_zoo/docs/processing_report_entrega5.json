@@ -1,0 +1,62 @@
+{
+  "bnlearn_asia": {
+    "nodes": 8,
+    "edges": 8,
+    "metadata": {
+      "benchmark_id": "bnlearn_asia",
+      "source_format": "bif.gz",
+      "source_url": "https://www.bnlearn.com/bnrepository/asia/asia.bif.gz",
+      "raw_sha256": "7d5e7b8549834824c1b05f367eb7860fa3fca3adaf3649f0c7be6035af197197",
+      "node_count": 8,
+      "edge_count": 8
+    },
+    "artifacts": {
+      "graphs/graph.json": {
+        "bytes": 1316,
+        "sha256": "693eb466264ac8fe3d3f5f4a49543a450560614b4a96bad8aad6a44d1ce13a1f"
+      },
+      "graphs/graph.dot": {
+        "bytes": 267,
+        "sha256": "2fd6a3bc6f1f61b1882b6912b95725d32c9356d2592ff258c099291aaa1ee2b4"
+      },
+      "graphs/adjacency.csv": {
+        "bytes": 224,
+        "sha256": "0d7d6d5223a520f688d31063e90e482d4d838011cf49c46721990c9a3701a455"
+      },
+      "ground_truth/graph_reference.yaml": {
+        "bytes": 413,
+        "sha256": "43f936e60748645c2263a769fddbff2f9797ed577dad96c713fe3e9553169ec2"
+      }
+    }
+  },
+  "bnlearn_alarm": {
+    "nodes": 37,
+    "edges": 46,
+    "metadata": {
+      "benchmark_id": "bnlearn_alarm",
+      "source_format": "bif.gz",
+      "source_url": "https://www.bnlearn.com/bnrepository/alarm/alarm.bif.gz",
+      "raw_sha256": "f5860caa7137b5817e0c4f169cce0f1451ce6c246b96f5ce4fb4a8167993be29",
+      "node_count": 37,
+      "edge_count": 46
+    },
+    "artifacts": {
+      "graphs/graph.json": {
+        "bytes": 5576,
+        "sha256": "936aead302b0a0fad2824500c60d8176f6ab33440a20c72535ae551a0d184433"
+      },
+      "graphs/graph.dot": {
+        "bytes": 1674,
+        "sha256": "8e045bab0710923ad6e62b698d7c2ee297ec43c9792b54d37790a69155e7f580"
+      },
+      "graphs/adjacency.csv": {
+        "bytes": 3363,
+        "sha256": "15164fd63a5693720fc9dd8e7b2cc166791b1f11134f053db324777c5507d561"
+      },
+      "ground_truth/graph_reference.yaml": {
+        "bytes": 417,
+        "sha256": "02f15b641f9ab50e76308ed4f92be8a035e1bd6419dab20ca300504e3e5af369"
+      }
+    }
+  }
+}

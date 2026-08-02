@@ -1,0 +1,45 @@
+id: bnlearn_alarm
+name: bnlearn Alarm Bayesian network
+category: synthetic_bayesian_network
+version: downloaded_sha256_f5860caa7137
+source:
+  homepage: https://www.bnlearn.com/bnrepository/discrete-medium.html
+  download_urls:
+  - https://www.bnlearn.com/bnrepository/alarm/alarm.bif.gz
+  papers:
+  - 'The ALARM Monitoring System: A Case Study with Two Probabilistic Inference Techniques
+    for Belief Networks'
+license:
+  status: unknown
+  notes: Verify bnlearn repository terms before redistributing downloaded graph files.
+schema:
+  treatment: null
+  outcome: null
+  covariates: []
+  effect_modifiers: []
+files:
+  raw:
+  - path: raw/alarm.bif.gz
+    status: available
+    sha256: f5860caa7137b5817e0c4f169cce0f1451ce6c246b96f5ce4fb4a8167993be29
+    url: https://www.bnlearn.com/bnrepository/alarm/alarm.bif.gz
+    description: Original gzipped BIF graph from bnlearn.
+  processed: []
+graph:
+  available: true
+  format: json
+  path: graphs/graph.json
+  status: available
+  description: Reference graph parsed from raw BIF; 37 nodes and 46 directed edges.
+  sha256: 936aead302b0a0fad2824500c60d8176f6ab33440a20c72535ae551a0d184433
+ground_truth:
+  type: graph
+  path: ground_truth/graph_reference.yaml
+  status: available
+  description: Reference graph metadata; 37 nodes and 46 directed edges.
+  sha256: 02f15b641f9ab50e76308ed4f92be8a035e1bd6419dab20ca300504e3e5af369
+intended_tasks:
+- causal_discovery
+limitations:
+- Skeleton manifest only; source graph has not been downloaded or converted.
+- No ATE/CATE is defined without an explicit intervention and outcome.

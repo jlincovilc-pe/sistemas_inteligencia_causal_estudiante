@@ -1,0 +1,1036 @@
+{
+  "schema_version": "1.0-stage3",
+  "scenario_id": "synthetic_timeseries_10_vars_3_lags",
+  "dataset_path": "datasets/synthetic/timeseries/10_vars_3_lags",
+  "data_generating_process": "not_specified_in_metadata",
+  "source_of_truth": "derived_from_existing_dataset_files_and_metadata",
+  "no_new_data_generated": true,
+  "variables": [
+    {
+      "name": "X0",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X1",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X2",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X3",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X4",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X5",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X6",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X7",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X8",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X9",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    }
+  ],
+  "graph": {
+    "available": false,
+    "edge_count": 0,
+    "edges": [],
+    "parameters_available": false,
+    "parameter_limitation": "No static graph file available."
+  },
+  "time_series_links": {
+    "available": true,
+    "link_count": 156,
+    "links": [
+      {
+        "source": 0,
+        "target": 3,
+        "lag": 1,
+        "coefficient": 0.422201513828528
+      },
+      {
+        "source": 0,
+        "target": 4,
+        "lag": 1,
+        "coefficient": 0.3230640628165861
+      },
+      {
+        "source": 0,
+        "target": 5,
+        "lag": 1,
+        "coefficient": -0.3344725325386813
+      },
+      {
+        "source": 0,
+        "target": 6,
+        "lag": 1,
+        "coefficient": -0.0196429094419253
+      },
+      {
+        "source": 0,
+        "target": 7,
+        "lag": 1,
+        "coefficient": -0.0493950590501249
+      },
+      {
+        "source": 0,
+        "target": 9,
+        "lag": 1,
+        "coefficient": -0.2550825893561486
+      },
+      {
+        "source": 1,
+        "target": 0,
+        "lag": 1,
+        "coefficient": 0.3368522025271565
+      },
+      {
+        "source": 1,
+        "target": 2,
+        "lag": 1,
+        "coefficient": 0.1364177929759638
+      },
+      {
+        "source": 1,
+        "target": 4,
+        "lag": 1,
+        "coefficient": 0.0738247485279455
+      },
+      {
+        "source": 1,
+        "target": 5,
+        "lag": 1,
+        "coefficient": 0.2548134099812863
+      },
+      {
+        "source": 1,
+        "target": 6,
+        "lag": 1,
+        "coefficient": 0.0841009384848596
+      },
+      {
+        "source": 1,
+        "target": 8,
+        "lag": 1,
+        "coefficient": 0.4866973404266063
+      },
+      {
+        "source": 1,
+        "target": 9,
+        "lag": 1,
+        "coefficient": 0.3227004140731073
+      },
+      {
+        "source": 2,
+        "target": 0,
+        "lag": 1,
+        "coefficient": 0.3044389258462401
+      },
+      {
+        "source": 2,
+        "target": 1,
+        "lag": 1,
+        "coefficient": -0.072532512953748
+      },
+      {
+        "source": 2,
+        "target": 3,
+        "lag": 1,
+        "coefficient": -0.1864448264049932
+      },
+      {
+        "source": 2,
+        "target": 6,
+        "lag": 1,
+        "coefficient": 0.3420448611465455
+      },
+      {
+        "source": 2,
+        "target": 7,
+        "lag": 1,
+        "coefficient": 0.2398461581736734
+      },
+      {
+        "source": 3,
+        "target": 2,
+        "lag": 1,
+        "coefficient": -0.1085604853694104
+      },
+      {
+        "source": 3,
+        "target": 4,
+        "lag": 1,
+        "coefficient": -0.1584423665408286
+      },
+      {
+        "source": 3,
+        "target": 5,
+        "lag": 1,
+        "coefficient": -0.1083266069067584
+      },
+      {
+        "source": 3,
+        "target": 6,
+        "lag": 1,
+        "coefficient": 0.4760907957854738
+      },
+      {
+        "source": 3,
+        "target": 8,
+        "lag": 1,
+        "coefficient": -0.1826093420118911
+      },
+      {
+        "source": 4,
+        "target": 0,
+        "lag": 1,
+        "coefficient": -0.5646897158689466
+      },
+      {
+        "source": 4,
+        "target": 1,
+        "lag": 1,
+        "coefficient": -0.2128504646294889
+      },
+      {
+        "source": 4,
+        "target": 4,
+        "lag": 1,
+        "coefficient": 0.0620918591678781
+      },
+      {
+        "source": 4,
+        "target": 6,
+        "lag": 1,
+        "coefficient": 0.362672865057303
+      },
+      {
+        "source": 4,
+        "target": 8,
+        "lag": 1,
+        "coefficient": -0.1530926771673983
+      },
+      {
+        "source": 4,
+        "target": 9,
+        "lag": 1,
+        "coefficient": 0.0438419059036222
+      },
+      {
+        "source": 5,
+        "target": 1,
+        "lag": 1,
+        "coefficient": -0.1682582979818553
+      },
+      {
+        "source": 5,
+        "target": 3,
+        "lag": 1,
+        "coefficient": -0.2812747699217515
+      },
+      {
+        "source": 5,
+        "target": 4,
+        "lag": 1,
+        "coefficient": -0.2237315406233576
+      },
+      {
+        "source": 5,
+        "target": 9,
+        "lag": 1,
+        "coefficient": 0.165984138755443
+      },
+      {
+        "source": 6,
+        "target": 0,
+        "lag": 1,
+        "coefficient": 0.3029195734480847
+      },
+      {
+        "source": 6,
+        "target": 1,
+        "lag": 1,
+        "coefficient": 0.5024798643826105
+      },
+      {
+        "source": 6,
+        "target": 4,
+        "lag": 1,
+        "coefficient": -0.7776222219027179
+      },
+      {
+        "source": 6,
+        "target": 5,
+        "lag": 1,
+        "coefficient": -0.0156915556994398
+      },
+      {
+        "source": 6,
+        "target": 6,
+        "lag": 1,
+        "coefficient": 0.2030141336377783
+      },
+      {
+        "source": 6,
+        "target": 7,
+        "lag": 1,
+        "coefficient": 0.1146812420107564
+      },
+      {
+        "source": 6,
+        "target": 8,
+        "lag": 1,
+        "coefficient": -0.0789660312105993
+      },
+      {
+        "source": 6,
+        "target": 9,
+        "lag": 1,
+        "coefficient": -0.3739341128811972
+      },
+      {
+        "source": 7,
+        "target": 0,
+        "lag": 1,
+        "coefficient": 0.0646358609577949
+      },
+      {
+        "source": 7,
+        "target": 3,
+        "lag": 1,
+        "coefficient": 0.0123283580140484
+      },
+      {
+        "source": 7,
+        "target": 6,
+        "lag": 1,
+        "coefficient": -0.3904173866213887
+      },
+      {
+        "source": 8,
+        "target": 4,
+        "lag": 1,
+        "coefficient": 0.1187944379887664
+      },
+      {
+        "source": 8,
+        "target": 5,
+        "lag": 1,
+        "coefficient": -0.6834719897342987
+      },
+      {
+        "source": 8,
+        "target": 8,
+        "lag": 1,
+        "coefficient": -0.1520196200423056
+      },
+      {
+        "source": 8,
+        "target": 9,
+        "lag": 1,
+        "coefficient": -0.4385897965866114
+      },
+      {
+        "source": 9,
+        "target": 1,
+        "lag": 1,
+        "coefficient": -0.3413024216256244
+      },
+      {
+        "source": 9,
+        "target": 2,
+        "lag": 1,
+        "coefficient": 0.1075038429887219
+      },
+      {
+        "source": 9,
+        "target": 4,
+        "lag": 1,
+        "coefficient": 0.0663981623854716
+      },
+      {
+        "source": 9,
+        "target": 5,
+        "lag": 1,
+        "coefficient": -0.0488059725858404
+      },
+      {
+        "source": 9,
+        "target": 7,
+        "lag": 1,
+        "coefficient": -0.2099819496157329
+      },
+      {
+        "source": 9,
+        "target": 8,
+        "lag": 1,
+        "coefficient": 0.1317881853560466
+      },
+      {
+        "source": 9,
+        "target": 9,
+        "lag": 1,
+        "coefficient": 0.1737953313117515
+      },
+      {
+        "source": 0,
+        "target": 0,
+        "lag": 2,
+        "coefficient": -0.0472216252708671
+      },
+      {
+        "source": 0,
+        "target": 3,
+        "lag": 2,
+        "coefficient": 0.0161870050419455
+      },
+      {
+        "source": 0,
+        "target": 5,
+        "lag": 2,
+        "coefficient": 0.081026090866415
+      },
+      {
+        "source": 0,
+        "target": 6,
+        "lag": 2,
+        "coefficient": 0.4609356785905089
+      },
+      {
+        "source": 1,
+        "target": 1,
+        "lag": 2,
+        "coefficient": -0.0706203931493435
+      },
+      {
+        "source": 1,
+        "target": 6,
+        "lag": 2,
+        "coefficient": 0.1025635737444483
+      },
+      {
+        "source": 2,
+        "target": 3,
+        "lag": 2,
+        "coefficient": 0.2543526911016466
+      },
+      {
+        "source": 2,
+        "target": 5,
+        "lag": 2,
+        "coefficient": -0.0281009076670815
+      },
+      {
+        "source": 2,
+        "target": 6,
+        "lag": 2,
+        "coefficient": 0.0520246170248579
+      },
+      {
+        "source": 2,
+        "target": 7,
+        "lag": 2,
+        "coefficient": 0.402653587358463
+      },
+      {
+        "source": 2,
+        "target": 8,
+        "lag": 2,
+        "coefficient": -0.3525382801855343
+      },
+      {
+        "source": 3,
+        "target": 0,
+        "lag": 2,
+        "coefficient": 0.3144665248497019
+      },
+      {
+        "source": 3,
+        "target": 1,
+        "lag": 2,
+        "coefficient": 0.1535339550042861
+      },
+      {
+        "source": 3,
+        "target": 5,
+        "lag": 2,
+        "coefficient": -0.0833876660991142
+      },
+      {
+        "source": 3,
+        "target": 7,
+        "lag": 2,
+        "coefficient": 0.0632551700847945
+      },
+      {
+        "source": 4,
+        "target": 0,
+        "lag": 2,
+        "coefficient": 0.03953849195283
+      },
+      {
+        "source": 4,
+        "target": 1,
+        "lag": 2,
+        "coefficient": -0.1054415019638377
+      },
+      {
+        "source": 4,
+        "target": 2,
+        "lag": 2,
+        "coefficient": 0.21965630878619
+      },
+      {
+        "source": 4,
+        "target": 4,
+        "lag": 2,
+        "coefficient": -0.0661877382164029
+      },
+      {
+        "source": 4,
+        "target": 5,
+        "lag": 2,
+        "coefficient": -0.0441849240197969
+      },
+      {
+        "source": 4,
+        "target": 7,
+        "lag": 2,
+        "coefficient": -0.1860581939402331
+      },
+      {
+        "source": 4,
+        "target": 8,
+        "lag": 2,
+        "coefficient": -0.3064212651693064
+      },
+      {
+        "source": 5,
+        "target": 2,
+        "lag": 2,
+        "coefficient": 0.3878921571012603
+      },
+      {
+        "source": 5,
+        "target": 3,
+        "lag": 2,
+        "coefficient": -0.048674836204079
+      },
+      {
+        "source": 5,
+        "target": 4,
+        "lag": 2,
+        "coefficient": -0.1068349021874079
+      },
+      {
+        "source": 5,
+        "target": 5,
+        "lag": 2,
+        "coefficient": 0.3170161527343393
+      },
+      {
+        "source": 5,
+        "target": 6,
+        "lag": 2,
+        "coefficient": -0.0778552791221074
+      },
+      {
+        "source": 6,
+        "target": 0,
+        "lag": 2,
+        "coefficient": -0.551772359132179
+      },
+      {
+        "source": 6,
+        "target": 1,
+        "lag": 2,
+        "coefficient": 0.1000727299699142
+      },
+      {
+        "source": 6,
+        "target": 3,
+        "lag": 2,
+        "coefficient": 0.3181453698276587
+      },
+      {
+        "source": 6,
+        "target": 5,
+        "lag": 2,
+        "coefficient": 0.1694750195393359
+      },
+      {
+        "source": 6,
+        "target": 7,
+        "lag": 2,
+        "coefficient": 0.2809245368907573
+      },
+      {
+        "source": 6,
+        "target": 8,
+        "lag": 2,
+        "coefficient": 0.2737053354150902
+      },
+      {
+        "source": 6,
+        "target": 9,
+        "lag": 2,
+        "coefficient": -0.123377003620911
+      },
+      {
+        "source": 7,
+        "target": 1,
+        "lag": 2,
+        "coefficient": 0.0600729059408244
+      },
+      {
+        "source": 7,
+        "target": 3,
+        "lag": 2,
+        "coefficient": 0.2880391449634294
+      },
+      {
+        "source": 7,
+        "target": 4,
+        "lag": 2,
+        "coefficient": -0.4215902514620208
+      },
+      {
+        "source": 7,
+        "target": 7,
+        "lag": 2,
+        "coefficient": 0.7291796335157176
+      },
+      {
+        "source": 7,
+        "target": 8,
+        "lag": 2,
+        "coefficient": 0.8220782823159225
+      },
+      {
+        "source": 8,
+        "target": 1,
+        "lag": 2,
+        "coefficient": 0.2004493313592918
+      },
+      {
+        "source": 8,
+        "target": 2,
+        "lag": 2,
+        "coefficient": -0.1874727084971067
+      },
+      {
+        "source": 8,
+        "target": 3,
+        "lag": 2,
+        "coefficient": 0.6400486350174575
+      },
+      {
+        "source": 8,
+        "target": 5,
+        "lag": 2,
+        "coefficient": 0.3201375876285525
+      },
+      {
+        "source": 8,
+        "target": 6,
+        "lag": 2,
+        "coefficient": 0.0490383312879554
+      },
+      {
+        "source": 8,
+        "target": 9,
+        "lag": 2,
+        "coefficient": 0.2674882659731575
+      },
+      {
+        "source": 9,
+        "target": 0,
+        "lag": 2,
+        "coefficient": 0.085018715145079
+      },
+      {
+        "source": 9,
+        "target": 3,
+        "lag": 2,
+        "coefficient": -0.0192973705178597
+      },
+      {
+        "source": 9,
+        "target": 5,
+        "lag": 2,
+        "coefficient": 0.2215799727947462
+      },
+      {
+        "source": 9,
+        "target": 6,
+        "lag": 2,
+        "coefficient": -0.1150311028803957
+      },
+      {
+        "source": 9,
+        "target": 7,
+        "lag": 2,
+        "coefficient": 0.0228560732495614
+      },
+      {
+        "source": 9,
+        "target": 8,
+        "lag": 2,
+        "coefficient": -0.0690001348732722
+      },
+      {
+        "source": 9,
+        "target": 9,
+        "lag": 2,
+        "coefficient": -0.6811831899437021
+      },
+      {
+        "source": 0,
+        "target": 5,
+        "lag": 3,
+        "coefficient": -0.5006671126611023
+      },
+      {
+        "source": 0,
+        "target": 6,
+        "lag": 3,
+        "coefficient": 0.0131000924765815
+      },
+      {
+        "source": 0,
+        "target": 7,
+        "lag": 3,
+        "coefficient": 0.0572360091298806
+      },
+      {
+        "source": 0,
+        "target": 8,
+        "lag": 3,
+        "coefficient": -0.1229729859850919
+      },
+      {
+        "source": 0,
+        "target": 9,
+        "lag": 3,
+        "coefficient": 0.3278735835513691
+      },
+      {
+        "source": 1,
+        "target": 0,
+        "lag": 3,
+        "coefficient": 0.6776587567649863
+      },
+      {
+        "source": 1,
+        "target": 2,
+        "lag": 3,
+        "coefficient": -0.3469311632513046
+      },
+      {
+        "source": 1,
+        "target": 3,
+        "lag": 3,
+        "coefficient": 0.3858476208665189
+      },
+      {
+        "source": 1,
+        "target": 7,
+        "lag": 3,
+        "coefficient": -0.0338853438960714
+      },
+      {
+        "source": 1,
+        "target": 8,
+        "lag": 3,
+        "coefficient": -0.1641813188560363
+      },
+      {
+        "source": 1,
+        "target": 9,
+        "lag": 3,
+        "coefficient": -0.0574827722976686
+      },
+      {
+        "source": 2,
+        "target": 0,
+        "lag": 3,
+        "coefficient": 0.6254193633409211
+      },
+      {
+        "source": 2,
+        "target": 2,
+        "lag": 3,
+        "coefficient": 0.2117700312888182
+      },
+      {
+        "source": 2,
+        "target": 6,
+        "lag": 3,
+        "coefficient": 0.2780856359121798
+      },
+      {
+        "source": 2,
+        "target": 8,
+        "lag": 3,
+        "coefficient": 0.3236017902932159
+      },
+      {
+        "source": 3,
+        "target": 0,
+        "lag": 3,
+        "coefficient": -0.1319966006106887
+      },
+      {
+        "source": 3,
+        "target": 1,
+        "lag": 3,
+        "coefficient": 0.1568882718099195
+      },
+      {
+        "source": 3,
+        "target": 3,
+        "lag": 3,
+        "coefficient": -0.0544317412971067
+      },
+      {
+        "source": 3,
+        "target": 6,
+        "lag": 3,
+        "coefficient": -0.0272958059007247
+      },
+      {
+        "source": 3,
+        "target": 7,
+        "lag": 3,
+        "coefficient": 0.2709920196455377
+      },
+      {
+        "source": 4,
+        "target": 2,
+        "lag": 3,
+        "coefficient": -0.2124537731712194
+      },
+      {
+        "source": 4,
+        "target": 3,
+        "lag": 3,
+        "coefficient": -0.422158218181743
+      },
+      {
+        "source": 4,
+        "target": 5,
+        "lag": 3,
+        "coefficient": -0.3032411813143423
+      },
+      {
+        "source": 4,
+        "target": 9,
+        "lag": 3,
+        "coefficient": -0.3754226619083366
+      },
+      {
+        "source": 5,
+        "target": 0,
+        "lag": 3,
+        "coefficient": 0.2218971321331503
+      },
+      {
+        "source": 5,
+        "target": 1,
+        "lag": 3,
+        "coefficient": 0.195186091691881
+      },
+      {
+        "source": 5,
+        "target": 2,
+        "lag": 3,
+        "coefficient": 0.1517873287753992
+      },
+      {
+        "source": 5,
+        "target": 5,
+        "lag": 3,
+        "coefficient": 0.1355639711848166
+      },
+      {
+        "source": 5,
+        "target": 6,
+        "lag": 3,
+        "coefficient": -0.1396422205081505
+      },
+      {
+        "source": 5,
+        "target": 9,
+        "lag": 3,
+        "coefficient": -0.4785121587180827
+      },
+      {
+        "source": 6,
+        "target": 0,
+        "lag": 3,
+        "coefficient": 0.064456513252287
+      },
+      {
+        "source": 6,
+        "target": 1,
+        "lag": 3,
+        "coefficient": 0.931504821628584
+      },
+      {
+        "source": 6,
+        "target": 2,
+        "lag": 3,
+        "coefficient": -0.1309490347721449
+      },
+      {
+        "source": 6,
+        "target": 5,
+        "lag": 3,
+        "coefficient": -0.1280680692024204
+      },
+      {
+        "source": 6,
+        "target": 7,
+        "lag": 3,
+        "coefficient": -0.374206575886398
+      },
+      {
+        "source": 7,
+        "target": 4,
+        "lag": 3,
+        "coefficient": -0.4738854695918424
+      },
+      {
+        "source": 7,
+        "target": 7,
+        "lag": 3,
+        "coefficient": 0.0539969868061942
+      },
+      {
+        "source": 7,
+        "target": 9,
+        "lag": 3,
+        "coefficient": 0.2304831268301127
+      },
+      {
+        "source": 8,
+        "target": 0,
+        "lag": 3,
+        "coefficient": 0.4642447768135428
+      },
+      {
+        "source": 8,
+        "target": 1,
+        "lag": 3,
+        "coefficient": 0.1128551811802845
+      },
+      {
+        "source": 8,
+        "target": 2,
+        "lag": 3,
+        "coefficient": 0.0541092879692692
+      },
+      {
+        "source": 8,
+        "target": 3,
+        "lag": 3,
+        "coefficient": -0.1399313149277318
+      },
+      {
+        "source": 8,
+        "target": 7,
+        "lag": 3,
+        "coefficient": 0.0553963412155748
+      },
+      {
+        "source": 9,
+        "target": 0,
+        "lag": 3,
+        "coefficient": -0.050244789511959
+      },
+      {
+        "source": 9,
+        "target": 1,
+        "lag": 3,
+        "coefficient": 0.1460153825818579
+      },
+      {
+        "source": 9,
+        "target": 2,
+        "lag": 3,
+        "coefficient": 0.201078376261893
+      },
+      {
+        "source": 9,
+        "target": 3,
+        "lag": 3,
+        "coefficient": 0.7517080851408209
+      },
+      {
+        "source": 9,
+        "target": 4,
+        "lag": 3,
+        "coefficient": -0.2885967923751679
+      },
+      {
+        "source": 9,
+        "target": 6,
+        "lag": 3,
+        "coefficient": -0.0994550931218223
+      }
+    ]
+  },
+  "structural_equations": {
+    "available": false,
+    "limitation": "Original SCM equations/coefficients/noise draws are not fully serialized in the benchmark. This file documents available graph/data targets only."
+  },
+  "observed_data_file": "data.csv",
+  "full_data_file": "data.csv",
+  "metadata_file": "metadata.json"
+}

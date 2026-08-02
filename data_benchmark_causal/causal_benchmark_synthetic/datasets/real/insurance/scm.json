@@ -1,0 +1,423 @@
+{
+  "schema_version": "1.0-stage3",
+  "scenario_id": "real_insurance",
+  "dataset_path": "datasets/real/insurance",
+  "data_generating_process": "SYNTHETIC - generated via linear Gaussian SEM over published Bayesian network structure",
+  "source_of_truth": "derived_from_existing_dataset_files_and_metadata",
+  "no_new_data_generated": true,
+  "variables": [
+    {
+      "name": "Age",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "GoodStudent",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "SocioEcon",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "RiskAversion",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "VehicleYear",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "ThisCarDam",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "RuggedAuto",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "Accident",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "MakeModel",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "DrivQuality",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "Mileage",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "Antilock",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "DrivingSkill",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "SeniorTrain",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "ThisCarCost",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "Theft",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "CarValue",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "HomeBase",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "AntiTheft",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "PropCost",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "OtherCarCost",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "OtherCar",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "MedCost",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "Cushioning",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "Airbag",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "ILiCost",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "DrivHist",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    }
+  ],
+  "graph": {
+    "available": true,
+    "edge_count": 51,
+    "edges": [
+      {
+        "source": "Age",
+        "target": "GoodStudent"
+      },
+      {
+        "source": "Age",
+        "target": "SocioEcon"
+      },
+      {
+        "source": "Age",
+        "target": "ThisCarCost"
+      },
+      {
+        "source": "SocioEcon",
+        "target": "GoodStudent"
+      },
+      {
+        "source": "SocioEcon",
+        "target": "RiskAversion"
+      },
+      {
+        "source": "SocioEcon",
+        "target": "DrivQuality"
+      },
+      {
+        "source": "SocioEcon",
+        "target": "MedCost"
+      },
+      {
+        "source": "RiskAversion",
+        "target": "VehicleYear"
+      },
+      {
+        "source": "RiskAversion",
+        "target": "DrivQuality"
+      },
+      {
+        "source": "RiskAversion",
+        "target": "DrivingSkill"
+      },
+      {
+        "source": "RiskAversion",
+        "target": "SeniorTrain"
+      },
+      {
+        "source": "RiskAversion",
+        "target": "ILiCost"
+      },
+      {
+        "source": "VehicleYear",
+        "target": "ThisCarDam"
+      },
+      {
+        "source": "VehicleYear",
+        "target": "RuggedAuto"
+      },
+      {
+        "source": "ThisCarDam",
+        "target": "ThisCarCost"
+      },
+      {
+        "source": "ThisCarDam",
+        "target": "PropCost"
+      },
+      {
+        "source": "RuggedAuto",
+        "target": "Cushioning"
+      },
+      {
+        "source": "Accident",
+        "target": "ThisCarDam"
+      },
+      {
+        "source": "Accident",
+        "target": "ThisCarCost"
+      },
+      {
+        "source": "Accident",
+        "target": "OtherCarCost"
+      },
+      {
+        "source": "Accident",
+        "target": "MedCost"
+      },
+      {
+        "source": "MakeModel",
+        "target": "VehicleYear"
+      },
+      {
+        "source": "MakeModel",
+        "target": "ThisCarDam"
+      },
+      {
+        "source": "MakeModel",
+        "target": "RuggedAuto"
+      },
+      {
+        "source": "MakeModel",
+        "target": "Theft"
+      },
+      {
+        "source": "MakeModel",
+        "target": "CarValue"
+      },
+      {
+        "source": "MakeModel",
+        "target": "AntiTheft"
+      },
+      {
+        "source": "DrivQuality",
+        "target": "Accident"
+      },
+      {
+        "source": "DrivQuality",
+        "target": "DrivHist"
+      },
+      {
+        "source": "Mileage",
+        "target": "Accident"
+      },
+      {
+        "source": "Mileage",
+        "target": "CarValue"
+      },
+      {
+        "source": "Antilock",
+        "target": "Accident"
+      },
+      {
+        "source": "DrivingSkill",
+        "target": "DrivQuality"
+      },
+      {
+        "source": "DrivingSkill",
+        "target": "DrivHist"
+      },
+      {
+        "source": "SeniorTrain",
+        "target": "DrivingSkill"
+      },
+      {
+        "source": "ThisCarCost",
+        "target": "PropCost"
+      },
+      {
+        "source": "Theft",
+        "target": "ThisCarCost"
+      },
+      {
+        "source": "Theft",
+        "target": "OtherCarCost"
+      },
+      {
+        "source": "CarValue",
+        "target": "ThisCarCost"
+      },
+      {
+        "source": "CarValue",
+        "target": "Theft"
+      },
+      {
+        "source": "CarValue",
+        "target": "HomeBase"
+      },
+      {
+        "source": "HomeBase",
+        "target": "Theft"
+      },
+      {
+        "source": "HomeBase",
+        "target": "AntiTheft"
+      },
+      {
+        "source": "AntiTheft",
+        "target": "Theft"
+      },
+      {
+        "source": "PropCost",
+        "target": "OtherCarCost"
+      },
+      {
+        "source": "OtherCar",
+        "target": "Accident"
+      },
+      {
+        "source": "OtherCar",
+        "target": "OtherCarCost"
+      },
+      {
+        "source": "MedCost",
+        "target": "Cushioning"
+      },
+      {
+        "source": "Cushioning",
+        "target": "Airbag"
+      },
+      {
+        "source": "ILiCost",
+        "target": "MedCost"
+      },
+      {
+        "source": "DrivHist",
+        "target": "Accident"
+      }
+    ],
+    "parameters_available": false,
+    "parameter_limitation": "True structural coefficients/noise terms were not stored in dataset files; not inferred or fabricated."
+  },
+  "time_series_links": {
+    "available": false,
+    "link_count": 0,
+    "links": []
+  },
+  "structural_equations": {
+    "available": false,
+    "limitation": "Original SCM equations/coefficients/noise draws are not fully serialized in the benchmark. This file documents available graph/data targets only."
+  },
+  "observed_data_file": "data.csv",
+  "full_data_file": "data.csv",
+  "metadata_file": "metadata.json"
+}

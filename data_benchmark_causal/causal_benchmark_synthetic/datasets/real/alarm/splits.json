@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0-stage4",
+  "scenario_id": "real_alarm",
+  "source_observed_file": "data.csv",
+  "source_truth_file": null,
+  "split_seed": 20240701,
+  "ratios_requested": {
+    "train": 0.6,
+    "validation": 0.2,
+    "test": 0.2
+  },
+  "split_method": "random_60_20_20",
+  "row_id_definition": "zero-based positional index in source observable file after dropping truth columns if present",
+  "n_total": 20000,
+  "splits": {
+    "train": {
+      "n_rows": 12000,
+      "fraction_actual": 0.6,
+      "row_id_min": 0,
+      "row_id_max": 19999,
+      "row_id_sha256": "bbe71b50cc821343393ddb647040f31271f3dd7f0b5e367ca27dce94d521be89",
+      "file": "observed_train.csv",
+      "file_sha256": "aaafd377f92540d4c283d5aba5bd5de7ff08a1fbf16ed97a02c1a569620a9ad8",
+      "balance": {}
+    },
+    "validation": {
+      "n_rows": 4000,
+      "fraction_actual": 0.2,
+      "row_id_min": 3,
+      "row_id_max": 19993,
+      "row_id_sha256": "cf72b41bf023ef60793c5123fd974a11c7a31cb449a50e7614ff32ab2fd78ee9",
+      "file": "observed_validation.csv",
+      "file_sha256": "07a756a7eba408781e1ce5a4634b572d06196c249642a76abbf2580f60e7d409",
+      "balance": {}
+    },
+    "test": {
+      "n_rows": 4000,
+      "fraction_actual": 0.2,
+      "row_id_min": 7,
+      "row_id_max": 19991,
+      "row_id_sha256": "a4ca789db2d116c0169b3459433b41d3bdc58b6e2651c73490d5c9a5e12650b5",
+      "file": "observed_test.csv",
+      "file_sha256": "f31759a337c7dd00015ad40f8f78fa207e3259c91e9520fc9277cc113ea66108",
+      "balance": {}
+    }
+  },
+  "validation": {
+    "covers_all_rows": true,
+    "no_overlap": true,
+    "n_rows_sum": 20000,
+    "expected_n_rows": 20000,
+    "has_truth_splits": false
+  }
+}

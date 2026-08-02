@@ -1,0 +1,5 @@
+benchmarks:
+  - id: csuite_lingauss
+  - id: bnlearn_asia
+  - id: bnlearn_alarm
+  - id: lalonde_nsw

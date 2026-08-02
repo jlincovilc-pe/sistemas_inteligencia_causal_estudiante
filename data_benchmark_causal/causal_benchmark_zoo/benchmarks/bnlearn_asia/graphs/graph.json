@@ -1,0 +1,86 @@
+{
+  "nodes": [
+    {
+      "id": "asia",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "tub",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "smoke",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "lung",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "bronc",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "either",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "xray",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "dysp",
+      "observed": true,
+      "type": "variable"
+    }
+  ],
+  "edges": [
+    [
+      "asia",
+      "tub"
+    ],
+    [
+      "smoke",
+      "lung"
+    ],
+    [
+      "smoke",
+      "bronc"
+    ],
+    [
+      "lung",
+      "either"
+    ],
+    [
+      "tub",
+      "either"
+    ],
+    [
+      "either",
+      "xray"
+    ],
+    [
+      "bronc",
+      "dysp"
+    ],
+    [
+      "either",
+      "dysp"
+    ]
+  ],
+  "metadata": {
+    "benchmark_id": "bnlearn_asia",
+    "source_format": "bif.gz",
+    "source_url": "https://www.bnlearn.com/bnrepository/asia/asia.bif.gz",
+    "raw_sha256": "7d5e7b8549834824c1b05f367eb7860fa3fca3adaf3649f0c7be6035af197197",
+    "node_count": 8,
+    "edge_count": 8
+  }
+}

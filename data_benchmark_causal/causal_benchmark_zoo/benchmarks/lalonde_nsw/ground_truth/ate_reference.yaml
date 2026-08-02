@@ -1,0 +1,22 @@
+type: experimental_reference_estimate
+status: available
+estimand: ATE
+treatment: treat
+outcome: re78
+scale: difference_in_means_usd_1978_earnings
+value: 1794.342404270271
+treated_mean: 6349.143530270271
+control_mean: 4554.801126
+standard_error: 670.9965463815241
+confidence_interval_95:
+- 474.0104698178568
+- 3114.674338722685
+t_statistic: 2.674145513783345
+degrees_of_freedom_welch: 307.1324931115885
+p_value_two_sided: 0.00789297771451734
+n_treated: 185
+n_control: 260
+source: Computed from public NBER nswre74_treated.txt and nswre74_control.txt files.
+notes: Experimental reference estimate from randomized NSW sample. It has sampling
+  uncertainty and is not a mathematical constant.
+

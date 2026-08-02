@@ -1,0 +1,103 @@
+{
+  "name": "Sachs Protein Signaling",
+  "reference": "Sachs et al. (2005), Science 308(5721), 523-529",
+  "num_proteins": 11,
+  "proteins": [
+    "Raf",
+    "Mek",
+    "PLCg",
+    "PIP2",
+    "PIP3",
+    "Erk",
+    "Akt",
+    "PKA",
+    "PKC",
+    "P38",
+    "Jnk"
+  ],
+  "num_edges_ground_truth": 18,
+  "num_samples": 7466,
+  "measurement": "Flow cytometry (single-cell) - simulated",
+  "cell_type": "Primary human immune system cells",
+  "interventions": "9 perturbations including cytokines and pharmacological",
+  "data_origin": "SYNTHETIC - generated via linear Gaussian SEM over real validated causal graph",
+  "what_is_real": "Causal graph structure (17-18 validated edges), protein names, perturbation conditions from Sachs et al. (2005)",
+  "what_is_synthetic": "All numerical values were generated using a linear Gaussian structural equation model with exp() transform to approximate flow cytometry scale",
+  "note": "SYNTHETIC DATA. The causal graph structure is from the published paper; all numeric values are SEM-generated.",
+  "true_edges": [
+    [
+      "Raf",
+      "Mek"
+    ],
+    [
+      "Mek",
+      "Erk"
+    ],
+    [
+      "PLCg",
+      "PIP2"
+    ],
+    [
+      "PLCg",
+      "PKC"
+    ],
+    [
+      "PIP2",
+      "PIP3"
+    ],
+    [
+      "PIP3",
+      "Akt"
+    ],
+    [
+      "Erk",
+      "Akt"
+    ],
+    [
+      "PKA",
+      "Mek"
+    ],
+    [
+      "PKA",
+      "Erk"
+    ],
+    [
+      "PKA",
+      "Akt"
+    ],
+    [
+      "PKA",
+      "PLCg"
+    ],
+    [
+      "PKA",
+      "PKC"
+    ],
+    [
+      "PKC",
+      "Mek"
+    ],
+    [
+      "PKC",
+      "Raf"
+    ],
+    [
+      "PKC",
+      "P38"
+    ],
+    [
+      "PKC",
+      "Jnk"
+    ],
+    [
+      "PKA",
+      "Jnk"
+    ],
+    [
+      "PKA",
+      "P38"
+    ]
+  ],
+  "schema_version": "1.0-stage2",
+  "scenario_id": "real_sachs"
+}

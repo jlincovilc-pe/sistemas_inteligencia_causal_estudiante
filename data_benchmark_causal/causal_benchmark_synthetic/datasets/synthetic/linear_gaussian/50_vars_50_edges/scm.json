@@ -1,0 +1,580 @@
+{
+  "schema_version": "1.0-stage3",
+  "scenario_id": "synthetic_linear_gaussian_50_vars_50_edges",
+  "dataset_path": "datasets/synthetic/linear_gaussian/50_vars_50_edges",
+  "data_generating_process": "linear_gaussian",
+  "source_of_truth": "derived_from_existing_dataset_files_and_metadata",
+  "no_new_data_generated": true,
+  "variables": [
+    {
+      "name": "X0",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X1",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X2",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X3",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X4",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X5",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X6",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X7",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X8",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X9",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X10",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X11",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X12",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X13",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X14",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X15",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X16",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X17",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X18",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X19",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X20",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X21",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X22",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X23",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X24",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X25",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X26",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X27",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X28",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X29",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X30",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X31",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X32",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X33",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X34",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X35",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X36",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X37",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X38",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X39",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X40",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X41",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X42",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X43",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X44",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X45",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X46",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X47",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X48",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    },
+    {
+      "name": "X49",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 5000
+    }
+  ],
+  "graph": {
+    "available": true,
+    "edge_count": 50,
+    "edges": [
+      {
+        "source": "0",
+        "target": "8"
+      },
+      {
+        "source": "1",
+        "target": "24"
+      },
+      {
+        "source": "3",
+        "target": "21"
+      },
+      {
+        "source": "3",
+        "target": "48"
+      },
+      {
+        "source": "4",
+        "target": "28"
+      },
+      {
+        "source": "4",
+        "target": "41"
+      },
+      {
+        "source": "5",
+        "target": "39"
+      },
+      {
+        "source": "6",
+        "target": "17"
+      },
+      {
+        "source": "8",
+        "target": "30"
+      },
+      {
+        "source": "8",
+        "target": "42"
+      },
+      {
+        "source": "8",
+        "target": "48"
+      },
+      {
+        "source": "9",
+        "target": "33"
+      },
+      {
+        "source": "10",
+        "target": "23"
+      },
+      {
+        "source": "10",
+        "target": "42"
+      },
+      {
+        "source": "11",
+        "target": "15"
+      },
+      {
+        "source": "11",
+        "target": "18"
+      },
+      {
+        "source": "11",
+        "target": "22"
+      },
+      {
+        "source": "11",
+        "target": "32"
+      },
+      {
+        "source": "12",
+        "target": "14"
+      },
+      {
+        "source": "12",
+        "target": "44"
+      },
+      {
+        "source": "14",
+        "target": "27"
+      },
+      {
+        "source": "15",
+        "target": "17"
+      },
+      {
+        "source": "15",
+        "target": "20"
+      },
+      {
+        "source": "15",
+        "target": "33"
+      },
+      {
+        "source": "16",
+        "target": "33"
+      },
+      {
+        "source": "16",
+        "target": "36"
+      },
+      {
+        "source": "16",
+        "target": "43"
+      },
+      {
+        "source": "16",
+        "target": "49"
+      },
+      {
+        "source": "17",
+        "target": "41"
+      },
+      {
+        "source": "18",
+        "target": "20"
+      },
+      {
+        "source": "18",
+        "target": "34"
+      },
+      {
+        "source": "18",
+        "target": "45"
+      },
+      {
+        "source": "19",
+        "target": "26"
+      },
+      {
+        "source": "20",
+        "target": "21"
+      },
+      {
+        "source": "20",
+        "target": "28"
+      },
+      {
+        "source": "24",
+        "target": "40"
+      },
+      {
+        "source": "27",
+        "target": "36"
+      },
+      {
+        "source": "27",
+        "target": "44"
+      },
+      {
+        "source": "27",
+        "target": "46"
+      },
+      {
+        "source": "27",
+        "target": "47"
+      },
+      {
+        "source": "28",
+        "target": "48"
+      },
+      {
+        "source": "28",
+        "target": "49"
+      },
+      {
+        "source": "30",
+        "target": "45"
+      },
+      {
+        "source": "30",
+        "target": "48"
+      },
+      {
+        "source": "32",
+        "target": "38"
+      },
+      {
+        "source": "33",
+        "target": "39"
+      },
+      {
+        "source": "35",
+        "target": "47"
+      },
+      {
+        "source": "38",
+        "target": "47"
+      },
+      {
+        "source": "39",
+        "target": "47"
+      },
+      {
+        "source": "40",
+        "target": "42"
+      }
+    ],
+    "parameters_available": false,
+    "parameter_limitation": "True structural coefficients/noise terms were not stored in dataset files; not inferred or fabricated."
+  },
+  "time_series_links": {
+    "available": false,
+    "link_count": 0,
+    "links": []
+  },
+  "structural_equations": {
+    "available": false,
+    "limitation": "Original SCM equations/coefficients/noise draws are not fully serialized in the benchmark. This file documents available graph/data targets only."
+  },
+  "observed_data_file": "data.csv",
+  "full_data_file": "data.csv",
+  "metadata_file": "metadata.json"
+}

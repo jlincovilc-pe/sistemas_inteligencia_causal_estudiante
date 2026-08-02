@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0-stage3",
+  "scenario_id": "real_ihdp",
+  "source_of_truth": "computed_from_existing_truth_files_or_metadata",
+  "no_new_data_generated": true,
+  "targets": [
+    {
+      "type": "binary_treatment_effect",
+      "treatment": "treatment",
+      "outcome": "outcome",
+      "estimand": "ATE/ATT/ITE",
+      "ate": 3.9184651549344025,
+      "att": 4.153268860870749,
+      "tau_summary": {
+        "n": 747,
+        "mean": 3.9184651549344025,
+        "std": 2.6181233486623756,
+        "min": -5.4525651971582745,
+        "q25": 2.1200124825068887,
+        "median": 3.919946401796843,
+        "q75": 5.623295134069894,
+        "max": 11.595956589956089
+      },
+      "potential_outcomes_available": true,
+      "n_units": 747,
+      "treatment_rate": 0.42704149933065594,
+      "metadata_ate": 3.9184651549344025,
+      "metadata_att": 4.153268860870749
+    }
+  ]
+}

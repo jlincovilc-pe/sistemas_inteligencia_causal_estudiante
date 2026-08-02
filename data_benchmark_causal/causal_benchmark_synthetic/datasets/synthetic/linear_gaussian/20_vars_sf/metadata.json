@@ -1,0 +1,16 @@
+{
+  "type": "linear_gaussian",
+  "name": "20_vars_sf",
+  "num_vars": 20,
+  "num_edges": 30,
+  "num_samples": 2000,
+  "graph_type": "sf",
+  "noise": "gaussian(0,1)",
+  "weight_range": [
+    0.5,
+    2.0
+  ],
+  "seed": 49,
+  "schema_version": "1.0-stage2",
+  "scenario_id": "synthetic_linear_gaussian_20_vars_sf"
+}

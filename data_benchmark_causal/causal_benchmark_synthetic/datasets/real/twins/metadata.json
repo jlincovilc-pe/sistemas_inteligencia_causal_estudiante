@@ -1,0 +1,29 @@
+{
+  "ate_true": 0.0,
+  "num_pairs": 5700,
+  "seed": 600,
+  "description": "Twins-style low birth weight mortality study",
+  "name": "Twins",
+  "reference": "Almond et al. (2005), NBER Working Paper",
+  "full_name": "Twin Mortality Study (NCHS 1989-1991)",
+  "treatment": "Low birth weight (< 2500g)",
+  "outcome": "Mortality within first year",
+  "data_origin": "SYNTHETIC - generated from scratch using formula-based twin pair simulation",
+  "what_is_real": "Study design (twin pairs with intra-pair comparison), treatment definition (birth weight < 2500g), outcome (first-year mortality), ATE range (~0.05-0.08 from literature)",
+  "what_is_synthetic": "ALL numerical data: maternal age ~U(15,45), gestation ~N(38,2), birth weight ~N(2000,300), mortality from logit model",
+  "note": "SYNTHETIC DATA. No actual NCHS twin data is included.",
+  "schema_version": "1.0-stage2",
+  "scenario_id": "datasets_real_twins",
+  "task_types": [
+    "negative_control_non_estimable"
+  ],
+  "estimable_from_observed": false,
+  "identifiability": "non_estimable_degenerate_treatment_and_outcome",
+  "known_issue": "Generated treatment and outcome are constant in this version; retained only as negative QC control, not for ATE/CATE training.",
+  "treatments": [
+    "treatment"
+  ],
+  "outcomes": [
+    "mortality"
+  ]
+}

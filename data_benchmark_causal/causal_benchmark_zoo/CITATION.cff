@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+title: causal-benchmark-zoo
+message: "If you use this benchmark registry, cite the original dataset sources listed in each manifest."
+type: software
+authors:
+  - family-names: "Santibanez Uribe"
+    given-names: "Segundo Alejandro"
+repository-code: "https://github.com/OWNER/causal-benchmark-ecosystem"
+license: MIT
+version: 0.1.0
+date-released: 2026-07-01

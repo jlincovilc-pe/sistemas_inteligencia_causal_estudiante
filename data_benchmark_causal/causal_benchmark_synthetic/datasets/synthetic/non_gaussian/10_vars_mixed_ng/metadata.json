@@ -1,0 +1,12 @@
+{
+  "type": "linear_non_gaussian",
+  "name": "10_vars_mixed_ng",
+  "num_vars": 10,
+  "num_edges": 15,
+  "num_samples": 2000,
+  "noise_type": "mixed_laplace_base",
+  "algorithm_target": "ICA-LiNGAM, DirectLiNGAM",
+  "seed": 147,
+  "schema_version": "1.0-stage2",
+  "scenario_id": "synthetic_non_gaussian_10_vars_mixed_ng"
+}

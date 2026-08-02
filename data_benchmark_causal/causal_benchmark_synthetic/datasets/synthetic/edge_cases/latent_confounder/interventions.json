@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0-stage3",
+  "scenario_id": "edge_case_latent_confounder_seed_543",
+  "source_of_truth": "computed_from_existing_truth_files_or_metadata",
+  "no_new_data_generated": true,
+  "targets": [
+    {
+      "type": "metadata_reported_effect",
+      "treatment": "X8",
+      "outcome": "X9",
+      "estimand": "ATE",
+      "ate": -1.8189427590013103,
+      "source": "metadata.json",
+      "potential_outcomes_available": false,
+      "limitation": "No y0/y1/tau columns available to verify this effect directly."
+    }
+  ]
+}

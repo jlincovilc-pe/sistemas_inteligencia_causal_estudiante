@@ -1,0 +1,469 @@
+{
+  "schema_version": "1.0-stage3",
+  "scenario_id": "real_alarm",
+  "dataset_path": "datasets/real/alarm",
+  "data_generating_process": "SYNTHETIC - generated via linear Gaussian SEM over published Bayesian network structure",
+  "source_of_truth": "derived_from_existing_dataset_files_and_metadata",
+  "no_new_data_generated": true,
+  "variables": [
+    {
+      "name": "HYPOVOLEMIA",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "LVFAILURE",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "ERRLOWOUTPUT",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "HRBP",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "HREKG",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "ERRCAUTER",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "HRSAT",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "INSUFFANESTH",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "ANAPHYLAXIS",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "KINKEDTUBE",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "FIO2",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "PVSAT",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "SAO2",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "PAP",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "PULMEMBOLUS",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "SHUNT",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "INTUBATION",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "PRESS",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "DISCONNECT",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "MINVOLSET",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "VENTMACH",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "VENTTUBE",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "VENTLUNG",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "MINVOL",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "MAXHR",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "HR",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "STROKEVOLUME",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "CO",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "BP",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "CATECHOL",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "HISTORY",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "CVP",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "PCWP",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "EXPCO2",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "ARTCO2",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "TPR",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    },
+    {
+      "name": "MINVOLAL",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 20000
+    }
+  ],
+  "graph": {
+    "available": true,
+    "edge_count": 45,
+    "edges": [
+      {
+        "source": "HYPOVOLEMIA",
+        "target": "SHUNT"
+      },
+      {
+        "source": "HYPOVOLEMIA",
+        "target": "MAXHR"
+      },
+      {
+        "source": "LVFAILURE",
+        "target": "MAXHR"
+      },
+      {
+        "source": "LVFAILURE",
+        "target": "HR"
+      },
+      {
+        "source": "ERRLOWOUTPUT",
+        "target": "HR"
+      },
+      {
+        "source": "ERRLOWOUTPUT",
+        "target": "PCWP"
+      },
+      {
+        "source": "HRBP",
+        "target": "MAXHR"
+      },
+      {
+        "source": "HREKG",
+        "target": "HR"
+      },
+      {
+        "source": "ERRCAUTER",
+        "target": "STROKEVOLUME"
+      },
+      {
+        "source": "HRSAT",
+        "target": "CO"
+      },
+      {
+        "source": "INSUFFANESTH",
+        "target": "ANAPHYLAXIS"
+      },
+      {
+        "source": "ANAPHYLAXIS",
+        "target": "PRESS"
+      },
+      {
+        "source": "KINKEDTUBE",
+        "target": "PRESS"
+      },
+      {
+        "source": "FIO2",
+        "target": "PVSAT"
+      },
+      {
+        "source": "FIO2",
+        "target": "VENTMACH"
+      },
+      {
+        "source": "PVSAT",
+        "target": "SAO2"
+      },
+      {
+        "source": "PAP",
+        "target": "PULMEMBOLUS"
+      },
+      {
+        "source": "SHUNT",
+        "target": "INTUBATION"
+      },
+      {
+        "source": "INTUBATION",
+        "target": "PRESS"
+      },
+      {
+        "source": "PRESS",
+        "target": "DISCONNECT"
+      },
+      {
+        "source": "PRESS",
+        "target": "STROKEVOLUME"
+      },
+      {
+        "source": "DISCONNECT",
+        "target": "MINVOLSET"
+      },
+      {
+        "source": "MINVOLSET",
+        "target": "VENTMACH"
+      },
+      {
+        "source": "VENTMACH",
+        "target": "VENTTUBE"
+      },
+      {
+        "source": "VENTTUBE",
+        "target": "VENTLUNG"
+      },
+      {
+        "source": "VENTTUBE",
+        "target": "BP"
+      },
+      {
+        "source": "VENTLUNG",
+        "target": "MINVOL"
+      },
+      {
+        "source": "VENTLUNG",
+        "target": "CATECHOL"
+      },
+      {
+        "source": "MINVOL",
+        "target": "MAXHR"
+      },
+      {
+        "source": "MINVOL",
+        "target": "MINVOLAL"
+      },
+      {
+        "source": "MAXHR",
+        "target": "HR"
+      },
+      {
+        "source": "HR",
+        "target": "STROKEVOLUME"
+      },
+      {
+        "source": "HR",
+        "target": "PCWP"
+      },
+      {
+        "source": "STROKEVOLUME",
+        "target": "CO"
+      },
+      {
+        "source": "CO",
+        "target": "BP"
+      },
+      {
+        "source": "CO",
+        "target": "CATECHOL"
+      },
+      {
+        "source": "CO",
+        "target": "HISTORY"
+      },
+      {
+        "source": "BP",
+        "target": "CVP"
+      },
+      {
+        "source": "CATECHOL",
+        "target": "PCWP"
+      },
+      {
+        "source": "HISTORY",
+        "target": "EXPCO2"
+      },
+      {
+        "source": "CVP",
+        "target": "ARTCO2"
+      },
+      {
+        "source": "PCWP",
+        "target": "TPR"
+      },
+      {
+        "source": "EXPCO2",
+        "target": "ARTCO2"
+      },
+      {
+        "source": "ARTCO2",
+        "target": "TPR"
+      },
+      {
+        "source": "TPR",
+        "target": "MINVOLAL"
+      }
+    ],
+    "parameters_available": false,
+    "parameter_limitation": "True structural coefficients/noise terms were not stored in dataset files; not inferred or fabricated."
+  },
+  "time_series_links": {
+    "available": false,
+    "link_count": 0,
+    "links": []
+  },
+  "structural_equations": {
+    "available": false,
+    "limitation": "Original SCM equations/coefficients/noise draws are not fully serialized in the benchmark. This file documents available graph/data targets only."
+  },
+  "observed_data_file": "data.csv",
+  "full_data_file": "data.csv",
+  "metadata_file": "metadata.json"
+}

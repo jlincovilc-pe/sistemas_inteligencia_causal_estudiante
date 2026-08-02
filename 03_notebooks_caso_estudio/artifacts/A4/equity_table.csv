@@ -1,0 +1,8 @@
+group_var,group,n,n_treated,treat_rate
+bw_tercile,T1,50,3,0.06
+bw_tercile,T2,50,11,0.22
+bw_tercile,T3,50,16,0.32
+sex_median_split,sex_high,75,11,0.14666666666666667
+sex_median_split,sex_low,75,19,0.25333333333333335
+b.marr_median_split,b.marr_high,75,13,0.17333333333333334
+b.marr_median_split,b.marr_low,75,17,0.22666666666666666

@@ -1,0 +1,16 @@
+{
+  "type": "linear_gaussian",
+  "name": "50_vars_50_edges",
+  "num_vars": 50,
+  "num_edges": 50,
+  "num_samples": 5000,
+  "graph_type": "er",
+  "noise": "gaussian(0,1)",
+  "weight_range": [
+    0.5,
+    2.0
+  ],
+  "seed": 46,
+  "schema_version": "1.0-stage2",
+  "scenario_id": "synthetic_linear_gaussian_50_vars_50_edges"
+}

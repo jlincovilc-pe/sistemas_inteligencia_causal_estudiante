@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0-stage3",
+  "scenario_id": "real_ihdp",
+  "identification_status": "identifiable_by_design_all_simulated_confounders_observed_assumption",
+  "treatments": [],
+  "outcomes": [],
+  "latent_variables": [],
+  "valid_adjustment_sets": [
+    [
+      "bw",
+      "b.head",
+      "preterm",
+      "birth.o",
+      "nnhealth",
+      "momage",
+      "sex",
+      "twin",
+      "b.marr",
+      "mom.lths",
+      "mom.hs",
+      "mom.scoll",
+      "cig",
+      "first",
+      "booze",
+      "drugs",
+      "work.dur",
+      "prenatal",
+      "ark",
+      "ein",
+      "har",
+      "mia",
+      "pen",
+      "tex",
+      "was"
+    ]
+  ],
+  "assumptions": [
+    "No causal claim should be made beyond the serialized graph/truth targets.",
+    "Where structural equations are unavailable, identification metadata is a benchmark annotation, not an independently proven property."
+  ],
+  "notes": [
+    "Adjustment set derived as all observed pre-treatment covariates by benchmark design; validate against SCM when full equations are serialized."
+  ]
+}

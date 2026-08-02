@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0-stage3",
+  "scenario_id": "datasets_real_twins",
+  "source_of_truth": "computed_from_existing_truth_files_or_metadata",
+  "no_new_data_generated": true,
+  "targets": [
+    {
+      "type": "metadata_reported_effect",
+      "treatment": "treatment",
+      "outcome": "mortality",
+      "estimand": "ATE",
+      "ate": 0.0,
+      "source": "metadata.json",
+      "potential_outcomes_available": false,
+      "limitation": "No y0/y1/tau columns available to verify this effect directly."
+    }
+  ]
+}

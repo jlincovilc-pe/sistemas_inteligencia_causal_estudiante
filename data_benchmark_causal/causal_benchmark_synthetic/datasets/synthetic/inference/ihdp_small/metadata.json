@@ -1,0 +1,11 @@
+{
+  "ate_true": 3.9809604684461792,
+  "att_true": 4.202636050070604,
+  "seed": 342,
+  "num_samples": 1000,
+  "num_covariates": 25,
+  "treatment_ratio": 0.365,
+  "description": "IHDP-style synthetic dataset with heterogeneous treatment effects",
+  "schema_version": "1.0-stage2",
+  "scenario_id": "synthetic_inference_ihdp_small"
+}

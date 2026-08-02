@@ -1,0 +1,29 @@
+digraph G {
+  "age";
+  "educ";
+  "black";
+  "hispan";
+  "married";
+  "nodegree";
+  "re74";
+  "re75";
+  "treat";
+  "re78";
+  "age" -> "treat";
+  "age" -> "re78";
+  "educ" -> "treat";
+  "educ" -> "re78";
+  "black" -> "treat";
+  "black" -> "re78";
+  "hispan" -> "treat";
+  "hispan" -> "re78";
+  "married" -> "treat";
+  "married" -> "re78";
+  "nodegree" -> "treat";
+  "nodegree" -> "re78";
+  "re74" -> "treat";
+  "re74" -> "re78";
+  "re75" -> "treat";
+  "re75" -> "re78";
+  "treat" -> "re78";
+}

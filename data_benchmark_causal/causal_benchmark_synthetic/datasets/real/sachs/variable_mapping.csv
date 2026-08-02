@@ -1,0 +1,12 @@
+node_id,column_name,semantic_name,role
+X0,Raf,Raf,observed_variable
+X1,Mek,Mek,observed_variable
+X2,PLCg,PLCg,observed_variable
+X3,PIP2,PIP2,observed_variable
+X4,PIP3,PIP3,observed_variable
+X5,Erk,Erk,observed_variable
+X6,Akt,Akt,observed_variable
+X7,PKA,PKA,observed_variable
+X8,PKC,PKC,observed_variable
+X9,P38,P38,observed_variable
+X10,Jnk,Jnk,observed_variable

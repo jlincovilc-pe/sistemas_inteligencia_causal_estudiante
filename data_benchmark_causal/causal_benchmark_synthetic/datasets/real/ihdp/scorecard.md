@@ -1,0 +1,62 @@
+# Scorecard: datasets/real/ihdp
+
+Task type: `inference_effect_estimation`
+
+## Baselines
+
+### inference_naive_test_difference
+
+```json
+{
+  "ate_estimate": 11.908107114067327,
+  "absolute_error": 7.965811095789297,
+  "bias": 7.965811095789297,
+  "relative_error": 2.0206019687148484
+}
+```
+
+### inference_ols_adjusted
+
+```json
+{
+  "ate_estimate": 4.7993393956975074,
+  "absolute_error": 0.857043377419477,
+  "bias": 0.857043377419477,
+  "relative_error": 0.21739701266619446
+}
+```
+
+### inference_ipw_clipped_0.02_0.98
+
+```json
+{
+  "ate_estimate": 3.6448408458923907,
+  "absolute_error": 0.2974551723856398,
+  "bias": -0.2974551723856398,
+  "relative_error": 0.07545226715764644
+}
+```
+
+### propensity_test_summary
+
+```json
+{
+  "min": 0.08727694381243803,
+  "median": 0.43067061994781364,
+  "max": 0.8613293283721261
+}
+```
+
+### inference_t_learner_random_forest
+
+```json
+{
+  "ate_estimate": 4.977535502885513,
+  "absolute_error": 1.0352394846074828,
+  "bias": 1.0352394846074828,
+  "relative_error": 0.2625981102909844,
+  "pehe": 3.9077948030769423,
+  "mae_tau": 3.0550116254556268
+}
+```
+

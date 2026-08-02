@@ -1,0 +1,40 @@
+{
+  "policy_path": "03_notebooks_caso_estudio/artifacts/A4/policy.joblib",
+  "policy_card_path": "03_notebooks_caso_estudio/artifacts/A4/policy_card.md",
+  "uplift_curve_path": "03_notebooks_caso_estudio/artifacts/A4/uplift_curve.png",
+  "equity_table_path": "03_notebooks_caso_estudio/artifacts/A4/equity_table.csv",
+  "scenario": "real/ihdp",
+  "scenario_id": "real_ihdp",
+  "method_selected": "t_learner",
+  "budget_fraction": 0.2,
+  "threshold": 7.947752111350625,
+  "treat_rate_test": 0.2,
+  "qini_auc_test": 267.76748803750684,
+  "n_test": 150,
+  "comparison_ipw": [
+    {
+      "policy": "cate_topk",
+      "treat_rate": 0.2,
+      "n_treated": 30,
+      "n": 150,
+      "value_ipw": 51.52842674775012
+    },
+    {
+      "policy": "random",
+      "treat_rate": 0.2,
+      "n_treated": 30,
+      "n": 150,
+      "value_ipw": 49.733073028524906
+    },
+    {
+      "policy": "outcome_only_low_y",
+      "treat_rate": 0.2,
+      "n_treated": 30,
+      "n": 150,
+      "value_ipw": 49.63501552089899
+    }
+  ],
+  "a3_scores_used": true,
+  "equity_group": "bw_tercile",
+  "plot_error": null
+}

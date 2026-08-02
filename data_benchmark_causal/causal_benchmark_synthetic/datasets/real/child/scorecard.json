@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0-stage5",
+  "scenario_id": "real_child",
+  "dataset": "datasets/real/child",
+  "baseline_results": {
+    "discovery_empty_graph": {
+      "true_edges": 25,
+      "estimated_edges": 0,
+      "precision_skeleton": 0.0,
+      "recall_skeleton": 0.0,
+      "f1_skeleton": 0.0,
+      "precision_directed": 0.0,
+      "recall_directed": 0.0,
+      "f1_directed": 0.0,
+      "shd_directed_adjacency": 25,
+      "shd_skeleton": 25
+    },
+    "discovery_corr_threshold_0.30_order_oriented": {
+      "true_edges": 25,
+      "estimated_edges": 96,
+      "precision_skeleton": 0.21875,
+      "recall_skeleton": 0.84,
+      "f1_skeleton": 0.347107438016529,
+      "precision_directed": 0.21875,
+      "recall_directed": 0.84,
+      "f1_directed": 0.347107438016529,
+      "shd_directed_adjacency": 79,
+      "shd_skeleton": 79
+    }
+  },
+  "limitations": [],
+  "task_type": "structure_discovery"
+}

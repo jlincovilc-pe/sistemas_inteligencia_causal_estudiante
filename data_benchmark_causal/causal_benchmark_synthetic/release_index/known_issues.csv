@@ -1,0 +1,12 @@
+dataset,issue_type,severity,description
+datasets/real/ihdp,legacy_data_contains_truth,documented,data.csv retained for traceability; use observed_* for model input and truth_* for evaluation.
+datasets/real/jobs,legacy_data_contains_truth,documented,data.csv retained for traceability; use observed_* for model input and truth_* for evaluation.
+datasets/real/twins,non_estimable_control,expected_warning,"Generated treatment and outcome are constant in this version; retained only as negative QC control, not for ATE/CATE training."
+datasets/synthetic/edge_cases/latent_confounder,non_estimable_control,expected_warning,not_identifiable_from_observed_without_latent_confounder
+datasets/synthetic/inference/ihdp_large,legacy_data_contains_truth,documented,data.csv retained for traceability; use observed_* for model input and truth_* for evaluation.
+datasets/synthetic/inference/ihdp_medium,legacy_data_contains_truth,documented,data.csv retained for traceability; use observed_* for model input and truth_* for evaluation.
+datasets/synthetic/inference/ihdp_small,legacy_data_contains_truth,documented,data.csv retained for traceability; use observed_* for model input and truth_* for evaluation.
+datasets/synthetic/inference/lalonde_medium,legacy_data_contains_truth,documented,data.csv retained for traceability; use observed_* for model input and truth_* for evaluation.
+datasets/synthetic/inference/lalonde_small,legacy_data_contains_truth,documented,data.csv retained for traceability; use observed_* for model input and truth_* for evaluation.
+datasets/synthetic/inference/twins_medium,non_estimable_control,expected_warning,"Generated treatment and outcome are constant in this version; retained only as negative QC control, not for ATE/CATE training."
+datasets/synthetic/inference/twins_small,non_estimable_control,expected_warning,"Generated treatment and outcome are constant in this version; retained only as negative QC control, not for ATE/CATE training."

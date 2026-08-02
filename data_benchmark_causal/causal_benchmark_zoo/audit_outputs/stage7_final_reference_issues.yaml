@@ -1,0 +1,4 @@
+issues:
+- benchmark: csuite_lingauss
+  issue: 'Manual/pending: reference information cannot be completed without authorized
+    official CSuite ZIP'

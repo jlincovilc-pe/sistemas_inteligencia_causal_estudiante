@@ -1,0 +1,42 @@
+{
+  "bnlearn_asia": [
+    {
+      "path": "raw/asia.bif.gz",
+      "status": "available",
+      "exists": true,
+      "bytes": 310,
+      "manifest_sha256": "7d5e7b8549834824c1b05f367eb7860fa3fca3adaf3649f0c7be6035af197197",
+      "actual_sha256": "7d5e7b8549834824c1b05f367eb7860fa3fca3adaf3649f0c7be6035af197197"
+    }
+  ],
+  "bnlearn_alarm": [
+    {
+      "path": "raw/alarm.bif.gz",
+      "status": "available",
+      "exists": true,
+      "bytes": 1832,
+      "manifest_sha256": "f5860caa7137b5817e0c4f169cce0f1451ce6c246b96f5ce4fb4a8167993be29",
+      "actual_sha256": "f5860caa7137b5817e0c4f169cce0f1451ce6c246b96f5ce4fb4a8167993be29"
+    }
+  ],
+  "csuite_lingauss": [
+    {
+      "path": "raw/csuite_lingauss.zip",
+      "status": "manual",
+      "exists": false,
+      "bytes": null,
+      "manifest_sha256": null,
+      "actual_sha256": null
+    }
+  ],
+  "lalonde_nsw": [
+    {
+      "path": "raw/README_manual_download.txt",
+      "status": "manual",
+      "exists": true,
+      "bytes": 425,
+      "manifest_sha256": null,
+      "actual_sha256": "98a7355e791732fbf94a8487340dd9bccca746d947fdce913aae4017878ac87c"
+    }
+  ]
+}

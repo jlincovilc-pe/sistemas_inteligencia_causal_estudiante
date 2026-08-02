@@ -1,0 +1,215 @@
+{
+  "schema_version": "1.0-stage3",
+  "scenario_id": "synthetic_edge_cases_high_collinearity",
+  "dataset_path": "datasets/synthetic/edge_cases/high_collinearity",
+  "data_generating_process": "edge_case_colinearity",
+  "source_of_truth": "derived_from_existing_dataset_files_and_metadata",
+  "no_new_data_generated": true,
+  "variables": [
+    {
+      "name": "X0",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    },
+    {
+      "name": "X1",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    },
+    {
+      "name": "X2",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    },
+    {
+      "name": "X3",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    },
+    {
+      "name": "X4",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    },
+    {
+      "name": "X5",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    },
+    {
+      "name": "X6",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    },
+    {
+      "name": "X7",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    },
+    {
+      "name": "X8",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    },
+    {
+      "name": "X9",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    },
+    {
+      "name": "X10",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    },
+    {
+      "name": "X11",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    },
+    {
+      "name": "X12",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    },
+    {
+      "name": "X13",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    },
+    {
+      "name": "X14",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    }
+  ],
+  "graph": {
+    "available": true,
+    "edge_count": 20,
+    "edges": [
+      {
+        "source": "0",
+        "target": "1"
+      },
+      {
+        "source": "0",
+        "target": "2"
+      },
+      {
+        "source": "0",
+        "target": "7"
+      },
+      {
+        "source": "1",
+        "target": "2"
+      },
+      {
+        "source": "1",
+        "target": "4"
+      },
+      {
+        "source": "1",
+        "target": "9"
+      },
+      {
+        "source": "1",
+        "target": "10"
+      },
+      {
+        "source": "2",
+        "target": "12"
+      },
+      {
+        "source": "2",
+        "target": "13"
+      },
+      {
+        "source": "3",
+        "target": "7"
+      },
+      {
+        "source": "3",
+        "target": "13"
+      },
+      {
+        "source": "4",
+        "target": "13"
+      },
+      {
+        "source": "5",
+        "target": "12"
+      },
+      {
+        "source": "6",
+        "target": "7"
+      },
+      {
+        "source": "6",
+        "target": "13"
+      },
+      {
+        "source": "7",
+        "target": "13"
+      },
+      {
+        "source": "8",
+        "target": "11"
+      },
+      {
+        "source": "9",
+        "target": "10"
+      },
+      {
+        "source": "9",
+        "target": "13"
+      },
+      {
+        "source": "11",
+        "target": "12"
+      }
+    ],
+    "parameters_available": false,
+    "parameter_limitation": "True structural coefficients/noise terms were not stored in dataset files; not inferred or fabricated."
+  },
+  "time_series_links": {
+    "available": false,
+    "link_count": 0,
+    "links": []
+  },
+  "structural_equations": {
+    "available": false,
+    "limitation": "Original SCM equations/coefficients/noise draws are not fully serialized in the benchmark. This file documents available graph/data targets only."
+  },
+  "observed_data_file": "data.csv",
+  "full_data_file": "data.csv",
+  "metadata_file": "metadata.json"
+}

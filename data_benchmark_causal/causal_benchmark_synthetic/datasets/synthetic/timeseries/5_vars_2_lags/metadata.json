@@ -1,0 +1,221 @@
+{
+  "num_vars": 5,
+  "num_lags": 2,
+  "num_samples": 1000,
+  "sparsity": 0.3,
+  "causal_links": [
+    {
+      "source": 0,
+      "target": 0,
+      "lag": 1,
+      "coefficient": -0.33566393629957436
+    },
+    {
+      "source": 0,
+      "target": 1,
+      "lag": 1,
+      "coefficient": 0.1485775370670301
+    },
+    {
+      "source": 0,
+      "target": 2,
+      "lag": 1,
+      "coefficient": -0.5985835220994775
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "lag": 1,
+      "coefficient": -0.254203934864458
+    },
+    {
+      "source": 0,
+      "target": 4,
+      "lag": 1,
+      "coefficient": 0.3239563194991769
+    },
+    {
+      "source": 1,
+      "target": 0,
+      "lag": 1,
+      "coefficient": 0.4146634723661883
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "lag": 1,
+      "coefficient": 0.5109921832010605
+    },
+    {
+      "source": 1,
+      "target": 4,
+      "lag": 1,
+      "coefficient": -0.07669203024469502
+    },
+    {
+      "source": 2,
+      "target": 0,
+      "lag": 1,
+      "coefficient": 0.1226381704428969
+    },
+    {
+      "source": 2,
+      "target": 1,
+      "lag": 1,
+      "coefficient": 0.48669939294143894
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "lag": 1,
+      "coefficient": 0.3722742234344801
+    },
+    {
+      "source": 3,
+      "target": 2,
+      "lag": 1,
+      "coefficient": -0.5388189727412582
+    },
+    {
+      "source": 3,
+      "target": 3,
+      "lag": 1,
+      "coefficient": 0.08070677885174106
+    },
+    {
+      "source": 4,
+      "target": 0,
+      "lag": 1,
+      "coefficient": 0.31547528710926326
+    },
+    {
+      "source": 4,
+      "target": 1,
+      "lag": 1,
+      "coefficient": 0.17417750537214974
+    },
+    {
+      "source": 4,
+      "target": 2,
+      "lag": 1,
+      "coefficient": 0.3767868367571416
+    },
+    {
+      "source": 4,
+      "target": 3,
+      "lag": 1,
+      "coefficient": -0.2999981771292324
+    },
+    {
+      "source": 4,
+      "target": 4,
+      "lag": 1,
+      "coefficient": -0.039175598337250934
+    },
+    {
+      "source": 0,
+      "target": 0,
+      "lag": 2,
+      "coefficient": 0.27247052304938574
+    },
+    {
+      "source": 0,
+      "target": 3,
+      "lag": 2,
+      "coefficient": 0.3151779628924534
+    },
+    {
+      "source": 1,
+      "target": 1,
+      "lag": 2,
+      "coefficient": 0.2149145205617589
+    },
+    {
+      "source": 1,
+      "target": 3,
+      "lag": 2,
+      "coefficient": 0.1646191997916584
+    },
+    {
+      "source": 2,
+      "target": 0,
+      "lag": 2,
+      "coefficient": -0.3342591796376427
+    },
+    {
+      "source": 2,
+      "target": 2,
+      "lag": 2,
+      "coefficient": -0.1796631772573835
+    },
+    {
+      "source": 2,
+      "target": 3,
+      "lag": 2,
+      "coefficient": 0.06742135771380658
+    },
+    {
+      "source": 2,
+      "target": 4,
+      "lag": 2,
+      "coefficient": -0.33734355272956273
+    },
+    {
+      "source": 3,
+      "target": 0,
+      "lag": 2,
+      "coefficient": 0.3314153210361773
+    },
+    {
+      "source": 3,
+      "target": 1,
+      "lag": 2,
+      "coefficient": -0.04587760048501935
+    },
+    {
+      "source": 3,
+      "target": 2,
+      "lag": 2,
+      "coefficient": -0.46701889074934
+    },
+    {
+      "source": 3,
+      "target": 3,
+      "lag": 2,
+      "coefficient": -0.019698544491954052
+    },
+    {
+      "source": 3,
+      "target": 4,
+      "lag": 2,
+      "coefficient": -0.48768271330837343
+    },
+    {
+      "source": 4,
+      "target": 0,
+      "lag": 2,
+      "coefficient": 0.16251527893146914
+    },
+    {
+      "source": 4,
+      "target": 2,
+      "lag": 2,
+      "coefficient": -0.16612241503961
+    },
+    {
+      "source": 4,
+      "target": 3,
+      "lag": 2,
+      "coefficient": -0.11014530582385093
+    },
+    {
+      "source": 4,
+      "target": 4,
+      "lag": 2,
+      "coefficient": 0.25181789798275195
+    }
+  ],
+  "seed": 442,
+  "schema_version": "1.0-stage2",
+  "scenario_id": "synthetic_timeseries_5_vars_2_lags"
+}

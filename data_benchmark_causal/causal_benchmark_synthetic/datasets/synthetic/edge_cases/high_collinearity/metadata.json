@@ -1,0 +1,8 @@
+{
+  "type": "edge_case_colinearity",
+  "description": "High collinearity between predictors",
+  "mean_abs_correlation": 0.3332285585589969,
+  "seed": 542,
+  "schema_version": "1.0-stage2",
+  "scenario_id": "synthetic_edge_cases_high_collinearity"
+}

@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0-stage5",
+  "scenario_id": "synthetic_non_gaussian_10_vars_gumbel",
+  "dataset": "datasets/synthetic/non_gaussian/10_vars_gumbel",
+  "baseline_results": {
+    "discovery_empty_graph": {
+      "true_edges": 15,
+      "estimated_edges": 0,
+      "precision_skeleton": 0.0,
+      "recall_skeleton": 0.0,
+      "f1_skeleton": 0.0,
+      "precision_directed": 0.0,
+      "recall_directed": 0.0,
+      "f1_directed": 0.0,
+      "shd_directed_adjacency": 15,
+      "shd_skeleton": 15
+    },
+    "discovery_corr_threshold_0.30_order_oriented": {
+      "true_edges": 15,
+      "estimated_edges": 36,
+      "precision_skeleton": 0.3611111111111111,
+      "recall_skeleton": 0.8666666666666667,
+      "f1_skeleton": 0.5098039215686274,
+      "precision_directed": 0.3611111111111111,
+      "recall_directed": 0.8666666666666667,
+      "f1_directed": 0.5098039215686274,
+      "shd_directed_adjacency": 25,
+      "shd_skeleton": 25
+    }
+  },
+  "limitations": [],
+  "task_type": "structure_discovery"
+}

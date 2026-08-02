@@ -1,0 +1,78 @@
+id: lalonde_nsw
+name: Lalonde National Supported Work benchmark
+category: real_experimental_reference
+version: nber_public_nswre74_downloaded
+source:
+  homepage: https://users.nber.org/~rdehejia/nswdata.html
+  download_urls:
+  - https://www.nber.org/~rdehejia/data/nswre74_treated.txt
+  - https://www.nber.org/~rdehejia/data/nswre74_control.txt
+  papers:
+  - Lalonde R. Evaluating the Econometric Evaluations of Training Programs with Experimental
+    Data. American Economic Review. 1986.
+license:
+  status: verified
+  notes: NBER/Dehejia-Wahba page states these data are distributed for attributable
+    non-commercial use (CC BY-NC). Cite Lalonde 1986 and Dehejia/Wahba papers as documented
+    on the source page.
+schema:
+  treatment: treat
+  outcome: re78
+  covariates:
+  - age
+  - educ
+  - black
+  - hispan
+  - married
+  - nodegree
+  - re74
+  - re75
+  effect_modifiers: []
+files:
+  raw:
+  - path: raw/nswre74_treated.txt
+    status: available
+    sha256: e7b742fe0ff07a0f45e129b4ff108bb9611cd83d53604732c48a8a0a3e20eda3
+    url: https://www.nber.org/~rdehejia/data/nswre74_treated.txt
+    description: Public NBER NSW Dehejia-Wahba treated sample with RE74.
+  - path: raw/nswre74_control.txt
+    status: available
+    sha256: a1364cea459d953dc691a667d99194b4ad335d6d550354fe23a5d2dc58d729b5
+    url: https://www.nber.org/~rdehejia/data/nswre74_control.txt
+    description: Public NBER NSW Dehejia-Wahba control sample with RE74.
+  processed:
+  - path: processed/lalonde_nsw.parquet
+    status: available
+    sha256: 8959b2b14531dff6c06834ca69818fc8b69a1da6572826112b964f89da4474c8
+    url: null
+    description: Processed combined NSW Dehejia-Wahba experimental sample.
+  - path: processed/lalonde_nsw.csv
+    status: available
+    sha256: 4c773801a2af3889277036b5dab929c556c7e92ae5b20833f052ded3cc6b092b
+    url: null
+    description: CSV copy of the processed combined NSW Dehejia-Wahba experimental
+      sample.
+graph:
+  available: true
+  format: json
+  path: graphs/expert_dag.json
+  status: available
+  description: Expert DAG over pre-treatment covariates, treatment, and outcome.
+  sha256: d9d24cc8b6dd621759d1daa459bec712bd23fb5a86fdb48dabef48ba9113d04d
+ground_truth:
+  type: experimental_reference_estimate
+  path: ground_truth/ate_reference.yaml
+  status: available
+  description: Difference-in-means experimental reference estimate from the randomized
+    NSW sample, with standard error and confidence interval.
+  sha256: 7297be8447f73e13a9a14de44e8490256b22b981fbb2aa830490e145c7b622ff
+intended_tasks:
+- ate_estimation
+- sensitivity_analysis
+limitations:
+- Lalonde/NSW reference effect is an experimental estimate with sampling uncertainty,
+  not a mathematical constant.
+- The expert DAG is a maintained adjustment graph based on documented pre-treatment
+  covariates; it is not uniquely learned from the data.
+- Data are public for attributable non-commercial use according to the NBER/Dehejia-Wahba
+  page; users must cite the original sources.

@@ -1,0 +1,160 @@
+{
+  "schema_version": "1.0-stage3",
+  "scenario_id": "synthetic_non_gaussian_10_vars_laplace",
+  "dataset_path": "datasets/synthetic/non_gaussian/10_vars_laplace",
+  "data_generating_process": "linear_non_gaussian",
+  "source_of_truth": "derived_from_existing_dataset_files_and_metadata",
+  "no_new_data_generated": true,
+  "variables": [
+    {
+      "name": "X0",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    },
+    {
+      "name": "X1",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    },
+    {
+      "name": "X2",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    },
+    {
+      "name": "X3",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    },
+    {
+      "name": "X4",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    },
+    {
+      "name": "X5",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    },
+    {
+      "name": "X6",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    },
+    {
+      "name": "X7",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    },
+    {
+      "name": "X8",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    },
+    {
+      "name": "X9",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    }
+  ],
+  "graph": {
+    "available": true,
+    "edge_count": 15,
+    "edges": [
+      {
+        "source": "1",
+        "target": "3"
+      },
+      {
+        "source": "1",
+        "target": "7"
+      },
+      {
+        "source": "1",
+        "target": "9"
+      },
+      {
+        "source": "2",
+        "target": "3"
+      },
+      {
+        "source": "2",
+        "target": "4"
+      },
+      {
+        "source": "2",
+        "target": "6"
+      },
+      {
+        "source": "2",
+        "target": "7"
+      },
+      {
+        "source": "2",
+        "target": "9"
+      },
+      {
+        "source": "3",
+        "target": "5"
+      },
+      {
+        "source": "3",
+        "target": "7"
+      },
+      {
+        "source": "4",
+        "target": "8"
+      },
+      {
+        "source": "5",
+        "target": "9"
+      },
+      {
+        "source": "6",
+        "target": "7"
+      },
+      {
+        "source": "6",
+        "target": "9"
+      },
+      {
+        "source": "7",
+        "target": "9"
+      }
+    ],
+    "parameters_available": false,
+    "parameter_limitation": "True structural coefficients/noise terms were not stored in dataset files; not inferred or fabricated."
+  },
+  "time_series_links": {
+    "available": false,
+    "link_count": 0,
+    "links": []
+  },
+  "structural_equations": {
+    "available": false,
+    "limitation": "Original SCM equations/coefficients/noise draws are not fully serialized in the benchmark. This file documents available graph/data targets only."
+  },
+  "observed_data_file": "data.csv",
+  "full_data_file": "data.csv",
+  "metadata_file": "metadata.json"
+}

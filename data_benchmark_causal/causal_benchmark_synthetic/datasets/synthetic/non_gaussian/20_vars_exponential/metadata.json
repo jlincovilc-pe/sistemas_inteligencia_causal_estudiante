@@ -1,0 +1,12 @@
+{
+  "type": "linear_non_gaussian",
+  "name": "20_vars_exponential",
+  "num_vars": 20,
+  "num_edges": 30,
+  "num_samples": 2000,
+  "noise_type": "exponential",
+  "algorithm_target": "ICA-LiNGAM, DirectLiNGAM",
+  "seed": 145,
+  "schema_version": "1.0-stage2",
+  "scenario_id": "synthetic_non_gaussian_20_vars_exponential"
+}

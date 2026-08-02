@@ -1,0 +1,239 @@
+{
+  "schema_version": "1.0-stage3",
+  "scenario_id": "real_ihdp",
+  "dataset_path": "datasets/real/ihdp",
+  "data_generating_process": "SYNTHETIC - generated from scratch using formula-based simulation (Hill 2011 style)",
+  "source_of_truth": "derived_from_existing_dataset_files_and_metadata",
+  "no_new_data_generated": true,
+  "variables": [
+    {
+      "name": "bw",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "b.head",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "preterm",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "birth.o",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "nnhealth",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "momage",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "sex",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "twin",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "b.marr",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "mom.lths",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "mom.hs",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "mom.scoll",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "cig",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "first",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "booze",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "drugs",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "work.dur",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "prenatal",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "ark",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "ein",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "har",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "mia",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "pen",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "tex",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "was",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "treatment",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2
+    },
+    {
+      "name": "outcome",
+      "role": "outcome",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "y0",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "y1",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    },
+    {
+      "name": "tau",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 747
+    }
+  ],
+  "graph": {
+    "available": false,
+    "edge_count": 0,
+    "edges": [],
+    "parameters_available": false,
+    "parameter_limitation": "No static graph file available."
+  },
+  "time_series_links": {
+    "available": false,
+    "link_count": 0,
+    "links": []
+  },
+  "structural_equations": {
+    "available": false,
+    "limitation": "Original SCM equations/coefficients/noise draws are not fully serialized in the benchmark. This file documents available graph/data targets only."
+  },
+  "observed_data_file": "observed.csv",
+  "full_data_file": "data.csv",
+  "metadata_file": "metadata.json"
+}

@@ -1,0 +1,12 @@
+{
+  "type": "nonlinear_sem",
+  "name": "20_vars_mlp",
+  "num_vars": 20,
+  "num_edges": 30,
+  "num_samples": 2000,
+  "nonlinearity": "mlp",
+  "algorithm_target": "NOTEARS (nonlinear), GES, Causal Forest",
+  "seed": 243,
+  "schema_version": "1.0-stage2",
+  "scenario_id": "synthetic_nonlinear_20_vars_mlp"
+}

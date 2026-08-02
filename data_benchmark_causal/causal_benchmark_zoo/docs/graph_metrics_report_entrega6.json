@@ -1,0 +1,34 @@
+{
+  "bnlearn_asia": {
+    "true_nodes": 8,
+    "predicted_nodes": 8,
+    "shared_nodes": 8,
+    "true_edges": 8,
+    "predicted_edges": 8,
+    "true_positives": 8,
+    "false_positives": 0,
+    "false_negatives": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "structural_hamming_distance": 0,
+    "reversed_edges": 0,
+    "node_jaccard": 1.0
+  },
+  "bnlearn_alarm": {
+    "true_nodes": 37,
+    "predicted_nodes": 37,
+    "shared_nodes": 37,
+    "true_edges": 46,
+    "predicted_edges": 46,
+    "true_positives": 46,
+    "false_positives": 0,
+    "false_negatives": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "structural_hamming_distance": 0,
+    "reversed_edges": 0,
+    "node_jaccard": 1.0
+  }
+}

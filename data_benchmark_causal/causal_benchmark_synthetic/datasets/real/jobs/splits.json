@@ -1,0 +1,120 @@
+{
+  "schema_version": "1.0-stage4",
+  "scenario_id": "real_jobs",
+  "source_observed_file": "observed.csv",
+  "source_truth_file": "truth.csv",
+  "split_seed": 20240701,
+  "ratios_requested": {
+    "train": 0.6,
+    "validation": 0.2,
+    "test": 0.2
+  },
+  "split_method": "stratified_by_treatment_60_20_20",
+  "row_id_definition": "zero-based positional index in source observable file after dropping truth columns if present",
+  "n_total": 1722,
+  "splits": {
+    "train": {
+      "n_rows": 1033,
+      "fraction_actual": 0.5998838559814169,
+      "row_id_min": 4,
+      "row_id_max": 1721,
+      "row_id_sha256": "3b7421a0401dd19375433125e1af6566c913b86dbefc072a3542f1907dcbf1df",
+      "file": "observed_train.csv",
+      "file_sha256": "cd5a772ead64f4165891e4213605de241aeee81cc1ad8ad68cad7495fe5d7ae2",
+      "balance": {
+        "treatment": {
+          "n_unique": 2,
+          "mean": 0.2536302032913843,
+          "std": 0.4352991561741729,
+          "min": 0.0,
+          "max": 1.0,
+          "value_counts": {
+            "0": 771,
+            "1": 262
+          }
+        },
+        "re78": {
+          "n_unique": 1033,
+          "mean": 7172.643514553766,
+          "std": 4330.472546731554,
+          "min": -5647.6535295324,
+          "max": 22154.121192848823
+        }
+      },
+      "truth_file": "truth_train.csv",
+      "truth_file_sha256": "8572d26e47b47dc11a25912af2056ff0cbd2d1924d6cc19ed00c1d37e710b17e",
+      "truth_rows_aligned": true
+    },
+    "validation": {
+      "n_rows": 344,
+      "fraction_actual": 0.1997677119628339,
+      "row_id_min": 16,
+      "row_id_max": 1711,
+      "row_id_sha256": "ecc1a8ec4167a00393e6fa82091ea6af9a0e27166dc52932981883b9cc01e4ff",
+      "file": "observed_validation.csv",
+      "file_sha256": "cee91dab6987ee3ca77855a0b007238a373bef0970e0327989d3778f0e4f2bc6",
+      "balance": {
+        "treatment": {
+          "n_unique": 2,
+          "mean": 0.25290697674418605,
+          "std": 0.43531126567892187,
+          "min": 0.0,
+          "max": 1.0,
+          "value_counts": {
+            "0": 257,
+            "1": 87
+          }
+        },
+        "re78": {
+          "n_unique": 344,
+          "mean": 7020.498184346905,
+          "std": 4165.444919710014,
+          "min": -8449.775530612264,
+          "max": 16650.071912311316
+        }
+      },
+      "truth_file": "truth_validation.csv",
+      "truth_file_sha256": "27e981d3228ee97bb40ab1c2ec353c6d2160222c5edf162abede925f69e474e1",
+      "truth_rows_aligned": true
+    },
+    "test": {
+      "n_rows": 345,
+      "fraction_actual": 0.20034843205574912,
+      "row_id_min": 0,
+      "row_id_max": 1719,
+      "row_id_sha256": "bcd1aa04dc473dedecc293f7af197dcac68fe9b84e493b5d31dec5f816ac0751",
+      "file": "observed_test.csv",
+      "file_sha256": "2093dbef51d20b43cc71a2d8b8de0ed6e53cabb14be0fcbf8729126355f3792c",
+      "balance": {
+        "treatment": {
+          "n_unique": 2,
+          "mean": 0.25507246376811593,
+          "std": 0.4365350594234452,
+          "min": 0.0,
+          "max": 1.0,
+          "value_counts": {
+            "0": 257,
+            "1": 88
+          }
+        },
+        "re78": {
+          "n_unique": 345,
+          "mean": 7148.193234848196,
+          "std": 4347.259939072011,
+          "min": -6209.645310715392,
+          "max": 18826.14592219186
+        }
+      },
+      "truth_file": "truth_test.csv",
+      "truth_file_sha256": "d1b928f4202fa43a52ce64bd720dd8a37c95b9ed3dde40d46976e0d6fb1820af",
+      "truth_rows_aligned": true
+    }
+  },
+  "validation": {
+    "covers_all_rows": true,
+    "no_overlap": true,
+    "n_rows_sum": 1722,
+    "expected_n_rows": 1722,
+    "has_truth_splits": true
+  }
+}

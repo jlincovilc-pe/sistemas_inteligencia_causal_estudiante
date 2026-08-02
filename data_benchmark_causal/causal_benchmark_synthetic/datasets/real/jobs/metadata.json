@@ -1,0 +1,30 @@
+{
+  "ate_true": 1600.2575855509704,
+  "att_true": 1650.2724582610615,
+  "seed": 500,
+  "description": "LaLonde-style job training program evaluation",
+  "name": "Jobs",
+  "reference": "LaLonde (1986), AER 76(4), 604-620",
+  "full_name": "National Supported Work Demonstration",
+  "num_units": 1722,
+  "num_experimental": 722,
+  "num_observational": 1000,
+  "treatment": "Job training program participation",
+  "outcome": "Earnings in 1978",
+  "covariates": [
+    "age",
+    "educ",
+    "black",
+    "hispan",
+    "married",
+    "nodegree",
+    "re74",
+    "re75"
+  ],
+  "data_origin": "SYNTHETIC - generated from scratch using formula-based simulation (LaLonde 1986 style)",
+  "what_is_real": "ATE reference value (~1800 USD from NSW experimental results), covariate names (age, educ, race, income), program structure",
+  "what_is_synthetic": "ALL numerical data: demographics ~U(18,55)/U(5,17), income ~N(5000,3000), outcomes from linear formulas with ATE forced to ~1800",
+  "note": "SYNTHETIC DATA. No actual NSW or CPS participant data is included.",
+  "schema_version": "1.0-stage2",
+  "scenario_id": "real_jobs"
+}

@@ -1,0 +1,21 @@
+{
+  "ate_true": 3.9184651549344025,
+  "att_true": 4.153268860870749,
+  "seed": 400,
+  "num_samples": 747,
+  "num_covariates": 25,
+  "treatment_ratio": 0.42704149933065594,
+  "description": "IHDP-style synthetic dataset with heterogeneous treatment effects",
+  "name": "IHDP",
+  "reference": "Hill (2011), JCGS 20(1), 217-240",
+  "full_name": "Infant Health and Development Program",
+  "num_units": 747,
+  "treatment": "Intervention program for low birth weight children",
+  "outcome": "Cognitive test scores at age 3.5",
+  "data_origin": "SYNTHETIC - generated from scratch using formula-based simulation (Hill 2011 style)",
+  "what_is_real": "ATE reference value (~4.0 from literature), number of units/covariates (747, 25), covariate names, study design",
+  "what_is_synthetic": "ALL numerical data: covariates ~N(0,1), treatment from logistic PS model, outcomes from linear formulas with heterogeneous effects",
+  "note": "SYNTHETIC DATA. No actual IHDP participant data is included. Generated to match statistical properties reported in Hill (2011).",
+  "schema_version": "1.0-stage2",
+  "scenario_id": "real_ihdp"
+}

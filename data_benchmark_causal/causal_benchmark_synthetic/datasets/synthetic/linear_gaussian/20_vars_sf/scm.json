@@ -1,0 +1,290 @@
+{
+  "schema_version": "1.0-stage3",
+  "scenario_id": "synthetic_linear_gaussian_20_vars_sf",
+  "dataset_path": "datasets/synthetic/linear_gaussian/20_vars_sf",
+  "data_generating_process": "linear_gaussian",
+  "source_of_truth": "derived_from_existing_dataset_files_and_metadata",
+  "no_new_data_generated": true,
+  "variables": [
+    {
+      "name": "X0",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X1",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X2",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X3",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X4",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X5",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X6",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X7",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X8",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X9",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X10",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X11",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X12",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X13",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X14",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X15",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X16",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X17",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X18",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    },
+    {
+      "name": "X19",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 2000
+    }
+  ],
+  "graph": {
+    "available": true,
+    "edge_count": 30,
+    "edges": [
+      {
+        "source": "0",
+        "target": "1"
+      },
+      {
+        "source": "0",
+        "target": "2"
+      },
+      {
+        "source": "0",
+        "target": "3"
+      },
+      {
+        "source": "0",
+        "target": "4"
+      },
+      {
+        "source": "0",
+        "target": "5"
+      },
+      {
+        "source": "0",
+        "target": "6"
+      },
+      {
+        "source": "0",
+        "target": "7"
+      },
+      {
+        "source": "0",
+        "target": "8"
+      },
+      {
+        "source": "0",
+        "target": "9"
+      },
+      {
+        "source": "0",
+        "target": "10"
+      },
+      {
+        "source": "0",
+        "target": "11"
+      },
+      {
+        "source": "0",
+        "target": "12"
+      },
+      {
+        "source": "0",
+        "target": "13"
+      },
+      {
+        "source": "0",
+        "target": "14"
+      },
+      {
+        "source": "0",
+        "target": "15"
+      },
+      {
+        "source": "0",
+        "target": "16"
+      },
+      {
+        "source": "0",
+        "target": "17"
+      },
+      {
+        "source": "0",
+        "target": "18"
+      },
+      {
+        "source": "0",
+        "target": "19"
+      },
+      {
+        "source": "1",
+        "target": "11"
+      },
+      {
+        "source": "3",
+        "target": "12"
+      },
+      {
+        "source": "3",
+        "target": "13"
+      },
+      {
+        "source": "3",
+        "target": "10"
+      },
+      {
+        "source": "7",
+        "target": "16"
+      },
+      {
+        "source": "7",
+        "target": "14"
+      },
+      {
+        "source": "8",
+        "target": "18"
+      },
+      {
+        "source": "8",
+        "target": "13"
+      },
+      {
+        "source": "8",
+        "target": "11"
+      },
+      {
+        "source": "12",
+        "target": "19"
+      },
+      {
+        "source": "16",
+        "target": "17"
+      }
+    ],
+    "parameters_available": false,
+    "parameter_limitation": "True structural coefficients/noise terms were not stored in dataset files; not inferred or fabricated."
+  },
+  "time_series_links": {
+    "available": false,
+    "link_count": 0,
+    "links": []
+  },
+  "structural_equations": {
+    "available": false,
+    "limitation": "Original SCM equations/coefficients/noise draws are not fully serialized in the benchmark. This file documents available graph/data targets only."
+  },
+  "observed_data_file": "data.csv",
+  "full_data_file": "data.csv",
+  "metadata_file": "metadata.json"
+}

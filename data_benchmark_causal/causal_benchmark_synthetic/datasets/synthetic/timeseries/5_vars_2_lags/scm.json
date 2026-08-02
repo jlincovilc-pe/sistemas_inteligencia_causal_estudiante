@@ -1,0 +1,275 @@
+{
+  "schema_version": "1.0-stage3",
+  "scenario_id": "synthetic_timeseries_5_vars_2_lags",
+  "dataset_path": "datasets/synthetic/timeseries/5_vars_2_lags",
+  "data_generating_process": "not_specified_in_metadata",
+  "source_of_truth": "derived_from_existing_dataset_files_and_metadata",
+  "no_new_data_generated": true,
+  "variables": [
+    {
+      "name": "X0",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    },
+    {
+      "name": "X1",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    },
+    {
+      "name": "X2",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    },
+    {
+      "name": "X3",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    },
+    {
+      "name": "X4",
+      "role": "covariate",
+      "observed": true,
+      "type": "numeric",
+      "n_unique": 1000
+    }
+  ],
+  "graph": {
+    "available": false,
+    "edge_count": 0,
+    "edges": [],
+    "parameters_available": false,
+    "parameter_limitation": "No static graph file available."
+  },
+  "time_series_links": {
+    "available": true,
+    "link_count": 35,
+    "links": [
+      {
+        "source": 0,
+        "target": 0,
+        "lag": 1,
+        "coefficient": -0.3356639362995743
+      },
+      {
+        "source": 0,
+        "target": 1,
+        "lag": 1,
+        "coefficient": 0.1485775370670301
+      },
+      {
+        "source": 0,
+        "target": 2,
+        "lag": 1,
+        "coefficient": -0.5985835220994775
+      },
+      {
+        "source": 0,
+        "target": 3,
+        "lag": 1,
+        "coefficient": -0.254203934864458
+      },
+      {
+        "source": 0,
+        "target": 4,
+        "lag": 1,
+        "coefficient": 0.3239563194991769
+      },
+      {
+        "source": 1,
+        "target": 0,
+        "lag": 1,
+        "coefficient": 0.4146634723661883
+      },
+      {
+        "source": 1,
+        "target": 3,
+        "lag": 1,
+        "coefficient": 0.5109921832010605
+      },
+      {
+        "source": 1,
+        "target": 4,
+        "lag": 1,
+        "coefficient": -0.076692030244695
+      },
+      {
+        "source": 2,
+        "target": 0,
+        "lag": 1,
+        "coefficient": 0.1226381704428969
+      },
+      {
+        "source": 2,
+        "target": 1,
+        "lag": 1,
+        "coefficient": 0.4866993929414389
+      },
+      {
+        "source": 2,
+        "target": 3,
+        "lag": 1,
+        "coefficient": 0.3722742234344801
+      },
+      {
+        "source": 3,
+        "target": 2,
+        "lag": 1,
+        "coefficient": -0.5388189727412582
+      },
+      {
+        "source": 3,
+        "target": 3,
+        "lag": 1,
+        "coefficient": 0.080706778851741
+      },
+      {
+        "source": 4,
+        "target": 0,
+        "lag": 1,
+        "coefficient": 0.3154752871092632
+      },
+      {
+        "source": 4,
+        "target": 1,
+        "lag": 1,
+        "coefficient": 0.1741775053721497
+      },
+      {
+        "source": 4,
+        "target": 2,
+        "lag": 1,
+        "coefficient": 0.3767868367571416
+      },
+      {
+        "source": 4,
+        "target": 3,
+        "lag": 1,
+        "coefficient": -0.2999981771292324
+      },
+      {
+        "source": 4,
+        "target": 4,
+        "lag": 1,
+        "coefficient": -0.0391755983372509
+      },
+      {
+        "source": 0,
+        "target": 0,
+        "lag": 2,
+        "coefficient": 0.2724705230493857
+      },
+      {
+        "source": 0,
+        "target": 3,
+        "lag": 2,
+        "coefficient": 0.3151779628924534
+      },
+      {
+        "source": 1,
+        "target": 1,
+        "lag": 2,
+        "coefficient": 0.2149145205617589
+      },
+      {
+        "source": 1,
+        "target": 3,
+        "lag": 2,
+        "coefficient": 0.1646191997916584
+      },
+      {
+        "source": 2,
+        "target": 0,
+        "lag": 2,
+        "coefficient": -0.3342591796376427
+      },
+      {
+        "source": 2,
+        "target": 2,
+        "lag": 2,
+        "coefficient": -0.1796631772573835
+      },
+      {
+        "source": 2,
+        "target": 3,
+        "lag": 2,
+        "coefficient": 0.0674213577138065
+      },
+      {
+        "source": 2,
+        "target": 4,
+        "lag": 2,
+        "coefficient": -0.3373435527295627
+      },
+      {
+        "source": 3,
+        "target": 0,
+        "lag": 2,
+        "coefficient": 0.3314153210361773
+      },
+      {
+        "source": 3,
+        "target": 1,
+        "lag": 2,
+        "coefficient": -0.0458776004850193
+      },
+      {
+        "source": 3,
+        "target": 2,
+        "lag": 2,
+        "coefficient": -0.46701889074934
+      },
+      {
+        "source": 3,
+        "target": 3,
+        "lag": 2,
+        "coefficient": -0.019698544491954
+      },
+      {
+        "source": 3,
+        "target": 4,
+        "lag": 2,
+        "coefficient": -0.4876827133083734
+      },
+      {
+        "source": 4,
+        "target": 0,
+        "lag": 2,
+        "coefficient": 0.1625152789314691
+      },
+      {
+        "source": 4,
+        "target": 2,
+        "lag": 2,
+        "coefficient": -0.16612241503961
+      },
+      {
+        "source": 4,
+        "target": 3,
+        "lag": 2,
+        "coefficient": -0.1101453058238509
+      },
+      {
+        "source": 4,
+        "target": 4,
+        "lag": 2,
+        "coefficient": 0.2518178979827519
+      }
+    ]
+  },
+  "structural_equations": {
+    "available": false,
+    "limitation": "Original SCM equations/coefficients/noise draws are not fully serialized in the benchmark. This file documents available graph/data targets only."
+  },
+  "observed_data_file": "data.csv",
+  "full_data_file": "data.csv",
+  "metadata_file": "metadata.json"
+}

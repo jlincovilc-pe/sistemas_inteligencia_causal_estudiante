@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+title: "Causal Discovery Benchmark Datasets"
+message: "If you use these benchmark scenarios, cite this record and the original literature sources listed in each metadata.json."
+type: software
+authors:
+  - family-names: Santibanez Uribe
+    given-names: Segundo Alejandro
+repository-code: "https://github.com/OWNER/causal-benchmark-ecosystem"
+license: MIT
+version: 1.0.0
+date-released: 2026-07-01
+keywords:
+  - causal discovery
+  - causal inference
+  - benchmark dataset
+  - structural equation model

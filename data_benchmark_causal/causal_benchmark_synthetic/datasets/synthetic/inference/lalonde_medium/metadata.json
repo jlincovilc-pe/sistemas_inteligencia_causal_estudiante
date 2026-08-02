@@ -1,0 +1,8 @@
+{
+  "ate_true": 1601.9627578281095,
+  "att_true": 1647.8737546050463,
+  "seed": 346,
+  "description": "LaLonde-style job training program evaluation",
+  "schema_version": "1.0-stage2",
+  "scenario_id": "synthetic_inference_lalonde_medium"
+}

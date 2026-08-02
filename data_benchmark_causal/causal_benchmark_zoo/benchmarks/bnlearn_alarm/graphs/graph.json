@@ -1,0 +1,383 @@
+{
+  "nodes": [
+    {
+      "id": "HISTORY",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "CVP",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "PCWP",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "HYPOVOLEMIA",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "LVEDVOLUME",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "LVFAILURE",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "STROKEVOLUME",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "ERRLOWOUTPUT",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "HRBP",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "HREKG",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "ERRCAUTER",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "HRSAT",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "INSUFFANESTH",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "ANAPHYLAXIS",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "TPR",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "EXPCO2",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "KINKEDTUBE",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "MINVOL",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "FIO2",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "PVSAT",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "SAO2",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "PAP",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "PULMEMBOLUS",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "SHUNT",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "INTUBATION",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "PRESS",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "DISCONNECT",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "MINVOLSET",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "VENTMACH",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "VENTTUBE",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "VENTLUNG",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "VENTALV",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "ARTCO2",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "CATECHOL",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "HR",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "CO",
+      "observed": true,
+      "type": "variable"
+    },
+    {
+      "id": "BP",
+      "observed": true,
+      "type": "variable"
+    }
+  ],
+  "edges": [
+    [
+      "LVFAILURE",
+      "HISTORY"
+    ],
+    [
+      "LVEDVOLUME",
+      "CVP"
+    ],
+    [
+      "LVEDVOLUME",
+      "PCWP"
+    ],
+    [
+      "HYPOVOLEMIA",
+      "LVEDVOLUME"
+    ],
+    [
+      "LVFAILURE",
+      "LVEDVOLUME"
+    ],
+    [
+      "HYPOVOLEMIA",
+      "STROKEVOLUME"
+    ],
+    [
+      "LVFAILURE",
+      "STROKEVOLUME"
+    ],
+    [
+      "ERRLOWOUTPUT",
+      "HRBP"
+    ],
+    [
+      "HR",
+      "HRBP"
+    ],
+    [
+      "ERRCAUTER",
+      "HREKG"
+    ],
+    [
+      "HR",
+      "HREKG"
+    ],
+    [
+      "ERRCAUTER",
+      "HRSAT"
+    ],
+    [
+      "HR",
+      "HRSAT"
+    ],
+    [
+      "ANAPHYLAXIS",
+      "TPR"
+    ],
+    [
+      "ARTCO2",
+      "EXPCO2"
+    ],
+    [
+      "VENTLUNG",
+      "EXPCO2"
+    ],
+    [
+      "INTUBATION",
+      "MINVOL"
+    ],
+    [
+      "VENTLUNG",
+      "MINVOL"
+    ],
+    [
+      "FIO2",
+      "PVSAT"
+    ],
+    [
+      "VENTALV",
+      "PVSAT"
+    ],
+    [
+      "PVSAT",
+      "SAO2"
+    ],
+    [
+      "SHUNT",
+      "SAO2"
+    ],
+    [
+      "PULMEMBOLUS",
+      "PAP"
+    ],
+    [
+      "INTUBATION",
+      "SHUNT"
+    ],
+    [
+      "PULMEMBOLUS",
+      "SHUNT"
+    ],
+    [
+      "INTUBATION",
+      "PRESS"
+    ],
+    [
+      "KINKEDTUBE",
+      "PRESS"
+    ],
+    [
+      "VENTTUBE",
+      "PRESS"
+    ],
+    [
+      "MINVOLSET",
+      "VENTMACH"
+    ],
+    [
+      "DISCONNECT",
+      "VENTTUBE"
+    ],
+    [
+      "VENTMACH",
+      "VENTTUBE"
+    ],
+    [
+      "INTUBATION",
+      "VENTLUNG"
+    ],
+    [
+      "KINKEDTUBE",
+      "VENTLUNG"
+    ],
+    [
+      "VENTTUBE",
+      "VENTLUNG"
+    ],
+    [
+      "INTUBATION",
+      "VENTALV"
+    ],
+    [
+      "VENTLUNG",
+      "VENTALV"
+    ],
+    [
+      "VENTALV",
+      "ARTCO2"
+    ],
+    [
+      "ARTCO2",
+      "CATECHOL"
+    ],
+    [
+      "INSUFFANESTH",
+      "CATECHOL"
+    ],
+    [
+      "SAO2",
+      "CATECHOL"
+    ],
+    [
+      "TPR",
+      "CATECHOL"
+    ],
+    [
+      "CATECHOL",
+      "HR"
+    ],
+    [
+      "HR",
+      "CO"
+    ],
+    [
+      "STROKEVOLUME",
+      "CO"
+    ],
+    [
+      "CO",
+      "BP"
+    ],
+    [
+      "TPR",
+      "BP"
+    ]
+  ],
+  "metadata": {
+    "benchmark_id": "bnlearn_alarm",
+    "source_format": "bif.gz",
+    "source_url": "https://www.bnlearn.com/bnrepository/alarm/alarm.bif.gz",
+    "raw_sha256": "f5860caa7137b5817e0c4f169cce0f1451ce6c246b96f5ce4fb4a8167993be29",
+    "node_count": 37,
+    "edge_count": 46
+  }
+}

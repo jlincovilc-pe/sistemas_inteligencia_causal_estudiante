@@ -1,0 +1,31 @@
+{
+  "type": "edge_case_latent_confounder",
+  "description": "Latent confounder (X0) affects both treatment and outcome",
+  "treatment_var": "X8",
+  "outcome_var": "X9",
+  "latent_var": "X0",
+  "true_ate": -1.8189427590013103,
+  "seed": 543,
+  "schema_version": "1.0-stage2",
+  "scenario_id": "edge_case_latent_confounder_seed_543",
+  "task_types": [
+    "latent_confounding_negative_control",
+    "ate"
+  ],
+  "data_generating_process": "synthetic_linear_gaussian_sem_existing",
+  "treatments": [
+    "X8"
+  ],
+  "outcomes": [
+    "X9"
+  ],
+  "latent_variables": [
+    "X0"
+  ],
+  "identifiability": "not_identifiable_from_observed_without_latent_confounder",
+  "estimable_from_observed": false,
+  "ground_truth_available": [
+    "true_ate",
+    "full_data_with_latent"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "CHILD",
+  "reference": "Spiegelhalter et al. (1993), MRC Biostatistics Unit",
+  "domain": "Pediatric diagnosis (congenital heart disease)",
+  "num_variables": 20,
+  "num_edges": 25,
+  "original_type": "Discrete Bayesian Network",
+  "generated_samples": 10000,
+  "data_origin": "SYNTHETIC - generated via linear Gaussian SEM over published Bayesian network structure",
+  "what_is_real": "Bayesian network topology (20 nodes, 25 edges), variable names, pediatric domain from Spiegelhalter et al. (1993)",
+  "what_is_synthetic": "All numerical values are continuous approximations generated via SEM. Original CHILD is a discrete network.",
+  "note": "SYNTHETIC DATA. The Bayesian network structure is from the published paper; numeric values are SEM-generated continuous approximations.",
+  "schema_version": "1.0-stage2",
+  "scenario_id": "real_child"
+}

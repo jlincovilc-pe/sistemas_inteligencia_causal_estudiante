@@ -1,0 +1,30 @@
+# Scorecard: datasets/synthetic/timeseries/5_vars_2_lags
+
+Task type: `time_series_link_recovery`
+
+## Baselines
+
+### timeseries_empty_links
+
+```json
+{
+  "true_links": 35,
+  "estimated_links": 0,
+  "precision": 0.0,
+  "recall": 0.0,
+  "f1": 0.0
+}
+```
+
+### timeseries_lagged_corr_threshold_0.20
+
+```json
+{
+  "true_links": 35,
+  "estimated_links": 36,
+  "precision": 0.75,
+  "recall": 0.7714285714285715,
+  "f1": 0.7605633802816902
+}
+```
+

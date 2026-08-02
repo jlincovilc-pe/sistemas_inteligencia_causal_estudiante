@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+title: "Causal Benchmark Ecosystem"
+message: "If you use this repository, cite this software record and the original dataset sources listed in each manifest or metadata.json."
+type: software
+authors:
+  - family-names: Santibanez Uribe
+    given-names: Segundo Alejandro
+repository-code: "https://github.com/OWNER/causal-benchmark-ecosystem"
+license: MIT
+version: 1.0.0
+date-released: 2026-07-01
+keywords:
+  - causal inference
+  - causal discovery
+  - benchmark
+  - structural equation model
+  - treatment effect estimation
+abstract: >-
+  A monorepo with two complementary projects: causal-benchmark-zoo (Python
+  framework for loading and evaluating causal benchmarks) and
+  causal_benchmark_synthetic (43 reproducible benchmark scenarios with
+  documented ground truth for structure discovery and effect estimation).

@@ -1,0 +1,40 @@
+# Scorecard: datasets/synthetic/linear_gaussian/10_vars_20_edges
+
+Task type: `structure_discovery`
+
+## Baselines
+
+### discovery_empty_graph
+
+```json
+{
+  "true_edges": 20,
+  "estimated_edges": 0,
+  "precision_skeleton": 0.0,
+  "recall_skeleton": 0.0,
+  "f1_skeleton": 0.0,
+  "precision_directed": 0.0,
+  "recall_directed": 0.0,
+  "f1_directed": 0.0,
+  "shd_directed_adjacency": 20,
+  "shd_skeleton": 20
+}
+```
+
+### discovery_corr_threshold_0.30_order_oriented
+
+```json
+{
+  "true_edges": 20,
+  "estimated_edges": 35,
+  "precision_skeleton": 0.42857142857142855,
+  "recall_skeleton": 0.75,
+  "f1_skeleton": 0.5454545454545454,
+  "precision_directed": 0.42857142857142855,
+  "recall_directed": 0.75,
+  "f1_directed": 0.5454545454545454,
+  "shd_directed_adjacency": 25,
+  "shd_skeleton": 25
+}
+```
+

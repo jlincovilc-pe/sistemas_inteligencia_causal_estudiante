@@ -1,0 +1,131 @@
+{
+  "nodes": [
+    {
+      "id": "age",
+      "type": "pre_treatment_covariate",
+      "observed": true
+    },
+    {
+      "id": "educ",
+      "type": "pre_treatment_covariate",
+      "observed": true
+    },
+    {
+      "id": "black",
+      "type": "pre_treatment_covariate",
+      "observed": true
+    },
+    {
+      "id": "hispan",
+      "type": "pre_treatment_covariate",
+      "observed": true
+    },
+    {
+      "id": "married",
+      "type": "pre_treatment_covariate",
+      "observed": true
+    },
+    {
+      "id": "nodegree",
+      "type": "pre_treatment_covariate",
+      "observed": true
+    },
+    {
+      "id": "re74",
+      "type": "pre_treatment_covariate",
+      "observed": true
+    },
+    {
+      "id": "re75",
+      "type": "pre_treatment_covariate",
+      "observed": true
+    },
+    {
+      "id": "treat",
+      "type": "treatment",
+      "observed": true
+    },
+    {
+      "id": "re78",
+      "type": "outcome",
+      "observed": true
+    }
+  ],
+  "edges": [
+    [
+      "age",
+      "treat"
+    ],
+    [
+      "age",
+      "re78"
+    ],
+    [
+      "educ",
+      "treat"
+    ],
+    [
+      "educ",
+      "re78"
+    ],
+    [
+      "black",
+      "treat"
+    ],
+    [
+      "black",
+      "re78"
+    ],
+    [
+      "hispan",
+      "treat"
+    ],
+    [
+      "hispan",
+      "re78"
+    ],
+    [
+      "married",
+      "treat"
+    ],
+    [
+      "married",
+      "re78"
+    ],
+    [
+      "nodegree",
+      "treat"
+    ],
+    [
+      "nodegree",
+      "re78"
+    ],
+    [
+      "re74",
+      "treat"
+    ],
+    [
+      "re74",
+      "re78"
+    ],
+    [
+      "re75",
+      "treat"
+    ],
+    [
+      "re75",
+      "re78"
+    ],
+    [
+      "treat",
+      "re78"
+    ]
+  ],
+  "metadata": {
+    "benchmark_id": "lalonde_nsw",
+    "source": "Expert adjustment DAG based on documented pre-treatment covariates on the NBER/Dehejia-Wahba page.",
+    "edge_semantics": "maintained expert DAG, not learned from data",
+    "node_count": 10,
+    "edge_count": 17
+  }
+}

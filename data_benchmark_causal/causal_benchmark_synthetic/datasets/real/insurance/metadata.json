@@ -1,0 +1,15 @@
+{
+  "name": "Insurance",
+  "reference": "Binder et al. (1997), Mobile Internet Network Planning",
+  "domain": "Insurance risk assessment",
+  "num_variables": 27,
+  "num_edges": 52,
+  "original_type": "Discrete Bayesian Network",
+  "generated_samples": 20000,
+  "data_origin": "SYNTHETIC - generated via linear Gaussian SEM over published Bayesian network structure",
+  "what_is_real": "Bayesian network topology (27 nodes, 52 edges), variable names, insurance domain from Binder et al. (1997)",
+  "what_is_synthetic": "All numerical values are continuous approximations generated via SEM. Original Insurance is a discrete network.",
+  "note": "SYNTHETIC DATA. The Bayesian network structure is from the published paper; numeric values are SEM-generated continuous approximations.",
+  "schema_version": "1.0-stage2",
+  "scenario_id": "real_insurance"
+}
