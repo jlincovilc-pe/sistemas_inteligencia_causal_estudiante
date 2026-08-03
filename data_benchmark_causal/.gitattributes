@@ -1,1 +1,2 @@
-causal_benchmark_synthetic/datasets/**/*.csv filter=lfs diff=lfs merge=lfs -text
+# Archivos de datos se versionan en local como blobs normales.
+# (Sin Git LFS: no hay servidor de objetos en la nube.)
