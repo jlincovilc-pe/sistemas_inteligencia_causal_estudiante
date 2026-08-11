@@ -9,7 +9,7 @@ Ver `PLAN_CONSTRUCCION.md` para el historial completo de esta expansión: qué c
 - 32 capítulos distribuidos en 9 partes temáticas (Parte 0 más Partes I–VIII)
 - 8 apéndices (A–H; G y H son nuevos en esta edición)
 - Frontmatter (portada, prefacio, cómo usar, notación)
-- Bibliografía Hayagriva (~90 referencias)
+- Bibliografía Hayagriva (119 referencias, todas citadas en el texto)
 - 10 figuras PNG (heredadas de la edición anterior; los capítulos nuevos no incluyen figuras propias)
 - Dos plantillas de capítulo: Plantilla A (teoría e identificación causal, con teoremas/definiciones/algoritmos) y Plantilla B (ingeniería y producción, con problema de diseño/opciones/decisión de referencia), documentadas en `frontmatter/como_usar.typ`
 
@@ -22,7 +22,9 @@ typst compile main.typ monografia.pdf
 
 Requiere Typst ≥ 0.12 (compilado con **Typst 0.15.1**).
 
-**Estado (2026-08-02):** compilación completa **OK** → `monografia.pdf` (~5 MB, **311 pp.**). Copia en `02_monografia/monografia_IA_Causal_en_Produccion.pdf`.
+**Estado (2026-08-10):** compilación completa **OK** → `monografia.pdf` (~5,9 MB, **357 pp.**). Copia en `02_monografia/monografia_IA_Causal_en_Produccion.pdf`.
+
+Última revisión de contenido: pasada de mejora teórica y metodológica capítulo a capítulo sobre la base de `auditoria_contenido.md` (ver `CHANGELOG_MEJORA.md`, Etapa 1).
 
 Integración pro/HF: frontmatter (prefacio, cómo usar, portada) + callouts `#monorepo[...]` en Caps. 4, 9, 15, 19, 20, 30. Ver `PLAN_INTEGRACION_MONOGRAFIA.md`.
 

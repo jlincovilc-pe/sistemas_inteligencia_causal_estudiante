@@ -14,7 +14,7 @@ Esta doble tesis se refleja en dos plantillas de capítulo, no una. Los capítul
 
 *A quién va dirigida.* (1) Profesionales de datos/ML/producto que deben llevar *decisiones de intervención* a un servicio o Space. (2) Analistas de organismos, banca, consultoría y empresas que estiman efectos con muchos controles. (3) Estudiantes de pregrado avanzado o posgrado aplicado. Los Caps. 17, 27 y 28 (panel/DML-IV, deep causal, matrix completion) son *profundización electiva*: el profesional aprueba el camino crítico sin dominarlos.
 
-*Convenciones.* La notación sigue el estándar de la literatura: $Y(d)$ denota el resultado potencial bajo tratamiento $d in {0,1}$, $D$ es la asignación observada, $X$ son covariables pre-tratamiento. El estimando central es el CATE $tau(x) = E[Y(1) - Y(0) mid X = x]$, cuyo promedio $theta = E[tau(X)]$ es el ATE. Los algoritmos se presentan en pseudocódigo de complejidad similar al de los _papers_ originales; las implementaciones en Python siguen el estilo idiomático de #code[econml] y #code[DoubleML].
+*Convenciones.* La notación sigue el estándar de la literatura: $Y(d)$ denota el resultado potencial bajo tratamiento $d in {0,1}$, $D$ es la asignación observada, $X$ son covariables pre-tratamiento. El estimando central es el CATE $tau(x) = E[Y(1) - Y(0) | X = x]$, cuyo promedio $theta = E[tau(X)]$ es el ATE. Los algoritmos se presentan en pseudocódigo de complejidad similar al de los _papers_ originales; las implementaciones en Python siguen el estilo idiomático de #code[econml] y #code[DoubleML].
 
 La tabla completa de notación se encuentra en la sección siguiente.
 

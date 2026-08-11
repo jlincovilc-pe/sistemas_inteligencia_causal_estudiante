@@ -86,7 +86,7 @@ Incluir:
 
 - Sensibilidad a hiperparámetros de los _learners_.
 - Sensibilidad a _trimming_ de _propensities_ extremos.
-- _E-value_ o análisis de confusión no observada.
+- Protocolo de tres niveles del @sec-cap07_evalue: E-value obligatorio; $R^2$ de Imbens / Cinelli--Hazlett si el estimador es tipo PLR; _bounds_ de Manski si el _outcome_ está acotado.
 
 == Transportabilidad
 <sec-apE_transportabilidad>

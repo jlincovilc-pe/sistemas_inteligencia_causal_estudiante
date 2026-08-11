@@ -42,7 +42,7 @@
   - Criterio de _splitting_ basado en heterogeneidad de efectos.
   - _Propensity scores_ estimados y calibrados.
   - Supuesto de _overlap_ verificado.
-  - _Best Linear Predictor_ reportado como diagnóstico.
+  - BLP/BEST/CLAN ejecutados vía #code[econml.validate.DRtester]; $beta_2$ reportado con $p$-valor.
   - Inferencia válida para ATE y CATE.
 ]
 
@@ -81,6 +81,7 @@
   - Política aprendida interpretable y comunicable.
   - _Welfare regret_ acotado.
   - Política evaluada fuera de muestra.
+  - IC del _policy value_ vía _influence function_ (@sec-cap11-estimacion); test de diferencia al comparar dos políticas.
 ]
 
 == Checklist uplift

@@ -13,7 +13,8 @@ library_name: sklearn
 
 > **Curso:** IA Causal en Producción (ECO-490 / ECON-540)  
 > **Artefacto:** `dml_estimator.joblib` (PLR / partialling-out)  
-> **Servicio:** B1 FastAPI (`/predict`, `/health`, `/metadata`)
+> **Servicio:** B1 FastAPI (`/predict`, `/health`, `/metadata`)  
+> **Uso previsto: profesional / educativo — NO uso clínico.** Este estimador entrena sobre un benchmark sintético (IHDP-*style*) y sirve para practicar el flujo estimar→servir→documentar de un sistema causal en producción; no está validado para decidir tratamientos clínicos ni políticas públicas reales.
 
 ## 1. Estimando
 
@@ -44,7 +45,8 @@ El archivo `identification.json` del benchmark es una **anotación de diseño de
 - **Origen:** monorepo `causal_benchmark_synthetic` (IHDP-*style*).  
 - **Qué es real:** orden de magnitud / inspiración Hill (2011), dimensionalidad (25 covars).  
 - **Qué es sintético:** **todos** los valores numéricos.  
-- **No usar** para decisiones clínicas, de política pública real, ni claims de validez externa fuera del SEM.
+- **No usar** para decisiones clínicas, de política pública real, ni claims de validez externa fuera del SEM.  
+- **Uso profesional / no clínico:** válido como práctica de ingeniería (estimar, servir, versionar, documentar); inválido como evidencia clínica o regulatoria.
 
 ## 4. Entradas y salidas del servicio (B1)
 
@@ -87,7 +89,7 @@ Bajo PLR homogéneo, `effect` es constante en \(x\) (el ATE estimado).
 
 ## 7. Uso ético y responsabilidad
 
-Material **docente**. Quien reutilice el artefacto debe preservar este model card y el aviso de datos sintéticos.
+Material **docente**, de uso **profesional / no clínico**. Quien reutilice el artefacto debe preservar este model card y el aviso de datos sintéticos, y no presentarlo como evidencia clínica o de política pública real.
 
 ## 8. Citas
 

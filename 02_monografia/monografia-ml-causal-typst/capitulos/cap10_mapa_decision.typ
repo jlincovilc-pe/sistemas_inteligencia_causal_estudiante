@@ -1,4 +1,5 @@
-// Capítulo 10 — Diseño de investigación y selección de método
+// Capítulo 18 — Diseño de investigación y selección de método
+// (La numeración `cap10` del nombre de archivo es histórica: proviene de la edición corta anterior y se conserva para no romper referencias.)
 #import "../template/template.typ": *
 
 #chapter[Diseño de investigación y selección de método]
@@ -12,14 +13,14 @@
     columns: (auto, 1fr),
     align: (left, left),
     stroke: none,
-    [*[Problema]*], [Elegir el diseño causal apropiado según características del problema],
-    [*[Estimando]*], [ATE, ATT, CATE, LATE, policy value],
-    [*[Identificación]*], [No confusión, validez de instrumentos, continuidad local, tendencias paralelas, combinación convexa],
-    [*[Método]*], [Mapa de decisión basado en teoría económica, supuestos de identificación y garantías estadísticas],
-    [*[Nuisance]*], [Dimensión ($p$ vs $n$), heterogeneidad, endogeneidad, estructura temporal],
-    [*[Garantía]*], [Identificación bajo supuestos propios de cada diseño; ranking por fuerza del diseño],
-    [*[Librerías]*], [DoubleML, econml, causalml, statsmodels],
-    [*[Validación]*], [Placebos, sensibilidad a supuestos, especificación jerárquica],
+    [*Problema:*], [Elegir el diseño causal apropiado según características del problema],
+    [*Estimando:*], [ATE, ATT, CATE, LATE, policy value],
+    [*Identificación:*], [No confusión, validez de instrumentos, continuidad local, tendencias paralelas, combinación convexa],
+    [*Método:*], [Mapa de decisión basado en teoría económica, supuestos de identificación y garantías estadísticas],
+    [*Nuisance:*], [Dimensión ($p$ vs $n$), heterogeneidad, endogeneidad, estructura temporal],
+    [*Garantía:*], [Identificación bajo supuestos propios de cada diseño; ranking por fuerza del diseño],
+    [*Librerías:*], [DoubleML, econml, causalml, statsmodels],
+    [*Validación:*], [Placebos, sensibilidad a supuestos, especificación jerárquica],
   )
 ]
 
@@ -53,9 +54,9 @@ Todo problema de inferencia causal aplicada puede caracterizarse en seis dimensi
 El estimando define qué cantidad poblacional queremos aprender. Los más frecuentes en la práctica son:
 
 - *"ATE"* $= E[Y(1) - Y(0)]$: efecto promedio en toda la población. Identificable bajo no confusión y solapamiento.
-- *"ATT"* $= E[Y(1) - Y(0) mid D = 1]$: efecto en los tratados. Requiere no confusión para los no tratados.
-- *CATE* $= E[Y(1) - Y(0) mid X = x]$: efecto condicional en covariables. Requiere no confusión dentro de subgrupos.
-- *"LATE"* $= E[Y(1) - Y(0) mid "compliers"]$: efecto local en compliers. Identificable bajo monotonía y exclusión con IV.
+- *"ATT"* $= E[Y(1) - Y(0) | D = 1]$: efecto en los tratados. Requiere no confusión para los no tratados.
+- *CATE* $= E[Y(1) - Y(0) | X = x]$: efecto condicional en covariables. Requiere no confusión dentro de subgrupos.
+- *"LATE"* $= E[Y(1) - Y(0) | "compliers"]$: efecto local en compliers. Identificable bajo monotonía y exclusión con IV.
 - *Policy value* $= E[Y(pi(X))]$: valor de una regla de asignación. Estimable con policy learning.
 
 La identificación—esto es, expresar el estimando como función de la distribución observada— depende de supuestos propios de cada diseño. La tabla de identificación jerárquica de la sección @sec-cap10_teoria_supuestos resume la fuerza de cada diseño y el supuesto clave que la sostiene.
@@ -84,7 +85,7 @@ La tabla @tab-decision-map organiza el mapa según diseño, dimensión y heterog
     [IV], [$p ~ n$], [No], [PDS-IV], [DML-PLIV],
     [RDD], [—], [No], [Local linear], [—],
     [DiD], [—], [No], [TWFE], [—],
-    [Panel staggered], [—], [No], [CS-DID, SDID], [Matrix completion],
+    [Panel staggered], [—], [No], [Callaway–Sant'Anna, Sun–Abraham, SDID (*nunca* TWFE)], [Matrix completion],
     [Panel con $X_(i t)$], [$p ~ n$], [No], [FE + controles], [DML-panel],
     [Policy optimization], [—], [Sí], [—], [Policy learning, uplift],
     table.hline(stroke: 0.8pt),
@@ -133,7 +134,7 @@ Más allá del mapa y la jerarquía de identificación, tres criterios refinan l
 
   *RDD (Regression Discontinuity).* Cuando el tratamiento se asigna según un umbral en una variable continua (ej: beca para alumnos con puntaje $> 70$), podemos comparar a quienes quedaron justo arriba vs justo abajo. Es como un experimento local alrededor del corte.
   $
-  tau_"RD" = lim_(x -> c^+) E[Y mid X = x] - lim_(x -> c^-) E[Y mid X = x]
+  tau_"RD" = lim_(x -> c^+) E[Y | X = x] - lim_(x -> c^-) E[Y | X = x]
   $
 
   *RDD difuso (Fuzzy RDD).* Si el umbral no se cumple perfectamente (algunos de abajo reciben el tratamiento y viceversa), el RDD se convierte en un diseño de variables instrumentales donde el umbral es el instrumento.
@@ -154,9 +155,19 @@ Más allá del mapa y la jerarquía de identificación, tres criterios refinan l
   caption: [Función de decisión metodológica.],
   ```python
 def choose_method(n, p, has_iv, is_panel, has_heterogeneity, treatment_staggered=False):
-    """Devuelve el metodo recomendado segun las caracteristicas del problema."""
+    """Devuelve el metodo recomendado segun las caracteristicas del problema.
+
+    ADVERTENCIA: es una heuristica de primer descarte, no un sustituto del
+    analisis de identificacion. Presupone que la pregunta causal, el
+    estimando y el grafo ya estan definidos (Caps. 3 y 8).
+    """
     if is_panel and treatment_staggered:
-        return "Synthetic DiD o Matrix Completion (Athey et al. 2021)"
+        # Callaway-Sant'Anna / Sun-Abraham para el ATT(g,t); Synthetic DiD
+        # (Arkhangelsky et al. 2021) o Matrix Completion (Athey et al. 2021)
+        # cuando hay pocas unidades tratadas. Nunca TWFE: pesos negativos
+        # (de Chaisemartin & D'Haultfoeuille 2020). Ver Cap. 17.
+        return ("Callaway-Sant'Anna / Sun-Abraham; Synthetic DiD "
+                "o Matrix Completion si hay pocas unidades tratadas")
     if is_panel and not treatment_staggered:
         if p > n * 0.5:
             return "DML-panel con within-transformation"
@@ -236,6 +247,8 @@ Para cada caso aplicado, la elección metodológica debe validarse mediante:
 
 *Límites.* El mapa es orientativo. Casos límite (panel con _staggered adoption_ y heterogeneidad, IV con muchos instrumentos débiles, RDD con covariables de alta dimensión) requieren análisis experto más allá del mapa.
 
+Hay además un límite de fondo que conviene explicitar, porque la existencia misma de una función `choose_method` invita a olvidarlo. El mapa organiza la elección de *estimador* dando por resuelta la de *identificación*, y esa es la parte fácil del problema. Las seis dimensiones de la @sec-cap10_problema_causal son observables en los datos —$n$, $p$, si hay panel, si hay un instrumento candidato—; las condiciones que realmente determinan la validez del resultado no lo son: si las covariables observadas cierran las rutas de puerta trasera, si el instrumento satisface la restricción de exclusión, si las tendencias habrían sido paralelas. Ningún argumento de la función captura eso, y ninguna heurística puede. La jerarquía de la @tab-identificacion-jerarquica ordena diseños por la *credibilidad* de esos supuestos precisamente porque es lo que el mapa no puede decidir: elegir DML sobre OLS mejora la flexibilidad de la estimación, pero un diseño de mayor fuerza identificadora —cuando los datos lo permiten— mejora algo que ninguna cantidad de flexibilidad compensa.
+
 == Ejercicios propuestos
 <sec-cap10_ejercicios>
 
@@ -253,4 +266,4 @@ Para cada caso aplicado, la elección metodológica debe validarse mediante:
 == Lecturas complementarias
 <sec-cap10_lecturas>
 
-@athey2019econometric ofrece una revisión moderna de métodos. @imbens2015causal es la referencia canónica para métodos clásicos. @chernozhukov2018applied para DML. @athey2017beyond para una perspectiva de política.
+#cite(<athey2019econometric>, form: "prose") ofrece una revisión moderna de métodos. #cite(<imbens2015causal>, form: "prose") es la referencia canónica para métodos clásicos. #cite(<chernozhukov2018applied>, form: "prose") para DML. #cite(<athey2017beyond>, form: "prose") para una perspectiva de política.

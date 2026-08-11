@@ -12,11 +12,11 @@
     columns: (auto, 1fr),
     align: (left, left),
     stroke: none,
-    [*[Decisión]*], [Adoptar un esquema explícito de roles causales sobre los datos, no solo un esquema de tipos],
-    [*[Alternativas]*], [Tabla ancha sin metadatos vs. esquema con roles etiquetados (tratamiento/resultado/covariable/instrumento)],
-    [*[Trade-off clave]*], [Velocidad de prototipado vs. prevención sistemática de errores de identificación],
-    [*[Stack]*], [pandas, Parquet, `pandera` (validación de esquema)],
-    [*[Riesgo principal]*], [Que el tratamiento se filtre como covariable, o que una variable post-tratamiento contamine $X$],
+    [*Decisión:*], [Adoptar un esquema explícito de roles causales sobre los datos, no solo un esquema de tipos],
+    [*Alternativas:*], [Tabla ancha sin metadatos vs. esquema con roles etiquetados (tratamiento/resultado/covariable/instrumento)],
+    [*Trade-off clave:*], [Velocidad de prototipado vs. prevención sistemática de errores de identificación],
+    [*Stack:*], [pandas, Parquet, `pandera` (validación de esquema)],
+    [*Riesgo principal:*], [Que el tratamiento se filtre como covariable, o que una variable post-tratamiento contamine $X$],
   )
 ]
 
@@ -27,7 +27,7 @@
 == El problema de diseño
 <sec-datoscausales-problema>
 
-La ingeniería de datos "genérica" —la que enseña @huyen2022dmls en su Capítulo 3— se pregunta qué formato de almacenamiento usar, qué modelo de datos (relacional, documento, grafo) es apropiado, y cómo pasar datos entre procesos. Todas esas preguntas siguen siendo relevantes para un sistema causal, pero hay una pregunta adicional, específica, que un pipeline puramente predictivo nunca necesita responder: *¿qué rol estructural juega cada columna del dataset?* En un problema de predicción, todas las columnas de entrada son, en principio, intercambiables: el modelo puede usarlas todas para minimizar el error. En un problema causal, las columnas no son intercambiables en absoluto: una es el *tratamiento* $D$, una es el *resultado* $Y$, algunas son *covariables* $X$ que pueden controlarse legítimamente, y —crucialmente— algunas columnas que *parecen* covariables razonables son en realidad variables *post-tratamiento*, que no deben controlarse porque están en la ruta causal entre $D$ e $Y$ y su inclusión sesga la estimación (un error que retomaremos formalmente en el @cap-intervencion-contrafactual al hablar de "buenos y malos controles").
+La ingeniería de datos "genérica" —la que enseña #cite(<huyen2022dmls>, form: "prose") en su Capítulo 3— se pregunta qué formato de almacenamiento usar, qué modelo de datos (relacional, documento, grafo) es apropiado, y cómo pasar datos entre procesos. Todas esas preguntas siguen siendo relevantes para un sistema causal, pero hay una pregunta adicional, específica, que un pipeline puramente predictivo nunca necesita responder: *¿qué rol estructural juega cada columna del dataset?* En un problema de predicción, todas las columnas de entrada son, en principio, intercambiables: el modelo puede usarlas todas para minimizar el error. En un problema causal, las columnas no son intercambiables en absoluto: una es el *tratamiento* $D$, una es el *resultado* $Y$, algunas son *covariables* $X$ que pueden controlarse legítimamente, y —crucialmente— algunas columnas que *parecen* covariables razonables son en realidad variables *post-tratamiento*, que no deben controlarse porque están en la ruta causal entre $D$ e $Y$ y su inclusión sesga la estimación (un error que retomaremos formalmente en el @cap-intervencion-contrafactual al hablar de "buenos y malos controles").
 
 Si el pipeline de datos no distingue estos roles desde el origen —si todo llega como una tabla ancha sin metadatos— la responsabilidad de no confundirlos recae enteramente en la memoria de quien escribe cada notebook, lo cual falla predeciblemente a medida que el sistema crece y más personas lo tocan.
 
@@ -44,7 +44,11 @@ Un segundo trade-off, heredado directamente de @huyen2022dmls Capítulo 3, es el
 == Decisión de referencia para el curso
 <sec-datoscausales-decision>
 
-Todos los datasets usados en el curso —tanto en la Serie A (casos de estudio) como en la Serie B (producción)— se acompañan de un *esquema de roles causales* explícito, almacenado junto con los datos en formato Parquet. El esquema mínimo declara cuatro listas de nombres de columna: `treatment`, `outcome`, `covariates` y, cuando aplica, `instruments`. Ninguna función de estimación del curso acepta un DataFrame "pelado"; todas reciben el DataFrame junto con su esquema, de modo que sea sintácticamente imposible, por ejemplo, pasar el tratamiento como una covariable por accidente.
+Todos los datasets usados en el curso —tanto en la Serie A (casos de estudio) como en la Serie B (producción)— se acompañan de un *esquema de roles causales* explícito. El esquema mínimo declara cuatro listas de nombres de columna: `treatment`, `outcome`, `covariates` y, cuando aplica, `instruments`. Ninguna función de estimación del curso acepta un DataFrame "pelado"; todas reciben el DataFrame junto con su esquema, de modo que sea sintácticamente imposible, por ejemplo, pasar el tratamiento como una covariable por accidente.
+
+Lo que la decisión fija es *que el esquema exista y sea la única fuente de verdad sobre los roles*, no el formato en que se serializa. Parquet es el formato preferido cuando se dispone de él, porque permite adjuntar el esquema como metadato dentro del propio archivo y evita que dato y esquema se separen; pero un CSV acompañado de un `metadata.json` versionado junto a él satisface el mismo requisito y es la forma que efectivamente adopta el benchmark del curso (véase el recuadro de implementación). La distinción importa: el riesgo que esta decisión previene no es de eficiencia de lectura sino de *deriva semántica* —que dos notebooks discrepen sobre qué columna es el tratamiento—, y ese riesgo se cierra con la unicidad del esquema, no con el formato.
+
+Conviene además ser explícito sobre la naturaleza de lo que el esquema declara. Etiquetar una columna como `covariates` no es una afirmación sobre su tipo de dato ni sobre su utilidad predictiva: es una afirmación *causal* —que esa variable puede controlarse legítimamente, es decir, que pertenece a un conjunto que satisface el criterio de puerta trasera del @cap-intervencion-contrafactual—. Por eso el esquema es un artefacto de identificación tanto como de ingeniería, y por eso el @cap-features-sin-fuga le añadirá una etapa de auditoría explícita en lugar de dar la lista de covariables por buena.
 
 == Implementación de referencia
 <sec-datoscausales-implementacion>
@@ -94,7 +98,7 @@ schema.validate(df)  # lanza error si, p.ej., "educ" quedo tambien en covariates
 ```
 ) <lst-causal-schema>
 
-Este patrón —trivial en apariencia— es exactamente el tipo de decisión de infraestructura que @huyen2022dmls argumenta que rara vez se enseña y que sistemáticamente se paga como deuda técnica más adelante (@sculley2015hiddendebt).
+Este patrón —trivial en apariencia— es exactamente el tipo de decisión de infraestructura que #cite(<huyen2022dmls>, form: "prose") argumenta que rara vez se enseña y que sistemáticamente se paga como deuda técnica más adelante @sculley2015hiddendebt.
 
 == Aplicación al sistema causal del curso
 <sec-datoscausales-aplicacion>
@@ -108,6 +112,7 @@ El Notebook de caso de estudio A1 (Módulo 1 del curso) exige explícitamente co
   - El nombre de la columna de tratamiento aparece hardcodeado en más de un notebook, con riesgo de que diverja.
   - Ninguna función de carga de datos valida que el tratamiento y el resultado no estén también en la lista de covariables.
   - No hay forma de saber, sin leer el código de generación de features, si alguna covariable fue medida *después* del tratamiento.
+  - El esquema de roles no viaja junto con los datos (ni como metadato del archivo ni como `metadata.json` versionado a su lado), de modo que puede desincronizarse sin que nadie lo note.
   - El formato de almacenamiento (CSV plano) obliga a cargar todas las columnas para leer solo tres.
 ]
 
@@ -129,4 +134,4 @@ El Notebook de caso de estudio A1 (Módulo 1 del curso) exige explícitamente co
 === Notas bibliográficas
 <sec-datoscausales-notas>
 
-@huyen2022dmls, Capítulo 3, desarrolla en profundidad los formatos y modelos de datos genéricos que este capítulo adapta al caso causal. La distinción entre controles legítimos y variables post-tratamiento se formaliza en el @cap-intervencion-contrafactual con el lenguaje de grafos causales; véase también la discusión de "buenos y malos controles" en @bareinboim2025causalai.
+#cite(<huyen2022dmls>, form: "prose"), Capítulo 3, desarrolla en profundidad los formatos y modelos de datos genéricos que este capítulo adapta al caso causal. La distinción entre controles legítimos y variables post-tratamiento se formaliza en el @cap-intervencion-contrafactual con el lenguaje de grafos causales; véase también la discusión de "buenos y malos controles" en @bareinboim2025causalai.

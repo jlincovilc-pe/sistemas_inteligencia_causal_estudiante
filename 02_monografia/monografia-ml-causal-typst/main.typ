@@ -113,5 +113,11 @@
 // ============================
 //  Bibliografía
 // ============================
+// La bibliografía no es un capítulo ni un apéndice numerado: se reutiliza el
+// estilo "frontmatter" (encabezado sin contador) para que no herede el
+// numeral de apéndice (bug preexistente: sin este reset, el heading nativo
+// de #bibliography() heredaba chapter-kind="appendix" y mostraba una letra
+// (o, tras el fix de apéndices, "Apéndice I") delante de "Bibliografía").
+#state("chapter-kind").update("frontmatter")
 #pagebreak()
 #bibliography("bibliografia/refs.yml", title: "Bibliografía", style: "chicago-author-date")

@@ -1,4 +1,5 @@
-// Capítulo 3 — Ortogonalidad de Neyman, cross-fitting e influence functions
+// Capítulo 10 — Ortogonalidad de Neyman, cross-fitting e influence functions
+// (La numeración `cap03` del nombre de archivo es histórica: proviene de la edición corta anterior y se conserva para no romper referencias.)
 #import "../template/template.typ": *
 
 #chapter[Ortogonalidad de Neyman, cross-fitting e influence functions]
@@ -11,13 +12,14 @@
     columns: (auto, 1fr),
     align: (left, left),
     stroke: none,
-    [*[Problema]*], [Doble sesgo al estimar $theta_0$ con ML],
-    [*[Estimando]*], [$theta_0$ en PLR],
-    [*[Identificación]*], [No confusión, ortogonalidad],
-    [*[Método]*], [Score ortogonal, cross-fitting],
-    [*[Nuisance]*], [$g_0(X), m_0(X)$],
-    [*[Garantía]*], [$sqrt(n) (hat(theta) - theta_0) arrow.r.double N(0, cal(V))$],
-    [*[Librerías]*], [],
+    [*Problema:*], [Doble sesgo al estimar $theta_0$ con ML],
+    [*Estimando:*], [$theta_0$ en PLR],
+    [*Identificación:*], [No confusión, ortogonalidad],
+    [*Método:*], [Score ortogonal, cross-fitting],
+    [*Nuisance:*], [$g_0(X), m_0(X)$],
+    [*Garantía:*], [$sqrt(n) (hat(theta) - theta_0) arrow.r.double N(0, cal(V))$ bajo $sqrt(n) a_n^2 -> 0$],
+    [*Librerías:*], [#code[scikit-learn] (implementación manual del score); #code[DoubleML] y #code[econml] en el @cap-dml],
+    [*Validación:*], [Monte Carlo de sesgo y cobertura; comparación con y sin cross-fitting],
   )
 ]
 
@@ -44,11 +46,11 @@ Consideremos el modelo parcialmente lineal (PLR, _partial linear model_):
 $
 Y = D theta_0 + g_0(X) + epsilon, quad D = m_0(X) + v,
 $ <eq-plr>
-Definimos los residuos Robinson: $v_i = D_i - e_0(X_i)$ y $u_i = Y_i - l_0(X_i)$, con $l_0(X_i) = E[Y mid X_i]$.
+Definimos los residuos Robinson: $v_i = D_i - e_0(X_i)$ y $u_i = Y_i - l_0(X_i)$, con $l_0(X_i) = E[Y | X_i]$.
 
-donde $Y$ es el resultado, $D$ es el tratamiento, $X$ son covariables, $g_0$ es la _outcome regression_ y $m_0$ es la _propensity function_ (no necesariamente una probabilidad — puede ser una función continua de $X$). Suponemos $E[epsilon mid D, X] = 0$ y $E[v mid X] = 0$.
+donde $Y$ es el resultado, $D$ es el tratamiento, $X$ son covariables, $g_0$ es la _outcome regression_ y $m_0$ es la _propensity function_ (no necesariamente una probabilidad — puede ser una función continua de $X$). Suponemos $E[epsilon | D, X] = 0$ y $E[v | X] = 0$.
 
-Para $D$ binario, $m_0(x) = e_0(x) = P(D = 1 mid X = x)$; en lo que sigue $e_0$ denota el propensity score.
+Para $D$ binario, $m_0(x) = e_0(x) = P(D = 1 | X = x)$; en lo que sigue $e_0$ denota el propensity score.
 
 El parámetro causal de interés es $theta_0$, el efecto del tratamiento. La pregunta es cómo estimarlo cuando $g_0$ y $m_0$ son funciones desconocidas de alta dimensión.
 
@@ -92,7 +94,7 @@ La propiedad de ortogonalidad implica que pequeñas desviaciones de $eta$ respec
 === Construcción del score ortogonal para PLR
 <sec-cap03_score_ortogonal>
 
-Para el modelo @eq-plr, el score ortogonal se construye con un truco algebraico. Primero, observemos que $Y - g_0(X) = theta_0 D + epsilon$ y $D - m_0(X) = v$, con $E[epsilon mid X] = 0$ y $E[v mid X] = 0$. Por la ley de expectativas iteradas, $E[v epsilon] = E[v E[epsilon mid X, D]] = 0$ si $E[epsilon mid D, X] = 0$ y $E[v mid X] = 0$.
+Para el modelo @eq-plr, el score ortogonal se construye con un truco algebraico. Primero, observemos que $Y - g_0(X) = theta_0 D + epsilon$ y $D - m_0(X) = v$, con $E[epsilon | X] = 0$ y $E[v | X] = 0$. Por la ley de expectativas iteradas, $E[v epsilon] = E[v E[epsilon | X, D]] = 0$ si $E[epsilon | D, X] = 0$ y $E[v | X] = 0$.
 
 Multiplicando $Y - g_0(X) - theta_0 D = epsilon$ por $v = D - m_0(X)$ y tomando esperanza:
 $
@@ -108,9 +110,9 @@ Es crucial distinguir dos nuisance posibles.
 
 + Si se estima la regresión estructural
   $
-  g_0(X) = E[Y - theta_0 D mid X],
+  g_0(X) = E[Y - theta_0 D | X],
   $
-  No confundir con $mu_d(x) = E[Y mid X = x, D = d]$ de los capítulos 1, 5 y 13. Bajo el PLR, $mu_d(x) = g_0(x) + theta_0 d$, de modo que $mu_1(x) - mu_0(x) = theta_0$.
+  No confundir con $mu_d(x) = E[Y | X = x, D = d]$ de los @cap-prediccion-causalidad, @cap-meta-learners y @cap-causal-forests. Bajo el PLR, $mu_d(x) = g_0(x) + theta_0 d$, de modo que $mu_1(x) - mu_0(x) = theta_0$.
   entonces el score puede escribirse como
   $
   psi(D, X, Y, theta, eta) = (D - m(X))(Y - g(X) - theta D).
@@ -118,18 +120,19 @@ Es crucial distinguir dos nuisance posibles.
 
 + En la implementación DML estándar, normalmente se estima
   $
-  l_0(X) = E[Y mid X] = g_0(X) + theta_0 m_0(X),
+  l_0(X) = E[Y | X] = g_0(X) + theta_0 m_0(X),
   $
   junto con
   $
-  m_0(X) = E[D mid X].
+  m_0(X) = E[D | X].
   $
-  En ese caso, el score ortogonal correcto es el score de Robinson:
+  En ese caso, el score ortogonal correcto es el **score de Robinson** (@robinson1988, Robinson 1988):
   $
   psi(D, X, Y, theta, eta) = (D - m(X)) {Y - l(X) - theta (D - m(X))}.
   $
+  #cite(<robinson1988>, form: "prose") introdujo esta transformación —proyectar tanto $Y$ como $D$ sobre $X$ y regresar residuo contra residuo— para el modelo parcialmente lineal con $g_0$ estimado no paramétricamente, y demostró que el estimador resultante es $sqrt(n)$-consistente pese a que las regresiones auxiliares convergen a tasas más lentas. Es el antecedente directo del score PLR de DML: lo que #cite(<chernozhukov2018double>, form: "prose") añaden es el *cross-fitting*, que permite reemplazar los estimadores kernel de Robinson por _learners_ de ML arbitrarios sin pagar el sesgo de sobreajuste que aparecería al estimar y evaluar en la misma muestra. El mismo score reaparecerá en el @cap-meta-learners como la función de pérdida del R-learner —la "R" es, precisamente, por Robinson.
 
-El Listado @lst-dml-manual estima $l_0(X) = E[Y mid X]$, por lo que debe usar la segunda forma. Usar $(D - m)(Y - l - theta D)$ cuando $l = E[Y mid X]$ no preserva la ortogonalidad de Neyman respecto de $m$.
+El Listado @lst-dml-manual estima $l_0(X) = E[Y | X]$, por lo que debe usar la segunda forma. Usar $(D - m)(Y - l - theta D)$ cuando $l = E[Y | X]$ no preserva la ortogonalidad de Neyman respecto de $m$.
 
 El score correspondiente es:
 $
@@ -146,8 +149,33 @@ $ <eq-plr-orth-score>
   partial_eta E[psi] [r_g, r_m] &= partial_alpha E[(D - (m_0 + alpha r_m))(Y - (g_0 + alpha r_g) - theta_0 D)] |_(alpha=0) \
   &= -E[r_m epsilon] - E[v r_g] = 0,
   $
-  donde hemos usado que $E[epsilon mid D, X] = 0$ implica $E[r_m(X) epsilon] = 0$, y que $E[v mid X] = 0$ implica $E[v r_g(X)] = 0$.
+  donde hemos usado que $E[epsilon | D, X] = 0$ implica $E[r_m(X) epsilon] = 0$, y que $E[v | X] = 0$ implica $E[v r_g(X)] = 0$.
 ]
+
+#notatecnica[
+  *Forma canónica del score ortogonal.* Todos los scores que el libro deriva en capítulos distintos son instancias de un único objeto: un funcional $psi(W, theta, eta)$ con $E[psi(W, theta_0, eta_0)] = 0$ y derivada de Gateaux nula respecto a $eta$ en $(theta_0, eta_0)$ (Def. de la @sec-cap03_ortogonalidad_neyman). La tabla reúne las instancias del curso:
+]
+
+#figure(
+  caption: [Instancias del score ortogonal canónico a lo largo del curso.],
+  table(
+    columns: (1.5fr, 2.6fr, 1fr),
+    align: (left, left, left),
+    stroke: 0.5pt + gray.lighten(60%),
+    table.hline(stroke: 0.8pt),
+    table.header([*Estimando*], [*$psi(W, theta, eta)$*], [*$eta$*]),
+    table.hline(stroke: 0.4pt),
+    [PLR / ATE constante (@cap-dml)], [$(D - m(X))(Y - l(X) - theta (D - m(X)))$], [$(l, m)$],
+    [ATE bajo IRM (@cap-dml)], [$mu(1,X) - mu(0,X) + (D(Y - mu(1,X))) / e(X) - ((1-D)(Y - mu(0,X))) / (1 - e(X)) - theta$], [$(mu, e)$],
+    [CATE, DR-learner (@cap-meta-learners)], [$Gamma_i$ = score IRM antes de promediar], [$(mu, e)$],
+    [CATE, R-learner (@cap-meta-learners)], [$[(Y - m_Y(X)) - tau(X)(D - e(X))]^2$], [$(m_Y, e)$],
+    [PLIV (@cap-panel-dmliv)], [$(Z - r(X))(Y - g(X) - theta D)$], [$(g, r, m)$],
+    [Policy value (@cap-policy-learning)], [$mu_(pi(X))(X) + (bold(1){D = pi(X)}) / (e_(pi(X))(X)) dot.op (Y - mu_(pi(X))(X)) - V(pi)$], [$(mu, e)$],
+    table.hline(stroke: 0.8pt),
+  )
+) <tab-score-canonico>
+
+*Consecuencia operativa.* El _cross-fitting_, la condición de tasa $sqrt(n) dot.op a_n^2 arrow.r 0$ y el error estándar vía _influence function_ (algoritmo de cross-fitting de la @sec-cap03_crossfitting) son idénticos en todas las filas de la tabla @tab-score-canonico. Cuando el curso presenta un "nuevo" estimador (@cap-dml, @cap-meta-learners, @cap-panel-dmliv, @cap-policy-learning), lo que cambia es $psi$ y el estimando — no el aparato de inferencia. Esta es la perspectiva de funcionales de Riesz que el @cap-deep-causal retoma: el score ortogonal de cada fila es el representador de Riesz de su funcional.
 
 === Teorema central de DML
 <sec-cap03_teorema_dml>
@@ -167,16 +195,25 @@ El teorema central de @chernozhukov2018double combina ortogonalidad con _cross-f
 ] <thm-dml-main>
 
 #proof(kind: "sketch")[
-  La derivada de Gateaux de $E[psi]$ respecto a $eta = (g, m)$ en dirección $(r_g, r_m)$ es
-  $
-  partial_eta E[psi] [r_g, r_m] &= partial_alpha E[(D - (m_0 + alpha r_m))(Y - (g_0 + alpha r_g) - theta_0 D)] |_(alpha=0) \
-                                &= -E[r_m epsilon] - E[v r_g] = 0,
-  $
-  donde hemos usado que $E[epsilon mid D, X] = 0$ implica $E[r_m(X) epsilon] = 0$, y que $E[v mid X] = 0$ implica $E[v r_g(X)] = 0$.
+  **Sketch de prueba (cross-fitting):**  
+  El cross-fitting garantiza que los residuos $tilde(D)_i$ y $tilde(Y)_i$ sean independientes de los predictores $hat(m)$ y $hat(l)$ en la muestra donde se evalúan. Esto elimina el sesgo de overfitting de orden $O_p (n^(-1/2))$, permitiendo que la tasa $sqrt(n) dot.op a_n^2 arrow.r 0$ sea suficiente (en lugar de $n dot.op a_n^2 arrow.r 0$ sin cross-fitting). La prueba formal requiere la expansión del influence function con ortogonalidad de Neyman; ver @chernozhukov2018double §3.2. $qed$
 ]
 
 #intuicion[
   La condición $sqrt(n) a_n^2 -> 0$ es la clave. Para bosques aleatorios, $a_n = n^(-2/5)$, así que $sqrt(n) a_n^2 = n^(1/2 - 4/5) = n^(-3/10) -> 0$. Para LASSO bajo sparsity, $a_n = sqrt(s log p / n)$, así que $sqrt(n) a_n^2 = s log p / sqrt(n) -> 0$ si $s log p = o(sqrt(n))$. La magia de la ortogonalidad es que _no necesitamos_ estimar $eta$ a tasa $sqrt(n)$ — basta una tasa más lenta pero con $a_n^2 = o(n^(-1/2))$.
+]
+
+#notatecnica[
+  *Condiciones completas y variante DML2.* El Teorema central de DML enunciado arriba está deliberadamente simplificado. Las condiciones completas (@chernozhukov2018double, Teorema 3.1) son:
+
+  + (C1) *Ortogonalidad de Neyman* del score (Def. de la @sec-cap03_ortogonalidad_neyman).
+  + (C2) *Identificabilidad local:* $abs(E[partial_theta psi(W, theta, eta_0)]) >= c > 0$ en una vecindad de $theta_0$.
+  + (C3) *Tasas de nuisance:* $norm(hat(eta) - eta_0)^2 = o_p(n^(-1/2))$, equivalentemente $sqrt(n) dot.op a_n^2 arrow.r 0$.
+  + (C4) *Momentos acotados:* $E[psi^2] < infinity$ y $E[abs(partial_theta psi)^2]$ acotado en una vecindad de $theta_0$.
+
+  Dos decisiones de implementación que la literatura distingue y el curso debe nombrar. Sea $hat(theta)_k$ la solución del score restringida al _fold_ $k$:
+
+  - *DML1* reporta la mediana de ${hat(theta)_k}$; *DML2* reporta el estimador del momento promediado sobre toda la muestra (equivalente al promedio ponderado por tamaño de _fold_). La recomendación de @chernozhukov2018double (§6) es *DML2*, con *repeated cross-fitting*: repetir la partición K-fold $R$ veces ($R = 5$--10) y promediar, reduciendo la varianza inducida por la partición aleatoria. La Figura @fig-cap4-sensibilidad-K —varianza creciente a $K$ bajo— es la manifestación empírica de ese término de varianza; el _repeated cross-fitting_ es su mitigación formal, no solo empírica.
 ]
 
 #notatecnica[
@@ -233,8 +270,8 @@ El siguiente algoritmo detalla los pasos concretos de DML manual con cross-fitti
   #kwout[Salida][Estimador $hat(theta)$ y error estándar $hat(sigma)$.]
   Dividir ${1, ..., n}$ en $K$ _folds_ $I_1, ..., I_K$. \
   #for-loop(`k`, 1, `K`)[
-    Entrenar $hat(l)_(-k)$ para $E[Y mid X]$ en ${i : i ∉ I_k}$. \
-    Entrenar $hat(m)_(-k)$ para $E[D mid X]$ en ${i : i ∉ I_k}$. \
+    Entrenar $hat(l)_(-k)$ para $E[Y | X]$ en ${i : i ∉ I_k}$. \
+    Entrenar $hat(m)_(-k)$ para $E[D | X]$ en ${i : i ∉ I_k}$. \
     Predecir $hat(l)_(-k)(X_i)$, $hat(m)_(-k)(X_i)$ para $i in I_k$.
   ]
   Calcular residuos: $hat(v)_i = D_i - hat(m)_(-k(i))(X_i)$, $hat(u)_i = Y_i - hat(l)_(-k(i))(X_i)$. \
@@ -364,7 +401,7 @@ El resultado típico es un ATE de aproximadamente \$1\,600 USD con IC al 95% de 
     [Omitir cross-fitting], [Si se estiman $hat(g), hat(m)$ y se evalúa el score en la misma muestra, aparece _overfitting bias_: el score en muestra tiende a subestimar la varianza y los IC son demasiado estrechos.],
     [Usar un único _fold_], [Con $K=1$ (_single sample splitting_) se desperdicia información y la estimación es ineficiente. Se recomienda $K = 4$ o $K = 5$.],
     [Elegir learners sin verificar tasa de convergencia], [El teorema central de DML exige $sqrt(n) a_n^2 -> 0$. Bosques aleatorios con hojas muy pequeñas pueden tener tasa más lenta. Verificar empíricamente con _learning curves_.],
-    [Score incorrecto para $l_0$], [Si el nuisance es $l_0(X) = E[Y mid X]$, el score PLR ortogonal es $(D - m(X))(Y - l(X) - theta(D - m(X)))$. Mezclar la forma estructural con $g_0$ y la forma condicional con $l_0$ rompe la ortogonalidad respecto de $m(X)$.],
+    [Score incorrecto para $l_0$], [Si el nuisance es $l_0(X) = E[Y | X]$, el score PLR ortogonal es $(D - m(X))(Y - l(X) - theta(D - m(X)))$. Mezclar la forma estructural con $g_0$ y la forma condicional con $l_0$ rompe la ortogonalidad respecto de $m(X)$.],
     table.hline(stroke: 0.8pt),
   )
 ) <tab-riesgos-dml>
@@ -382,4 +419,4 @@ El resultado típico es un ATE de aproximadamente \$1\,600 USD con IC al 95% de 
 
   Construya un DGP donde $hat(g)$ tenga tasa $a_n = n^(-1/4)$ (más lento que $n^(-2/5)$). Verifique empíricamente que la cobertura de DML se degrada. Note que con $a_n = n^(-1/4)$ la condición $sqrt(n) a_n^2 arrow.r 0$ no se satisface y por lo tanto la cobertura de DML debe degradarse.
 
-@neyman1959 es la referencia original sobre ortogonalidad. @chernozhukov2018double es el _paper_ fundacional de DML. @chernozhukov2016locally extiende el marco a estimandos más complejos. @newey1994asymmetric y @robins1995semiparametric son precursores importantes. Para una revisión pedagógica accesible, @chernozhukov2018applied.
+#cite(<neyman1959>, form: "prose") es la referencia original sobre ortogonalidad —la condición @eq-neyman-orth se conoce como "ortogonalidad de Neyman" por su test $C(alpha)$, construido con la misma idea de insensibilidad de primer orden a parámetros de estorbo—. #cite(<robinson1988>, form: "prose") es la referencia canónica del score de residuo-contra-residuo que este capítulo usa en el modelo parcialmente lineal y que reaparece en los Capítulos 12 (R-learner) y 17 (panel): es la pieza que suele darse por sabida sin citarse, y conviene leerla para ver que la idea de ortogonalización antecede en tres décadas al uso de _machine learning_. #cite(<chernozhukov2018double>, form: "prose") es el _paper_ fundacional de DML y contiene el desarrollo completo de la descomposición (a)–(c) esbozada arriba. #cite(<chernozhukov2016locally>, form: "prose") extiende el marco a estimandos más complejos. #cite(<newey1994asymmetric>, form: "prose") y #cite(<robins1995semiparametric>, form: "prose") son precursores importantes por la vía de la eficiencia semiparamétrica, y #cite(<bickel1993efficient>, form: "prose") es el tratamiento de referencia de esa teoría. Para una revisión pedagógica accesible, @chernozhukov2018applied.

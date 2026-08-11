@@ -25,7 +25,7 @@ La gestión de dependencias puede realizarse mediante un archivo #code[requireme
 - #code[econml.policy]: Policy trees y forests (#code[PolicyTree], #code[PolicyForest]).
 - #code[econml.iv]: Variables instrumentales (#code[DeepIV], #code[OrthoIV]).
 - #code[econml.orf]: Orthogonal Random Forests.
-- #code[econml.score]: Validation scores (#code[RScorer]).
+- #code[econml.score]: Validation scores (#code[RScorer]); fundamento y protocolo de uso: §14.4.3 (RATE).
 
 *Ejemplo canónico.*
 

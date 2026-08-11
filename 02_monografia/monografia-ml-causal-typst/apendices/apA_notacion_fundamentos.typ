@@ -36,7 +36,7 @@ A lo largo de esta monografía se emplean las siguientes convenciones notacional
     [$arrow.r^(L^2)$], [Convergencia en media cuadrática],
     [$arrow.r^("a.s.")$], [Convergencia casi segura],
     [$perp perp$], [Independencia],
-    [$mid$], [Condicionamiento],
+    [$|$], [Condicionamiento],
     [$norm(x)_p$], [Norma $p$ de un vector ($norm(x)_2$ euclídea)],
     [$norm(M)_F$], [Norma de Frobenius de una matriz],
     [$norm(M)_*$], [Norma nuclear de una matriz],
@@ -96,7 +96,7 @@ La cadena de implicaciones es: $L^2 arrow.r.double p arrow.r.double d$. Las tasa
 Sea $cal(P)$ una familia de distribuciones parametrizada por $(theta, eta)$, donde $theta in R^d$ es el parámetro de interés y $eta$ es un parámetro _nuisance_ infinito-dimensional. El _espacio tangente_ en $cal(P)_0$ es el _closure_ del espacio generado por los _scores_ de un submodelo paramétrico que pasa por $cal(P)_0$.
 
 #definition(name: [Pathwise derivative])[
-  Para un submodelo $t arrow.r P_t$ con $P_0 = P$, el score _pathwise_ es $s = (dif) / (dif t) log p_t mid_(t=0)$. El _efficient influence function_ (EIF) es la proyección del score de $theta$ sobre el espacio tangente.
+  Para un submodelo $t arrow.r P_t$ con $P_0 = P$, el score _pathwise_ es $s = (dif) / (dif t) log p_t |_(t=0)$. El _efficient influence function_ (EIF) es la proyección del score de $theta$ sobre el espacio tangente.
 ]
 
 === Estimación semiparamétrica eficiente
@@ -118,7 +118,7 @@ La ortogonalidad de Neyman (capítulo @cap-ortogonalidad) es una propiedad del _
 #definition(name: [Score Neyman-ortogonal])[
   Un score $psi(W, theta, eta)$ es Neyman-ortogonal en $(theta_0, eta_0)$ si para toda perturbación $eta - eta_0$ en una vecindad:
   $
-  partial_(eta) E[psi(W, theta_0, eta)] mid_(eta = eta_0) [eta - eta_0] = 0.
+  partial_(eta) E[psi(W, theta_0, eta)] |_(eta = eta_0) [eta - eta_0] = 0.
   $
 ]
 
@@ -153,9 +153,9 @@ $
 donde $"PA"_j$ son los padres causales de $X_j$ y $U_j$ son factores no observados independientes.
 
 *Tres niveles de preguntas causales:*
-+ Asociación: $P(Y mid X)$ --- "¿Qué dice la data?"
-+ Intervención: $P(Y mid "do"(X = x))$ --- "¿Qué pasa si intervengo?"
-+ Contrafactual: $P(Y_x mid X = x', Y = y')$ --- "¿Qué habría pasado si...?"
++ Asociación: $P(Y | X)$ --- "¿Qué dice la data?"
++ Intervención: $P(Y | "do"(X = x))$ --- "¿Qué pasa si intervengo?"
++ Contrafactual: $P(Y_x | X = x', Y = y')$ --- "¿Qué habría pasado si...?"
 
 Para pasar del nivel 1 al 2 se necesitan supuestos de identificación (no confusión, exclusión, etc.). El ML predictivo opera en nivel 1; la evaluación de políticas requiere nivel 2.
 
@@ -171,6 +171,8 @@ $
 - *ATE bajo IRM:* $psi_i = mu_1(X_i) - mu_0(X_i) + (D_i (Y_i - mu_1(X_i))) / (e(X_i)) - ((1 - D_i)(Y_i - mu_0(X_i))) / (1 - e(X_i)) - theta$
 - *PLR (Robinson):* $psi_i = v_i (u_i - theta v_i)$, con $v_i = D_i - e(X_i)$, $u_i = Y_i - l(X_i)$
 
+Ambas IF alcanzan la cota semiparamétrica de sus funcionales: el Teorema de eficiencia del DML-IRM (@sec-cap04_score) para IRM, y @chernozhukov2018double para PLR.
+
 La varianza asintótica es $cal(V) = E[psi_i^2]$. La ortogonalidad garantiza que errores en $eta$ no contaminan $theta$ en primer orden.
 
 == Regresión Discontinua (RDD)
@@ -178,12 +180,12 @@ La varianza asintótica es $cal(V) = E[psi_i^2]$. La ortogonalidad garantiza que
 
 Cuando el tratamiento se asigna según un umbral $c$ en una variable continua $X$:
 $
-tau_"RD" = lim_(x -> c^+) E[Y mid X = x] - lim_(x -> c^-) E[Y mid X = x]
+tau_"RD" = lim_(x -> c^+) E[Y | X = x] - lim_(x -> c^-) E[Y | X = x]
 $
 
 Si el cumplimiento es imperfecto (_fuzzy RDD_):
 $
-tau_"FRD" = (lim_(x -> c^+) E[Y mid X = x] - lim_(x -> c^-) E[Y mid X = x]) / (lim_(x -> c^+) E[D mid X = x] - lim_(x -> c^-) E[D mid X = x])
+tau_"FRD" = (lim_(x -> c^+) E[Y | X = x] - lim_(x -> c^-) E[Y | X = x]) / (lim_(x -> c^+) E[D | X = x] - lim_(x -> c^-) E[D | X = x])
 $
 El RDD difuso puede interpretarse como IV local donde el umbral es el instrumento.
 
@@ -193,6 +195,6 @@ El RDD difuso puede interpretarse como IV local donde el umbral es el instrument
 Un efecto causal estimado en población $A$ ¿puede aplicarse a población $B$? La respuesta depende de:
 
 - *Covariate shift:* la distribución de $X$ cambia entre $A$ y $B$. Si el efecto es condicional en $X$ y $X$ captura toda la heterogeneidad, puede ser transportable.
-- *Target shift:* la relación $Y_x mid X$ cambia entre poblaciones. Se requieren diagramas de selección para decidir.
+- *Target shift:* la relación $Y_x | X$ cambia entre poblaciones. Se requieren diagramas de selección para decidir.
 
-Un diagrama de selección incluye un nodo $S$ que indica si una observación pertenece a la población fuente o destino. Si $Y perp perp S mid X$, el efecto es directamente transportable.
+Un diagrama de selección incluye un nodo $S$ que indica si una observación pertenece a la población fuente o destino. Si $Y perp perp S | X$, el efecto es directamente transportable.

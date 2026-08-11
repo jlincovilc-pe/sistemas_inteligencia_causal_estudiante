@@ -12,11 +12,11 @@
     columns: (auto, 1fr),
     align: (left, left),
     stroke: none,
-    [*[Decisión]*], [Tratar el modelo como un componente de un sistema, no como el sistema entero],
-    [*[Alternativas]*], [Enfoque centrado en el modelo (_model-centric_) vs. enfoque centrado en el sistema (_system-centric_, DMLS)],
-    [*[Trade-off clave]*], [Velocidad de iteración académica vs. confiabilidad operativa],
-    [*[Stack]*], [Python, Git, Docker, cuenta en Hugging Face Hub (Lab 0 de este capítulo)],
-    [*[Riesgo principal]*], [Confundir "el modelo entrena bien" con "el sistema está listo para producción"],
+    [*Decisión:*], [Tratar el modelo como un componente de un sistema, no como el sistema entero],
+    [*Alternativas:*], [Enfoque centrado en el modelo (_model-centric_) vs. enfoque centrado en el sistema (_system-centric_, DMLS)],
+    [*Trade-off clave:*], [Velocidad de iteración académica vs. confiabilidad operativa],
+    [*Stack:*], [Python, Git, Docker, cuenta en Hugging Face Hub (Lab 0 de este capítulo)],
+    [*Riesgo principal:*], [Confundir “el modelo entrena bien” con “el sistema está listo para producción”],
   )
 ]
 
@@ -125,4 +125,4 @@ Si dos o más de estas señales están presentes, el sistema —por preciso que 
 === Notas bibliográficas
 <sec-anatomia-notas>
 
-@huyen2022dmls es la fuente principal de este capítulo y del enfoque pedagógico de todo el curso; sus Capítulos 1 y 2 ("Overview of Machine Learning Systems" e "Introduction to Machine Learning Systems Design") desarrollan en detalle la distinción entre modelo y sistema, y los cuatro requisitos aquí adaptados al caso causal. @sculley2015hiddendebt es el artículo seminal que documentó por primera vez, de forma sistemática, cómo el código del modelo de aprendizaje automático suele ser una fracción pequeña del sistema real, y cómo la "deuda técnica" se acumula en el resto de los componentes. @breck2017mltestscore ofrece una rúbrica operativa —"the ML Test Score"— que puede usarse como complemento al checklist de la @sec-anatomia-alertas para auditar la preparación de un sistema para producción.
+#cite(<huyen2022dmls>, form: "prose") es la fuente principal de este capítulo y del enfoque pedagógico de todo el curso; sus Capítulos 1 y 2 ("Overview of Machine Learning Systems" e "Introduction to Machine Learning Systems Design") desarrollan en detalle la distinción entre modelo y sistema, y los cuatro requisitos aquí adaptados al caso causal. #cite(<sculley2015hiddendebt>, form: "prose") es el artículo seminal que documentó por primera vez, de forma sistemática, cómo el código del modelo de aprendizaje automático suele ser una fracción pequeña del sistema real, y cómo la "deuda técnica" se acumula en el resto de los componentes. #cite(<breck2017mltestscore>, form: "prose") ofrece una rúbrica operativa —"the ML Test Score"— que puede usarse como complemento al checklist de la @sec-anatomia-alertas para auditar la preparación de un sistema para producción. #cite(<paleyes2022challenges>, form: "prose") complementa a ambos con evidencia empírica: una revisión sistemática de casos documentados de despliegue que clasifica los puntos de fallo a lo largo del ciclo de vida completo (gestión de datos, desarrollo del modelo, despliegue, monitoreo) y confirma que la fracción de fallos atribuible al algoritmo mismo es minoritaria — el argumento central de este capítulo, contrastado contra la práctica industrial en lugar de solo argumentado.

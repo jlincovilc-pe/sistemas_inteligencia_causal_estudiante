@@ -12,11 +12,11 @@
     columns: (auto, 1fr),
     align: (left, left),
     stroke: none,
-    [*[Problema]*], [Cuándo y cómo actualizar un sistema causal; cómo la PCH se extiende a decisiones secuenciales],
-    [*[Parte I]*], [Aprendizaje continuo — decisión de ingeniería (Plantilla B)],
-    [*[Parte II]*], [RL causal — panorama conceptual (Plantilla A, sin implementación completa)],
-    [*[Herramientas]*], [_Shadow deployment_, _champion-challenger_; bandits causales como caso introductorio de RL causal],
-    [*[Alcance]*], [La Parte II es deliberadamente un panorama: RL causal es un programa de investigación activo, no una receta cerrada],
+    [*Problema:*], [Cuándo y cómo actualizar un sistema causal; cómo la PCH se extiende a decisiones secuenciales],
+    [*Parte I:*], [Aprendizaje continuo — decisión de ingeniería (Plantilla B)],
+    [*Parte II:*], [RL causal — panorama conceptual (Plantilla A, sin implementación completa)],
+    [*Herramientas:*], [_Shadow deployment_, _champion-challenger_; bandits causales como caso introductorio de RL causal],
+    [*Alcance:*], [La Parte II es deliberadamente un panorama: RL causal es un programa de investigación activo, no una receta cerrada],
   )
 ]
 
@@ -28,7 +28,7 @@ Este capítulo tiene una estructura distinta al resto del libro porque combina u
 === El problema de diseño
 <sec-continuo-problema>
 
-El @cap-monitoreo-causal dejó una pregunta abierta: cuando el reporte de monitoreo marca `requiere_atencion`, ¿qué se hace? @huyen2022dmls (Capítulo 9, "Continual Learning and Test in Production") describe el espectro de respuestas posibles, desde no hacer nada hasta reentrenar automáticamente en cada lote de datos nuevo. Para un sistema *causal*, este capítulo ya adelantó en el @cap-anatomia-sistema por qué la respuesta no es trivial: reentrenar con datos nuevos puede cambiar silenciosamente la población para la cual el efecto es válido, no solo su varianza.
+El @cap-monitoreo-causal dejó una pregunta abierta: cuando el reporte de monitoreo marca `requiere_atencion`, ¿qué se hace? #cite(<huyen2022dmls>, form: "prose") (Capítulo 9, "Continual Learning and Test in Production") describe el espectro de respuestas posibles, desde no hacer nada hasta reentrenar automáticamente en cada lote de datos nuevo. Para un sistema *causal*, este capítulo ya adelantó en el @cap-anatomia-sistema por qué la respuesta no es trivial: reentrenar con datos nuevos puede cambiar silenciosamente la población para la cual el efecto es válido, no solo su varianza.
 
 === Opciones y trade-offs
 <sec-continuo-opciones>
@@ -78,7 +78,11 @@ Todo el curso, hasta este punto, trató la decisión como una elección única: 
 === Bandits causales: el caso introductorio más simple
 <sec-continuo-bandits>
 
-El caso más simple de esta frontera —un puente natural desde el _policy learning_ del Capítulo 21— son los *bandits causales* (@bareinboim2015bandits): una versión del clásico problema de bandidos de múltiples brazos donde existen variables de contexto no observadas por el agente pero que sí afectaron las decisiones registradas en los datos históricos con los que se pre-entrena. Ignorar esta confusión —tratar los datos históricos como si las decisiones pasadas hubieran sido aleatorias— produce estimaciones de recompensa esperada por brazo tan sesgadas como ignorar la confusión en cualquier otro estimador de este curso; la solución, en el espíritu del @cap-intervencion-contrafactual, es identificar qué información de contexto es segura de condicionar y cuál introduce sesgo de puerta trasera en la política aprendida.
+El caso más simple de esta frontera —un puente natural desde el _policy learning_ del @cap-policy-learning— son los *bandits causales* @bareinboim2015bandits: una versión del clásico problema de bandidos de múltiples brazos donde existen variables de contexto no observadas por el agente pero que sí afectaron las decisiones registradas en los datos históricos con los que se pre-entrena. Ignorar esta confusión —tratar los datos históricos como si las decisiones pasadas hubieran sido aleatorias— produce estimaciones de recompensa esperada por brazo tan sesgadas como ignorar la confusión en cualquier otro estimador de este curso.
+
+El resultado que hace interesante este caso, y no solo una advertencia más, es que la solución *no* consiste en descartar los datos observacionales y explorar desde cero. Bareinboim, Forney y Pearl muestran que combinar la distribución observacional $P(y | x)$ con la interventiva $P(y | "do"(x))$ que el agente puede generar experimentando produce *cotas* sobre la recompensa de cada brazo más estrechas que las que cualquiera de las dos fuentes daría por separado, y que un agente que explota esas cotas converge a la política óptima estrictamente más rápido que uno que ignora los datos históricos. La confusión, en otras palabras, no es solo un problema a evitar: la *brecha* entre lo observacional y lo interventivo es información sobre la existencia de un confusor, y es explotable. La conexión con el @cap-intervencion-contrafactual es directa —identificar qué información de contexto es segura de condicionar y cuál introduce sesgo de puerta trasera— pero la conclusión es más constructiva que en el resto del curso.
+
+#cite(<zhang2019near>, form: "prose") extienden esta línea al caso de *regímenes de tratamiento dinámicos*: secuencias de decisiones donde cada acción afecta el estado sobre el que se toma la siguiente, la estructura de un tratamiento médico prolongado o de una intervención social por etapas. Es el escenario que más se parece a las decisiones reales de política pública, y también donde la confusión es más difícil de manejar, porque una variable puede ser simultáneamente confusor de una decisión posterior y mediador de una anterior —una situación que ningún ajuste por covariables resuelve y que exige el aparato de fórmulas $g$ de Robins, fuera del alcance de este curso.
 
 === Por qué este curso se detiene aquí
 <sec-continuo-alcance>
@@ -103,4 +107,4 @@ RL causal es, en 2026, un programa de investigación activo más que un conjunto
 === Notas bibliográficas
 <sec-continuo-notas>
 
-@huyen2022dmls, Capítulo 9, desarrolla en profundidad los patrones de aprendizaje continuo y pruebas en producción (incluyendo _champion-challenger_ y _shadow deployment_) en su versión genérica para ML. @bareinboim2025causalai, Capítulos 8–9, es la referencia central del panorama de RL causal de este capítulo; @bareinboim2015bandits formaliza el caso introductorio de bandits causales.
+#cite(<huyen2022dmls>, form: "prose"), Capítulo 9, desarrolla en profundidad los patrones de aprendizaje continuo y pruebas en producción (incluyendo _champion-challenger_ y _shadow deployment_) en su versión genérica para ML. #cite(<bareinboim2025causalai>, form: "prose"), Capítulos 8–9, es la referencia central del panorama de RL causal de este capítulo; #cite(<bareinboim2015bandits>, form: "prose") formaliza el caso introductorio de bandits causales y el resultado de que combinar datos observacionales e interventivos acelera la convergencia; #cite(<zhang2019near>, form: "prose") lo extiende a regímenes de tratamiento dinámicos. La conexión de este capítulo con el @cap-generalizacion-transportabilidad es directa y merece señalarse: la pregunta "¿puedo promover este _challenger_?" es, formalmente, la pregunta de si el efecto estimado sobre la población reciente transporta a la población que el servicio atiende — y el chequeo de `poblacion_comparable` es su versión operativa mínima.

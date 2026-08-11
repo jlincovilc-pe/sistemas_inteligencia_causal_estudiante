@@ -1,4 +1,5 @@
-// Capítulo 8 — Post-Double-Selection LASSO
+// Capítulo 16 — Post-Double-Selection LASSO
+// (La numeración `cap08` del nombre de archivo es histórica: proviene de la edición corta anterior y se conserva para no romper referencias.)
 #import "../template/template.typ": *
 
 #chapter[Post-Double-Selection LASSO]
@@ -12,14 +13,14 @@
     columns: (auto, 1fr),
     align: (left, left),
     stroke: none,
-    [*[Problema]*], [Selección de confusores en alta dimensión para estimación causal],
-    [*[Estimando]*], [$theta_0$ en el modelo $Y = D theta_0 + X^T gamma_0 + epsilon$],
-    [*[Identificación]*], [Sparsity aproximada, restricted eigenvalue condition],
-    [*[Método]*], [PDS LASSO: doble selección (LASSO de $Y$ y $D$) + OLS final],
-    [*[Nuisance]*], [Coeficientes LASSO de $Y$ y $D$],
-    [*[Garantía]*], [$sqrt(n)(hat(theta)_"PDS" - theta_0) arrow.r^(d) cal(N)(0, cal(V))$],
-    [*[Librerías]*], [scikit-learn, statsmodels],
-    [*[Validación]*], [Sensibilidad a $lambda$, comparación con DML],
+    [*Problema:*], [Selección de confusores en alta dimensión para estimación causal],
+    [*Estimando:*], [$theta_0$ en el modelo $Y = D theta_0 + X^T gamma_0 + epsilon$],
+    [*Identificación:*], [Sparsity aproximada, restricted eigenvalue condition],
+    [*Método:*], [PDS LASSO: doble selección (LASSO de $Y$ y $D$) + OLS final],
+    [*Nuisance:*], [Coeficientes LASSO de $Y$ y $D$],
+    [*Garantía:*], [$sqrt(n)(hat(theta)_"PDS" - theta_0) arrow.r^(d) cal(N)(0, cal(V))$],
+    [*Librerías:*], [scikit-learn, statsmodels],
+    [*Validación:*], [Sensibilidad a $lambda$, comparación con DML],
   )
 ]
 
@@ -32,7 +33,7 @@ Este capítulo abre la Parte III del libro, dedicada a diseños de identificaci�
 
 Una economista de la salud desea estimar el efecto de dejar de fumar sobre el cambio de peso, usando el dataset #code[nhefs] (NHANES I Epidemiologic Followup Study). El dataset tiene 51 covariables utilizables tras excluir variables post-tratamiento y de fecha: características demográficas, hábitos, condiciones médicas, factores socioeconómicos. No todas son confusoras: algunas no afectan ni al tratamiento ni al resultado, otras afectan solo al resultado. La pregunta metodológica es: ¿cómo seleccionar automáticamente las confusoras relevantes sin inducir el sesgo post-selección del capítulo @cap-regularizacion?
 
-@belloni2014inference proponen el Post-Double-Selection (PDS) LASSO como solución. La idea es elegante: las confusoras son las variables que predicen _tanto_ al tratamiento _como_ al resultado. Seleccionando por separado cada conjunto con LASSO y tomando la unión, se capturan las confusoras relevantes con alta probabilidad, mientras que el sesgo de selección individual se diluye.
+#cite(<belloni2014inference>, form: "prose") proponen el Post-Double-Selection (PDS) LASSO como solución. La idea es elegante: las confusoras son las variables que predicen _tanto_ al tratamiento _como_ al resultado. Seleccionando por separado cada conjunto con LASSO y tomando la unión, se capturan las confusoras relevantes con alta probabilidad, mientras que el sesgo de selección individual se diluye.
 
 Este capítulo desarrolla PDS formalmente, lo compara con DML (capítulo @cap-dml)—que no requiere sparsity explícita— y muestra una aplicación al dataset #code[nhefs].
 
@@ -46,7 +47,7 @@ Consideramos el modelo:
 $
 Y = D theta_0 + X^T gamma_0 + epsilon, quad D = X^T beta_0 + v,
 $ <eq-hd-model>
-donde $X in R^p$ con $p$ potencialmente mayor que $n$, $gamma_0$ y $beta_0$ son _sparse_ (pocas componentes no nulas), y $theta_0$ es el parámetro causal de interés. Suponemos $E[epsilon mid D, X] = 0$ y $E[v mid X] = 0$.
+donde $X in R^p$ con $p$ potencialmente mayor que $n$, $gamma_0$ y $beta_0$ son _sparse_ (pocas componentes no nulas), y $theta_0$ es el parámetro causal de interés. Suponemos $E[epsilon | D, X] = 0$ y $E[v | X] = 0$.
 
 === Post-Double-Selection (PDS)
 <sec-cap08_pds>
@@ -81,6 +82,21 @@ El siguiente algoritmo formaliza los pasos del procedimiento PDS.
   Calcular errores estándar robustos HC1. \
   #return-stmt[$hat(theta)_"PDS", hat(sigma)_"HC1"$.]
 ] <alg-pds>
+
+=== La elección de $lambda$ no es un detalle de implementación
+<sec-cap08_lambda>
+
+El teorema anterior se enuncia "para un $lambda$ apropiadamente elegido", y conviene detenerse en esa cláusula porque es donde la implementación práctica se aparta con más frecuencia de la teoría que la respalda.
+
+La validación cruzada —el método por defecto de `LassoCV` y el que usa el listado @lst-pds-nhefs— elige $lambda$ minimizando el error de *predicción* fuera de muestra. Es el criterio correcto si el objetivo es predecir, pero no es el criterio bajo el cual se demuestra el teorema. El $lambda$ óptimo para predicción tiende a ser más pequeño que el teóricamente justificado, porque incluir variables ligeramente informativas reduce el error cuadrático aunque introduzca sesgo en los coeficientes individuales; el resultado es un $hat(S)$ más grande de lo necesario y, en muestras pequeñas, un OLS final con demasiados regresores.
+
+#cite(<belloni2014inference>, form: "prose") derivan en cambio un nivel de penalización *teóricamente justificado*, de la forma
+$
+lambda = (c dot.c sigma) / sqrt(n) dot.c Phi^(-1)(1 - gamma \/ (2 p)),
+$
+con $c approx 1.1$ y $gamma -> 0$ lentamente (típicamente $gamma = 0.1 \/ log n$). La estructura de la fórmula tiene una lectura directa: la penalización se calibra para dominar el "ruido máximo" entre las $p$ variables candidatas —de ahí el $Phi^(-1)$ evaluado en una cola corregida por el número de comparaciones, un ajuste de Bonferroni disfrazado— de modo que ninguna variable irrelevante entre por azar con probabilidad no despreciable. Como $sigma$ es desconocida, se estima iterativamente, o se usa la variante *rigurosa* con penalización por variable que además corrige heterocedasticidad.
+
+En la práctica, la recomendación operativa del curso es reportar ambas: la estimación con $lambda_"CV"$ y la estimación con $lambda_"BCH"$. Si coinciden —el caso frecuente cuando $n$ es cómodo y la señal es clara— la elección era inmaterial y conviene decirlo. Si difieren, la discrepancia es información: señala que el resultado depende de cuántos controles se admitan, y ninguna de las dos cifras debería reportarse sola. La @sec-cap08_validacion desarrolla esta comparación como análisis de sensibilidad estándar. En Python, `hdmpy` implementa la penalización rigurosa de BCH; con `scikit-learn` puede construirse a mano fijando `alpha` en lugar de usar `LassoCV`.
 
 === Intuición: por qué la doble selección funciona
 <sec-cap08_intuicion>
@@ -227,7 +243,7 @@ print(f"Manual: theta={ols_m.params[1]:.4f}  SE={ols_m.bse[1]:.4f}")
 === Caso de estudio: efecto de dejar de fumar sobre peso (NHEFS)
 <sec-cap08_caso>
 
-@belloni2014inference aplicaron PDS a este dataset en su _paper_ original. Su tabla reporta un estimado de 2.5–3.5 kg de ganancia de peso al dejar de fumar, dependiendo del set de controles. La aplicación con selección manual (5 controles) suele subestimar el efecto, mientras que PDS captura confusoras adicionales (edad de inicio de fumador, intensidad, etc.) que elevan el estimado.
+#cite(<belloni2014inference>, form: "prose") aplicaron PDS a este dataset en su _paper_ original. Su tabla reporta un estimado de 2.5–3.5 kg de ganancia de peso al dejar de fumar, dependiendo del set de controles. La aplicación con selección manual (5 controles) suele subestimar el efecto, mientras que PDS captura confusoras adicionales (edad de inicio de fumador, intensidad, etc.) que elevan el estimado.
 
 *Réplica propia sobre el dataset del repositorio.* Hemos replicado el ejercicio sobre #code[nhefs] con $n = 1\,566$ observaciones y 51 controles potenciales (excluyendo variables post-tratamiento y de fecha). Los resultados obtenidos son:
 
@@ -244,7 +260,9 @@ Las estimaciones son consistentes entre métodos (entre 3.13 y 3.22 kg para los 
   caption: [Sensibilidad de la estimación PDS al hiperparámetro $lambda$ de LASSO. Las barras indican IC al 95% (HC1). La línea verde punteada marca el $lambda$ óptimo por cross-validation. Dataset: #code[nhefs], $n = 1\,566$, $p = 51$ controles.],
 ) <fig-cap8-pds-sensibilidad>
 
-La figura @fig-cap8-pds-sensibilidad muestra que la estimación PDS es relativamente estable para $lambda < 0.1$, pero colapsa hacia cero cuando $lambda$ es muy alto (todas las variables son penalizadas y el modelo final reduce a OLS sin controles). Esto refuerza la recomendación de usar cross-validation para elegir $lambda$ y reportar siempre la sensibilidad.
+La figura @fig-cap8-pds-sensibilidad muestra que la estimación PDS es relativamente estable para $lambda < 0.1$, pero colapsa hacia el estimador sin controles cuando $lambda$ es muy alto (todas las variables son penalizadas y el conjunto seleccionado se vacía). La forma de esta curva es en sí misma un diagnóstico y conviene saber leerla: una *meseta amplia* alrededor del $lambda$ elegido, como la de esta figura, indica que el resultado no depende de cuántos controles se admitan y es la situación en que reportar una sola cifra es defendible. Una curva con pendiente pronunciada en el entorno del $lambda$ elegido indicaría lo contrario —que el efecto estimado es función de una decisión de hiperparámetro— y obligaría a reportar el rango completo en lugar de un punto. Por eso el gráfico de sensibilidad no es un apéndice opcional del análisis PDS sino parte del resultado, junto con la comparación $lambda_"CV"$ frente a $lambda_"BCH"$ de la @sec-cap08_lambda.
+
+*Una limitación del PDS estándar que conviene declarar.* A diferencia de DML, el procedimiento PDS tal como se presenta aquí no usa _cross-fitting_: las dos selecciones LASSO y el OLS final se calculan sobre la misma muestra. La teoría de #cite(<belloni2014inference>, form: "prose") no lo necesita, porque la estructura lineal y la penalización rigurosa controlan el sesgo de sobreajuste por otra vía —el argumento descansa en la esparsidad y en cotas uniformes, no en independencia entre etapas—. La contrapartida es que esa garantía es exactamente tan fuerte como el supuesto de linealidad y esparsidad: si alguno falla, PDS no tiene la red de seguridad que el cross-fitting da a DML. Es una razón adicional, junto a la de confusión densa discutida más abajo, para preferir DML cuando no se tiene una convicción sustantiva sobre la forma funcional.
 
 === Validación
 <sec-cap08_validacion>
@@ -315,8 +333,8 @@ La tabla @tab-riesgos-cap08 resume los principales riesgos al aplicar PDS, junto
       table.hline(stroke: 0.4pt),
       [Lambda inestable],
       [Resultados frágiles que cambian drásticamente con $lambda$],
-      [Gráfico de sensibilidad (Fig. @fig-cap8-pds-sensibilidad)],
-      [Reportar varios $lambda$ y usar validación cruzada],
+      [Gráfico de sensibilidad (Fig. @fig-cap8-pds-sensibilidad): buscar meseta vs. pendiente en el entorno del $lambda$ elegido],
+      [Reportar el rango completo, y contrastar $lambda_"CV"$ (criterio predictivo) con $lambda_"BCH"$ (criterio teórico, @sec-cap08_lambda) en lugar de confiar en uno solo],
       table.hline(stroke: 0.4pt),
       [Controles post-tratamiento],
       [Sesgo por condicionar en variables afectadas por el tratamiento],
@@ -338,7 +356,9 @@ La tabla @tab-riesgos-cap08 resume los principales riesgos al aplicar PDS, junto
 
 + Construya un DGP donde la estructura de confusión sea densa (100 variables pequeñas, cada una con coeficiente 0.1). Verifique que PDS falla pero DML funciona.
 
++ Implemente la penalización teórica de #cite(<belloni2014inference>, form: "prose") descrita en la @sec-cap08_lambda y compare, sobre #code[nhefs], el $lambda_"BCH"$ resultante con el $lambda_"CV"$ del listado @lst-pds-nhefs. ¿Cuántas variables selecciona cada uno? ¿Cambia el efecto estimado o solo el tamaño del conjunto seleccionado?
+
 == Lecturas complementarias
 <sec-cap08_lecturas>
 
-@belloni2014inference es el _paper_ fundacional. @belloni2012sparse extiende a IV. @chernozhukov2018double (capítulo @cap-dml) presenta el enfoque alternativo. @chernozhukov2018applied ofrece un tratamiento pedagógico.
+#cite(<belloni2014inference>, form: "prose") es el _paper_ fundacional. #cite(<belloni2012sparse>, form: "prose") extiende a IV. #cite(<chernozhukov2018double>, form: "prose") (capítulo @cap-dml) presenta el enfoque alternativo. #cite(<chernozhukov2018applied>, form: "prose") ofrece un tratamiento pedagógico.

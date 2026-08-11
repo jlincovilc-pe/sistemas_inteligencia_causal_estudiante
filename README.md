@@ -10,6 +10,7 @@ Curso ECO-490 / ECON-540 (2026): causalidad estructural + estimación con ML + i
 
 | Documento | Rol |
 |---|---|
+| [`01_silabo/silabo.pdf`](./01_silabo/silabo.pdf) | Calendario oficial: qué se evalúa y cuándo se entrega |
 | [`PLAN_CURSO_COMPLETO.md`](./PLAN_CURSO_COMPLETO.md) | Práctica: sesiones, labs, A/B, datos, DoD de código |
 | [`PLAN_INTEGRACION_MONOGRAFIA.md`](./PLAN_INTEGRACION_MONOGRAFIA.md) | Integración libro ↔ monorepo (profesionales, HF, efecto causal) |
 | [`CHRONOGRAMA_SEMANAL.md`](./CHRONOGRAMA_SEMANAL.md) | Semana a semana: material del profesor y del estudiante |
@@ -19,6 +20,8 @@ Curso ECO-490 / ECON-540 (2026): causalidad estructural + estimación con ML + i
 **Posicionamiento:** curso para **profesionales** — estudios de caso, puesta en producción (HF opcional), utilidad de **estimar efectos** frente a solo predecir.
 
 Si hay conflicto de **código/entregas**, manda el plan de práctica. Si hay conflicto de **numeración de capítulos del PDF**, manda el plan de integración + monografía.
+
+Esta tabla es el mapa **por documento** (qué archivo manda en general). Para el mapa **por pregunta** (qué código corre, qué es electivo, diseño histórico, etc.) ver [`PLAN_INTEGRACION_MONOGRAFIA.md` §9](./PLAN_INTEGRACION_MONOGRAFIA.md#9-gobernanza-de-fuentes-de-verdad) — ambas tablas son consistentes entre sí y no se duplican.
 
 ---
 

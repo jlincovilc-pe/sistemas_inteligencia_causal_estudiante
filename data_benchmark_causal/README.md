@@ -14,8 +14,22 @@ Repositorio monolítico para **evaluación reproducible** de algoritmos de descu
 
 ---
 
+## Uso en el curso profesional (IA Causal en Producción)
+
+Este ecosistema es el **repositorio de datos** del monorepo del curso (`../README.md`). Solo dos escenarios alimentan el hilo de producto (CDS) de las entregas A/B — el resto queda disponible para exploración o proyecto final:
+
+| Dataset | Ruta | Caso de decisión en el curso |
+|---|---|---|
+| **Jobs** (`real/jobs`) | `causal_benchmark_synthetic/datasets/real/jobs/` | A1 — ¿el programa de empleo sube ingresos lo suficiente para justificar la inversión? (go/no-go) |
+| **IHDP** (`synthetic/inference/ihdp_medium`, `real/ihdp`) | `causal_benchmark_synthetic/datasets/synthetic/inference/` y `datasets/real/` | A2 — efecto medio de una intervención con muchos controles; A3/A4/B3 — ¿a quién priorizar bajo un presupuesto del 20%? |
+
+No se usan como benchmarks académicos de discovery o de SOTA: se usan como **casos de negocio con datos honestos** (estructuras y ATEs de referencia tomados de la literatura — LaLonde 1986, Hill 2011 — con valores observados generados por SEM documentado, ver §"Verificación de proveniencia"). El resto del inventario (`causal_benchmark_zoo`, Sachs, ALARM, Twins, etc.) es material electivo ◇, útil para el proyecto final si el caso de negocio del estudiante lo justifica, pero no forma parte del camino crítico ★ de A1–A4/B1–B4.
+
+---
+
 ## Tabla de contenidos
 
+- [Uso en el curso profesional](#uso-en-el-curso-profesional-ia-causal-en-producción)
 - [Inicio rápido](#inicio-rápido)
 - [Inventario de datasets](#inventario-de-datasets)
 - [Componentes](#componentes)

@@ -53,11 +53,17 @@
       let part-title = state("part-title").at(here())
       let header-text = if chapter-title != none { chapter-title } else if part-title != none { part-title } else { "" }
       let even = calc.even(page-num)
-      let side = if even { left } else { right }
-      let other = if even { right } else { left }
-      grid(columns: (1fr, 1fr),
-        align(side)[#text(font: sans-font, size: 9pt, fill: gray)[#header-text]],
-        align(other)[#text(font: sans-font, size: 9pt, fill: gray)[#page-num]])
+      let title-el = text(font: sans-font, size: 9pt, fill: gray)[#header-text]
+      let num-el = text(font: sans-font, size: 9pt, fill: gray)[#page-num]
+      // Título siempre al margen exterior, folio siempre al margen interior;
+      // h(1fr) fuerza la separación entre ambos en vez de un grid de dos
+      // columnas independientes (que los pegaba en el borde compartido y
+      // producía la colisión título/folio en páginas impares).
+      if even {
+        title-el; h(1fr); num-el
+      } else {
+        num-el; h(1fr); title-el
+      }
       v(-6pt)
       line(length: 100%, stroke: 0.4pt + gray.lighten(60%))
     },
@@ -99,7 +105,7 @@
         #v(0.4em)
         #line(length: 100%, stroke: 0.8pt + navy)
         #v(0.4em)
-        #text(font: sans-font, fill: navy, size: 26pt, weight: "bold")[#it.body]
+        #text(font: sans-font, fill: navy, size: 26pt, weight: "bold", hyphenate: false)[#it.body]
         #v(0.4em)
         #line(length: 100%, stroke: 0.8pt + navy)
       ]
@@ -125,7 +131,7 @@
           #context {
             let num = counter("chapter").at(here()).first()
             if kind == "appendix" {
-              numbering("A", num)
+              [Apéndice #numbering("A", num)]
             } else {
               [Capítulo #numbering("1", num)]
             }
@@ -134,7 +140,7 @@
         #v(0.4em)
         #line(length: 100%, stroke: 0.8pt + navy)
         #v(0.4em)
-        #text(font: sans-font, fill: navy, size: 26pt, weight: "bold")[#it.body]
+        #text(font: sans-font, fill: navy, size: 26pt, weight: "bold", hyphenate: false)[#it.body]
         #v(0.4em)
         #line(length: 100%, stroke: 0.8pt + navy)
       ]
@@ -251,8 +257,9 @@
   set list(indent: 1.5em, body-indent: 0.5em, marker: ([•], [◦], [▪]))
   set enum(indent: 1.5em, body-indent: 0.5em, numbering: "1.")
 
-  // Raw code blocks: styling only
+  // Bloques de código (raw)
   show raw.where(block: true): it => {
+    set align(left)
     set text(font: mono-font, size: 9pt)
     block(
       fill: light,
@@ -263,6 +270,12 @@
     )[
       #it.text
     ]
+  }
+
+  // Alineación a la izquierda y título alineado para figuras tipo código/listado
+  show figure.where(kind: raw): it => {
+    set align(left)
+    it
   }
 
   body
@@ -303,7 +316,12 @@
   counter("chapter").update(0)
   counter("section").update(0)
   counter("subsection").update(0)
-  set heading(numbering: "1.1.1")
+  // Numeración nativa de Typst (usada por #outline()) debe reiniciarse y
+  // usar letras para que el índice general coincida con el encabezado
+  // visual de cada apéndice ("Apéndice A", "Apéndice B", ...), en vez de
+  // continuar la numeración arábiga secuencial de los capítulos (33, 34...).
+  counter(heading).update(0)
+  set heading(numbering: "A.1.1")
   body
 }
 
@@ -323,7 +341,7 @@
     #v(0.6em)
     #line(length: 30%, stroke: 1pt + navy)
     #v(0.6em)
-    #text(font: sans-font, fill: navy, size: 32pt, weight: "bold")[#title]
+    #text(font: sans-font, fill: navy, size: 32pt, weight: "bold", hyphenate: false)[#title]
   ]
   pagebreak(weak: true)
 }
@@ -342,15 +360,18 @@
     numbering: "1.1",
     supplement: kind-name,
     {
+      // Forzamos alineación a la izquierda para evitar que la figura centre la cabecera
+      set align(left)
       set par(leading: 0.6em)
+      
       block(width: 100%, spacing: 1em, breakable: true)[
         #block(width: 100%)[
           #box(
             fill: kind-color,
-            inset: (x: 6pt, y: 2pt),
+            inset: (x: 6pt, y: 3pt),
             radius: 2pt,
           )[
-            #text(font: sans-font, fill: white, weight: "bold", size: 10pt)[
+            #text(font: sans-font, fill: white, weight: "bold", size: 10.5pt)[
               #kind-name #context {
                 let ch = counter("chapter").at(here()).first()
                 let th = theorem-number.at(here()).first()
@@ -359,8 +380,11 @@
             ]
           ]
           #if name != none [
-            #h(4pt)
-            #text(style: "italic", weight: "bold")[(#name)]
+            #h(6pt)
+            // Aumentamos tamaño (11.5pt) y aseguramos estilo en negrita/cursiva a la izquierda
+            #text(font: sans-font, size: 11.5pt, style: "italic", weight: "bold", fill: navy.darken(20%))[
+              (#name)
+            ]
           ]
         ]
         #v(0.4em)
@@ -419,7 +443,7 @@
   width: 100%,
   spacing: 1em,
 )[
-  #text(font: sans-font, fill: frame-color, weight: "bold", size: 11pt)[#title]
+  #text(font: sans-font, fill: frame-color, weight: "bold", size: 11pt, hyphenate: false)[#title]
   #v(0.3em)
   #body
 ]
@@ -454,22 +478,27 @@
   supplement: [Algoritmo],
   numbering: "1.",
   placement: top,
-  block(
-    stroke: (top: 0.8pt + black, bottom: 0.8pt + black),
-    width: 100%,
-    spacing: 1em,
-  )[
-    #block(
-      stroke: (bottom: 0.4pt + black),
-      inset: (top: 4pt, bottom: 4pt, left: 0pt, right: 0pt),
+  {
+    // Forzamos alineación a la izquierda en todo el contenido de la figura
+    set align(left)
+    block(
+      stroke: (top: 0.8pt + black, bottom: 0.8pt + black),
+      width: 100%,
+      spacing: 1em,
     )[
-      #text(font: sans-font, weight: "bold", size: 10pt)[Algoritmo]
+      #block(
+        stroke: (bottom: 0.4pt + black),
+        inset: (top: 4pt, bottom: 4pt, left: 0pt, right: 0pt),
+        width: 100%,
+      )[
+        #text(font: sans-font, weight: "bold", size: 11pt)[Algoritmo]
+      ]
+      #v(2pt)
+      #set text(size: 10pt)
+      #set par(leading: 0.5em, first-line-indent: 0em)
+      #block(inset: (left: 0pt, right: 0pt))[#body]
     ]
-    #v(2pt)
-    #set text(size: 10pt)
-    #set par(leading: 0.5em, first-line-indent: 0em)
-    #block(inset: (left: 0pt, right: 0pt))[#body]
-  ]
+  }
 )
 
 #let kwin(label, body) = {
@@ -550,7 +579,7 @@
 #let portada() = page(margin: (top: 4cm, bottom: 4cm, left: 2.5cm, right: 2.5cm), numbering: none)[
   #v(2cm)
   #align(center)[
-    #text(font: sans-font, fill: navy, size: 42pt, weight: "bold")[
+    #text(font: sans-font, fill: navy, size: 42pt, weight: "bold", hyphenate: false)[
       IA Causal
       #linebreak()
       en Producción

@@ -12,11 +12,11 @@
     columns: (auto, 1fr),
     align: (left, left),
     stroke: none,
-    [*[Decisión]*], [Servir el estimador como un servicio REST síncrono, no como biblioteca embebida ni como batch],
-    [*[Alternativas]*], [Biblioteca embebida vs. servicio web vs. predicciones _batch_ precomputadas],
-    [*[Trade-off clave]*], [Latencia y simplicidad de biblioteca vs. desacoplamiento y reutilización de un servicio],
-    [*[Stack]*], [FastAPI, Docker, `joblib`],
-    [*[Riesgo principal]*], [_Training-serving skew_: que el cálculo de _features_ en producción difiera del usado al entrenar],
+    [*Decisión:*], [Servir el estimador como un servicio REST síncrono, no como biblioteca embebida ni como batch],
+    [*Alternativas:*], [Biblioteca embebida vs. servicio web vs. predicciones _batch_ precomputadas],
+    [*Trade-off clave:*], [Latencia y simplicidad de biblioteca vs. desacoplamiento y reutilización de un servicio],
+    [*Stack:*], [FastAPI, Docker, `joblib`],
+    [*Riesgo principal:*], [_Training-serving skew_: que el cálculo de _features_ en producción difiera del usado al entrenar],
   )
 ]
 
@@ -75,6 +75,8 @@ def estimar_efecto(covariables: dict) -> dict:
         "efecto_estimado": float(efecto),
         "ic_95_inferior": float(ic_inf[0]),
         "ic_95_superior": float(ic_sup[0]),
+        # ic_individual: anadir solo si existe calibracion conforme (Cap. 14);
+        # nunca reutilizar ic_95 como intervalo para decisiones individuales
         "poblacion_entrenamiento": _schema.covariates,  # transparencia sobre validez
     }
 ```
@@ -87,7 +89,7 @@ def estimar_efecto(covariables: dict) -> dict:
 # app.py
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from inference import estimar_efecto
+from inference import estimar_efecto, metadatos_modelo
 
 app = FastAPI(title="Servicio de estimacion causal - curso IA Causal en Produccion")
 
@@ -106,9 +108,40 @@ def predict(cov: Covariables):
 
 @app.get("/health")
 def health():
+    """Liveness: el proceso responde. No dice nada sobre validez causal."""
     return {"status": "ok"}
+
+@app.get("/metadata")
+def metadata():
+    """Contrato causal del servicio: estimando, supuestos, poblacion y
+    version. Es lo que permite a un consumidor decidir si el efecto es
+    aplicable a su caso ANTES de llamar a /predict."""
+    return metadatos_modelo()
 ```
 ) <lst-fastapi-app>
+
+El endpoint `/metadata` no es decorativo ni redundante con la _model card_ del Capítulo 19. Una _model card_ es documentación para personas y vive en el repositorio; `/metadata` es el mismo contrato expuesto *en tiempo de ejecución y de forma legible por máquina*, de modo que un consumidor automatizado pueda verificar programáticamente qué versión del modelo está respondiendo y bajo qué supuestos, sin depender de que alguien haya leído el README. Es también lo que permite que el monitoreo del @cap-monitoreo-causal compare la población que efectivamente consulta el servicio contra la población declarada de entrenamiento:
+
+#figure(
+  kind: raw,
+  caption: [Metadatos del modelo, servidos desde el mismo artefacto que la inferencia.],
+  ```python
+# inference.py (continuacion del listado anterior)
+def metadatos_modelo() -> dict:
+    """Funcion pura: describe el contrato causal del artefacto servido.
+    El dict devuelto valida contra causal-model-card-v1.schema.json (Ap. G.4);
+    el CI del curso lo verifica antes de publicar."""
+    return {
+        "estimando": _meta["estimando"],              # p.ej. "ATE" o "CATE(x)"
+        "diseno_identificacion": _meta["diseno"],     # observacional / IV / RCT
+        "supuestos": _meta["supuestos"],              # lista declarada, ver Cap. 19
+        "covariables_requeridas": _schema.covariates,
+        "poblacion_entrenamiento": _meta["poblacion"],
+        "version_modelo": _meta["version"],
+        "hash_datos_entrenamiento": _meta["hash_datos"],
+    }
+```
+) <lst-metadata-endpoint>
 
 #figure(
   kind: raw,
@@ -125,7 +158,7 @@ CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 ) <lst-dockerfile>
 
-La ruta `/health` no es decorativa: es el punto que la prueba de humo del Notebook de producción B1 verifica primero, antes de comprobar que `/predict` devuelve una estimación razonable.
+La prueba de humo del Notebook de producción B1 verifica los tres endpoints en ese orden, y el orden es deliberado: `/health` comprueba que el proceso vive, `/metadata` que el artefacto cargado es el esperado (versión y hash de datos), y solo entonces `/predict` que la estimación es razonable. Un fallo en el segundo con éxito en el primero es exactamente el escenario silencioso que este capítulo busca hacer visible: el servicio responde, pero está sirviendo un modelo distinto del que el equipo cree.
 
 == Aplicación al sistema causal del curso
 <sec-despliegue-aplicacion>
@@ -139,6 +172,7 @@ Nótese que la respuesta de `estimar_efecto()` en el listado @lst-inference-pura
   - La función de inferencia calcula las _features_ con código distinto al usado durante el entrenamiento (riesgo directo de _training-serving skew_).
   - El endpoint devuelve solo el efecto puntual, sin intervalo de confianza ni información de la población de entrenamiento.
   - No existe una ruta `/health` verificable independientemente de `/predict`.
+  - No hay forma de saber, consultando el servicio, qué versión del modelo está respondiendo ni sobre qué datos se entrenó (`/metadata` ausente o sin `version_modelo`/`hash_datos_entrenamiento`).
   - El `Dockerfile` no fija versiones exactas de las dependencias (`requirements.txt` sin _pinning_), con riesgo de que el contenedor se comporte distinto según cuándo se construya.
 ]
 
@@ -160,4 +194,4 @@ Nótese que la respuesta de `estimar_efecto()` en el listado @lst-inference-pura
 === Notas bibliográficas
 <sec-despliegue-notas>
 
-@huyen2022dmls, Capítulo 7 ("Model Deployment and Prediction Service"), y @kastner2024mlip, Capítulo 10 ("Deploying a Model"), son las dos referencias principales de este capítulo; el segundo desarrolla en particular la discusión de _features_ dentro/fuera del servicio y el _training-serving skew_ retomada en la @sec-despliegue-aplicacion.
+#cite(<huyen2022dmls>, form: "prose"), Capítulo 7 ("Model Deployment and Prediction Service"), y @kastner2024mlip, Capítulo 10 ("Deploying a Model"), son las dos referencias principales de este capítulo; el segundo desarrolla en particular la discusión de _features_ dentro/fuera del servicio y el _training-serving skew_ retomada en la @sec-despliegue-aplicacion.

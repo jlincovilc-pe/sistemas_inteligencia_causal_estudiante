@@ -354,6 +354,8 @@ Sin reescribir los 32 caps., aplicar en oleadas un **filtro de edición**:
 
 ## 9. Gobernanza de fuentes de verdad
 
+Esta es la tabla **por pregunta** (qué documento responde cada duda operativa). Su contraparte **por documento** (qué archivo manda en general, para quien solo quiere un punto de entrada) vive en [`README.md` § Fuente de verdad](./README.md#fuente-de-verdad) — ambas deben mantenerse consistentes; no se duplica contenido, solo el ángulo de lectura.
+
 | Pregunta | Documento que manda |
 |---|---|
 | ¿Qué se evalúa y cuándo se entrega? | `01_silabo` + `PLAN_CURSO_COMPLETO` |
@@ -361,6 +363,8 @@ Sin reescribir los 32 caps., aplicar en oleadas un **filtro de edición**:
 | ¿Qué código corre? | `03_`, `04_`, `05_`, `lib` |
 | ¿Qué es electivo? | Este plan §3.1 |
 | ¿Diseño histórico? | `02_monografia/HISTORICO.md` + `PLAN_CONSTRUCCION.md` en fuentes Typst |
+| ¿Qué pasa semana a semana (profesor/estudiante)? | `CHRONOGRAMA_SEMANAL.md` |
+| ¿Qué omitir en una cohorte 100% profesional? | `docs/NOTA_INSTRUCTORS.md` |
 
 **Proceso:** todo cambio de orden de sesiones actualiza **sílabo + §3 de este plan + frontmatter monografía** en el mismo PR.
 
@@ -400,7 +404,7 @@ Sin reescribir los 32 caps., aplicar en oleadas un **filtro de edición**:
 [x] 2b. Compilar 01_silabo/silabo.pdf
 [x] 3. Frontmatter monografía: audiencia pro + pitch disrupción + tabla resumida
 [x] 4. Callouts monorepo en caps. 4, 9, 15, 19, 20, 30 (+ macro `#monorepo`)
-[x] 7. typst compile monografía (311 pp.)
+[x] 7. typst compile monografía (311 pp.; recompilada 2026-08-02 tras Sprint 2 → 308 pp.)
 [x] 5. Portadas A1–A4 y README B1–B4: Cap + Lab + pregunta de valor
 [x] 6. Proyecto: rúbrica con sección "predictivo vs causal" (15 pts, irrenunciable)
 [x] 8. bash scripts/audit_repo.sh — AUDIT PASS (A + labs + B + artefactos)
@@ -408,6 +412,23 @@ Sin reescribir los 32 caps., aplicar en oleadas un **filtro de edición**:
 [x] 10. Nota instructors: `docs/NOTA_INSTRUCTORS.md` (camino ★ vs electivos ◇)
 [x] 11. Puente `lib.schema.CausalSchema` + tests
 [x] 12. Notebooks de labs: `05_labs_sesion/L*/lab.ipynb` (27, generados)
+```
+
+### Sprint 2 — auditoría y cierre de brechas (2026-08-02)
+
+Una auditoría independiente (evidencia contra código, no contra este checklist) encontró que el Sprint 1 estaba sustancialmente cumplido pero inflado en el detalle: un bug funcional real en `grade_a2` (DML sin SE/CI) y varios ítems del §5 marcados como P1 pendientes que el checklist arriba no reflejaba. Cerrado en esta sesión:
+
+```text
+[x] 13. Fix `dml_ci_reported`: econml PopulationSummaryResults usa stderr_mean/conf_int_mean, no stderr/conf_int (lib/dml_utils.py) — audit_repo.sh vuelve a AUDIT PASS
+[x] 14. Bloque "Implicación de negocio" (3 bullets) en los 27 labs (generador + template_lab.ipynb)
+[x] 15. `data_benchmark_causal/README.md`: sección "Uso en el curso profesional"
+[x] 16. Recompilar PDF monografía (308 pp., reflejaba ~3h de ediciones no compiladas)
+[x] 17. Unificar tablas de gobernanza (README.md ↔ este documento §9, referenciadas explícitamente)
+[x] 18. Enlazar Ap. H (`apH_checklist_despliegue.typ`, sí existía pero sin inbound refs) en README B1/B3
+[x] 19. Bloque "Decisión de negocio" explícito (frase "Si solo predijéramos… / Con el efecto…") en A1–A4
+[x] 20. Model card B2: wording literal "profesional / no clínico" (antes parafraseado)
+[x] 21. Copy de B3 Space reescrito para decisor no técnico: 25 covariables con etiqueta en español + explicación, salida en lenguaje de negocio (antes jerga tipo "ŝ(x) ≥ λ")
+[x] 22. Numeración de apéndices: bug preexistente donde el índice general numeraba apéndices como capítulos secuenciales (33…40) mientras el encabezado visual usaba letras (A…H) y la palabra "Apéndice" nunca aparecía; fix en `template.typ` (`appendix-mode` resetea `counter(heading)` y usa numeración "A.1.1"; encabezado visual antepone la palabra "Apéndice"). De paso se descubrió y corrigió que la Bibliografía heredaba el estilo de apéndice (mostraba una letra fantasma, "Apéndice I", antes de "Bibliografía") — ahora usa el estilo frontmatter sin numerar.
 ```
 
 ---

@@ -12,13 +12,13 @@
     columns: (auto, 1fr),
     align: (left, left),
     stroke: none,
-    [*[Problema]*], [Elegir entre acciones, no solo estimar el efecto de una acción dada],
-    [*[Estimando]*], [Utilidad esperada bajo cada acción candidata, $E[U(Y("do"(d)))]$],
-    [*[Identificación]*], [Identificación del efecto de cada $d$ candidato + función de utilidad declarada],
-    [*[Método]*], [Maximización de utilidad esperada sobre el conjunto de acciones factibles],
-    [*[Garantía]*], [La acción óptima estimada converge a la verdadera si los efectos de cada $d$ están correctamente identificados],
-    [*[Librerías]*], [`econml.policy`, optimización con `scipy.optimize`],
-    [*[Validación]*], [Comparación contra una decisión de referencia (_status quo_) y análisis de sensibilidad a la utilidad supuesta],
+    [*Problema:*], [Elegir entre acciones, no solo estimar el efecto de una acción dada],
+    [*Estimando:*], [Utilidad esperada bajo cada acción candidata, $E[U(Y("do"(d)))]$],
+    [*Identificación:*], [Identificación del efecto de cada $d$ candidato + función de utilidad declarada],
+    [*Método:*], [Maximización de utilidad esperada sobre el conjunto de acciones factibles],
+    [*Garantía:*], [La acción óptima estimada converge a la verdadera si los efectos de cada $d$ están correctamente identificados],
+    [*Librerías:*], [`econml.policy`, optimización con `scipy.optimize`],
+    [*Validación:*], [Comparación contra una decisión de referencia (_status quo_) y análisis de sensibilidad a la utilidad supuesta],
   )
 ]
 
@@ -45,6 +45,27 @@ La diferencia con el problema de estimación de los capítulos anteriores es sut
 <sec-decisionesestructurales-multivariable>
 
 Cuando la acción involucra más de una variable de intervención (por ejemplo, elegir simultáneamente el monto de una transferencia y el requisito de asistencia a capacitaciones), el conjunto $cal(D)$ deja de ser un simple binario o un umbral y se vuelve un espacio multidimensional. La incertidumbre entra por dos vías distintas, que conviene no confundir: *incertidumbre estadística* sobre el efecto de cada acción (el mismo tipo de incertidumbre que ya se cuantifica con los intervalos de confianza de capítulos anteriores) e *incertidumbre estructural* sobre si el SCM supuesto es siquiera el correcto (la que ningún intervalo de confianza captura, y que solo un análisis de sensibilidad al grafo, como el del @cap-intervencion-contrafactual, puede abordar parcialmente).
+
+=== Criterios de decisión cuando el efecto no está identificado con precisión
+<sec-decisionesestructurales-criterios>
+
+Maximizar la utilidad esperada usando la estimación puntual $hat(E)[U(Y("do"(d)))]$ es el criterio por defecto, pero no es el único defendible, y su adopción implícita esconde un supuesto fuerte: que la incertidumbre sobre el efecto puede resumirse en una media y tratarse como si el estimador puntual fuera el valor verdadero. La teoría estadística de la decisión ofrece un vocabulario preciso para las alternativas, y #cite(<manski2004statistical>, form: "prose") lo trasladó al problema exacto de este capítulo —elegir una regla de tratamiento cuando el efecto está *parcialmente identificado*, es decir, cuando los datos y los supuestos solo acotan $tau$ dentro de un intervalo en vez de fijarlo—.
+
+Tres criterios cubren el espectro de posturas razonables ante esa situación:
+
+#table(
+  columns: (1.2fr, 1.8fr, 2fr),
+  align: left,
+  stroke: 0.5pt + gray.lighten(60%),
+  table.header([*Criterio*], [*Qué maximiza*], [*Cuándo es defendible*]),
+  [Utilidad esperada], [$E[U(Y("do"(d)))]$ bajo la estimación puntual], [Efecto bien identificado y estimado con precisión; decisión repetida muchas veces, de modo que los promedios se realizan],
+  [_Maximin_ (Wald)], [El peor resultado posible dentro del conjunto identificado: $max_d min_(tau in cal(T)) U$], [Decisiones irreversibles o con consecuencias catastróficas en el peor escenario; aversión fuerte a la ambigüedad],
+  [_Minimax regret_ (Savage)], [La máxima pérdida respecto a la mejor acción posible en cada escenario], [Cuando el maximin resulta paralizante por concentrarse en escenarios extremos poco plausibles; es el criterio que Manski defiende para reglas de tratamiento],
+)
+
+La diferencia entre ellos no es académica: con un efecto cuyo intervalo de confianza cruza el cero, la utilidad esperada puede recomendar intervenir (porque el punto estimado es positivo) mientras el maximin recomienda no hacerlo (porque el peor caso es dañino), y el minimax regret puede recomendar una acción intermedia —tratar a un subconjunto, o postergar la decisión hasta recolectar más datos—. Reportar cuál de los tres criterios se aplicó es tan importante como reportar el efecto estimado, porque la recomendación de política depende de ambos.
+
+Esto conecta además con una decisión que el marco de utilidad esperada suele dejar fuera del conjunto $cal(D)$ y que casi siempre debería estar dentro: la acción *"no decidir todavía y experimentar"*. Cuando la incertidumbre es la restricción vinculante, el valor de un experimento aleatorizado —que reduce esa incertidumbre— compite legítimamente con el valor de las acciones sustantivas, y omitirlo del conjunto de acciones factibles sesga sistemáticamente la decisión hacia intervenir con la información actual.
 
 == Algoritmo e implementación
 <sec-decisionesestructurales-algoritmo>
@@ -113,7 +134,9 @@ Retomando el dataset de transferencias condicionadas usado en capítulos anterio
 
 + Modifique el listado @lst-decision-optima con al menos dos valores distintos de `valor_por_punto_efecto` (uno bajo, uno alto) y reporte si la acción óptima cambia. Discuta qué implica esto para la robustez de la recomendación de política.
 
++ Extienda el listado @lst-decision-optima para que, además de la utilidad esperada, calcule la acción óptima según los criterios _maximin_ y _minimax regret_ de la @sec-decisionesestructurales-criterios, tomando como conjunto identificado el intervalo $hat(tau) plus.minus 1.96 dot.c "SE"$ de cada política. ¿Coinciden las tres recomendaciones? Repita ampliando el error estándar de `transferencia_mas_capacitacion` a 0.10 y explique por qué los criterios divergen cuando la incertidumbre crece.
+
 === Notas bibliográficas
 <sec-decisionesestructurales-notas>
 
-Este capítulo sigue la formalización de decisiones estructurales de @bareinboim2025causalai, Capítulo 7. La conexión con teoría de la decisión estadística clásica (maximización de utilidad esperada bajo incertidumbre) es estándar; véase cualquier texto de teoría de la decisión bayesiana para el tratamiento formal completo. El @cap-policy-learning y el @cap-uplift-targeting, ya cubiertos, son los casos particulares de este marco más aplicados en la práctica de targeting.
+Este capítulo sigue la formalización de decisiones estructurales de @bareinboim2025causalai, Capítulo 7. El marco formal de **teoría de la decisión bajo incertidumbre** se trata en @berger1985statistical (Berger 1985). Para decisiones con **identificación parcial** (bounds en lugar de estimados puntuales), ver @manski2004statistical (Manski 2004), que formaliza reglas de tratamiento bajo incertidumbre estructural. Para el aparato de teoría de la decisión estadística —funciones de pérdida, criterios de admisibilidad, maximización de utilidad esperada bajo incertidumbre— la referencia estándar es #cite(<berger1985statistical>, form: "prose"). #cite(<manski2004statistical>, form: "prose") es la lectura clave de la @sec-decisionesestructurales-criterios y la que conecta ambos mundos: formula la elección de una regla de tratamiento como un problema de decisión bajo *identificación parcial*, desarrolla el criterio de minimax regret para ese contexto y deriva sus implicaciones para la asignación fraccional de tratamientos. Es también el antecedente directo de la _Empirical Welfare Maximization_ del @cap-policy-learning, que puede leerse como el caso en que el efecto sí está puntualmente identificado. El @cap-policy-learning y el @cap-uplift-targeting son los casos particulares de este marco más aplicados en la práctica de targeting.

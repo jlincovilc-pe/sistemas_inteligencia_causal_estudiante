@@ -1,4 +1,5 @@
-// Capítulo 15 — Descubrimiento causal y grafos
+// Capítulo 29 — Descubrimiento causal y grafos
+// (La numeración `cap15` del nombre de archivo es histórica: proviene de la edición corta anterior y se conserva para no romper referencias.)
 #import "../template/template.typ": *
 
 #chapter[Descubrimiento causal y grafos]
@@ -11,14 +12,14 @@
     columns: (auto, 1fr),
     align: (left, left),
     stroke: none,
-    [*[Problema]*], [Inferir la estructura causal (grafo) a partir de datos observacionales],
-    [*[Estimando]*], [DAG $G = (V, E)$, "CPDAG", matriz de adyacencia $bold(W)$],
-    [*[Identificación]*], [Causal sufficiency, faithfulness, aciclicidad, Markov property],
-    [*[Método]*], [PC (test de independencia condicional), NOTEARS (optimización continua), FCI],
-    [*[Nuisance]*], [Tests de independencia, matriz de pesos],
-    [*[Garantía]*], [Consistencia del esqueleto bajo faithfulness (PC); solución global bajo aciclicidad (NOTEARS)],
-    [*[Librerías]*], [#code[dowhy], #code[causal-learn], #code[networkx]],
-    [*[Validación]*], [SHD, precisión, recall, estabilidad por subsampling],
+    [*Problema:*], [Inferir la estructura causal (grafo) a partir de datos observacionales],
+    [*Estimando:*], [DAG $G = (V, E)$, "CPDAG", matriz de adyacencia $bold(W)$],
+    [*Identificación:*], [Causal sufficiency, faithfulness, aciclicidad, Markov property],
+    [*Método:*], [Basados en restricciones (PC, FCI); basados en score (GES); optimización continua (NOTEARS)],
+    [*Nuisance:*], [Tests de independencia, matriz de pesos],
+    [*Garantía:*], [Consistencia del esqueleto bajo faithfulness (PC); solución global bajo aciclicidad (NOTEARS)],
+    [*Librerías:*], [#code[dowhy], #code[causal-learn], #code[networkx]],
+    [*Validación:*], [SHD, precisión, recall, estabilidad por subsampling],
   )
 ]
 
@@ -31,7 +32,7 @@ Todo el curso, hasta aquí, asumió que el grafo causal —o al menos el conjunt
 
 Una economista del Banco Mundial estudia los determinantes de la pobreza infantil. Tiene 30 variables (ingreso familiar, educación parental, acceso a salud, nutrición, entorno barrial, etc.) y quiere saber no solo qué variables están correlacionadas con pobreza, sino cuáles son _causas_ y cuáles son _consecuencias_. Esta es la pregunta del _causal discovery_: inferir la estructura causal (grafo) a partir de datos observacionales.
 
-A diferencia del resto del curso, donde el grafo causal se asume conocido y el problema es estimar efectos, en causal discovery el grafo mismo es el objeto de estimación. @pearl2009causality formalizó el marco de DAGs (Directed Acyclic Graphs). @spirtes2000causation introdujo el algoritmo PC basado en tests de independencia condicional. @zheng2018dags propuso NOTEARS, que reformula el descubrimiento causal como optimización continua.
+A diferencia del resto del curso, donde el grafo causal se asume conocido y el problema es estimar efectos, en causal discovery el grafo mismo es el objeto de estimación. #cite(<pearl2009causality>, form: "prose") formalizó el marco de DAGs (Directed Acyclic Graphs). #cite(<spirtes2000causation>, form: "prose") introdujo el algoritmo PC basado en tests de independencia condicional. #cite(<zheng2018dags>, form: "prose") propuso NOTEARS, que reformula el descubrimiento causal como optimización continua.
 
 Este capítulo presenta los fundamentos de DAGs, el algoritmo PC, y NOTEARS, con implementaciones en #code[dowhy] y #code[causal-learn]. Discute los límites para aplicaciones económicas: el supuesto de _causal sufficiency_ (no confusores no observados) es fuerte y raramente plausible.
 
@@ -43,7 +44,7 @@ Este capítulo presenta los fundamentos de DAGs, el algoritmo PC, y NOTEARS, con
 
 Un _DAG_ es un grafo dirigido acíclico $G = (V, E)$ donde los nodos son variables y las aristas $X_i arrow.r X_j$ indican causalidad directa. La distribución conjunta factoriza según el DAG:
 $
-p(X_1, dots, X_p) = product_i p(X_i mid "parents"(X_i)).
+p(X_1, dots, X_p) = product_i p(X_i | "parents"(X_i)).
 $
 
 #definition(
@@ -53,7 +54,7 @@ $
   + Ningún nodo de $cal(C)$ es descendiente de $X$.
   + $cal(C)$ bloquea todos los caminos entre $X$ e $Y$ que tienen una flecha entrante a $X$ (_backdoor paths_).
 
-  Si tal $cal(C)$ existe, $E[Y mid "do"(X = x)] = E_(cal(C))[E[Y mid X = x, cal(C)]]$.
+  Si tal $cal(C)$ existe, $E[Y | "do"(X = x)] = E_(cal(C))[E[Y | X = x, cal(C)]]$.
 ] <def-backdoor>
 
 === Algoritmo PC
@@ -62,10 +63,26 @@ $
 El algoritmo PC (Spirtes & Glymour, 1991) construye un DAG en tres pasos:
 
 + *Esqueleto:* empezar con grafo completo no dirigido. Para cada par $(X_i, X_j)$, testar independencia condicional dado subconjuntos de vecinos. Eliminar arista si se encuentra independencia.
-+ *Orientación de colisionadores:* para cada tripleta $X_i - X_k - X_j$ con $X_i$ y $X_j$ no adyacentes, orientar como $X_i arrow.r X_k arrow.l X_j$ si $X_k ∉ Z$ para algún $Z$ que hace $X_i perp perp X_j mid Z$.
++ *Orientación de colisionadores:* para cada tripleta $X_i - X_k - X_j$ con $X_i$ y $X_j$ no adyacentes, orientar como $X_i arrow.r X_k arrow.l X_j$ si $X_k ∉ Z$ para algún $Z$ que hace $X_i perp perp X_j | Z$.
 + *Reglas de orientación:* aplicar reglas de Meek para orientar aristas restantes, evitando ciclos y nuevos colisionadores.
 
-El output es una _CPDAG_ (Completed Partially Directed Acyclic Graph), que representa la clase de equivalencia de Markov: DAGs que no pueden distinguirse observacionalmente.
+El output es una _CPDAG_ (Completed Partially Directed Acyclic Graph), que representa la clase de equivalencia de Markov: DAGs que no pueden distinguirse observacionalmente. Este es el límite duro del descubrimiento a partir de datos observacionales, y es el mismo Teorema de la Jerarquía Causal del @cap-scm-pch visto desde el ángulo de la estructura: si dos grafos inducen las mismas independencias condicionales, ningún algoritmo que solo mire $P(v)$ puede separarlos.
+
+#cite(<kalisch2007estimating>, form: "prose") establecen las propiedades estadísticas del algoritmo en alta dimensión: bajo _faithfulness_, suficiencia causal, normalidad multivariante y esparsidad del grafo verdadero, la CPDAG estimada por PC es consistente incluso cuando $p$ crece exponencialmente con $n$. Su análisis aporta además el resultado que más importa en la práctica: la complejidad computacional depende del grado máximo del grafo, no de $p$, lo que hace viable el algoritmo en grafos dispersos y lo vuelve inviable en grafos densos.
+
+*Una tercera familia: métodos de score.* Junto a los métodos basados en restricciones (PC, FCI) y a los de optimización continua (NOTEARS), existe una tercera familia que busca el grafo que maximiza un criterio de ajuste penalizado —típicamente BIC— sobre el espacio de DAGs. Su representante canónico es GES (_Greedy Equivalence Search_), y #cite(<chickering2002optimal>, form: "prose") demuestra un resultado notable: pese a ser una búsqueda voraz sobre un espacio combinatorio enorme, GES es *consistente* —converge a la clase de equivalencia correcta con probabilidad tendiente a uno—. La diferencia práctica con PC es de robustez: PC toma decisiones discretas e irreversibles (eliminar una arista tras un test), de modo que un error temprano se propaga a todo el resto del procedimiento; GES optimiza un criterio global y no arrastra ese tipo de error en cascada. En muestras pequeñas, donde los tests de independencia tienen poca potencia, la diferencia es material.
+
+=== Algoritmos clásicos de descubrimiento de estructura
+
+Los algoritmos de referencia incluyen:
+- *PC* (@kalisch2007estimating, Kalisch & Bühlmann 2007): constraint-based, basado en tests de independencia condicional
+- *GES* (@chickering2002optimal, Chickering 2002): score-based, búsqueda greedy con penalización BIC
+
+#box(fill: orange.lighten(90%), width: 100%, inset: 8pt, radius: 2pt)[
+  *Advertencia:* Estos métodos son *sensibles a la elección de hiperparámetros* (e.g., nivel de significancia $alpha$ en PC, penalización en GES). @machlanski2024robustness (Machlanski et al. 2024, AISTATS) muestran que pequeños cambios en hiperparámetros pueden producir grafos radicalmente diferentes.
+
+  *Recomendación:* Usar análisis de sensibilidad y validación de expertos de dominio.
+]
 
 === Pseudocódigo: PC skeleton
 <sec-cap15_pc_skeleton>
@@ -82,7 +99,7 @@ El siguiente algoritmo detalla la fase de esqueleto del algoritmo PC — la etap
   #h(1.5em) $"eliminados" <- 0$ \
   #h(1.5em) *for* #h(2pt) cada arista $(X_i, X_j)$ en $G$ con $|"adj"(G, X_i) \\ {X_j}| >= l$ *do* \
   #h(3.0em) *for* #h(2pt) cada subconjunto $S subset.eq "adj"(G, X_i) \\ {X_j}$ con $|S| = l$ *do* \
-  #h(4.5em) *if* #h(2pt) test de independencia $X_i perp perp X_j mid S$ no se rechaza a nivel $alpha$ *then* \
+  #h(4.5em) *if* #h(2pt) test de independencia $X_i perp perp X_j | S$ no se rechaza a nivel $alpha$ *then* \
   #h(6.0em) Eliminar arista $(X_i, X_j)$ de $G$ \
   #h(6.0em) Registrar $S$ como _set separador_ $"sep"(X_i, X_j)$ \
   #h(6.0em) $"eliminados" <- "eliminados" + 1$ \
@@ -102,7 +119,7 @@ El test de independencia condicional puede ser un test de correlación parcial (
 === NOTEARS
 <sec-cap15_notears>
 
-@zheng2018dags reformulan el descubrimiento causal como optimización continua. La aciclicidad se impone con la restricción:
+#cite(<zheng2018dags>, form: "prose") reformulan el descubrimiento causal como optimización continua. La aciclicidad se impone con la restricción:
 $
 h(bold(W)) = "tr"(e^(bold(W) circle bold(W))) - p = 0,
 $ <eq-notears-constraint>
@@ -257,7 +274,7 @@ La figura @fig-cap15-dag muestra dos elementos complementarios. El panel izquier
 - El camino tiene un *fork* ($X arrow.l Z arrow.r Y$): $Z$ debe estar en el conjunto.
 - El camino tiene un *collider* ($X arrow.r Z arrow.l Y$): $Z$ NO debe estar en el conjunto.
 
-Si todos los caminos entre $X$ e $Y$ están bloqueados, $X perp perp Y mid Z$.
+Si todos los caminos entre $X$ e $Y$ están bloqueados, $X perp perp Y | Z$.
 
 *Evaluación de grafos estimados.* Cuando simulamos datos con un grafo verdadero, podemos comparar:
 - *SHD (Structural Hamming Distance):* cuántas aristas (presentes o ausentes) difieren entre el grafo verdadero y el estimado.
@@ -299,8 +316,12 @@ Si todos los caminos entre $X$ e $Y$ están bloqueados, $X perp perp Y mid Z$.
 Causal discovery en economía es difícil por la presencia ubicua de confusores no observados. Los métodos son útiles como _exploración_ de estructura, no como reemplazo del razonamiento económico sustantivo. Adicionalmente, los tres errores siguientes son frecuentes en la práctica aplicada:
 
 + *Interpretar la CPDAG como DAG.* PC produce una clase de equivalencia; algunas aristas no se pueden orientar observacionalmente. Presentar el grafo como si todas las aristas estuvieran dirigidas induce una falsa certeza sobre la direccionalidad causal.
-+ *Aplicar NOTEARS sin normalizar variables.* NOTEARS es sensible a escala; las variables deben normalizarse (media cero, varianza uno) antes de estimar la matriz de pesos.
++ *Aplicar NOTEARS sin normalizar variables.* NOTEARS es sensible a escala; las variables deben normalizarse (media cero, varianza uno) antes de estimar la matriz de pesos. Este punto es más grave de lo que sugiere su formulación como consejo de preprocesamiento: en un modelo lineal-gaussiano, reescalar las variables cambia el grafo que el criterio de NOTEARS considera óptimo, de modo que el "descubrimiento" puede estar reflejando las unidades de medida y no la estructura causal.
 + *Usar un solo umbral de significación.* La elección de $alpha$ en PC (o $lambda$ en NOTEARS) tiene un efecto grande sobre la densidad del grafo. Reportar siempre un análisis de sensibilidad con múltiples valores.
+
+*Sobre el tercer punto, con más peso del que suele dársele.* #cite(<machlanski2024robustness>, form: "prose") evalúan sistemáticamente la sensibilidad de los algoritmos de descubrimiento a sus hiperparámetros y encuentran que el efecto de esa elección es *comparable o mayor* que las diferencias entre algoritmos: el ranking de métodos publicado en un _benchmark_ puede invertirse ajustando los hiperparámetros de forma distinta pero igualmente razonable. La implicación metodológica es incómoda y conviene asumirla: buena parte de las comparaciones "algoritmo A supera a algoritmo B" en esta literatura no es replicable fuera de la configuración exacta del estudio original.
+
+Para la práctica de este curso se siguen dos reglas. Primera, *ningún grafo descubierto se reporta como un objeto único*: se reporta la familia de grafos obtenida al variar $alpha$ (o $lambda$) en un rango declarado, y las aristas se clasifican por su estabilidad a través de esa familia y de submuestras bootstrap. Segunda, *el output del descubrimiento no alimenta directamente la estimación*: una arista descubierta es una hipótesis para discutir con conocimiento de dominio, no un supuesto de identificación validado. Dejar que un algoritmo de descubrimiento fije el conjunto de puerta trasera que luego usará el DML es trasladar al algoritmo exactamente la responsabilidad que el @cap-scm-pch demostró que no puede tener.
 
 == Ejercicios propuestos
 <sec-cap15_ejercicios>
@@ -316,4 +337,6 @@ Causal discovery en economía es difícil por la presencia ubicua de confusores 
 == Lecturas complementarias
 <sec-cap15_lecturas>
 
-@pearl2009causality es la referencia canónica. @spirtes2000causation para el algoritmo PC. @zheng2018dags para NOTEARS. @sharma2020dowhy documenta #code[dowhy]. Para la implementación en Python, #code[causal-learn] (#link("https://github.com/py-why/causal-learn")[https://github.com/py-why/causal-learn]) es la librería de referencia con implementaciones de PC, FCI, NOTEARS y otros algoritmos de descubrimiento causal.
+#cite(<pearl2009causality>, form: "prose") es la referencia canónica para DAGs, $d$-separación y clases de equivalencia. #cite(<spirtes2000causation>, form: "prose") introduce el algoritmo PC y el marco de descubrimiento basado en restricciones; #cite(<kalisch2007estimating>, form: "prose") establece su consistencia en alta dimensión y es la referencia a citar cuando se aplica PC con $p$ grande. #cite(<chickering2002optimal>, form: "prose") demuestra la consistencia de GES y es la entrada a la familia de métodos basados en score, complementaria a las otras dos. #cite(<zheng2018dags>, form: "prose") reformulan el problema como optimización continua con la restricción de aciclicidad diferenciable (NOTEARS).
+
+Sobre los límites prácticos del campo, #cite(<machlanski2024robustness>, form: "prose") documentan la sensibilidad a hiperparámetros discutida en la @sec-cap15_riesgos y son lectura obligada antes de tomar cualquier _benchmark_ de descubrimiento al pie de la letra. #cite(<sharma2020dowhy>, form: "prose") documenta #code[dowhy]. Para la implementación en Python, #code[causal-learn] (#link("https://github.com/py-why/causal-learn")[https://github.com/py-why/causal-learn]) es la librería de referencia, con implementaciones de PC, FCI, GES, NOTEARS y otros algoritmos de descubrimiento causal.

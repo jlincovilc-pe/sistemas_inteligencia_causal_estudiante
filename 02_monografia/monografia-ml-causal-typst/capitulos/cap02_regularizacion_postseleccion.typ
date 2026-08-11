@@ -1,4 +1,5 @@
-// Capítulo 2 — Regularización, selección de variables y sesgo post-selección
+// Capítulo 6 — Regularización, selección de variables y sesgo post-selección
+// (Parte I. La numeración `cap02` del nombre de archivo es histórica.)
 #import "../template/template.typ": *
 
 #chapter[Regularización, selección de variables y sesgo post-selección]
@@ -12,14 +13,14 @@
     columns: (auto, 1fr),
     align: (left, left),
     stroke: none,
-    [*[Problema]*], [Sesgo post-selección al inferir después de seleccionar variables],
-    [*[Estimando]*], [$theta_0$ en regresión de alta dimensión],
-    [*[Identificación]*], [Sparsity aproximada],
-    [*[Método]*], [LASSO, Post-LASSO OLS],
-    [*[Nuisance]*], [Selección de variables],
-    [*[Garantía]*], [Consistencia de selección bajo irrepresentabilidad],
-    [*[Librerías]*], [scikit-learn, statsmodels],
-    [*[Validación]*], [Monte Carlo, sensibilidad a $lambda$],
+    [*Problema:*], [Sesgo post-selección al inferir después de seleccionar variables],
+    [*Estimando:*], [$theta_0$ en regresión de alta dimensión],
+    [*Identificación:*], [Sparsity aproximada],
+    [*Método:*], [LASSO, Post-LASSO OLS],
+    [*Nuisance:*], [Selección de variables],
+    [*Garantía:*], [Tasa $ell_2$ bajo _restricted eigenvalue_ (@bickel2009simultaneous, Bickel et al. 2009); consistencia de *selección* solo bajo irrepresentabilidad (@zhao2006model, Zhao & Yu 2006, condición mucho más fuerte)],
+    [*Librerías:*], [scikit-learn, statsmodels],
+    [*Validación:*], [Monte Carlo, sensibilidad a $lambda$],
   )
 ]
 
@@ -54,7 +55,7 @@ Para que LASSO sea consistente en alta dimensión, se requiere el supuesto de _s
 Consideremos el modelo lineal de alta dimensión $bold(Y) = bold(X) beta + epsilon$ con $bold(X) in R^(n times p)$ y $beta in R^p$. Cuando $p$ es comparable a $n$ o mayor, OLS tiene alta varianza o no está siquiera definido ($p > n$). Los estimadores penalizados resuelven esto añadiendo una penalización que contrae los coeficientes hacia cero.
 
 #definition(name: [LASSO])[
-  El estimador LASSO (@tibshirani1996lasso) resuelve
+  El estimador LASSO @tibshirani1996lasso resuelve
   $
   hat(beta)_("LASSO") = "argmin"_(beta in R^p) { (1 / (2n)) norm(Y - X beta)_2^2 + lambda norm(beta)_1 },
   $
@@ -62,14 +63,14 @@ Consideremos el modelo lineal de alta dimensión $bold(Y) = bold(X) beta + epsil
 ] <def-lasso>
 
 #definition(name: [Ridge])[
-  El estimador Ridge (@hoerl1970ridge) usa penalización $ell_2$:
+  El estimador Ridge @hoerl1970ridge usa penalización $ell_2$:
   $
   hat(beta)_("Ridge") = "argmin"_beta { (1 / (2n)) norm(Y - X beta)_2^2 + lambda norm(beta)_2^2 }.
   $
 ] <def-ridge>
 
 #definition(name: [Elastic Net])[
-  Elastic Net (@zou2005elasticnet) combina ambas penalizaciones:
+  Elastic Net @zou2005elasticnet combina ambas penalizaciones:
   $
   hat(beta)_("EN") = "argmin"_beta { (1 / (2n)) norm(Y - X beta)_2^2 + lambda [ alpha norm(beta)_1 + (1 - alpha) norm(beta)_2^2 ] },
   $
@@ -91,11 +92,28 @@ Bajo sparsity y condiciones regulares (designado _restricted eigenvalue conditio
   $
 ] <thm-lasso-rate>
 
-La tasa $sqrt(s log p / n)$ es óptima en el sentido minimax. Sin embargo, el teorema garantiza consistencia en norma $ell_2$ — no consistencia componente a componente. Esto es crucial: aunque $hat(beta)_("LASSO")$ se acerca a $beta_0$ en norma global, las componentes individuales pueden tener sesgo sustancial, especialmente las que LASSO selecciona incorrectamente.
+La tasa $sqrt(s log p / n)$ es óptima en el sentido minimax. Sin embargo, el teorema garantiza consistencia en norma $ell_2$ — no consistencia componente a componente, y mucho menos consistencia del *conjunto seleccionado*. Esto es crucial: aunque $hat(beta)_("LASSO")$ se acerca a $beta_0$ en norma global, las componentes individuales pueden tener sesgo sustancial, especialmente las que LASSO selecciona incorrectamente.
+
+==== Recuperar el soporte exige mucho más que recuperar el vector
+
+Conviene separar nítidamente dos garantías que se confunden con frecuencia, porque la diferencia entre ambas es exactamente lo que motiva el resto del capítulo. El teorema de la tasa de convergencia acota el error de *estimación* bajo la _restricted eigenvalue condition_ de @bickel2009simultaneous, una condición relativamente débil que solo exige que la matriz de diseño se comporte bien en un cono alrededor del soporte verdadero. Recuperar el *soporte* $S_0 = {j : beta_(0,j) != 0}$ —es decir, que $hat(S) = S_0$ con probabilidad tendiente a uno— requiere una condición estrictamente más fuerte sobre la correlación entre variables dentro y fuera del soporte.
+
+#assumption(name: [Condición de irrepresentabilidad])[
+  Sea $X_(S_0)$ la submatriz de columnas activas y $X_(S_0^c)$ la de las inactivas. Existe $eta in (0,1]$ tal que
+  $
+  norm(X_(S_0^c)^T X_(S_0) (X_(S_0)^T X_(S_0))^(-1) "sign"(beta_(0,S_0)))_infinity <= 1 - eta.
+  $
+] <asu-irrepresentable>
+
+#theorem(name: [Consistencia de selección del LASSO])[
+  Bajo la condición de irrepresentabilidad anterior, condiciones de regularidad sobre el ruido y un $lambda$ apropiadamente elegido, el LASSO es _sign-consistent_: $P("sign"(hat(beta)_("LASSO")) = "sign"(beta_0)) -> 1$. Recíprocamente, si la condición se viola con desigualdad estricta en la dirección opuesta, el LASSO *no* recupera el soporte verdadero con probabilidad tendiente a uno, para ningún valor de $lambda$.
+] <thm-irrepresentable>
+
+Este resultado, de #cite(<zhao2006model>, form: "prose"), es una mala noticia disfrazada de teorema: la condición de irrepresentabilidad es esencialmente *no verificable* en la práctica (depende de $S_0$, que es justamente lo desconocido) y falla precisamente en el escenario que más importa para inferencia causal —cuando una variable irrelevante está fuertemente correlacionada con las confusoras verdaderas—. La parte recíproca es la clave: no se trata de que el LASSO necesite más datos, sino de que existen diseños donde ninguna elección de $lambda$ recupera el soporte. La lección operativa para el resto del curso es directa: *nunca se debe interpretar el conjunto seleccionado por LASSO como "las variables que verdaderamente importan"*, y ningún procedimiento causal debería depender de que la selección sea exactamente correcta. Post-Double-Selection (@cap-pds) está diseñado exactamente bajo esa premisa: no necesita $hat(S) = S_0$, solo necesita que $hat(S)$ *contenga* las confusoras relevantes con alta probabilidad.
 
 ==== El problema de Leeb & Pötscher
 
-@leeb2006can demostraron un resultado perturbador: la inferencia post-selección basada en LASSO es fundamentalmente problemática. La intuición es la siguiente. Supongamos que LASSO selecciona un conjunto $hat(S) subset.eq {1, ..., p}$ de variables activas. Si luego corremos OLS sobre $hat(S)$ y reportamos IC al 95% basados en la distribución $t$-Student estándar, la cobertura real puede ser dramáticamente inferior.
+#cite(<leeb2006can>, form: "prose") demostraron un resultado perturbador: la inferencia post-selección basada en LASSO es fundamentalmente problemática. La intuición es la siguiente. Supongamos que LASSO selecciona un conjunto $hat(S) subset.eq {1, ..., p}$ de variables activas. Si luego corremos OLS sobre $hat(S)$ y reportamos IC al 95% basados en la distribución $t$-Student estándar, la cobertura real puede ser dramáticamente inferior.
 
 #theorem(name: [Leeb & Pötscher, informal])[
   Para procedimientos de selección de modelo consistentes, la cobertura de intervalos construidos después de la selección no es uniforme en el parámetro. Para cualquier nivel nominal $1 - alpha$ y cualquier $epsilon > 0$, existen secuencias de parámetros y distribuciones de los datos tales que la cobertura límite del intervalo post-selección es inferior a $epsilon$. En particular, la cobertura real puede ser arbitrariamente menor que la nominal.
@@ -105,9 +123,19 @@ La tasa $sqrt(s log p / n)$ es óptima en el sentido minimax. Sin embargo, el te
   Imagine que el verdadero $beta_j$ es positivo pero muy pequeño. LASSO lo selecciona solo si la estimación preliminar de $beta_j$ es suficientemente grande. Condicionado a ser seleccionado, $hat(beta)_j$ tiende a ser mayor que $beta_j$ — un sesgo de selección análogo al sesgo de publicación. El IC post-selección, al no condicionar en este hecho, queda centrado en un valor sesgado.
 ]
 
+==== Dos familias de respuestas a la inferencia post-selección
+
+La literatura posterior a Leeb y Pötscher desarrolló dos estrategias distintas frente a este problema, y conviene situar la del curso dentro de ese mapa antes de continuar.
+
+La primera es la *inferencia selectiva condicional*: aceptar que la selección ocurrió y hacer inferencia sobre la distribución de $hat(beta)_j$ *condicionada al evento de selección*. #cite(<lee2016exact>, form: "prose") muestran que, para el LASSO con $lambda$ fijo, ese evento de selección es un politopo en el espacio de $Y$, lo que permite construir intervalos con cobertura exacta condicional mediante una distribución normal truncada. Es una solución elegante, pero condiciona en un evento aleatorio y produce intervalos que pueden ser muy anchos.
+
+La segunda es la *de-biasing* o *desregularización*: corregir explícitamente el sesgo que la penalización introduce en la componente de interés, construyendo un estimador $hat(beta)_j^("db")$ asintóticamente normal y centrado. #cite(<zhang2014confidence>, form: "prose") y #cite(<vandegeer2014asymptotically>, form: "prose") desarrollan esta vía, que produce inferencia *no condicional* y uniformemente válida sobre el parámetro de interés.
+
+La segunda familia es la relevante para este curso, y por una razón conceptual, no solo técnica: en un problema causal no interesa hacer inferencia sobre "las variables que el LASSO seleccionó" sino sobre un parámetro estructural fijado *antes* de mirar los datos —el efecto de $D$ sobre $Y$—. Post-Double-Selection (@cap-pds) y Double Machine Learning (@cap-dml) son, ambos, instancias de la lógica de de-biasing: el primero corrige la selección incluyendo dos veces; el segundo, ortogonalizando el score. Ninguno de los dos intenta hacer que el LASSO seleccione bien; ambos construyen procedimientos cuya validez *no depende* de que lo haga.
+
 ==== Soluciones: de la selección ingenua al Post-Double-Selection
 
-@belloni2014inference propusieron una solución elegante al problema del sesgo post-selección en contextos causales. La idea central es _no seleccionar variables una sola vez_, sino _dos veces_: una para predecir $Y$ a partir de $X$, otra para predecir $D$ a partir de $X$. Luego se corre OLS de $Y$ sobre $D$ y la unión de las variables seleccionadas en ambos pasos.
+#cite(<belloni2014inference>, form: "prose") propusieron una solución elegante al problema del sesgo post-selección en contextos causales. La idea central es _no seleccionar variables una sola vez_, sino _dos veces_: una para predecir $Y$ a partir de $X$, otra para predecir $D$ a partir de $X$. Luego se corre OLS de $Y$ sobre $D$ y la unión de las variables seleccionadas en ambos pasos.
 
 #theorem(name: [Post-Double-Selection LASSO, informal])[
   Bajo los supuestos de sparsity aproximada y regularidad estándar, el estimador PDS es asintóticamente normal:
@@ -225,7 +253,7 @@ El _output_ típico muestra un sesgo de aproximadamente $-0.05$ a $-0.10$ y cobe
 
   *Idea intuitiva.* Para estimar el efecto de $D$ sobre $Y$, primero "limpiamos" $Y$ y $D$ de la influencia de $X$:
   $
-  tilde(Y) = Y - E[Y mid X], quad tilde(D) = D - E[D mid X]
+  tilde(Y) = Y - E[Y | X], quad tilde(D) = D - E[D | X]
   $
   Luego estimamos $theta$ con la regresión de $tilde(Y)$ sobre $tilde(D)$ sin intercepto. Esto se llama *partialling-out* (Frisch-Waugh-Lovell).
 
@@ -235,7 +263,7 @@ El _output_ típico muestra un sesgo de aproximadamente $-0.05$ a $-0.10$ y cobe
   + Unión: $S = S_Y union S_D$ (variables que predicen cualquiera de los dos)
   + OLS de $Y$ sobre $D$ + controles en $S$
 
-  *¿Por qué funciona?* Una confusora afecta TANTO a $Y$ COMO a $D$. Si seleccionamos las que afectan a cada uno, capturamos todas las confusoras relevantes. El "doble" lasso es la base del Post-Double-Selection (Capítulo 8).
+  *¿Por qué funciona?* Una confusora afecta TANTO a $Y$ COMO a $D$. Si seleccionamos las que afectan a cada uno, capturamos todas las confusoras relevantes. El "doble" lasso es la base del Post-Double-Selection, desarrollado en el @cap-pds.
 ]
 
 #figure(
@@ -261,7 +289,7 @@ def partialling_out_theta(Y, D, X):
 == Caso empírico y validación
 <sec-cap02_caso>
 
-@belloni2014inference aplicaron PDS al dataset de @card1995 sobre retornos a la educación. Encuentran un efecto positivo y significativo del orden de las estimaciones 2SLS clásicas, con diferencias moderadas entre PDS y los estimadores IV con controles seleccionados manualmente; las cifras exactas dependen del set de instrumentos y controles considerados y no se reproducen aquí para evitar imprecisiones.
+#cite(<belloni2014inference>, form: "prose") aplicaron PDS al dataset de @card1995 sobre retornos a la educación. Encuentran un efecto positivo y significativo del orden de las estimaciones 2SLS clásicas, con diferencias moderadas entre PDS y los estimadores IV con controles seleccionados manualmente; las cifras exactas dependen del set de instrumentos y controles considerados y no se reproducen aquí para evitar imprecisiones.
 
 *Réplica propia sobre el dataset del repositorio.* Sobre #code[close_college] ($n = 3\,003$), OLS con controles básicos da un coeficiente de 0.071 (HC1, IC 95% [0.064, 0.078]); IV 2SLS con #code[nearc4] da 0.124 (IC 95% [0.028, 0.221]); DML-PLIV con #code[GradientBoostingRegressor] da 0.145 (IC 95% [0.052, 0.237]). Estas son cifras de réplica propia, no del _paper_ original.
 
@@ -305,6 +333,12 @@ Sobre el dataset #code[nhefs] del repositorio, que tiene 51 covariables utilizab
 
 + *Reportar ambos:* presentar siempre el estimador de Post-LASSO OLS junto con el de PDS para transparentar el efecto de la doble selección.
 
+== Inferencia post-selección
+
+La construcción de intervalos de confianza **válidos tras selección de variables** requiere métodos especializados que corrijan el sesgo condicional: @lee2016exact (Lee et al. 2016) para inferencia exacta post-LASSO, @zhang2014confidence (Zhang & Zhang 2014) para parámetros de baja dimensión en modelos de alta dimensión, y @vandegeer2014asymptotically (van de Geer et al. 2014) para regiones de confianza asintóticamente óptimas.
+
+En la práctica del curso, el enfoque DML (Cap. 11) **evita este problema** mediante cross-fitting y scores ortogonales: la selección de variables ocurre en datos auxiliares separados, preservando la validez de la inferencia.
+
 == Ejercicios y notas bibliográficas
 <sec-cap02_ejercicios>
 
@@ -320,4 +354,4 @@ Sobre el dataset #code[nhefs] del repositorio, que tiene 51 covariables utilizab
 
 + Compare PDS con el partialling-out ingenuo (un solo LASSO de $Y$ sobre $[D, X]$). Muestre que el partialling-out ingenuo tiene sesgo mientras que PDS no, en un Monte Carlo con $p=100$ y $s=5$.
 
-@tibshirani1996lasso y @hoerl1970ridge son las referencias originales. @hastie2015statistical ofrece un tratamiento moderno de regularización en alta dimensión. @leeb2006can y @potscher2009confidence son las referencias obligatorias sobre el problema de inferencia post-selección. @belloni2014inference introduce Post-Double-Selection. Para una revisión pedagógica, @chernozhukov2018applied.
+#cite(<tibshirani1996lasso>, form: "prose") y #cite(<hoerl1970ridge>, form: "prose") son las referencias originales. #cite(<hastie2015statistical>, form: "prose") ofrece un tratamiento moderno de regularización en alta dimensión. #cite(<bickel2009simultaneous>, form: "prose") establece la tasa $ell_2$ bajo _restricted eigenvalue_ y #cite(<zhao2006model>, form: "prose") la condición de irrepresentabilidad y su recíproca para la consistencia de selección; leer ambos en secuencia es la forma más económica de internalizar por qué "el LASSO funciona" significa cosas muy distintas según qué se pida de él. #cite(<leeb2006can>, form: "prose") y #cite(<potscher2009confidence>, form: "prose") son las referencias obligatorias sobre el problema de inferencia post-selección; #cite(<lee2016exact>, form: "prose") desarrolla la vía de inferencia selectiva condicional, y #cite(<zhang2014confidence>, form: "prose") junto con #cite(<vandegeer2014asymptotically>, form: "prose") la de _de-biasing_, que es la que este curso sigue. #cite(<belloni2014inference>, form: "prose") introduce Post-Double-Selection. Para una revisión pedagógica, @chernozhukov2018applied.

@@ -298,8 +298,16 @@ def fit_plr_econml(
     ci_low = ci_high = None
     try:
         inf = est.const_marginal_ate_inference()
-        se = float(np.asarray(inf.stderr).reshape(-1)[0])
-        band = inf.conf_int(alpha=0.05)
+        # With X=None (intercept-only ATE), econml returns a
+        # PopulationSummaryResults, whose stderr/CI live under the
+        # "_mean" names (stderr_mean / conf_int_mean), not the
+        # per-point NormalInferenceResults names (stderr / conf_int).
+        if hasattr(inf, "stderr_mean"):
+            se = float(np.asarray(inf.stderr_mean).reshape(-1)[0])
+            band = inf.conf_int_mean(alpha=0.05)
+        else:
+            se = float(np.asarray(inf.stderr).reshape(-1)[0])
+            band = inf.conf_int(alpha=0.05)
         # conf_int may be (2,) or nested
         band_arr = np.asarray(band, dtype=float).reshape(-1)
         if band_arr.size >= 2:

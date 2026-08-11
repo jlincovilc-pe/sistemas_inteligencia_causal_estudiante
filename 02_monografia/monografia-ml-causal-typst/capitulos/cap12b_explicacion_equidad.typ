@@ -12,13 +12,13 @@
     columns: (auto, 1fr),
     align: (left, left),
     stroke: none,
-    [*[Problema]*], [Descomponer el efecto de un atributo protegido en rutas directas e indirectas],
-    [*[Estimando]*], [Efectos específicos por ruta (_path-specific effects_, PSE)],
-    [*[Identificación]*], [Grafo causal con rutas etiquetadas como legítimas o discriminatorias],
-    [*[Método]*], [Fórmulas de mediación de Pearl; equidad contrafactual],
-    [*[Garantía]*], [Descomposición exacta del efecto total en directo + indirecto + espurio bajo el grafo supuesto],
-    [*[Librerías]*], [`dowhy` (estimación de mediación)],
-    [*[Validación]*], [Sensibilidad al grafo de rutas propuesto],
+    [*Problema:*], [Descomponer el efecto de un atributo protegido en rutas directas e indirectas],
+    [*Estimando:*], [Efectos específicos por ruta (_path-specific effects_, PSE)],
+    [*Identificación:*], [Grafo causal con rutas etiquetadas como legítimas o discriminatorias],
+    [*Método:*], [Fórmulas de mediación de Pearl; equidad contrafactual],
+    [*Garantía:*], [Descomposición exacta del efecto total en directo + indirecto + espurio bajo el grafo supuesto],
+    [*Librerías:*], [`dowhy` (estimación de mediación)],
+    [*Validación:*], [Sensibilidad al grafo de rutas propuesto],
   )
 ]
 
@@ -36,7 +36,7 @@ El @cap-etica-interpretabilidad, que sigue a este capítulo, trata la interpreta
 Considere un atributo protegido $A$ (por ejemplo, género), una variable mediadora $M$ que $A$ afecta legítimamente (por ejemplo, elección de ocupación) y un resultado $Y$ (por ejemplo, salario). El efecto total de $A$ sobre $Y$ se descompone en:
 
 #definition(name: [Descomposición directo/indirecto])[
-El *efecto directo controlado* (_controlled direct effect_, CDE) de $A$ sobre $Y$ fijando $M=m$ es $"CDE"(m) = E[Y mid "do"(A=1, M=m)] - E[Y mid "do"(A=0, M=m)]$: el efecto de $A$ sobre $Y$ que *no* pasa por $M$. El *efecto indirecto natural* (_natural indirect effect_, NIE) es la porción del efecto que sí pasa por el cambio que $A$ induce en $M$.
+El *efecto directo controlado* (_controlled direct effect_, CDE) de $A$ sobre $Y$ fijando $M=m$ es $"CDE"(m) = E[Y | "do"(A=1, M=m)] - E[Y | "do"(A=0, M=m)]$: el efecto de $A$ sobre $Y$ que *no* pasa por $M$. El *efecto indirecto natural* (_natural indirect effect_, NIE) es la porción del efecto que sí pasa por el cambio que $A$ induce en $M$.
 ]
 
 La pregunta de equidad no es si el efecto total de $A$ sobre $Y$ es distinto de cero —eso puede ser enteramente legítimo si pasa por una ruta que la organización considera aceptable (por ejemplo, si mujeres y hombres eligen, en promedio, ocupaciones distintas por preferencia genuina, y esas ocupaciones legítimamente pagan distinto)— sino si el *efecto directo*, la parte de $A$ sobre $Y$ que no pasa por ningún mediador legítimo, es distinto de cero. Un efecto directo significativo es la firma causal de discriminación, en el sentido más estricto y defendible del término.
@@ -44,7 +44,11 @@ La pregunta de equidad no es si el efecto total de $A$ sobre $Y$ es distinto de 
 === Equidad contrafactual
 <sec-explicacionequidad-contrafactual>
 
-@kusner2017counterfactual formaliza una noción de equidad en el Nivel 3 de la PCH (@cap-scm-pch): una decisión $hat(Y)$ es *contrafactualmente justa* si, para cada individuo, $hat(Y)$ no habría sido distinta en el mundo contrafactual donde su atributo protegido fuera diferente, manteniendo todo lo demás que no dependiera causalmente de $A$ igual. Es una noción más exigente que la paridad demográfica o la igualdad de tasas de error entre grupos —ambas puramente asociativas, de Nivel 1— porque exige razonar sobre el mundo contrafactual específico de cada individuo, no solo sobre promedios poblacionales.
+#cite(<kusner2017counterfactual>, form: "prose") formaliza una noción de equidad en el Nivel 3 de la PCH (@cap-scm-pch): una decisión $hat(Y)$ es *contrafactualmente justa* si, para cada individuo, $hat(Y)$ no habría sido distinta en el mundo contrafactual donde su atributo protegido fuera diferente, manteniendo todo lo demás que no dependiera causalmente de $A$ igual. Es una noción más exigente que la paridad demográfica o la igualdad de tasas de error entre grupos —ambas puramente asociativas, de Nivel 1— porque exige razonar sobre el mundo contrafactual específico de cada individuo, no solo sobre promedios poblacionales.
+
+#cite(<kilbertus2017avoiding>, form: "prose") desarrollan la contraparte de Nivel 2 de esta idea y añaden una distinción que resulta operativa en el diseño de sistemas: la de *discriminación por proxy* frente a *influencia injusta no resuelta*. Un *proxy* es una variable que el algoritmo observa y que es descendiente del atributo protegido —el código postal como proxy de raza, el patrón de compras como proxy de género—; la discriminación por proxy se puede *eliminar por construcción*, interviniendo sobre el proxy en el modelo de decisión de modo que la ruta $A arrow.r "proxy" arrow.r hat(Y)$ quede cortada, sin necesidad de observar $A$. La *influencia no resuelta*, en cambio, es la que viaja por rutas que la organización no ha declarado legítimas pero que tampoco pasan por ninguna variable observable intervenible; esa no se puede eliminar con una restricción sobre el modelo, y exige una decisión normativa previa sobre qué rutas se aceptan.
+
+La consecuencia práctica para el diseño de un sistema causal en producción es directa. Ante un algoritmo que discrimina, hay dos remedios de naturaleza distinta: uno *técnico*, que consiste en identificar los proxies en el grafo y neutralizarlos —factible, automatizable y verificable—; y uno *normativo*, que consiste en declarar qué rutas causales se consideran aceptables —que ningún método puede automatizar, y que este capítulo insiste en no disfrazar de decisión técnica—. Confundir ambos es el error característico de las auditorías de equidad que se limitan a eliminar variables sensibles del modelo: quitan $A$ y dejan intactos todos sus proxies, sin haber tocado ninguna de las dos fuentes reales del problema.
 
 == Algoritmo e implementación
 <sec-explicacionequidad-algoritmo>
@@ -118,4 +122,12 @@ Un caso clásico en la literatura de equidad algorítmica es la brecha salarial 
 === Notas bibliográficas
 <sec-explicacionequidad-notas>
 
-Las fórmulas de mediación causal y la descomposición directo/indirecto/espurio se desarrollan en @pearl2009causality y se sistematizan para el caso de equidad algorítmica en @bareinboim2025causalai, Capítulo 6. @kusner2017counterfactual introduce la equidad contrafactual como criterio formal de Nivel 3. La descomposición Oaxaca-Blinder, antecesora estadística de esta idea en economía laboral, se cubre en cualquier texto estándar de econometría aplicada.
+Las fórmulas de mediación causal y la descomposición directo/indirecto/espurio se desarrollan en @pearl2009causality y se sistematizan para el caso de equidad algorítmica en @bareinboim2025causalai, Capítulo 6. #cite(<kusner2017counterfactual>, form: "prose") introduce la equidad contrafactual como criterio formal de Nivel 3, y #cite(<kilbertus2017avoiding>, form: "prose") la contraparte de Nivel 2 con la distinción proxy / influencia no resuelta que estructura la @sec-explicacionequidad-contrafactual. El @cap-etica-interpretabilidad complementa este tratamiento causal con las definiciones observacionales estándar de la literatura de _fair machine learning_ —paridad demográfica, _equalized odds_, calibración— y con el resultado de imposibilidad que muestra que no pueden satisfacerse simultáneamente. La descomposición Oaxaca-Blinder, antecesora estadística de esta idea en economía laboral, se cubre en cualquier texto estándar de econometría aplicada.
+
+=== Literatura complementaria de equidad causal
+
+Otros enfoques incluyen:
+- *Evitar discriminación mediante razonamiento causal* (@kilbertus2017avoiding, Kilbertus et al. 2017): construcción de grafos causales para identificar rutas de discriminación proxy
+- *Descomposición de efectos en fairness:* trabajos de Nabi & Shpitser, y Zhang & Bareinboim sobre path-specific effects para separar discriminación directa vs. indirecta
+
+La integración de fairness y causalidad es un área de investigación activa; ver @kusner2017counterfactual para fairness contrafactual.

@@ -12,11 +12,11 @@
     columns: (auto, 1fr),
     align: (left, left),
     stroke: none,
-    [*[Decisión]*], [Auditar cada _feature_ candidata contra el grafo causal antes de incluirla, no solo contra su poder predictivo],
-    [*[Alternativas]*], [Selección de _features_ por importancia predictiva vs. selección por rol causal],
-    [*[Trade-off clave]*], [Una _feature_ que mejora el ajuste predictivo puede empeorar la estimación causal],
-    [*[Stack]*], [pandas, el `CausalSchema` del @cap-ingenieria-datos-causales],
-    [*[Riesgo principal]*], [_Fuga_ (_leakage_) de información post-tratamiento disfrazada de covariable],
+    [*Decisión:*], [Auditar cada _feature_ candidata contra el grafo causal antes de incluirla, no solo contra su poder predictivo],
+    [*Alternativas:*], [Selección de _features_ por importancia predictiva vs. selección por rol causal],
+    [*Trade-off clave:*], [Una _feature_ que mejora el ajuste predictivo puede empeorar la estimación causal],
+    [*Stack:*], [pandas, el `CausalSchema` del @cap-ingenieria-datos-causales],
+    [*Riesgo principal:*], [_Fuga_ (_leakage_) de información post-tratamiento disfrazada de covariable],
   )
 ]
 
@@ -40,7 +40,12 @@ La ingeniería de _features_ estándar —la de @huyen2022dmls Capítulo 5— ev
 == Decisión de referencia para el curso
 <sec-featuresfuga-decision>
 
-Todo notebook de estimación del curso extiende el `CausalSchema` del @cap-ingenieria-datos-causales con una etapa de *auditoría de features* obligatoria antes de construir cualquier matriz de covariables $X$: cada columna candidata se anota con su rol supuesto (confusor / post-tratamiento / desconocido) y solo las anotadas como confusor —o "desconocido, incluida con advertencia explícita para análisis de sensibilidad"— entran en $X$.
+Todo notebook de estimación del curso extiende el `CausalSchema` del @cap-ingenieria-datos-causales con una etapa de *auditoría de features* obligatoria antes de construir cualquier matriz de covariables $X$: cada columna candidata se anota con su rol supuesto (confusor / mediador / collider / post-tratamiento / desconocido) y la auditoría produce, no una sino *dos* especificaciones de $X$:
+
+- $X_"base"$, con las variables anotadas como *confusor* y medidas antes del tratamiento. Es la especificación sobre la que se reporta la estimación principal.
+- $X_"ampliada" = X_"base" union {"desconocido"}$, que añade las candidatas cuyo rol el analista no pudo determinar, siempre que sean pre-tratamiento. Es la especificación sobre la que se reporta el *análisis de sensibilidad*.
+
+Las anotadas como mediador, collider o post-tratamiento no entran en ninguna de las dos. La razón de exigir dos especificaciones en lugar de una regla única es que las dos decisiones posibles sobre una variable de rol desconocido tienen riesgos opuestos y no comparables: excluirla arriesga sesgo por confusión omitida; incluirla arriesga sesgo por mal control. Ningún criterio automático resuelve esa disyuntiva, pero reportar ambas estimaciones convierte la duda en información —si el efecto es estable entre $X_"base"$ y $X_"ampliada"$, la ambigüedad de rol no era material; si no lo es, el capítulo entero de identificación tiene que reabrirse antes de publicar nada.
 
 == Implementación de referencia
 <sec-featuresfuga-implementacion>
@@ -51,31 +56,67 @@ Todo notebook de estimación del curso extiende el `CausalSchema` del @cap-ingen
   ```python
 import pandas as pd
 
+# Roles que NUNCA entran en X: su inclusion sesga la estimacion
+# (ver la clasificacion de controles del capitulo anterior).
+ROLES_PROHIBIDOS = {"mediador", "collider", "post_tratamiento"}
+
 def auditar_features(df: pd.DataFrame, treatment_time_col: str,
-                      feature_time_cols: dict[str, str],
-                      roles_declarados: dict[str, str]) -> pd.DataFrame:
+                     feature_time_cols: dict[str, str],
+                     roles_declarados: dict[str, str]) -> pd.DataFrame:
     """Marca cada feature con riesgo de fuga temporal (medida despues
-    del tratamiento) y con su rol causal declarado por el analista."""
+    del tratamiento) y con su rol causal declarado por el analista.
+
+    Devuelve dos indicadores de inclusion, no uno:
+      - incluir_en_X_base:     especificacion principal (solo confusores)
+      - incluir_en_X_ampliada: especificacion de sensibilidad (base + rol
+                               desconocido, siempre pre-tratamiento)
+    """
     filas = []
     for feature, tiempo_col in feature_time_cols.items():
         posterior = (df[tiempo_col] > df[treatment_time_col]).mean()
+        rol = roles_declarados.get(feature, "desconocido")
+        pre_tratamiento = posterior == 0.0
+        es_confusor = rol == "confusor"
+        # "desconocido" NO se excluye de facto: entra en la especificacion
+        # ampliada para el analisis de sensibilidad, como exige la decision
+        # de referencia del capitulo.
+        rol_ambiguo = rol == "desconocido"
         filas.append({
             "feature": feature,
             "pct_medida_despues_del_tratamiento": posterior,
-            "riesgo_temporal": posterior > 0.0,
-            "rol_declarado": roles_declarados.get(feature, "SIN DECLARAR"),
-            "incluir_en_X": roles_declarados.get(feature) == "confusor" and posterior == 0.0,
+            "riesgo_temporal": not pre_tratamiento,
+            "rol_declarado": rol,
+            "incluir_en_X_base": es_confusor and pre_tratamiento,
+            "incluir_en_X_ampliada": (
+                (es_confusor or rol_ambiguo)
+                and pre_tratamiento
+                and rol not in ROLES_PROHIBIDOS
+            ),
         })
     resultado = pd.DataFrame(filas)
-    riesgosas = resultado[resultado["riesgo_temporal"] | (resultado["rol_declarado"] == "SIN DECLARAR")]
+
+    riesgosas = resultado[resultado["riesgo_temporal"]
+                          | (resultado["rol_declarado"] == "desconocido")]
     if len(riesgosas) > 0:
-        print("ADVERTENCIA: features con riesgo de fuga o sin rol declarado:")
-        print(riesgosas[["feature", "pct_medida_despues_del_tratamiento", "rol_declarado"]])
+        print("ADVERTENCIA: features con riesgo de fuga o sin rol determinado:")
+        print(riesgosas[["feature", "pct_medida_despues_del_tratamiento",
+                         "rol_declarado", "incluir_en_X_base",
+                         "incluir_en_X_ampliada"]])
+    n_amb = (resultado["rol_declarado"] == "desconocido").sum()
+    if n_amb:
+        print(f"{n_amb} feature(s) de rol ambiguo -> reportar la estimacion "
+              "con X_base y con X_ampliada, y comparar.")
     return resultado
+
+
+def columnas_X(resultado: pd.DataFrame, especificacion: str = "base") -> list[str]:
+    """Extrae la lista de covariables de una de las dos especificaciones."""
+    col = f"incluir_en_X_{especificacion}"
+    return resultado.loc[resultado[col], "feature"].tolist()
 ```
 ) <lst-auditoria-features>
 
-La función no decide automáticamente qué incluir —esa decisión sigue siendo del analista, informada por el grafo— pero hace *imposible* que una variable post-tratamiento entre a $X$ en silencio: cualquier _feature_ medida después del tratamiento, o sin rol declarado, genera una advertencia explícita.
+La función no decide por el analista cuál de las dos especificaciones es la "correcta" —esa decisión sigue siendo suya, informada por el grafo— pero hace *imposible* que una variable post-tratamiento entre a $X$ en silencio, y hace igualmente imposible que una variable de rol ambiguo desaparezca sin dejar rastro: aparece en la especificación ampliada y obliga a reportar la comparación. Nótese que la condición de fuga temporal se aplica a *ambas* especificaciones: ninguna cantidad de análisis de sensibilidad rescata a una covariable medida después del tratamiento.
 
 == Aplicación al sistema causal del curso
 <sec-featuresfuga-aplicacion>
@@ -105,9 +146,11 @@ El Notebook de caso de estudio A2 (Módulo 2, Double Machine Learning) exige eje
 === Ejercicio computacional
 <sec-featuresfuga-ejercicios-computacionales>
 
-+ Aplique el listado @lst-auditoria-features al dataset que eligió para el Notebook A1, declarando roles causales para al menos 6 covariables candidatas. Reporte cuántas quedan excluidas de $X$ tras la auditoría y por qué motivo cada una.
++ Aplique el listado @lst-auditoria-features al dataset que eligió para el Notebook A1, declarando roles causales para al menos 6 covariables candidatas, de las cuales al menos una debe quedar como `desconocido`. Reporte cuántas quedan excluidas de $X_"base"$ y por qué motivo cada una, y compare $X_"base"$ con $X_"ampliada"$.
+
++ Estime el efecto con ambas especificaciones ($X_"base"$ y $X_"ampliada"$) y compare los dos intervalos de confianza. Si se solapan ampliamente, ¿qué concluye sobre la variable de rol ambiguo? ¿Y si no se solapan? Explique por qué, en el segundo caso, *ninguna* de las dos estimaciones es defendible sin resolver antes la pregunta de identificación.
 
 === Notas bibliográficas
 <sec-featuresfuga-notas>
 
-@huyen2022dmls, Capítulo 5, cubre la ingeniería de _features_ genérica y la fuga de datos (_data leakage_) en su sentido predictivo estándar (por ejemplo, escalar antes de separar train/test); este capítulo extiende esa discusión al tipo de fuga específico de sistemas causales. La clasificación de controles retomada aquí se desarrolla en @bareinboim2025causalai y @pearl2009causality, ya citados en el @cap-intervencion-contrafactual.
+#cite(<huyen2022dmls>, form: "prose"), Capítulo 5, cubre la ingeniería de _features_ genérica y la fuga de datos (_data leakage_) en su sentido predictivo estándar (por ejemplo, escalar antes de separar train/test); este capítulo extiende esa discusión al tipo de fuga específico de sistemas causales. La clasificación de controles retomada aquí se desarrolla en @bareinboim2025causalai y @pearl2009causality, ya citados en el @cap-intervencion-contrafactual.

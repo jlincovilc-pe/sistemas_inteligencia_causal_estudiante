@@ -1,4 +1,5 @@
-// Capítulo 7 — Validación, refutación y sensibilidad
+// Capítulo 14 — Validación, refutación y sensibilidad
+// (La numeración `cap07` del nombre de archivo es histórica: proviene de la edición corta anterior y se conserva para no romper referencias.)
 #import "../template/template.typ": *
 
 #chapter[Validación, refutación y sensibilidad]
@@ -11,14 +12,14 @@
     columns: (auto, 1fr),
     align: (left, left),
     stroke: none,
-    [*[Problema]*], [Validar modelos causales sin ground truth],
-    [*[Estimando]*], [CATE, ranking por efecto],
-    [*[Identificación]*], [No confusión, placebos, refutación],
-    [*[Método]*], [Curvas Qini, transformed outcome, placebos],
-    [*[Nuisance]*], [$hat(e)(X), hat(mu)_d(X)$],
-    [*[Garantía]*], [Detección de fallos gruesos bajo refutación],
-    [*[Librerías]*], [econml, scikit-learn, causalml],
-    [*[Validación]*], [Suite de refutación, placebos, sensibilidad],
+    [*Problema:*], [Validar modelos causales sin ground truth],
+    [*Estimando:*], [CATE, ranking por efecto],
+    [*Identificación:*], [No confusión, placebos, refutación],
+    [*Método:*], [Curvas Qini y AUUC, transformed outcome, placebos, E-value],
+    [*Nuisance:*], [$hat(e)(X), hat(mu)_d(X)$],
+    [*Garantía:*], [Detección de fallos gruesos bajo refutación; cota de sensibilidad a confusión no observada (E-value)],
+    [*Librerías:*], [econml, scikit-learn, causalml],
+    [*Validación:*], [Suite de refutación, placebos, sensibilidad],
   )
 ]
 
@@ -74,6 +75,10 @@ Interpretación:
 - El uplift promedio top-$q$ no tiene por qué crecer con $q$; si el ranking es correcto, suele decrecer a medida que se incorporan unidades con menor efecto.
 - Una curva Qini creciente en términos acumulados indica buen ranking, pero no garantiza ausencia de sesgo en la magnitud de $hat(tau)$.
 
+*Resumen escalar: AUUC y coeficiente Qini.* Comparar dos curvas visualmente no escala cuando hay que evaluar muchos modelos o automatizar la decisión en un pipeline de CI (@cap-cicd-causal). Se usan por eso dos resúmenes escalares, que conviene no confundir. El *AUUC* (_Area Under the Uplift Curve_) es simplemente el área bajo la curva de uplift acumulado; depende de la escala de $Y$ y del tamaño muestral, por lo que solo tiene sentido comparar AUUC entre modelos evaluados sobre exactamente la misma muestra. El *coeficiente Qini* normaliza esa área restando el _baseline_ aleatorio y dividiendo por el área del modelo perfecto, produciendo un número comparable entre datasets, análogo al coeficiente de Gini del que toma el nombre.
+
+Dos advertencias operativas. Primera: ambos son métricas de *ranking*, no de calibración —un modelo que multiplique todos sus $hat(tau)$ por 10 tiene exactamente el mismo AUUC y produciría un presupuesto de campaña diez veces mal dimensionado—. Segunda: ambos son estadísticos muestrales con varianza no despreciable, especialmente en las colas del ranking donde $|C(q)|$ es pequeño; reportar un AUUC sin banda de confianza por _bootstrap_ invita a declarar ganador a un modelo que no lo es. El @cap-uplift-targeting retoma estas métricas como criterio de evaluación de la política y no solo del estimador.
+
 === Curva uplift y transformed outcome
 <sec-cap07_uplift_transformed>
 
@@ -82,20 +87,20 @@ $
 U(q) = 1/n sum_(i in T(q)) Y_i - 1/n sum_(i in C(q)) Y_i dot.c (|T(q)|) / (|C(q)|).
 $
 
-El _transformed outcome_ (@athey2019using) construye una variable $Y^star$ cuya esperanza es $tau(X)$:
+El _transformed outcome_ @athey2019using construye una variable $Y^star$ cuya esperanza es $tau(X)$:
 $
 Y_i^star = Y_i dot.c (D_i - hat(e)(X_i)) / (hat(e)(X_i)(1 - hat(e)(X_i))).
 $ <eq-transformed-outcome>
 
 #proposition[
-  Si $hat(e) = e_0$, entonces $E[Y^star mid X] = tau(X)$.
+  Si $hat(e) = e_0$, entonces $E[Y^star | X] = tau(X)$.
 ] <prop-transformed-outcome>
 
-*Supuestos.* La validez de $Y^star$ como proxy requiere que $hat(e)$ sea consistente para el verdadero propensity score $e_0$. Si $hat(e)$ está mal especificado, $E[Y^star mid X] != tau(X)$.
+*Supuestos.* La validez de $Y^star$ como proxy requiere que $hat(e)$ sea consistente para el verdadero propensity score $e_0$. Si $hat(e)$ está mal especificado, $E[Y^star | X] != tau(X)$.
 
 *Garantías.* $Y^star$ permite usar métricas de ML supervisado (RMSE, correlación) sobre $hat(tau)$. La desventaja: $Y^star$ tiene alta varianza, especialmente cuando $hat(e)$ es cercano a 0 o 1. La varianza de $Y^star$ condicional en $X$ es:
 $
-"Var"(Y^star mid X) = sigma^2(X) + (tau(X)^2) / (e_0(X)(1 - e_0(X))),
+"Var"(Y^star | X) = sigma^2(X) + (tau(X)^2) / (e_0(X)(1 - e_0(X))),
 $
 que explota cuando $e_0(X) -> 0$ o $e_0(X) -> 1$.
 
@@ -114,6 +119,33 @@ Tres variantes comunes:
 - *Placebo por subgrupo:* estimar el efecto en un subgrupo que no debería responder al tratamiento (p. ej., efecto de un programa escolar sobre jubilados).
 - *Placebo por outcome:* estimar el efecto sobre un outcome que no debería responder (p. ej., efecto de becas sobre altura).
 
+=== Sensibilidad a confusión no observada: protocolo de tres niveles
+<sec-cap07_evalue>
+
+Los placebos detectan mala especificación, pero no responden la pregunta que más importa y que ningún test puede responder con los datos disponibles: *¿cuán fuerte tendría que ser un confusor no observado para anular el resultado?* La literatura de análisis de sensibilidad la convierte en una pregunta cuantitativa y reportable. La formulación más difundida hoy es el *E-value* de #cite(<vanderweele2017evalue>, form: "prose").
+
+#definition(name: [E-value])[
+Para una razón de riesgos estimada $"RR" > 1$, el *E-value* es
+$
+"E" = "RR" + sqrt("RR" ("RR" - 1)),
+$
+y se interpreta así: un confusor no observado tendría que estar asociado *tanto* al tratamiento *como* al resultado por un factor de riesgo de al menos $"E"$ —cada uno, y por encima de los confusores ya medidos— para explicar completamente la asociación observada. Para el límite del intervalo de confianza más cercano a la nulidad se calcula un segundo E-value, que indica la fuerza necesaria para volver el resultado estadísticamente no significativo.
+]
+
+La virtud del E-value es que traduce la amenaza a la identificación a una escala que un experto de dominio puede juzgar. Decir "el resultado es sensible a confusión no observada" no es accionable; decir "haría falta un confusor no medido asociado al tratamiento y al resultado con RR $>= 3.2$, cuando el confusor observado más fuerte de que disponemos tiene RR $= 1.6$" invita a una discusión sustantiva concreta: ¿existe una variable plausible de esa magnitud que no hayamos medido?
+
+Sus límites deben declararse con la misma claridad. El E-value es una condición *necesaria* mínima, no suficiente: describe el confusor único más débil capaz de explicar el resultado, y varios confusores moderados pueden combinarse para lograr lo mismo. No incorpora información sobre qué confusores son plausibles en el dominio —es una cota, no una probabilidad—. Y su formulación estándar está definida sobre razones de riesgo; aplicarlo a un efecto en diferencias requiere transformar primero la escala, paso que se omite con frecuencia y que invalida el número reportado.
+
+*Nivel 2 — Sensibilidad en escala $R^2$.* Para estimaciones tipo PLR (DML-PLR, PDS), la pregunta equivalente es: ¿qué $R^2$ parcial con $D$ y con $Y$ tendría que tener un confusor no observado $U$ para anular el efecto? Si $r_(Y dot.op U | X, D)^2$ y $r_(D dot.op U | X)^2$ denotan las fracciones de varianza residual explicadas por $U$, el efecto deja de ser significativo cuando ambas superan un umbral derivable del $t$-estadístico observado (#cite(<cinellihazlett2020>, form: "prose"), Teorema 1; la formulación en escala $R^2$ se remonta a #cite(<imbens2003sensitivity>, form: "prose")). La ventaja sobre el E-value: se reporta contra _benchmarks_ observados — el $R^2$ parcial del confusor medido más fuerte — en la misma escala del modelo estimado, sin cambio de escala a razones de riesgo.
+
+*Nivel 3 — Identificación parcial.* Cuando el supuesto puede fallar parcialmente, el reporte correcto es un intervalo de _bounds_. Con $Y in [0, 1]$ y sin ningún supuesto de no confusión, #cite(<manski1990nonparametric>, form: "prose") muestran que
+$
+theta = E[Y(1) - Y(0)] in [ E[Y|D=1]P(D=1) - E[Y|D=0]P(D=0) - P(D=0), thin E[Y|D=1]P(D=1) - E[Y|D=0]P(D=0) + P(D=1) ],
+$
+de ancho $<= 1$, que puede estrecharse combinando _bounds_ con el E-value del Nivel 1 (un confusor acotado en fuerza acota el desplazamiento de $theta$).
+
+*Protocolo del curso.* Todo resultado observacional del proyecto final (@sec-apE_sensibilidad) reporta: Nivel 1 (E-value, siempre) + Nivel 2 ($R^2$ de Imbens / Cinelli--Hazlett, cuando el estimador sea tipo PLR) + Nivel 3 cuando el _outcome_ esté acotado y el resultado sea próximo a cero. Un resultado que no sobrevive el Nivel 1 se reporta como "no robusto" y no se despliega.
+
 === Validación con datos sintéticos
 <sec-cap07_sinteticos>
 
@@ -123,6 +155,45 @@ Para datasets sintéticos con $tau(x)$ conocido, se reportan:
 - *RMSE:* $sqrt(E[(hat(tau)(X) - tau(X))^2])$.
 - *Cobertura del IC:* fracción de $x$ tales que $tau(x) in [hat(tau)(x) plus.minus 1.96 hat(sigma)(x)]$.
 - *Policy regret:* diferencia entre $V(pi^*)$ y $V(hat(pi))$ donde $pi^*$ es la política óptima y $hat(pi)$ se deriva de $hat(tau)$.
+
+=== Tests formales de heterogeneidad: BLP, BEST y CLAN
+<sec-cap07_tests_heterogeneidad>
+
+La curva Qini evalúa _ranking_; no responde si la heterogeneidad detectada es estadísticamente distinguible de cero. #cite(<chernozhukov2020generic>, form: "prose") proveen tests con control de tipo I, sin _ground truth_, mediante _sample-splitting_ (la misma lógica del _cross-fitting_ del @cap-ortogonalidad).
+
+*BLP (Best Linear Predictor).* Sea $hat(T)(X)$ un score de prioridad (p. ej. $hat(tau)$ de un _causal forest_). En la muestra de evaluación, con el _transformed outcome_ $Y^star$ (Ec. @eq-transformed-outcome):
+$
+Y_i^star = beta_1 hat(T)_i + beta_2 (hat(T)_i - overline(T)) dot.op hat(T)_i + epsilon_i.
+$
+El test $H_0: beta_2 = 0$ es un test válido de "no hay heterogeneidad linealmente detectable por $hat(T)$"; $beta_1$ estima el efecto promedio ponderado por $hat(T)$.
+
+*BEST (Best subgroup Treatment Effect).* Particionar por la mediana de $hat(T)$ en los dos grupos de mayor/menor score estimado y testear la diferencia de sus efectos medios, con IC construidos sobre la muestra de evaluación separada.
+
+*CLAN (Classification Analysis).* Efectos medios por cuantiles de $hat(T)$ con IC simultáneos (corrección de Bonferroni o _bootstrap_ multiplicador), para perfilar la forma de la heterogeneidad sin compromiso paramétrico.
+
+Los tres están implementados en #code[econml.validate.DRtester].
+
+*Regla operativa del curso:* ningún informe que reporte heterogeneidad se publica sin el BLP; si $beta_2$ no es significativo, la heterogeneidad reportada se declara exploratoria.
+
+=== Intervalos conformes para efectos individuales
+<sec-cap07_conformal>
+
+*El problema.* El teorema de cobertura del CATE del @cap-causal-forests da cobertura para $tau(x)$, no para el efecto individual $Y_i(1) - Y_i(0)$: la varianza del efecto individual incluye el ruido $epsilon_i$, que la varianza del estimador no captura. Las decisiones individuales del servicio del @cap-despliegue-servicio requieren lo segundo.
+
+*Procedimiento (split conformal sobre transformed outcome).* Bajo asignación aleatorizada o _propensity_ conocido, $Y_i^star$ (Ec. @eq-transformed-outcome) satisface $E[Y^star | X] = tau(X)$:
+
++ Particionar en entrenamiento $cal(D)_1$ y calibración $cal(D)_2$.
++ Entrenar $hat(tau)$ en $cal(D)_1$.
++ En $cal(D)_2$ calcular residuos no conformes $R_i = abs(Y_i^star - hat(tau)(X_i))$.
++ $hat(C)(x) = [hat(tau)(x) - hat(q), thin hat(tau)(x) + hat(q)]$, con $hat(q)$ el cuantil $ceil((m+1)(1-alpha))/m$ de ${R_i}$.
+
+#proposition(name: [Cobertura conforme])[
+  Si las observaciones son intercambiables, $P(Y_"nuevo"^star in hat(C)(X_"nuevo")) >= 1 - alpha$, sin supuestos distribucionales sobre $(Y, D, X)$.
+] <prop-conformal-coverage>
+
+Dos advertencias. Primera: la cobertura es para el _transformed outcome_ —proxy insesgado del efecto—, no para $Y_i(1) - Y_i(0)$ literal (#cite(<leicandes2021>, form: "prose") tratan la versión con contrafactuales imputados). Segunda: con _propensity_ estimado se requiere _conformal_ ponderado (#cite(<tibshirani2019conformal>, form: "prose")); la versión sin ponderar es válida solo si $hat(e) approx e_0$. Para la base de predicción conforme libre de distribución, ver #cite(<lei2018distribution>, form: "prose"), y #cite(<romano2019conformalized>, form: "prose") para la variante de regresión cuantílica conforme.
+
+*Integración en producción:* el endpoint `/predict` (@lst-inference-pura) puede añadir el campo `ic_individual` cuando exista calibración conforme. La _model card_ (@cap-hf-hub) debe declarar qué garantiza cada intervalo: `ic_95` es cobertura del estimando poblacional; `ic_individual` es cobertura marginal no paramétrica.
 
 == Implementación en Python
 <sec-cap07_implementacion>
@@ -242,7 +313,8 @@ La tabla @tab-refutation-suite resume las pruebas de refutación estándar para 
     [Placebo treatment], [Reemplaza $D$ por variable aleatoria], [El efecto estimado debe caer a cero; si no, el modelo detecta señal espuria],
     [Random common cause], [Agrega una covariable ruido independiente de $Y$ y $D$], [El efecto estimado debe ser estable; un cambio grande indica sensibilidad a ruido],
     [Subset validation], [Remuestrea los datos (bootstrap) y reestima], [La distribución bootstrap del efecto debe ser estable; varianza alta sugiere sobreajuste],
-    [Transformed outcome], [Construye $Y^star$ y evalúa $hat(tau)$ con métricas supervisadas], [$E[Y^star mid X] = tau(X)$ bajo $hat(e)$ correcto; permite RMSE y correlación],
+    [Transformed outcome], [Construye $Y^star$ y evalúa $hat(tau)$ con métricas supervisadas], [$E[Y^star | X] = tau(X)$ bajo $hat(e)$ correcto; permite RMSE y correlación],
+    [BLP/BEST], [Test de heterogeneidad sobre $hat(T)$], [$beta_2$ no significativo $=>$ la heterogeneidad no supera el ruido (@sec-cap07_tests_heterogeneidad)],
     table.hline(stroke: 0.8pt),
   )
 ) <tab-refutation-suite>
@@ -259,7 +331,7 @@ La figura @fig-cap7-qini compara dos modelos causales (Causal Forest y T-learner
 
 *Interpretación.* El Causal Forest (azul) produce una curva Qini más pronunciada que el T-learner (rojo), lo que indica que su ranking por CATE estimado es más informativo. Ambos dominan al baseline aleatorio (gris punteado), confirmando que ambos modelos capturan señal causal real. La diferencia entre modelos es mayor en el rango 20–60% de la muestra, donde el Causal Forest aprovecha mejor la estructura local de heterogeneidad.
 
-El dataset #code[thornton_hiv] (Thornton, 2008) evalúa el efecto de incentivos monetarios sobre la demanda de resultados de test de VIH. Aplicando el mismo protocolo de validación, el modelo produce un ranking cuyas unidades top-20% muestran un uplift sustancialmente mayor que el promedio, validando empíricamente la utilidad del estimador.
+El dataset #code[thornton_hiv] @thornton2008demand evalúa el efecto de incentivos monetarios sobre la demanda de resultados de test de VIH en Malaui. Su valor para este capítulo es que el tratamiento fue *aleatorizado*, de modo que la identificación no está en discusión y toda desviación detectada por la suite de refutación es atribuible al estimador y no al diseño — la situación de control que permite calibrar qué tan informativas son las métricas indirectas antes de aplicarlas a datos observacionales, donde ambas fuentes de error se confunden. Aplicando el mismo protocolo de validación, el modelo produce un ranking cuyas unidades top-20% muestran un uplift sustancialmente mayor que el promedio, validando empíricamente la utilidad del estimador.
 
 #intuicion[
   *Caja de profundización 7.1: Pruebas de refutación y análisis de sensibilidad*
@@ -271,7 +343,7 @@ El dataset #code[thornton_hiv] (Thornton, 2008) evalúa el efecto de incentivos 
   - *Placebo outcome:* usar una variable que sabemos que no es afectada por el tratamiento como si fuera $Y$.
   - *Placebo temporal:* en datos de panel, aplicar el método a un período prepolíticas donde no debería haber efecto.
 
-  *¿Qué tan sensible es mi resultado a un confusor no observado?* Incluso si controlamos por muchos confusores observados, siempre puede haber uno no observado. El *E-value* responde: ¿qué tan fuerte tendría que ser ese confusor para explicar mi resultado? Un E-value grande ($> 2$) sugiere que el resultado es robusto.
+  *¿Qué tan sensible es mi resultado a un confusor no observado?* Incluso si controlamos por muchos confusores observados, siempre puede haber uno no observado. El *E-value* (@sec-cap07_evalue) responde: ¿qué tan fuerte tendría que ser ese confusor para explicar mi resultado? Un E-value grande sugiere robustez —pero "grande" solo tiene sentido *comparado con la fuerza de los confusores que sí se midieron*, no contra un umbral universal.
 
   *Bootstrap para curvas Qini.* Podemos remuestrear los datos muchas veces y recalcular la curva Qini cada vez. Esto nos da bandas de confianza alrededor de la curva y permite comparar modelos formalmente.
 ]
@@ -327,7 +399,7 @@ Las secciones anteriores de este capítulo responden una pregunta estadística: 
 
 === _Baselines_ obligatorios
 
-@huyen2022dmls insiste en que ningún modelo se evalúa en el vacío: siempre debe compararse contra al menos un _baseline_ simple. Para un sistema de estimación causal, se recomiendan tres _baselines_ mínimos antes de aceptar cualquier estimador de CATE como el de producción:
+#cite(<huyen2022dmls>, form: "prose") insiste en que ningún modelo se evalúa en el vacío: siempre debe compararse contra al menos un _baseline_ simple. Para un sistema de estimación causal, se recomiendan tres _baselines_ mínimos antes de aceptar cualquier estimador de CATE como el de producción:
 
 #table(
   columns: (1.3fr, 2.7fr),
@@ -337,7 +409,19 @@ Las secciones anteriores de este capítulo responden una pregunta estadística: 
   [Efecto constante (ATE vía DML, @cap-dml)], [Si el CATE estimado no supera a un efecto constante en la curva Qini, la heterogeneidad modelada no aporta valor accionable.],
   [Regla aleatoria], [Piso de referencia: cualquier estimador debe superar claramente a targetear al azar.],
   [Regla basada en riesgo (sin causalidad)], [Detecta si el "efecto heterogéneo" estimado es, en realidad, una reformulación de quién tiene mayor $Y$ esperado sin tratamiento — un error de confusión entre pronóstico de riesgo y efecto causal, ya discutido en el @cap-causalidad-elemental.],
+  [RATE del estimador candidato vs. efecto constante], [Si RATE no supera al efecto constante, la heterogeneidad no aporta valor (consistente con la advertencia de la Figura @fig-cap11-policy-value).],
 )
+
+=== Selección formal de estimadores de CATE: RATE
+
+El @cap-meta-learners compara meta-learners por RMSE sobre $tau$, métrica disponible solo con _ground truth_ sintético. En datos reales, el criterio formal es RATE (_Rank-Weighted Average Treatment Effect_, #cite(<yadlowsky2021rate>, form: "prose")):
+$
+"WET"(alpha) &= "efecto promedio sobre el top-" alpha " de la población bajo el ranking de " hat(tau), \\
+"RATE"(alpha) &= integral_0^alpha "WET"(u) dif u.
+$
+RATE pondera las regiones del _ranking_ donde los errores de priorización cuestan más, y admite inferencia vía _influence function_: la diferencia de RATE entre dos estimadores tiene IC válido, análogo al test de diferencia de AUC entre clasificadores. El #code[RScorer] (#code[econml.score.RScorer], @sec-apB_econml) implementa exactamente esta comparación.
+
+*Regla operativa del curso:* la elección entre meta-learners y _causal forest_ en datos reales se documenta con la diferencia de RATE y su IC, no con la inspección visual de la curva Qini. Qini sigue siendo la métrica de reporte para audiencias de negocio (@cap-uplift-targeting); RATE es la métrica de decisión interna.
 
 === Versionado del proceso de evaluación
 
@@ -362,4 +446,4 @@ Esta perspectiva de sistema es la que conecta este capítulo con el siguiente: u
 === Lecturas complementarias
 <sec-cap07_lecturas>
 
-@gutierrez2017causal introduce el transformed outcome. @athey2019using formaliza la validación causal. @schuler2018comparison compara estrategias de validación. Para Qini, @radcliffe2007using.
+#cite(<gutierrez2017causal>, form: "prose") revisa la literatura de uplift e introduce el _transformed outcome_ usado en la @sec-cap07_uplift_transformed. #cite(<athey2019using>, form: "prose") formaliza la validación causal aplicada. #cite(<schuler2018comparison>, form: "prose") compara sistemáticamente estrategias de selección de modelo para CATE y es la referencia empírica más útil para decidir con qué métrica quedarse. Para Qini, @radcliffe2007using. #cite(<vanderweele2017evalue>, form: "prose") es la referencia del E-value (@sec-cap07_evalue) y contiene las tablas de conversión de escala necesarias para aplicarlo fuera de razones de riesgo. #cite(<thornton2008demand>, form: "prose") documenta el experimento aleatorizado usado como banco de pruebas con identificación no discutida. Sobre el versionado del proceso de evaluación de la @sec-cap07_evaluacion_offline, véase @huyen2022dmls, Capítulo 6.

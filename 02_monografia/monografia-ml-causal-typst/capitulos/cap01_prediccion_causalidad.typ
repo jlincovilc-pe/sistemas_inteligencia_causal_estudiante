@@ -1,4 +1,6 @@
-// Capítulo 1 — Predicción y causalidad: por qué el ML no es causal por defecto
+// Capítulo 5 — Predicción y causalidad: por qué el ML no es causal por defecto
+// (Parte I. La numeración `cap01` del nombre de archivo es histórica: proviene
+//  de la edición corta anterior y se conserva para no romper referencias.)
 #import "../template/template.typ": *
 
 #chapter[Predicción y causalidad: por qué el ML no es causal por defecto]
@@ -12,14 +14,14 @@
     columns: (auto, 1fr),
     align: (left, left),
     stroke: none,
-    [*[Problema]*], [Distinguir predicción de efecto causal],
-    [*[Estimando]*], [$"ATE"$, $"CATE"(x)$],
-    [*[Identificación]*], [No confusión, soporte común, SUTVA],
-    [*[Método]*], [Comparación predictiva vs causal],
-    [*[Nuisance]*], [$mu_d(x)$],
-    [*[Garantía]*], [Identificación bajo supuestos],
-    [*[Librerías]*], [scikit-learn, statsmodels],
-    [*[Validación]*], [Simulación de collider, placebos],
+    [*Problema:*], [Distinguir predicción de efecto causal],
+    [*Estimando:*], [$"ATE"$, $"CATE"(x)$],
+    [*Identificación:*], [No confusión, soporte común, SUTVA],
+    [*Método:*], [Comparación predictiva vs causal],
+    [*Nuisance:*], [$mu_d(x)$],
+    [*Garantía:*], [Identificación bajo supuestos],
+    [*Librerías:*], [scikit-learn, statsmodels],
+    [*Validación:*], [Simulación de collider, placebos],
   )
 ]
 
@@ -36,6 +38,8 @@ La distinción es crucial porque los algoritmos estándar de _machine learning_ 
 
 Este capítulo introduce el marco conceptual que vertebra todo el curso. Argumentamos que *la inferencia causal requiere supuestos de identificación económicos, no estadísticos*, y que el aporte del ML consiste en flexibilizar la estimación de componentes auxiliares (_nuisance_) sin vulnerar esos supuestos. Establecemos la notación de resultados potenciales en el régimen de alta dimensionalidad, definimos los estimandos centrales del curso (ATE, ATT, CATE, _policy value_), y mostramos empíricamente con el dataset de Card (1995) sobre retornos a la educación que un modelo predictivo de alta dimensión puede arrojar respuestas radicalmente distintas a las de una estimación causal cuidadosa.
 
+Conviene, sin embargo, evitar la conclusión simétrica y también equivocada: que la predicción sea siempre el instrumento inadecuado. La distinción fundamental entre problemas de predicción y problemas de política se formaliza en @kleinberg2015prediction (Kleinberg et al. 2015), quienes argumentan que existe una clase entera de problemas de política —los que llaman _prediction policy problems_— en los que la decisión depende de un pronóstico y *no* de un efecto causal. Su ejemplo canónico es la decisión de operar una cadera a un paciente terminal: el beneficio de la operación depende de cuánto vivirá el paciente, que es una pregunta puramente predictiva; el efecto causal de la operación sobre la movilidad puede darse por conocido. El criterio para distinguir ambos regímenes es preciso y vale la pena memorizarlo: *si la decisión cambia la variable sobre la que se razona, la pregunta es causal; si la decisión solo depende de un estado del mundo que ocurriría de todos modos, la pregunta es predictiva*. Focalizar un subsidio por "quién se beneficiaría más" es causal —asignar el subsidio cambia el ingreso—; focalizarlo por "quién es más pobre" es predictivo, porque la pobreza basal se realiza con o sin el programa. Muchos sistemas de _targeting_ en producción mezclan ambos criterios sin declararlo, y la tabla @tab-pred-causal existe precisamente para forzar esa declaración.
+
 La tabla @tab-pred-causal sistematiza la diferencia entre el régimen predictivo y el régimen causal. Esta distinción estructura todo el curso.
 
 #figure(
@@ -50,7 +54,7 @@ La tabla @tab-pred-causal sistematiza la diferencia entre el régimen predictivo
     ),
     table.hline(stroke: 0.4pt),
     [Objetivo], [Minimizar error fuera de muestra], [Estimar $tau(x)$ con IC válido],
-    [Estimando], [$E[Y mid X]$], [$E[Y(1) - Y(0) mid X]$],
+    [Estimando], [$E[Y | X]$], [$E[Y(1) - Y(0) | X]$],
     [Métrica de éxito], [RMSE, accuracy, AUC], [Sesgo, cobertura, RMSE en $tau$],
     [Datos requeridos], [Solo $Y, X$ observados], [Requiere $Y(0), Y(1)$ que no se observan simultáneamente],
     [Supuestos clave], [IID, estacionariedad], [No confusión, soporte común, SUTVA],
@@ -71,11 +75,11 @@ Adoptamos el marco de @neyman1923 y @rubin1974. Para cada unidad $i$ se definen 
 Los supuestos económicos que permiten identificar $tau(x)$ a partir de datos observacionales son tres.
 
 #assumption(name: [No confusión condicional])[
-  $Y(0), Y(1) perp perp D mid X$.
+  $Y(0), Y(1) perp perp D | X$.
 ] <asu-unconfoundedness>
 
 #assumption(name: [Soporte común])[
-  Existe $underline(e) > 0$ tal que $underline(e) < P(D = 1 mid X = x) < 1 - underline(e)$ para todo $x$ en el soporte de $X$.
+  Existe $underline(e) > 0$ tal que $underline(e) < P(D = 1 | X = x) < 1 - underline(e)$ para todo $x$ en el soporte de $X$.
 ] <asu-overlap>
 
 #assumption(name: [SUTVA / No interferencia])[
@@ -91,8 +95,8 @@ Estos supuestos son _económicos_: su validez depende del contexto sustantivo, n
   Bajo no interferencia (SUTVA), los estimandos de interés son:
   $
   "ATE": & quad theta = E[Y(1) - Y(0)], \
-  "ATT": & quad theta_("ATT") = E[Y(1) - Y(0) mid D = 1], \
-  "CATE": & quad tau(x) = E[Y(1) - Y(0) mid X = x], \
+  "ATT": & quad theta_("ATT") = E[Y(1) - Y(0) | D = 1], \
+  "CATE": & quad tau(x) = E[Y(1) - Y(0) | X = x], \
   "Policy value": & quad V(pi) = E[Y(pi(X))],
   $
   donde $pi: R^p -> {0,1}$ es una regla de asignación de tratamiento.
@@ -102,7 +106,7 @@ El curso se centra casi exclusivamente en $tau(x)$ y $V(pi)$, porque son los est
 
 Bajo los supuestos de no confusión condicional–de soporte común, el CATE es identificable como diferencia de dos funciones de regresión condicional:
 $
-tau(x) = mu_1(x) - mu_0(x), quad mu_d(x) = E[Y mid X = x, D = d].
+tau(x) = mu_1(x) - mu_0(x), quad mu_d(x) = E[Y | X = x, D = d].
 $
 
 Si estimamos $hat(mu)_0$ y $hat(mu)_1$ con un método de ML flexible (bosque aleatorio, _gradient boosting_, red neuronal) y calculamos $hat(tau)(x) = hat(mu)_1(x) - hat(mu)_0(x)$, se obtiene el _T-learner_ que estudiaremos en el capítulo @cap-meta-learners. La pregunta crítica es: ¿bajo qué condiciones $hat(tau)(x) -> tau(x)$ en alta dimensión?
@@ -110,7 +114,7 @@ Si estimamos $hat(mu)_0$ y $hat(mu)_1$ con un método de ML flexible (bosque ale
 === Garantías
 <sec-cap01_garantias>
 
-El problema es que los algoritmos de ML regularizan para optimizar predicción, no estimación de efectos. @athey2017beyond ilustra esto con un ejemplo simple: si $X$ contiene una variable fuertemente correlacionada con $D$ pero sin efecto causal sobre $Y$, el algoritmo predictivo puede _descartar_ $D$ en la regresión de $Y$ (porque $X$ ya explica $Y$ casi igual de bien), generando un $hat(mu)_d$ que ignora el efecto del tratamiento. La predicción de $Y$ mejora, pero la estimación de $tau$ se degrada.
+El problema es que los algoritmos de ML regularizan para optimizar predicción, no estimación de efectos. #cite(<athey2017beyond>, form: "prose") ilustra esto con un ejemplo simple: si $X$ contiene una variable fuertemente correlacionada con $D$ pero sin efecto causal sobre $Y$, el algoritmo predictivo puede _descartar_ $D$ en la regresión de $Y$ (porque $X$ ya explica $Y$ casi igual de bien), generando un $hat(mu)_d$ que ignora el efecto del tratamiento. La predicción de $Y$ mejora, pero la estimación de $tau$ se degrada.
 
 #theorem(name: [Sesgo de regularización en T-learner, versión informal])[
   Sea $hat(mu)_d$ un estimador de ML con error $norm(hat(mu)_d - mu_d)_(L^2) = O_p(a_n)$ donde $a_n -> 0$. Entonces el T-learner $hat(tau) = hat(mu)_1 - hat(mu)_0$ satisface
@@ -184,7 +188,7 @@ Los diagnósticos de componentes _nuisance_ (propensity score, outcome regressio
 === Datos y preprocesamiento
 <sec-cap01_datos>
 
-@card1995 es un caso paradigmático porque combina un instrumento (#code[nearc4]) con un set de controles de dimensión moderada. En su análisis original, Card reporta un retorno a la educación de aproximadamente 7.5% usando IV. Estudios posteriores con más controles (Belloni, Chernozhukov y Hansen, 2014) muestran que la selección de controles afecta la estimación en no menos de 1.5 puntos porcentuales.
+#cite(<card1995>, form: "prose") es un caso paradigmático porque combina un instrumento (#code[nearc4]) con un set de controles de dimensión moderada. En su análisis original, Card reporta un retorno a la educación de aproximadamente 7.5% usando IV. Estudios posteriores con más controles (Belloni, Chernozhukov y Hansen, 2014) muestran que la selección de controles afecta la estimación en no menos de 1.5 puntos porcentuales.
 
 === Estimación principal
 <sec-cap01_estimacion_principal>
@@ -223,6 +227,10 @@ print("Corr(A,B | C alto):",
 ```
 ) <lst-collider-simulation>
 
+El listado ilustra el fenómeno que #cite(<elwert2014endogenous>, form: "prose") llaman *sesgo de selección endógena*: dos variables marginalmente independientes se vuelven dependientes al condicionar en una causa común de ambas (o en un descendiente suyo). Es el mecanismo inverso al de la confusión —allí condicionar *elimina* una asociación espuria; aquí condicionar la *crea*— y explica por qué "controlar por todo lo disponible" no es una estrategia conservadora sino una fuente activa de sesgo. El @cap-intervencion-contrafactual formaliza cuándo ocurre cada caso mediante el criterio de puerta trasera; este listado solo pretende dejar la intuición numérica instalada antes de que llegue el aparato gráfico.
+
+El sesgo por condicionamiento en un collider se trata formalmente en @elwert2014endogenous (Elwert & Winship 2014).
+
 === Interpretación económica
 <sec-cap01_interpretacion>
 
@@ -238,11 +246,11 @@ print("Corr(A,B | C alto):",
 
   *Los tres niveles (Pearl).*
   $
-  P(Y mid X = x) != P(Y mid "do"(X = x)) != P(Y_x mid X = x', Y = y')
+  P(Y | X = x) != P(Y | "do"(X = x)) != P(Y_x | X = x', Y = y')
   $
-  - *Nivel 1 – Asociación ("Ver"):* $P(Y mid X)$. Ej: "los clientes con más ingresos piden más crédito."
-  - *Nivel 2 – Intervención ("Hacer"):* $P(Y mid "do"(X))$. Ej: "si bajamos la tasa, ¿cuánto aumenta el crédito?"
-  - *Nivel 3 – Contrafactual ("Imaginar"):* $P(Y_x mid X = x', Y = y')$. Ej: "Juan no pidió crédito con la tasa alta; ¿lo habría pedido con la tasa baja?"
+  - *Nivel 1 – Asociación ("Ver"):* $P(Y | X)$. Ej: "los clientes con más ingresos piden más crédito."
+  - *Nivel 2 – Intervención ("Hacer"):* $P(Y | "do"(X))$. Ej: "si bajamos la tasa, ¿cuánto aumenta el crédito?"
+  - *Nivel 3 – Contrafactual ("Imaginar"):* $P(Y_x | X = x', Y = y')$. Ej: "Juan no pidió crédito con la tasa alta; ¿lo habría pedido con la tasa baja?"
 
   *Importante:* El ML predictivo opera en nivel 1. Para política pública (nivel 2) o responsabilidad individual (nivel 3) se necesitan supuestos causales adicionales.
 ]
@@ -269,7 +277,7 @@ La tabla @tab-riesgos-cap01 resume los riesgos principales al confundir predicci
       table.hline(stroke: 0.4pt),
       [Confundir predicción con causalidad],
       [Política errónea basada en efectos no causales],
-      [Comparar el estimando predictivo ($partial E[Y mid X,D] / partial D$) con el causal ($E[Y(1)-Y(0) mid X]$)],
+      [Comparar el estimando predictivo ($partial E[Y | X,D] / partial D$) con el causal ($E[Y(1)-Y(0) | X]$)],
       [Definir explícitamente $Y(1), Y(0)$ y especificar el estimando causal de interés. Si se entrena un ML sobre $(Y,D,X)$ y se computa la derivada respecto a $D$, el resultado NO es un efecto causal, sino la derivada parcial de la mejor predicción de $Y$, que mezcla variación causal con variación espuria],
       table.hline(stroke: 0.4pt),
       [Omitir confusores],
@@ -298,7 +306,7 @@ La tabla @tab-riesgos-cap01 resume los riesgos principales al confundir predicci
 
 ==== Checklist de validación
 
-Ver el @ap-checklists para el checklist completo de validación de métodos causales.
+Ver el apéndice @ap-checklists para el checklist completo de validación de métodos causales.
 
 == Ejercicios y notas bibliográficas
 <sec-cap01_ejercicios>
@@ -327,4 +335,4 @@ Ver el @ap-checklists para el checklist completo de validación de métodos caus
 === Notas bibliográficas
 <sec-cap01_notas>
 
-@athey2017beyond provee la motivación conceptual del campo. @imbens2015causal es la referencia canónica sobre resultados potenciales. @hernan2020whatif ofrece una introducción accesible al marco contrafactual. @mullainathan2017machine discute las diferencias prácticas entre predicción y estimación causal en políticas públicas. Para una revisión técnica moderna, véanse @athey2019econometric y @chernozhukov2018applied. Adicionalmente, @pearl2009causality (disponible en español como _Causalidad_) proporciona una exposición profunda de la jerarquía causal y los modelos estructurales, cubriendo los fundamentos conceptuales que subyacen a la distinción entre los niveles de asociación, intervención y contrafactual discutidos en este capítulo.
+#cite(<athey2017beyond>, form: "prose") provee la motivación conceptual del campo. #cite(<imbens2015causal>, form: "prose") es la referencia canónica sobre resultados potenciales. #cite(<hernan2020whatif>, form: "prose") ofrece una introducción accesible al marco contrafactual. #cite(<mullainathan2017machine>, form: "prose") discute las diferencias prácticas entre predicción y estimación causal en políticas públicas, y #cite(<kleinberg2015prediction>, form: "prose") es la referencia obligada para el argumento simétrico —cuándo la pregunta de política es genuinamente predictiva y no causal— desarrollado en la @sec-cap01_problema. #cite(<elwert2014endogenous>, form: "prose") es el tratamiento de referencia del sesgo por _collider_ simulado en el listado @lst-collider-simulation. Para una revisión técnica moderna, véanse @athey2019econometric y @chernozhukov2018applied. Adicionalmente, @pearl2009causality (disponible en español como _Causalidad_) proporciona una exposición profunda de la jerarquía causal y los modelos estructurales, cubriendo los fundamentos conceptuales que subyacen a la distinción entre los niveles de asociación, intervención y contrafactual discutidos en este capítulo.

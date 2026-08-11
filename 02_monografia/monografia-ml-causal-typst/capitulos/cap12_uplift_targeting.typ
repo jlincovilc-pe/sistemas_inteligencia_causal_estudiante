@@ -1,4 +1,5 @@
-// Capítulo 12 — Uplift modeling y targeting económico
+// Capítulo 22 — Uplift modeling y targeting económico
+// (La numeración `cap12` del nombre de archivo es histórica: proviene de la edición corta anterior y se conserva para no romper referencias.)
 #import "../template/template.typ": *
 
 #chapter[Uplift modeling y targeting económico]
@@ -11,14 +12,14 @@
     columns: (auto, 1fr),
     align: (left, left),
     stroke: none,
-    [*[Problema]*], [Asignación óptima de tratamientos con costos diferenciales y presupuesto],
-    [*[Estimando]*], [CATE por tratamiento $tau_k(x)$, policy value $V(pi)$],
-    [*[Identificación]*], [No confusión condicional + soporte común],
-    [*[Método]*], [Uplift modeling, net score, Qini optimization],
-    [*[Nuisance]*], [$hat(mu)_k(x)$, $hat(e)_k(x)$, costos $c_k$],
-    [*[Garantía]*], [Convergencia de $hat(tau)_k$ a $tau_k$ bajo cross-fitting],
-    [*[Librerías]*], [causalml, econml],
-    [*[Validación]*], [Curva Qini, AUUC, análisis de costo-efectividad],
+    [*Problema:*], [Asignación óptima de tratamientos con costos diferenciales y presupuesto],
+    [*Estimando:*], [CATE por tratamiento $tau_k(x)$, policy value $V(pi)$],
+    [*Identificación:*], [No confusión condicional + soporte común],
+    [*Método:*], [Uplift modeling, net score, Qini optimization],
+    [*Nuisance:*], [$hat(mu)_k(x)$, $hat(e)_k(x)$, costos $c_k$],
+    [*Garantía:*], [Convergencia de $hat(tau)_k$ a $tau_k$ bajo cross-fitting],
+    [*Librerías:*], [causalml, econml],
+    [*Validación:*], [Curva Qini, AUUC, análisis de costo-efectividad],
   )
 ]
 
@@ -43,10 +44,12 @@ Este capítulo presenta los métodos clásicos de uplift (two-model, transformed
 
 El _uplift_ es matemáticamente equivalente al CATE:
 $
-"uplift"(x) = E[Y(1) - Y(0) mid X = x] = tau(x).
+"uplift"(x) = E[Y(1) - Y(0) | X = x] = tau(x).
 $ <eq-uplift_cate>
 
-La diferencia con el capítulo @cap-meta-learners es el foco aplicado: uplift modeling se preouniona por _ranking_ (qué clientes tienen mayor uplift) y por _cost-effectiveness_ (cuánto uplift se obtiene por dólar invertido), no solo por la estimación puntual del CATE.
+La diferencia con el capítulo @cap-meta-learners es el foco aplicado: uplift modeling se pregunta por el _ranking_ (qué clientes tienen mayor uplift) y por la _cost-effectiveness_ (cuánto uplift se obtiene por dólar invertido), no solo por la estimación puntual del CATE.
+
+Esa diferencia de foco tiene una consecuencia práctica que conviene fijar desde el principio, porque determina qué se puede y qué no se puede hacer con un modelo de uplift. Si la decisión es *a quién tratar con un presupuesto fijo*, basta con que el ranking sea correcto: la escala de $hat(tau)$ es irrelevante, y las métricas de ranking (Qini, AUUC) son el criterio adecuado. Si la decisión es *cuánto presupuesto asignar*, o *qué acción elegir entre varias con costos distintos*, el ranking no basta: hace falta que la *magnitud* de $hat(tau)$ esté bien calibrada, porque el punto de corte óptimo compara $tau_k(x)$ contra un costo $c_k$ medido en las mismas unidades. Un modelo puede tener un AUUC excelente y estar tan mal calibrado que la regla de asignación por _net score_ de la @sec-cap12_algoritmo gaste el doble de lo proyectado. Por eso este capítulo reporta siempre las dos cosas —ranking y calibración— y por eso el _transformed outcome_ del @cap-validacion, que sí da magnitudes insesgadas, reaparece aquí como diagnóstico obligatorio.
 
 === Qini y AUUC: teoría, supuestos y garantías
 <sec-cap12_qini_auuc>
@@ -64,13 +67,13 @@ $
 $ <eq-auuc>
 
 *Supuestos.* La validez de la curva Qini y el AUUC requiere:
-- *Inconfundibilidad (unconfoundedness):* $Y(1), Y(0) perp perp D mid X$.
+- *Inconfundibilidad (unconfoundedness):* $Y(1), Y(0) perp perp D | X$.
 - *Soporte común (overlap):* $0 < e(x) < 1$ para todo $x$.
-- *Propensity score correcto:* $hat(e)(x)$ es una estimación consistente de $e(x) = P(D = 1 mid X = x)$.
+- *Propensity score correcto:* $hat(e)(x)$ es una estimación consistente de $e(x) = P(D = 1 | X = x)$.
 
 Bajo estos supuestos, la curva Qini ordena correctamente las unidades por su CATE esperado y permite comparar modelos de forma válida.
 
-*Garantías.* @radcliffe2007using demuestra que la pendiente de la curva Qini en el origen es proporcional al CATE promedio en la cola superior de la ordenación. @gutierrez2017causal establece que el AUUC es equivalente al coeficiente de Gini del uplift bajo normalización. En la práctica, la curva Qini permite comparar modelos de uplift: curvas más arriba indican mejor capacidad de ranking. Cuando se utilizan intervalos de confianza por bootstrap, es posible evaluar si las diferencias entre modelos son estadísticamente significativas.
+*Garantías.* #cite(<radcliffe2007using>, form: "prose") demuestra que la pendiente de la curva Qini en el origen es proporcional al CATE promedio en la cola superior de la ordenación. #cite(<gutierrez2017causal>, form: "prose") establece que el AUUC es equivalente al coeficiente de Gini del uplift bajo normalización. En la práctica, la curva Qini permite comparar modelos de uplift: curvas más arriba indican mejor capacidad de ranking. Cuando se utilizan intervalos de confianza por bootstrap, es posible evaluar si las diferencias entre modelos son estadísticamente significativas.
 
 *Cost-weighted uplift.* Cuando los costos del tratamiento varían entre individuos, se pondera el uplift por el costo unitario:
 $
@@ -81,7 +84,7 @@ donde $c(x)$ es el costo del tratamiento para el cliente $x$. Esta métrica perm
 === Multi-treatment uplift
 <sec-cap12_multitreatment>
 
-Cuando hay $K$ tratamientos posibles, el problema se extiende a estimar $tau_k(x) = E[Y(k) - Y(0) mid X = x]$ para $k = 1, ..., K$. La política óptima asigna a cada cliente el tratamiento con mayor $tau_k(x) - c_k(x)$, donde $c_k$ es el costo del tratamiento $k$.
+Cuando hay $K$ tratamientos posibles, el problema se extiende a estimar $tau_k(x) = E[Y(k) - Y(0) | X = x]$ para $k = 1, ..., K$. La política óptima asigna a cada cliente el tratamiento con mayor $tau_k(x) - c_k(x)$, donde $c_k$ es el costo del tratamiento $k$.
 
 #intuicion[
   *Caja de profundización 12.1: Bootstrap para la curva Qini y embeddings como covariables*
@@ -131,108 +134,143 @@ donde $lambda^*$ es el costo sombra que agota el presupuesto $B$. Nótese que $l
 === Uplift modeling con causalml
 <sec-cap12_causalml>
 
-La biblioteca #code[causalml] proporciona implementaciones de meta-learners (S-learner, T-learner, X-learner) y herramientas de validación como la curva Qini y el AUUC. El siguiente listado muestra un flujo completo de estimación y evaluación.
+La biblioteca #code[causalml] @chen2020causalml proporciona implementaciones de meta-learners (S-, T-, X-, R- y DR-learner) y herramientas de validación como la curva Qini y el AUUC. El siguiente listado muestra un flujo completo de estimación y evaluación *con los dos tratamientos del caso* —SMS y llamada—, porque el análisis de costo-efectividad de la sección siguiente requiere una estimación de uplift *por acción*, no una sola.
+
+Este es el punto donde más se equivoca la práctica aplicada, y conviene decirlo explícitamente: no existe forma de derivar $tau_"llamada"(x)$ a partir de $tau_"SMS"(x)$ escalándolo por un factor. Cada acción tiene su propio efecto heterogéneo, con su propio patrón de heterogeneidad, y estimarlo requiere que los datos contengan variación en esa acción. Si el histórico solo tiene SMS, no hay uplift de llamada que estimar, por más columnas que se creen.
 
 #figure(
   kind: raw,
-  caption: [Uplift modeling con causalml.],
+  caption: [Uplift modeling multi-tratamiento con `causalml`: un estimador por acción.],
   ```python
 import numpy as np
 import pandas as pd
-from causalml.inference.meta import XGBTRegressor, MLPTRegressor
-# En causalml reciente, usar por ejemplo:
-# from causalml.inference.meta import BaseXRegressor
-# xlearner = BaseXRegressor(learner=XGBRegressor())
-# Verificar version; si XGBTRegressor no esta disponible, usar BaseXRegressor.
+from xgboost import XGBRegressor
+from causalml.inference.meta import BaseTRegressor
 from causalml.metrics import plot_qini, qini_score
 
-# Dataset sintetico de churn
+FEATURES = [f"x{i}" for i in range(8)]
+
 def make_churn_data(n=5000, seed=42):
+    """DGP sintetico de churn con TRES brazos: control, SMS, llamada.
+
+    Los dos tratamientos tienen patrones de heterogeneidad distintos --
+    ese es justamente el punto: no se derivan uno del otro.
+    """
     rng = np.random.default_rng(seed)
     X = rng.uniform(-1, 1, (n, 8))
-    e = 0.5 + 0.2 * np.tanh(X[:, 0])  # propensity
-    D = (rng.uniform(size=n) < e).astype(int)
-    tau = 0.3 - 0.4 * X[:, 0] + 0.2 * X[:, 1]  # uplift (retencion)
-    base = 0.5 + 0.1 * X[:, 2]  # baseline churn
-    Y = (rng.uniform(size=n) < base + D * tau).astype(int)  # conversion
-    return pd.DataFrame({"y": Y, "treatment": D,
-                         **{f"x{i}": X[:, i] for i in range(X.shape[1])}})
+    # Asignacion a tres brazos (aleatoria: es una campana experimental)
+    arm = rng.choice(["control", "sms", "call"], size=n, p=[0.4, 0.3, 0.3])
+    tau_sms = 0.06 - 0.05 * X[:, 0] + 0.03 * X[:, 1]   # uplift del SMS
+    tau_call = 0.12 + 0.09 * X[:, 1] - 0.02 * X[:, 3]  # uplift de la llamada
+    base = 0.45 + 0.08 * X[:, 2]                        # retencion basal
+    p = base + (arm == "sms") * tau_sms + (arm == "call") * tau_call
+    Y = (rng.uniform(size=n) < np.clip(p, 0, 1)).astype(int)
+    df = pd.DataFrame(X, columns=FEATURES)
+    df["y"], df["arm"] = Y, arm
+    df["tau_sms_true"], df["tau_call_true"] = tau_sms, tau_call  # solo eval.
+    return df
 
 df = make_churn_data(5000)
-features = [f"x{i}" for i in range(8)]
 
-# X-learner con XGBoost
-xlearner = XGBTRegressor()
-xlearner.fit(X=df[features].values, treatment=df["treatment"].values,
-             y=df["y"].values)
-df["uplift_xl"] = xlearner.predict(df[features].values)
+def uplift_por_accion(df, accion, features=FEATURES):
+    """Estima tau_accion(x) contra el brazo de control.
 
-# Qini score
-qini = qini_score(df[["y", "treatment", "uplift_xl"]])
-print(f"Qini score: {qini}")
+    Se restringe la muestra a {control, accion}: comparar dos brazos
+    activos entre si estimaria una diferencia de efectos, no un uplift.
+    """
+    sub = df[df["arm"].isin(["control", accion])]
+    learner = BaseTRegressor(learner=XGBRegressor(max_depth=3, n_estimators=200))
+    learner.fit(X=sub[features].values,
+                treatment=(sub["arm"] == accion).astype(int).values,
+                y=sub["y"].values)
+    return learner.predict(df[features].values).ravel()  # sobre TODA la muestra
 
-# Visualizacion
-plot_qini(df[["y", "treatment", "uplift_xl"]], uplift_col="uplift_xl",
+# Un estimador por accion -> dos columnas de uplift, ambas estimadas
+df["uplift_sms"] = uplift_por_accion(df, "sms")
+df["uplift_call"] = uplift_por_accion(df, "call")
+
+# Evaluacion de ranking, por accion, sobre su propia submuestra
+for accion in ["sms", "call"]:
+    sub = df[df["arm"].isin(["control", accion])].copy()
+    sub["treatment"] = (sub["arm"] == accion).astype(int)
+    col = f"uplift_{accion}"
+    print(f"{accion:>5}: Qini = {qini_score(sub[['y', 'treatment', col]])}")
+
+sub_sms = df[df["arm"].isin(["control", "sms"])].copy()
+sub_sms["treatment"] = (sub_sms["arm"] == "sms").astype(int)
+plot_qini(sub_sms[["y", "treatment", "uplift_sms"]], uplift_col="uplift_sms",
           treatment_col="treatment", outcome_col="y")
 ```
 ) <lst-uplift>
+
+Nótese que cada uplift se *estima* contra el brazo de control sobre su propia submuestra, y solo después se *predice* sobre toda la población. Comparar directamente el brazo de SMS contra el de llamada estimaría $tau_"call" - tau_"SMS"$, una diferencia de efectos que responde una pregunta distinta ("¿cuánto mejor es llamar que enviar un SMS?") y que no sirve para el problema de asignación, donde la alternativa relevante de cada acción es *no hacer nada*.
 
 === Caso empírico y validación: costo-efectividad
 <sec-cap12_costo_efectividad>
 
 El análisis de costo-efectividad extiende la evaluación más allá del ranking: incorpora costos reales de las acciones y restricciones presupuestarias para derivar políticas concretas. El listado @lst-cost-effectiveness implementa la comparación de tres estrategias de targeting (SMS, llamada y mixta) utilizando el algoritmo de net score.
 
+#box(fill: light.lighten(50%), width: 100%, inset: 8pt, radius: 2pt)[
+  *Nota:* El siguiente ejemplo es *ilustrativo con datos simulados*. En un caso real, `uplift_sms` y `uplift_call` se estiman mediante X-learner o otro metalearner (ver Cap. 12) entrenado en datos históricos con tratamientos observados.
+]
+
 #figure(
   kind: raw,
-  caption: [Analisis costo-efectividad de targeting.],
+  caption: [Análisis costo-efectividad: tres estrategias sobre las columnas de uplift estimadas en el listado @lst-uplift.],
   ```python
-# Costo: 0.5 USD por SMS, 8 USD por llamada
-# Presupuesto: 100,000 USD
-budget = 100_000
-cost_sms = 0.5
-cost_call = 8
+# Costos unitarios y presupuesto de la campana
+COSTOS = {"nada": 0.0, "sms": 0.5, "call": 8.0}
+BUDGET = 100_000
+
+def uplift_total(df, asignacion):
+    """Uplift esperado y gasto de una asignacion accion-por-cliente."""
+    u = np.where(asignacion == "sms", df["uplift_sms"],
+        np.where(asignacion == "call", df["uplift_call"], 0.0))
+    gasto = np.array([COSTOS[a] for a in asignacion]).sum()
+    return u.sum(), gasto
 
 n = len(df)
 
-n_sms = min(int(budget / cost_sms), n)
-n_calls = min(int(budget / cost_call), n)
+# --- Estrategia A: solo SMS, a los de mayor uplift_sms ---
+n_sms = min(int(BUDGET / COSTOS["sms"]), n)
+orden_sms = df["uplift_sms"].to_numpy().argsort()[::-1]
+asig_a = np.full(n, "nada", dtype=object)
+asig_a[orden_sms[:n_sms]] = "sms"
 
-n_calls_mix = min(int(budget * 0.5 / cost_call), n)
-remaining = n - n_calls_mix
-n_sms_mix = min(int(budget * 0.5 / cost_sms), max(remaining, 0))
+# --- Estrategia B: solo llamadas, a los de mayor uplift_call ---
+n_call = min(int(BUDGET / COSTOS["call"]), n)
+orden_call = df["uplift_call"].to_numpy().argsort()[::-1]
+asig_b = np.full(n, "nada", dtype=object)
+asig_b[orden_call[:n_call]] = "call"
 
-# Estrategia A: SMS a todos
-df_sorted = df.sort_values("uplift_xl", ascending=False)
-top_sms = df_sorted.head(n_sms)
-uplift_a = top_sms["uplift_xl"].sum()
-print(f"Estrategia A (SMS a {n_sms} clientes): "
-      f"uplift total = {uplift_a:.2f}")
+# --- Estrategia C: net score con costo sombra (Algoritmo de la seccion
+#     anterior). Bisecta lambda hasta agotar el presupuesto. ---
+def asignar_net_score(df, budget, lo=0.0, hi=1.0, tol=1e-4, max_iter=60):
+    for _ in range(max_iter):
+        lam = (lo + hi) / 2
+        scores = np.column_stack([
+            np.zeros(len(df)),                                  # no hacer nada
+            df["uplift_sms"] - lam * COSTOS["sms"],
+            df["uplift_call"] - lam * COSTOS["call"],
+        ])
+        idx = scores.argmax(axis=1)
+        asig = np.array(["nada", "sms", "call"], dtype=object)[idx]
+        gasto = np.array([COSTOS[a] for a in asig]).sum()
+        if abs(gasto - budget) < tol * budget:
+            break
+        lo, hi = (lam, hi) if gasto > budget else (lo, lam)
+    return asig
 
-# Estrategia B: llamadas a top por uplift
-required_cols = ["uplift_sms", "uplift_call"]
-missing = [col for col in required_cols if col not in df.columns]
+asig_c = asignar_net_score(df, BUDGET)
 
-if missing:
-    raise ValueError(
-        "Faltan columnas de uplift por tratamiento: "
-        f"{missing}. Estime uplift_sms y uplift_call por separado."
-    )
-
-top_calls = df_sorted.head(n_calls)
-uplift_b = top_calls["uplift_call"].sum()
-print(f"Estrategia B (llamadas a {n_calls} clientes): "
-      f"uplift total = {uplift_b:.2f}")
-
-# Estrategia C: mixto - SMS a top, llamadas a top
-top_calls_mix = df_sorted.head(n_calls_mix)
-top_sms_mix = df_sorted.iloc[n_calls_mix:n_calls_mix + n_sms_mix]
-uplift_c = (
-    top_calls_mix["uplift_call"].sum()
-    + top_sms_mix["uplift_sms"].sum()
-)
-print(f"Estrategia C (mixto): uplift total = {uplift_c:.2f}")
+for nombre, asig in [("A (solo SMS)", asig_a), ("B (solo llamadas)", asig_b),
+                     ("C (net score, mixto)", asig_c)]:
+    u, gasto = uplift_total(df, asig)
+    print(f"Estrategia {nombre:22s} uplift={u:8.1f}  gasto={gasto:10.1f}")
 ```
 ) <lst-cost-effectiveness>
+
+La estrategia C domina a las otras dos por una razón que el multiplicador $lambda^*$ hace transparente: al comparar $tau_k(x) - lambda^* c_k(x)$ entre acciones, la regla asigna la llamada cara solo donde su uplift adicional sobre el SMS justifica los \$7.5 de diferencia, y el SMS barato en el resto. Las estrategias A y B fijan la acción de antemano y solo optimizan a quién alcanzar; C optimiza conjuntamente ambas decisiones, que es el problema real.
 
 La figura @fig-cap12-uplift ilustra dos elementos clave del uplift modeling aplicado. El panel izquierdo muestra la curva de uplift acumulado: al ordenar la muestra por $hat(tau)$ descendente, el uplift acumulado crece rápidamente al inicio y se estabiliza, indicando que las unidades top concentran la mayor parte del uplift total. El panel derecho muestra el análisis de costo-efectividad: dada una mezcla presupuestaria entre dos acciones (SMS barato vs. llamada cara), existe una asignación óptima que maximiza el uplift total.
 
@@ -259,7 +297,7 @@ El uso de uplift modeling para targeting con múltiples tratamientos y restricci
       table.header([*Riesgo*], [*Consecuencia*], [*Diagnóstico*], [*Mitigación*]),
       table.hline(stroke: 0.4pt),
       [Multiplicar uplift ad hoc para inferir el efecto de otro tratamiento], [Comparación inválida entre acciones y política subóptima], [Verificar que cada tratamiento tiene su propia columna de $hat(tau)_k$ en los datos], [Estimar $tau_k(x)$ por separado para cada acción $k$ usando meta-learners],
-      [Optimizar solo el ranking (AUUC) sin validar la magnitud del uplift], [Mala calibración; el gasto real no coincide con el proyectado], [Comparar _calibration_ del CATE: $E[Y mid D = 1, X] - E[Y mid D = 0, X]$ vs.\ $hat(tau)$], [Usar _transformed outcome_ para obtener estimaciones de magnitud insesgadas],
+      [Optimizar solo el ranking (AUUC) sin validar la magnitud del uplift], [Mala calibración; el gasto real no coincide con el proyectado], [Comparar _calibration_ del CATE: $E[Y | D = 1, X] - E[Y | D = 0, X]$ vs.\ $hat(tau)$], [Usar _transformed outcome_ para obtener estimaciones de magnitud insesgadas],
       [Medir costos de forma incorrecta o ignorar costos hundidos], [Política de asignación errónea; se gastan recursos en acciones con retorno negativo], [Análisis de sensibilidad variando $c_k$ en $plus.minus 20%$ y observando cambios en la política óptima], [Utilizar costos reales (contables u operativos) y modelar incertidumbre con bootstrap],
       table.hline(stroke: 0.8pt),
     )
@@ -271,9 +309,11 @@ Además de los riesgos anteriores, es importante considerar la equidad: una estr
 == Ejercicios propuestos
 <sec-cap12_ejercicios>
 
-+ Replique el listado @lst-uplift sobre #code[thornton_hiv]. ¿Cuál es el Qini score?
++ Replique el listado @lst-uplift sobre #code[thornton_hiv] (un solo tratamiento). ¿Cuál es el Qini score?
 
-+ Construya un dataset con dos tratamientos (SMS vs llamada) y use #code[causalml] para estimar el CATE de cada uno. ¿Qué tratamiento es más efectivo en promedio? Use #code[BaseTRegressor] o #code[BaseXRegressor] de causalml (según versión) con un learner por tratamiento, o estime $tau_"sms"$ y $tau_"call"$ por separado.
++ Sobre el DGP del listado @lst-uplift, compare el uplift promedio de cada acción ($overline(tau)_"SMS")$ frente a $overline(tau)_"llamada"$) con el ranking que produce cada una. Verifique que la acción con mayor efecto promedio *no* es necesariamente la que conviene asignar a cada cliente, y explique por qué en términos del net score.
+
++ Verifique la calibración de ambos estimadores de uplift contra los valores verdaderos (#code[tau_sms_true], #code[tau_call_true] del DGP). Luego multiplique artificialmente #code[uplift_call] por 3 y vuelva a correr el listado @lst-cost-effectiveness. ¿Cambia el Qini de esa acción? ¿Cambia la asignación óptima y el gasto? Relacione el resultado con la distinción entre ranking y calibración de la @sec-cap12_uplift_cate.
 
 + Modifique el listado @lst-cost-effectiveness para imponer la restricción de tratar al menos al 20% de cada grupo demográfico. ¿Cómo cambia el uplift total?
 
@@ -282,4 +322,4 @@ Además de los riesgos anteriores, es importante considerar la equidad: una estr
 == Lecturas complementarias
 <sec-cap12_lecturas>
 
-@radcliffe2007using introduce la curva Qini. @gutierrez2017causal formaliza el transformed outcome. @kuo2014causalml documenta #code[causalml]. Para multi-treatment y policy learning con restricciones, @athey2021policy.
+#cite(<radcliffe2007using>, form: "prose") introduce la curva Qini en el contexto de marketing directo, que es donde nace toda esta literatura. #cite(<rzepakowski2012decision>, form: "prose") desarrollan los árboles de uplift con criterios de división específicos (basados en divergencias entre las distribuciones de respuesta de tratados y controles) y son la referencia canónica del caso multi-tratamiento tratado en la @sec-cap12_multitreatment. #cite(<gutierrez2017causal>, form: "prose") revisan la literatura y conectan el vocabulario de uplift de la industria con el de inferencia causal académica —lectura recomendada para quien llegue desde cualquiera de los dos lados—. #cite(<chen2020causalml>, form: "prose") documentan #code[causalml], la librería de Uber usada en este capítulo. Para policy learning con restricciones presupuestarias tratado formalmente, @athey2021policy y el @cap-policy-learning.

@@ -12,13 +12,13 @@
     columns: (auto, 1fr),
     align: (left, left),
     stroke: none,
-    [*[Problema]*], [Formalizar matemáticamente qué significa "causa" y qué pregunta responde cada nivel de causalidad],
-    [*[Estimando]*], [Distribuciones $P(v)$, $P(y mid "do"(x))$ y $P(y_x mid "evidencia")$],
-    [*[Identificación]*], [Un Modelo Causal Estructural (SCM) más su grafo asociado],
-    [*[Método]*], [Do-calculus (adelanto; formalización completa en el @cap-intervencion-contrafactual)],
-    [*[Garantía]*], [Cada nivel de la PCH requiere estrictamente más supuestos que el anterior],
-    [*[Librerías]*], [#code[networkx], #code[dowhy], #code[causal-learn]],
-    [*[Validación]*], [Verificación de que el grafo supuesto es consistente con las independencias observadas],
+    [*Problema:*], [Formalizar matemáticamente qué significa "causa" y qué pregunta responde cada nivel de causalidad],
+    [*Estimando:*], [Distribuciones $P(v)$, $P(y | "do"(x))$ y $P(y_x | "evidencia")$],
+    [*Identificación:*], [Un Modelo Causal Estructural (SCM) más su grafo asociado],
+    [*Método:*], [Do-calculus (adelanto; formalización completa en el @cap-intervencion-contrafactual)],
+    [*Garantía:*], [Cada nivel de la PCH requiere estrictamente más supuestos que el anterior],
+    [*Librerías:*], [#code[networkx], #code[dowhy], #code[causal-learn]],
+    [*Validación:*], [Verificación de que el grafo supuesto es consistente con las independencias observadas],
   )
 ]
 
@@ -54,22 +54,30 @@ Cada SCM $M$ induce tres distribuciones de probabilidad distintas, que correspon
   stroke: 0.5pt + gray.lighten(60%),
   table.header([*Nivel (PCH)*], [*Distribución inducida*], [*Se calcula con*]),
   [$cal(L)_1$ — Asociación], [$P(v)$: la distribución observacional conjunta de $V$], [Los datos observados, sin modificar $M$],
-  [$cal(L)_2$ — Intervención], [$P(y mid "do"(x))$: la distribución de $Y$ tras _reemplazar_ la ecuación de $X$ por la constante $x$], [El SCM "quirúrgicamente modificado" $M_x$ (se borra $f_X$ y se fija $X=x$)],
-  [$cal(L)_3$ — Contrafactual], [$P(y_x mid e)$: la distribución de "$Y$ hubiera sido $y$ si $X$ hubiera sido $x$", dada la evidencia $e$ efectivamente observada], [Un procedimiento de tres pasos: abducción, acción, predicción (ver más abajo)],
+  [$cal(L)_2$ — Intervención], [$P(y | "do"(x))$: la distribución de $Y$ tras _reemplazar_ la ecuación de $X$ por la constante $x$], [El SCM "quirúrgicamente modificado" $M_x$ (se borra $f_X$ y se fija $X=x$)],
+  [$cal(L)_3$ — Contrafactual], [$P(y_x | e)$: la distribución de "$Y$ hubiera sido $y$ si $X$ hubiera sido $x$", dada la evidencia $e$ efectivamente observada], [Un procedimiento de tres pasos: abducción, acción, predicción (ver más abajo)],
 )
 
-El operador $"do"(x)$ formaliza matemáticamente qué significa "intervenir": no es lo mismo *observar* que $X=x$ (lo que simplemente selecciona el subconjunto de unidades con $X=x$, y por tanto puede estar contaminado por confusión, como en las tres escenas del capítulo anterior) que *forzar* $X=x$ mediante una intervención externa que anula el mecanismo natural por el que $X$ se determinaba. Formalmente, $P(y mid "do"(x)) != P(y mid X=x)$ en general; ambas coinciden si y solo si no hay confusión entre $X$ y $Y$ —la condición que el resto del curso dedica tanto esfuerzo a verificar o inducir.
+El operador $"do"(x)$ formaliza matemáticamente qué significa "intervenir": no es lo mismo *observar* que $X=x$ (lo que simplemente selecciona el subconjunto de unidades con $X=x$, y por tanto puede estar contaminado por confusión, como en las tres escenas del capítulo anterior) que *forzar* $X=x$ mediante una intervención externa que anula el mecanismo natural por el que $X$ se determinaba. Formalmente, $P(y | "do"(x)) != P(y | X=x)$ en general; ambas coinciden si y solo si no hay confusión entre $X$ y $Y$ —la condición que el resto del curso dedica tanto esfuerzo a verificar o inducir.
 
 #example[
-*Los tres niveles sobre el mismo SCM.* Considere el SCM simplificado $D = f_D (U_D)$, $Y = f_Y (D, X, U_Y)$, $X = f_X (U_X)$, con $U_D$ y $U_Y$ correlacionados (confusión no observada entre $D$ y $Y$). En $cal(L)_1$, $P(y mid D=d)$ mezcla el efecto de $D$ sobre $Y$ con la correlación espuria inducida por $U_D, U_Y$ compartidos. En $cal(L)_2$, $P(y mid "do"(D=d))$ se calcula sobre el modelo modificado donde $f_D$ se reemplaza por la constante $d$, cortando el vínculo entre $U_D$ y $D$ —y por tanto elimina exactamente la confusión—. En $cal(L)_3$, dado que se observó a un individuo específico con $D=0, Y=y_0$, la pregunta "¿qué $Y$ habría tenido si $D$ hubiera sido 1?" requiere primero *inferir* la distribución de $U_D, U_Y$ compatible con lo observado (abducción), luego *forzar* $D=1$ en el modelo (acción), y finalmente *propagar* para predecir $Y$ (predicción) — de ahí el nombre del procedimiento de tres pasos de Pearl para cómputo contrafactual.
+*Los tres niveles sobre el mismo SCM.* Considere el SCM simplificado $D = f_D (U_D)$, $Y = f_Y (D, X, U_Y)$, $X = f_X (U_X)$, con $U_D$ y $U_Y$ correlacionados (confusión no observada entre $D$ y $Y$). En $cal(L)_1$, $P(y | D=d)$ mezcla el efecto de $D$ sobre $Y$ con la correlación espuria inducida por $U_D, U_Y$ compartidos. En $cal(L)_2$, $P(y | "do"(D=d))$ se calcula sobre el modelo modificado donde $f_D$ se reemplaza por la constante $d$, cortando el vínculo entre $U_D$ y $D$ —y por tanto elimina exactamente la confusión—. En $cal(L)_3$, dado que se observó a un individuo específico con $D=0, Y=y_0$, la pregunta "¿qué $Y$ habría tenido si $D$ hubiera sido 1?" requiere primero *inferir* la distribución de $U_D, U_Y$ compatible con lo observado (abducción), luego *forzar* $D=1$ en el modelo (acción), y finalmente *propagar* para predecir $Y$ (predicción) — de ahí el nombre del procedimiento de tres pasos de Pearl para cómputo contrafactual.
 ]
 
-Bareinboim (@bareinboim2025causalai) enfatiza un punto que suele perderse en presentaciones más elementales de esta jerarquía: *cada nivel es estrictamente más informativo que el anterior*, en el sentido de que conocer la distribución de $cal(L)_2$ no basta, en general, para determinar la de $cal(L)_3$ (se requieren supuestos adicionales sobre la forma funcional o sobre monotonicidad), y conocer $cal(L)_1$ nunca basta para determinar $cal(L)_2$ sin supuestos de identificación —el llamado *Teorema de la Jerarquía Causal*, que establece que colapsar un nivel en el inferior es, en general, imposible sin información extra—. Este resultado es la razón formal, y no solo intuitiva, de la tesis del Capítulo 1: los datos observacionales solos no responden preguntas causales.
+Hay aquí un punto que suele perderse en presentaciones más elementales de esta jerarquía: la separación entre niveles no es una limitación práctica de los métodos disponibles, sino un resultado formal.
+
+#theorem(name: [Teorema de la Jerarquía Causal])[
+Sea $Omega$ el espacio de SCM sobre un conjunto de variables $V$, equipado con una medida de probabilidad natural sobre las funciones estructurales y las distribuciones exógenas. El conjunto de SCM para los cuales las distribuciones de nivel $cal(L)_(k+1)$ quedan *determinadas* por las de nivel $cal(L)_k$ tiene medida cero en $Omega$, para $k = 1, 2$.
+] <thm-cht>
+
+En términos operativos: salvo en un conjunto de casos excepcional (de medida nula), dos SCM distintos pueden inducir exactamente la misma distribución observacional $P(v)$ y, sin embargo, distintas distribuciones interventivas $P(y | "do"(x))$ —y análogamente entre $cal(L)_2$ y $cal(L)_3$—. Por eso ningún procedimiento que opere únicamente sobre $P(v)$ puede, sin supuestos adicionales, recuperar $P(y | "do"(x))$: la información simplemente no está ahí. El **Teorema de la Jerarquía Causal** (@bareinboim2022pch, Bareinboim et al. 2022) establece que las tres capas de la escalera causal son estrictamente disjuntas. Este resultado, presentado de forma integrada con el resto del programa de IA causal en @bareinboim2025causalai, es la razón formal —y no solo intuitiva— de la tesis del @cap-causalidad-elemental: los datos observacionales solos no responden preguntas causales.
+
+Dos consecuencias prácticas se siguen inmediatamente, y estructuran el resto del curso. Primera: todo método de estimación causal a partir de datos observacionales —DML, PDS, meta-learners, bosques causales— debe importar información extra-datos, y esa información es siempre un supuesto de identificación (típicamente, la afirmación de que las covariables observadas cierran todas las rutas de puerta trasera, @cap-intervencion-contrafactual). Segunda: ese supuesto no se puede validar con los datos que se están usando, porque su función es precisamente suplir lo que los datos no contienen; a lo sumo puede *refutarse* si genera implicaciones observacionales que los datos contradicen (@sec-scmpch-caso), o someterse a análisis de sensibilidad (@cap-validacion). Ninguna cantidad de datos, ni ningún algoritmo, cambia esta situación.
 
 == Algoritmo e implementación
 <sec-scmpch-algoritmo>
 
-El siguiente listado construye un SCM simple en Python —una versión estilizada del ejemplo de becas y calificaciones del Capítulo 1, con una variable de motivación $U$ no observada que confunde la relación entre beca ($D$) y calificación ($Y$)— y calcula numéricamente $P(y mid D=1)$ ($cal(L)_1$) frente a $P(y mid "do"(D=1))$ ($cal(L)_2$), mostrando que difieren.
+El siguiente listado construye un SCM simple en Python —una versión estilizada del ejemplo de becas y calificaciones del Capítulo 1, con una variable de motivación $U$ no observada que confunde la relación entre beca ($D$) y calificación ($Y$)— y calcula numéricamente $P(y | D=1)$ ($cal(L)_1$) frente a $P(y | "do"(D=1))$ ($cal(L)_2$), mostrando que difieren.
 
 #figure(
   kind: raw,
@@ -110,18 +118,18 @@ print(f"Efecto causal verdadero (por construccion): 0.400")
 ```
 ) <lst-scm-do-simulacion>
 
-En la práctica, no observamos $U$ ni podemos, literalmente, "reemplazar la ecuación de $D$" como en el listado —eso solo es posible porque el ejemplo es una simulación donde conocemos el SCM verdadero—. El problema aplicado de identificación, que el resto del curso desarrolla, es precisamente cómo estimar $P(y mid "do"(x))$ *sin* conocer el SCM completo, usando solo datos observacionales más supuestos sobre el grafo (por ejemplo, con Post-Double-Selection o DML, si se asume no confusión condicional en las covariables observadas).
+En la práctica, no observamos $U$ ni podemos, literalmente, "reemplazar la ecuación de $D$" como en el listado —eso solo es posible porque el ejemplo es una simulación donde conocemos el SCM verdadero—. El problema aplicado de identificación, que el resto del curso desarrolla, es precisamente cómo estimar $P(y | "do"(x))$ *sin* conocer el SCM completo, usando solo datos observacionales más supuestos sobre el grafo (por ejemplo, con Post-Double-Selection o DML, si se asume no confusión condicional en las covariables observadas).
 
 == Caso empírico: consistencia del grafo supuesto
 <sec-scmpch-caso>
 
-Antes de estimar cualquier efecto, es buena práctica verificar que el grafo causal supuesto sea *consistente* con las independencias condicionales observadas en los datos —un chequeo necesario aunque no suficiente, ya que varios grafos distintos pueden ser observacionalmente equivalentes—. Con el dataset de retornos a la educación de Card (1995), ya usado en capítulos posteriores, un grafo que supone que la cercanía a una universidad (`nearc4`) afecta la educación pero no directamente el salario, controlando por educación, implica una independencia condicional testeable: `nearc4` y `wage` deberían ser independientes dado `educ` y el resto de covariables. `dowhy` y `causal-learn` implementan estos chequeos de forma automatizada (`refutar` en el primero, tests de independencia condicional en el segundo); ambos se detallan en el Apéndice B.
+Antes de estimar cualquier efecto, es buena práctica verificar que el grafo causal supuesto sea *consistente* con las independencias condicionales observadas en los datos. El chequeo es *necesario pero no suficiente*, y el Teorema de la Jerarquía Causal explica por qué: varios grafos distintos pueden inducir exactamente el mismo conjunto de independencias condicionales —son observacionalmente equivalentes, y forman lo que el @cap-descubrimiento-grafos llamará su *clase de equivalencia de Markov*— de modo que pasar el test no distingue entre ellos. Lo que el test sí puede hacer es *refutar*: si el grafo implica una independencia que los datos rechazan, el grafo es incorrecto. Con el dataset de retornos a la educación de @card1995, ya usado en capítulos posteriores, un grafo que supone que la cercanía a una universidad (`nearc4`) afecta la educación pero no directamente el salario, controlando por educación, implica una independencia condicional testeable: `nearc4` y `wage` deberían ser independientes dado `educ` y el resto de covariables. `dowhy` y `causal-learn` implementan estos chequeos de forma automatizada (`refutar` en el primero, tests de independencia condicional en el segundo); ambos se detallan en el Apéndice B.
 
 == Riesgos, límites y sensibilidad
 <sec-scmpch-riesgos>
 
 #riesgos[
-  - *Confundir $P(y mid X=x)$ con $P(y mid "do"(x))$.* Es, con diferencia, el error más frecuente entre practicantes de _machine learning_ que se acercan por primera vez a la inferencia causal: tratar un filtro (`df[df.D==1]`) como si fuera una intervención. Son el mismo objeto solo si no hay confusión.
+  - *Confundir $P(y | X=x)$ con $P(y | "do"(x))$.* Es, con diferencia, el error más frecuente entre practicantes de _machine learning_ que se acercan por primera vez a la inferencia causal: tratar un filtro (`df[df.D==1]`) como si fuera una intervención. Son el mismo objeto solo si no hay confusión.
   - *Asumir que el grafo es "el verdadero".* Un SCM formaliza supuestos, no los verifica. Ningún test estadístico puede confirmar que un grafo causal es correcto —solo puede refutarlo si es inconsistente con los datos—. La responsabilidad de argumentar el grafo es del analista, no del algoritmo.
   - *Tratar $cal(L)_3$ como si fuera $cal(L)_2$.* Una pregunta contrafactual ("¿habría aprobado María si...?") no se responde con el mismo procedimiento que una pregunta interventiva poblacional ("¿qué pasaría si becáramos a todos?"). Colapsar ambas —muy común en comunicación de resultados a audiencias no técnicas— puede llevar a promesas que el modelo no puede respaldar.
 ]
@@ -136,16 +144,16 @@ Antes de estimar cualquier efecto, es buena práctica verificar que el grafo cau
 
 + Para el SCM del ejercicio anterior, escriba explícitamente el modelo modificado $M_{"do"(D=1)}$ y explique, en términos del grafo, qué arista(s) desaparece(n).
 
-+ Explique por qué, en general, $P(y mid "do"(x))$ no puede calcularse a partir de $P(v)$ sin supuestos adicionales sobre el grafo (Teorema de la Jerarquía Causal). Dé un ejemplo de dos SCM distintos que induzcan la misma $P(v)$ pero distinta $P(y mid "do"(x))$.
++ Explique por qué, en general, $P(y | "do"(x))$ no puede calcularse a partir de $P(v)$ sin supuestos adicionales sobre el grafo (Teorema de la Jerarquía Causal). Dé un ejemplo de dos SCM distintos que induzcan la misma $P(v)$ pero distinta $P(y | "do"(x))$.
 
 === Ejercicios computacionales
 <sec-scmpch-ejercicios-computacionales>
 
 + Modifique el listado @lst-scm-do-simulacion para que el efecto causal verdadero de $D$ sobre $Y$ sea 0 (sin efecto), manteniendo la confusión vía $U$. Verifique que la diferencia asociativa sigue siendo distinta de cero mientras que el efecto interventivo converge a 0.
 
-+ Usando `causal-learn` o `dowhy` (Apéndice B), cargue el dataset `close_college` (Card, 1995) y ejecute un test de independencia condicional entre `nearc4` y `wage` dado `educ` y los controles estándar del capítulo 5. ¿El resultado es consistente con el grafo supuesto en la @sec-scmpch-caso?
++ Usando `causal-learn` o `dowhy` (Apéndice B), cargue el dataset `close_college` (Card, 1995) y ejecute un test de independencia condicional entre `nearc4` y `wage` dado `educ` y los controles estándar del @cap-prediccion-causalidad. ¿El resultado es consistente con el grafo supuesto en la @sec-scmpch-caso?
 
 === Notas bibliográficas
 <sec-scmpch-notas>
 
-Este capítulo sigue de cerca la formalización de @bareinboim2025causalai, fuente principal de contenido teórico-causal del curso, y la exposición clásica de @pearl2009causality, que introduce el operador $"do"()$, el procedimiento de tres pasos para cómputo contrafactual, y el cálculo-$"do"$ que retomaremos en el @cap-intervencion-contrafactual. @imbens2015causal discute en detalle la equivalencia formal entre el marco de resultados potenciales y el de SCM. Para una introducción visual y menos técnica a la jerarquía, véase nuevamente @pearlmackenzie2018, ya citado en el capítulo anterior.
+La referencia canónica del Teorema de la Jerarquía Causal, incluida la construcción precisa de la medida sobre el espacio de SCM que da sentido a la expresión "medida cero", es #cite(<bareinboim2022pch>, form: "prose"); su enunciado aquí es deliberadamente informal en ese punto. El capítulo sigue por lo demás la formalización de @bareinboim2025causalai, fuente principal de contenido teórico-causal del curso, y la exposición clásica de @pearl2009causality, que introduce el operador $"do"()$, el procedimiento de tres pasos para cómputo contrafactual, y el cálculo-$"do"$ que se enuncia formalmente en el @cap-intervencion-contrafactual. #cite(<imbens2015causal>, form: "prose") discute en detalle la equivalencia formal entre el marco de resultados potenciales y el de SCM. Para una introducción visual y menos técnica a la jerarquía, véase nuevamente @pearlmackenzie2018, ya citado en el capítulo anterior.

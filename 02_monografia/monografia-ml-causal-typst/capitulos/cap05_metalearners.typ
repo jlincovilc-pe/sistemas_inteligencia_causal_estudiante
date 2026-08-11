@@ -1,4 +1,5 @@
-// Capítulo 5 — Meta-learners para efectos de tratamiento heterogéneos
+// Capítulo 12 — Meta-learners para efectos de tratamiento heterogéneos
+// (La numeración `cap05` del nombre de archivo es histórica: proviene de la edición corta anterior y se conserva para no romper referencias.)
 #import "../template/template.typ": *
 
 #chapter[Meta-learners para efectos de tratamiento heterogéneos]
@@ -12,20 +13,20 @@
     columns: (auto, 1fr),
     align: (left, left),
     stroke: none,
-    [*[Problema]*], [Estimar CATE sin asumir forma funcional],
-    [*[Estimando]*], [$tau(x) = E[Y(1) - Y(0) mid X = x]$],
-    [*[Identificación]*], [No confusión, soporte común, SUTVA],
-    [*[Método]*], [S-learner, T-learner, X-learner, R-learner],
-    [*[Nuisance]*], [$mu_1(x), mu_0(x), e(x)$],
-    [*[Garantía]*], [Cuasi-oracle (R-learner); bootstrap (T, X)],
-    [*[Condición clave]*], [Ortogonalidad + cross-fitting (R-learner)],
-    [*[Librerías]*], [causalml, econml],
-    [*[Validación]*], [Calibración de CATE, placebos, Qini],
+    [*Problema:*], [Estimar CATE sin asumir forma funcional],
+    [*Estimando:*], [$tau(x) = E[Y(1) - Y(0) | X = x]$],
+    [*Identificación:*], [No confusión, soporte común, SUTVA],
+    [*Método:*], [S-learner, T-learner, X-learner, R-learner, DR-learner],
+    [*Nuisance:*], [$mu_1(x), mu_0(x), e(x)$],
+    [*Garantía:*], [Cuasi-oracle (R-learner); tasa oracle bajo producto de tasas (DR-learner); bootstrap (T, X)],
+    [*Condición clave:*], [Ortogonalidad + cross-fitting (R-learner)],
+    [*Librerías:*], [causalml, econml],
+    [*Validación:*], [Calibración de CATE, placebos, Qini],
   )
 ]
 
 #notatecnica[
-El @cap-dml estimó un efecto promedio (ATE); este capítulo da el primer paso hacia la heterogeneidad, estimando el efecto condicional $tau(x) = E[Y(1)-Y(0) mid X=x]$ mediante cuatro estrategias de meta-aprendizaje que reutilizan directamente los _learners_ ya vistos.
+El @cap-dml estimó un efecto promedio (ATE); este capítulo da el primer paso hacia la heterogeneidad, estimando el efecto condicional $tau(x) = E[Y(1)-Y(0) | X=x]$ mediante cuatro estrategias de meta-aprendizaje que reutilizan directamente los _learners_ ya vistos.
 ]
 
 == Problema causal, estimando e identificación
@@ -33,7 +34,7 @@ El @cap-dml estimó un efecto promedio (ATE); este capítulo da el primer paso h
 
 Una organización no gubernamental debe decidir a cuál de dos variantes de un programa de microcrédito ofrecer a cada cliente. La variante A tiene tasas de interés más bajas pero requiere reuniones grupales semanales; la variante B tiene tasas más altas pero es individual. El efecto sobre el repago difiere según características del cliente (experiencia previa, red social, sector económico). La pregunta de política no es ``¿cuál es el efecto promedio de A vs B?'', sino ``¿a qué clientes conviene asignar A y a cuáles B?''.
 
-Para responder a esta pregunta se necesita estimar el _CATE_ $tau(x) = E[Y(1) - Y(0) mid X = x]$ como función de $X$, no solo el ATE. Los _meta-learners_—S-learner, T-learner, X-learner, R-learner— son estrategias para construir un estimador de $tau(x)$ a partir de cualquier algoritmo supervisado de ML. Fueron formalizados por @kunzel2019metalearners (S, T, X) y @nie2021quasi (R-learner).
+Para responder a esta pregunta se necesita estimar el _CATE_ $tau(x) = E[Y(1) - Y(0) | X = x]$ como función de $X$, no solo el ATE. Los _meta-learners_—S-learner, T-learner, X-learner, R-learner— son estrategias para construir un estimador de $tau(x)$ a partir de cualquier algoritmo supervisado de ML. Fueron formalizados por @kunzel2019metalearners (S, T, X) y @nie2021quasi (R-learner).
 
 Este capítulo presenta los cuatro _meta-learners_, sus propiedades estadísticas (sesgo, varianza, tasa de convergencia), y una comparación empírica sobre un dataset sintético con CATE conocido. Mostramos que ningún _meta-learner_ es uniformemente dominante: el S-learner sufre de _regularization bias_, el T-learner sufre de alta varianza cuando un grupo es pequeño, el X-learner mitiga ambos pero requiere estimación de propensity score, y el R-learner es asintóticamente eficiente pero requiere optimización global.
 
@@ -57,7 +58,7 @@ $
 
 El T-learner (_two-learner_) entrena dos modelos separados:
 $
-hat(mu)_1(x) = "ML"(Y mid X, D = 1), quad hat(mu)_0(x) = "ML"(Y mid X, D = 0),
+hat(mu)_1(x) = "ML"(Y | X, D = 1), quad hat(mu)_0(x) = "ML"(Y | X, D = 0),
 $
 y estima $hat(tau)_T(x) = hat(mu)_1(x) - hat(mu)_0(x)$.
 
@@ -68,11 +69,11 @@ y estima $hat(tau)_T(x) = hat(mu)_1(x) - hat(mu)_0(x)$.
 === El X-learner
 <sec-cap05_xlearner>
 
-El X-learner (@kunzel2019metalearners) usa tres etapas:
+El X-learner @kunzel2019metalearners usa tres etapas:
 
 + Entrenar $hat(mu)_1$ y $hat(mu)_0$ como en el T-learner.
-+ Para las unidades tratadas, computar $tilde(tau)_1^i = Y_i - hat(mu)_0(X_i)$; entrenar un modelo $hat(tau)_1(x) = "ML"(tilde(tau)_1 mid X, D = 1)$. \
-  Para las unidades control, computar $tilde(tau)_0^i = hat(mu)_1(X_i) - Y_i$; entrenar $hat(tau)_0(x) = "ML"(tilde(tau)_0 mid X, D = 0)$.
++ Para las unidades tratadas, computar $tilde(tau)_1^i = Y_i - hat(mu)_0(X_i)$; entrenar un modelo $hat(tau)_1(x) = "ML"(tilde(tau)_1 | X, D = 1)$. \
+  Para las unidades control, computar $tilde(tau)_0^i = hat(mu)_1(X_i) - Y_i$; entrenar $hat(tau)_0(x) = "ML"(tilde(tau)_0 | X, D = 0)$.
 + Combinar: $hat(tau)_X(x) = hat(e)(x) hat(tau)_0(x) + (1 - hat(e)(x)) hat(tau)_1(x)$, donde $hat(e)(x)$ es el _propensity score_ estimado.
 
 #intuicion[
@@ -82,7 +83,7 @@ El X-learner (@kunzel2019metalearners) usa tres etapas:
 === R-learner: Estimador y score
 <sec-cap05_rlearner>
 
-El R-learner (@nie2021quasi) optimiza directamente una _loss_ que aísla el CATE usando el score ortogonal de Robinson (1988):
+El R-learner @nie2021quasi optimiza directamente una _loss_ que aísla el CATE usando el score ortogonal de Robinson. La forma del score del R-learner deriva del **score de Robinson** (@robinson1988) —el mismo que el @cap-ortogonalidad usó para estimar un efecto constante, ahora con $theta$ reemplazado por una función $tau(dot.c)$ que se optimiza sobre una clase de funciones:
 $
 hat(tau)_R = "argmin"_tau { 1/n sum_i [ (Y_i - hat(m)_Y(X_i)) - tau(X_i) (D_i - hat(e)(X_i)) ]^2 + Lambda(tau) },
 $ <eq-r-learner-loss>
@@ -94,6 +95,30 @@ donde $hat(m)_Y(X)$ es la _outcome regression_ de $Y$ sobre $X$, $hat(e)(X)$ es 
 
 El R-learner es preferible cuando se dispone de suficiente muestra para estimar $hat(m)_Y, hat(e)$ con precisión, y cuando se quiere inferencia asintótica válida sobre $tau(x)$.
 
+=== El DR-learner
+<sec-cap05_drlearner>
+
+Los cuatro meta-learners anteriores comparten un límite: ninguno separa nítidamente la estimación de los _nuisance_ de la estimación del CATE mismo, de modo que el error de los primeros se propaga al segundo a primer orden. El **DR-learner** (@kennedy2023towards, Kennedy 2023) combina los residuos del outcome y propensity score para lograr eficiencia semiparamétrica. #cite(<kennedy2023towards>, form: "prose") cierra ese hueco aplicando al CATE la misma lógica que DML aplicó al ATE: construir un pseudo-resultado cuyo valor esperado condicional *es* el CATE, y luego regresarlo sobre $X$ con cualquier método supervisado.
+
+El procedimiento tiene tres etapas, todas con cross-fitting:
+
++ Estimar los _nuisance_ $hat(mu)_0, hat(mu)_1, hat(e)$ en particiones ajenas.
++ Construir, para cada observación, el *pseudo-resultado doblemente robusto*
+  $
+  Gamma_i = hat(mu)_1(X_i) - hat(mu)_0(X_i) + (D_i (Y_i - hat(mu)_1(X_i))) / hat(e)(X_i) - ((1 - D_i)(Y_i - hat(mu)_0(X_i))) / (1 - hat(e)(X_i)).
+  $
++ Estimar $hat(tau)_"DR"(x) = hat(E)[Gamma | X = x]$ mediante una regresión ordinaria de $Gamma$ sobre $X$.
+
+La observación clave es que $Gamma_i$ es exactamente el score IRM del @cap-dml *antes* de promediar: promediarlo sobre toda la muestra da el ATE; regresarlo sobre $X$ da el CATE. La doble robustez se hereda punto a punto: $E[Gamma | X = x] = tau(x)$ si $hat(mu)_d$ *o* $hat(e)$ es correcto, no necesariamente ambos — caso particular de la forma canónica de la Nota técnica @sec-cap03_teorema_dml.
+
+#theorem(name: [Kennedy, 2023 — tasa oracle del DR-learner])[
+  Bajo no confusión, soporte común y cross-fitting, el error del DR-learner se acota por la suma de dos términos: el error que tendría un *oracle* que observara los verdaderos pseudo-resultados $Gamma_i^*$ (construidos con $mu_d$ y $e$ verdaderos), más un término de segundo orden proporcional al *producto* de los errores de $hat(mu)_d$ y $hat(e)$. En particular, si ambos _nuisance_ convergen a tasa $a_n$ con $a_n^2$ menor que la tasa oracle de la regresión final, el DR-learner alcanza esa tasa oracle.
+] <thm-dr-learner>
+
+La estructura de *producto* de errores es lo que distingue al DR-learner del T- y el X-learner, cuyos errores dependen de los _nuisance_ de forma aditiva y de primer orden. En la práctica esto significa que el DR-learner tolera _nuisance_ mediocres siempre que no fallen los dos a la vez, y es la razón por la que es el meta-learner por defecto cuando se quiere una garantía y no solo un estimador razonable. Su costo es la inestabilidad heredada del término IPW: cuando $hat(e)(x)$ se acerca a 0 o 1, $Gamma_i$ explota, y sin _trimming_ o recorte de pesos el estimador puede tener varianza inaceptable — el mismo diagnóstico de soporte común que el @cap-dml exige antes de reportar un ATE se vuelve aquí obligatorio antes de reportar un CATE (@sec-cap04_soporte_comun para el protocolo cuantitativo).
+
+En `econml`, la implementación es `DRLearner` (y su variante `LinearDRLearner`, `ForestDRLearner` según el regresor de la tercera etapa); en `causalml`, `BaseDRRegressor`.
+
 === Comparación de propiedades
 <sec-cap05_comparacion>
 
@@ -104,28 +129,25 @@ El R-learner es preferible cuando se dispone de suficiente muestra para estimar 
     align: (left, left, left, left, left),
     stroke: none,
     table.hline(stroke: 0.8pt),
-    table.header([*Propiedad*], [S-learner], [T-learner], [X-learner], [R-learner]),
+    table.header([*Propiedad*], [S-learner], [T-learner], [X-learner], [R-learner], [DR-learner]),
     table.hline(stroke: 0.4pt),
-    [Sesgo], [Alto (regularización)], [Medio], [Bajo], [Bajo],
-    [Varianza], [Bajo], [Alto (grupo pequeño)], [Medio], [Medio],
-    [Requiere $hat(e)$], [No], [No], [Sí], [Sí],
-    [Inferencia válida], [No], [Bootstrap], [Bootstrap], [Asintótica local bajo condiciones],
-    [Tasa $tau(x)$], [$a_n$], [$a_n$], [$a_n$], [cuasi-oracle/local; $sqrt(n)$ solo para ATE/funcionales],
-    [Implementación], [Trivial], [Simple], [Media], [Compleja],
+    [Sesgo], [Alto (regularización)], [Medio], [Bajo], [Bajo], [Bajo],
+    [Varianza], [Bajo], [Alto (grupo pequeño)], [Medio], [Medio], [Alta si $hat(e)$ extremo],
+    [Requiere $hat(e)$], [No], [No], [Sí], [Sí], [Sí],
+    [Dependencia de los _nuisance_], [1.er orden], [1.er orden], [1.er orden], [2.º orden], [2.º orden (producto)],
+    [Inferencia válida], [No], [Bootstrap], [Bootstrap], [Asintótica local bajo condiciones], [Asintótica local; oracle bajo tasas],
+    [Tasa $tau(x)$], [$a_n$], [$a_n$], [$a_n$], [cuasi-oracle/local; $sqrt(n)$ solo para ATE/funcionales], [oracle de la regresión final si $a_n^2$ es despreciable],
+    [Implementación], [Trivial], [Simple], [Media], [Compleja], [Media],
     table.hline(stroke: 0.8pt),
   )
 ) <tab-meta-comparison>
 
+La fila decisiva es la de *dependencia de los nuisance*. S, T y X heredan el error de $hat(mu)_d$ (y de $hat(e)$, en el caso de X) de forma aditiva: si los _learners_ auxiliares convergen a tasa $a_n$, el CATE estimado también, y no mejor. R y DR lo heredan a segundo orden —el producto de los errores en el caso del DR-learner—, que es la misma propiedad que hace funcionar a DML y la razón por la que son los únicos dos de la familia con garantías del tipo "el ML puede ser mediocre y el estimador causal seguir siendo bueno".
+
 #intuicion[
-  *Caja de profundización 5.1: DR-learner y calibración de efectos*
+  *Caja de profundización 5.1: calibración de efectos y ETT*
 
-  *Objetivo.* Presentar un meta-learner más robusto y una forma de verificar si los efectos estimados tienen sentido.
-
-  *El DR-learner (Doubly Robust).* Combina las ventajas del T-learner y el X-learner. Primero construye un ``pseudo-outcome'':
-  $
-  Gamma_i = hat(mu)_1(X_i) - hat(mu)_0(X_i) + (D_i(Y_i - hat(mu)_1(X_i)))/hat(e)(X_i) - ((1 - D_i)(Y_i - hat(mu)_0(X_i)))/(1 - hat(e)(X_i))
-  $
-  Luego estima $hat(tau)_"DR"(x) = E[Gamma_i mid X_i = x]$ con cualquier regresor. Es ``doubly robust'' porque si el modelo de outcome O el de propensity es correcto, el estimador es consistente.
+  *Objetivo.* Verificar si los efectos estimados tienen sentido, y distinguir el estimando poblacional del estimando sobre los tratados.
 
   *Calibración de CATE.* Una forma simple de verificar si los CATE tienen sentido:
   + Ordenar individuos por $hat(tau)(x)$ de menor a mayor.
@@ -135,7 +157,7 @@ El R-learner es preferible cuando se dispone de suficiente muestra para estimar 
 
   *ETT (Effect on the Treated).* No solo importa el ATE. A veces queremos saber: ¿cuánto afectó el tratamiento a quienes realmente lo recibieron?
   $
-  "ETT" = E[Y(1) - Y(0) mid D = 1]
+  "ETT" = E[Y(1) - Y(0) | D = 1]
   $
 ]
 
@@ -279,7 +301,9 @@ La conclusión de política: el programa es más efectivo para individuos con ma
   )
 ) <tab-riesgos_metalearners>
 
-*Límites.* Los meta-learners asumen no confusión. Si hay variables confusoras no observadas, los CATEs estimados son sesgados. Adicionalmente, los meta-learners S, T, X no tienen garantía de $sqrt(n)$-consistencia para CATE no paramétrico. El R-learner tiene garantía cuasi-oracle; la consistencia $sqrt(n)$ y eficiencia aplican a funcionales como el ATE o a clases paramétricas de $tau(x)$, no al CATE punto a punto sin condiciones adicionales. Para inferencia rigurosa sobre CATE, preferir Causal Forest (capítulo @cap-causal-forests) o R-learner.
+*Límites.* Los meta-learners asumen no confusión. Si hay variables confusoras no observadas, los CATEs estimados son sesgados. Adicionalmente, los meta-learners S, T, X no tienen garantía de $sqrt(n)$-consistencia para CATE no paramétrico. El R-learner tiene garantía cuasi-oracle y el DR-learner alcanza la tasa oracle de su regresión final bajo la condición de producto de tasas; en ambos casos, la consistencia $sqrt(n)$ y la eficiencia aplican a funcionales como el ATE o a clases paramétricas de $tau(x)$, no al CATE punto a punto sin condiciones adicionales. Para inferencia rigurosa sobre CATE, preferir Causal Forest (capítulo @cap-causal-forests), R-learner o DR-learner.
+
+*Cómo elegir en la práctica.* Una regla de trabajo defendible, en orden: (i) si el soporte común es bueno y hay muestra suficiente, DR-learner o R-learner, por sus garantías de segundo orden; (ii) si $hat(e)$ tiene masa cerca de 0 o 1, evitar DR-learner sin _trimming_ y preferir R-learner o bosque causal, que no dividen explícitamente por el _propensity_; (iii) el T-learner como _baseline_ obligatorio de comparación, porque es simple y su fallo es diagnóstico (si el DR-learner no lo supera, la heterogeneidad modelada probablemente sea ruido); (iv) el S-learner solo con _learners_ poco regularizados y nunca como única especificación, por el colapso a cero documentado en el listado @lst-s-learner-bias.
 
 == Ejercicios y notas bibliográficas
 <sec-cap05_ejercicios>
@@ -292,4 +316,4 @@ La conclusión de política: el programa es más efectivo para individuos con ma
 
 + Implemente el R-learner ``a mano'' (sin #code[econml]) usando #code[scikit-learn] para $hat(m)_Y, hat(e)$ y un #code[RandomForestRegressor] para $hat(tau)$. Compare con la implementación de #code[econml]. Use cross-fitting ($K = 5$) para estimar $hat(m)_Y$ y $hat(e)$ fuera de muestra antes de optimizar $hat(tau)$.
 
-@kunzel2019metalearners es la referencia original para S/T/X-learners. @nie2021quasi introduce el R-learner. @foster2023orthogonal extiende el marco a categorías más generales. Para una revisión comparativa, @athey2019econometric.
+#cite(<kunzel2019metalearners>, form: "prose") es la referencia original para S/T/X-learners. #cite(<nie2021quasi>, form: "prose") introduce el R-learner, construido sobre el score de @robinson1988. #cite(<kennedy2023towards>, form: "prose") es la referencia canónica del DR-learner y de la tasa oracle de la @sec-cap05_drlearner; su lectura es especialmente recomendable porque sitúa a todos los meta-learners de este capítulo dentro de un marco común de pseudo-resultados. #cite(<foster2019orthogonal>, form: "prose") generaliza el principio subyacente a los dos anteriores —_orthogonal statistical learning_— a problemas de aprendizaje con parámetros de estorbo arbitrarios, y es la referencia teórica que explica *por qué* la familia R/DR tiene dependencia de segundo orden. Para una revisión comparativa, @athey2019econometric.

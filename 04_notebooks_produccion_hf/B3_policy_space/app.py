@@ -63,6 +63,37 @@ DEFAULT_FEATURES: List[str] = [
     "was",
 ]
 
+# Etiquetas en español + explicación corta para quien no conoce el dataset IHDP.
+# Los 6 primeros campos son continuos y están estandarizados (~N(0,1)); el resto
+# son indicadores binarios (0/1). No requieren interpretación clínica individual.
+FEATURE_INFO: Dict[str, Dict[str, str]] = {
+    "bw": {"label": "Peso al nacer", "info": "Valor estandarizado (~N(0,1)), no gramos reales"},
+    "b.head": {"label": "Circunferencia craneal al nacer", "info": "Valor estandarizado"},
+    "preterm": {"label": "Semanas de prematuridad", "info": "Valor estandarizado"},
+    "birth.o": {"label": "Orden de nacimiento", "info": "Valor estandarizado"},
+    "nnhealth": {"label": "Índice de salud neonatal", "info": "Valor estandarizado"},
+    "momage": {"label": "Edad de la madre", "info": "Valor estandarizada"},
+    "sex": {"label": "Sexo del bebé", "info": "0 / 1"},
+    "twin": {"label": "Nacimiento múltiple (gemelar)", "info": "0 = no, 1 = sí"},
+    "b.marr": {"label": "Madre casada al nacer", "info": "0 = no, 1 = sí"},
+    "mom.lths": {"label": "Madre sin secundaria completa", "info": "0 = no, 1 = sí"},
+    "mom.hs": {"label": "Madre con secundaria completa", "info": "0 = no, 1 = sí"},
+    "mom.scoll": {"label": "Madre con estudios superiores parciales", "info": "0 = no, 1 = sí"},
+    "cig": {"label": "Madre fumó durante el embarazo", "info": "0 = no, 1 = sí"},
+    "first": {"label": "Primer hijo/a", "info": "0 = no, 1 = sí"},
+    "booze": {"label": "Madre consumió alcohol en el embarazo", "info": "0 = no, 1 = sí"},
+    "drugs": {"label": "Madre consumió drogas en el embarazo", "info": "0 = no, 1 = sí"},
+    "work.dur": {"label": "Madre trabajó durante el embarazo", "info": "0 = no, 1 = sí"},
+    "prenatal": {"label": "Cuidado prenatal adecuado", "info": "0 = no, 1 = sí"},
+    "ark": {"label": "Sitio del estudio: ark", "info": "Indicador binario de centro (sin lectura clínica individual)"},
+    "ein": {"label": "Sitio del estudio: ein", "info": "Indicador binario de centro (sin lectura clínica individual)"},
+    "har": {"label": "Sitio del estudio: har", "info": "Indicador binario de centro (sin lectura clínica individual)"},
+    "mia": {"label": "Sitio del estudio: mia", "info": "Indicador binario de centro (sin lectura clínica individual)"},
+    "pen": {"label": "Sitio del estudio: pen", "info": "Indicador binario de centro (sin lectura clínica individual)"},
+    "tex": {"label": "Sitio del estudio: tex", "info": "Indicador binario de centro (sin lectura clínica individual)"},
+    "was": {"label": "Sitio del estudio: was", "info": "Indicador binario de centro (sin lectura clínica individual)"},
+}
+
 
 def load_policy_obj():
     from lib.policy_utils import load_policy
@@ -115,10 +146,10 @@ def load_card_excerpt(max_chars: int = 2500) -> str:
 DISCLAIMER = """
 ### Aviso (obligatorio)
 
-Esta interfaz es un **artefacto docente** del curso *IA Causal en Producción*.
+Esta interfaz es un **artefacto docente** del curso *IA Causal en Producción*, pensado para que un **decisor de negocio** (no solo un analista) explore la política sin código.
 
 - Los datos del escenario IHDP en el monorepo son **sintéticos** (nombres estilo Hill).
-- La política refleja un **presupuesto del 20%** y la población de entrenamiento/test del Notebook A4.
+- La política refleja una **capacidad limitada: solo se puede atender al 20% de la población**, y prioriza por **efecto estimado**, no por quién tiene peor pronóstico.
 - **No** es una recomendación clínica ni un sistema de producción validado.
 """
 
@@ -128,50 +159,65 @@ def build_demo():
 
     policy = load_policy_obj()
     names = feature_names(policy)
-    # Use a small subset of sliders for UX; full vector still 25 dims with zeros for rest
-    # Better: expose all 25 with defaults 0 (IHDP covariates are ~N(0,1) style)
+    # Un input por covariable, con etiqueta en español + explicación corta
+    # (FEATURE_INFO) en vez de exponer el nombre técnico crudo del dataset.
     inputs = [
-        gr.Number(value=0.0, label=n, precision=4) for n in names
+        gr.Number(
+            value=0.0,
+            label=FEATURE_INFO.get(n, {}).get("label", n),
+            info=FEATURE_INFO.get(n, {}).get("info"),
+            precision=4,
+        )
+        for n in names
     ]
 
     def _run(*vals):
         values = {n: float(v) for n, v in zip(names, vals)}
         r = predict_one(policy, values)
         decision_txt = (
-            "**TRATAR** (π=1)" if r["recommend_treat"] else "**NO tratar** (π=0)"
+            "✅ **Sí, incluir en el programa**" if r["recommend_treat"]
+            else "❌ **No incluir, por ahora**"
         )
         md = (
-            f"### Decisión: {decision_txt}\n\n"
-            f"- **uplift_score** ŝ(x) = `{r['uplift_score']:.4f}`\n"
-            f"- **umbral λ** = `{r['threshold']:.4f}`\n"
-            f"- **presupuesto B** = `{r['budget_fraction']:.0%}`\n"
-            f"- **método CATE** = `{r['method']}`\n\n"
-            f"Regla: tratar si ŝ(x) ≥ λ (top-k calibrado en A4)."
+            f"### Recomendación: {decision_txt}\n\n"
+            f"- **Beneficio estimado de intervenir** (uplift): `{r['uplift_score']:.4f}` "
+            f"— cuanto más alto, más se espera que esta unidad se beneficie de la intervención frente a no recibirla.\n"
+            f"- **Corte de decisión**: `{r['threshold']:.4f}` — calibrado para no exceder la capacidad disponible.\n"
+            f"- **Capacidad del programa**: se puede atender al `{r['budget_fraction']:.0%}` de la población; "
+            f"esta regla prioriza a quienes más se benefician, **no** a quienes tienen peor pronóstico.\n"
+            f"- **Método usado para estimar el efecto**: `{r['method']}`\n\n"
+            f"En una frase: se recomienda tratar cuando el beneficio estimado de esta unidad está entre el "
+            f"`{r['budget_fraction']:.0%}` más alto de toda la población evaluada."
         )
         return md, r["decision"], r["uplift_score"]
 
-    with gr.Blocks(title="B3 — Policy Space (IHDP-style)") as demo:
-        gr.Markdown("# B3 — Política óptima (uplift / targeting)")
+    with gr.Blocks(title="B3 — Política de asignación (IHDP-style)") as demo:
+        gr.Markdown("# B3 — ¿A quién conviene tratar con presupuesto limitado?")
         gr.Markdown(
+            "Simulador de decisión: dado un perfil, indica si conviene incluirlo en el programa "
+            "según el **efecto estimado**, no según su pronóstico. "
             "Insumo: `artifacts/A4/policy.joblib` · Curso ECO-490 / ECON-540"
         )
         gr.Markdown(DISCLAIMER)
 
         with gr.Row():
             with gr.Column(scale=2):
-                gr.Markdown("### Covariables (escala del benchmark; ~N(0,1) sintético)")
+                gr.Markdown(
+                    "### Perfil de la unidad a evaluar\n"
+                    "Valores estandarizados del benchmark sintético (no datos reales de una persona)."
+                )
                 in_boxes = inputs
                 btn = gr.Button("Evaluar política", variant="primary")
             with gr.Column(scale=2):
                 out_md = gr.Markdown()
-                out_d = gr.Number(label="decision (0/1)")
-                out_s = gr.Number(label="uplift_score")
+                out_d = gr.Number(label="Decisión (0 = no tratar, 1 = tratar)")
+                out_s = gr.Number(label="Beneficio estimado (uplift score)")
                 if UPLIFT_PNG.is_file():
                     gr.Image(value=str(UPLIFT_PNG), label="Curva Qini/uplift de referencia (A4)")
 
         btn.click(_run, inputs=in_boxes, outputs=[out_md, out_d, out_s])
 
-        with gr.Accordion("Policy card (extracto)", open=False):
+        with gr.Accordion("Policy card (detalle técnico, para auditoría)", open=False):
             gr.Markdown(load_card_excerpt())
 
         gr.Markdown(

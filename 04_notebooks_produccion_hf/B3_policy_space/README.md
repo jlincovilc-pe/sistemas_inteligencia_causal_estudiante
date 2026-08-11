@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Sesiones** | S23–S26 |
-| **Lectura monografía** | Cap. **21** Policy · Cap. **22** Uplift · Cap. **15** (contexto servicio) |
+| **Lectura monografía** | Cap. **21** Policy · Cap. **22** Uplift · Cap. **15** (contexto servicio) · **Ap. H** (¿REST, batch o Space? checklist de arquitectura) |
 | **Labs** | L22 · L23 |
 | **Insumo** | Serie A4: `policy.joblib` + `policy_card.md` |
 | **Planes** | [`PLAN_INTEGRACION_MONOGRAFIA.md`](../../PLAN_INTEGRACION_MONOGRAFIA.md) |

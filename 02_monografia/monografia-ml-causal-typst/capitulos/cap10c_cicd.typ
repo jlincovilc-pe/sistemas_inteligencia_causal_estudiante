@@ -12,11 +12,11 @@
     columns: (auto, 1fr),
     align: (left, left),
     stroke: none,
-    [*[Decisión]*], [El pipeline de CI debe correr pruebas de sanidad estadística, no solo pruebas de código],
-    [*[Alternativas]*], [CI genérico (solo tests de software) vs. CI con pruebas estadísticas causales integradas],
-    [*[Trade-off clave]*], [Tiempo de ejecución del pipeline vs. riesgo de publicar automáticamente un modelo roto],
-    [*[Stack]*], [GitHub Actions, `pytest`, Docker],
-    [*[Riesgo principal]*], [Que un cambio de código pase todos los tests de software y aun así rompa la validez causal],
+    [*Decisión:*], [El pipeline de CI debe correr pruebas de sanidad estadística, no solo pruebas de código],
+    [*Alternativas:*], [CI genérico (solo tests de software) vs. CI con pruebas estadísticas causales integradas],
+    [*Trade-off clave:*], [Tiempo de ejecución del pipeline vs. riesgo de publicar automáticamente un modelo roto],
+    [*Stack:*], [GitHub Actions, `pytest`, Docker],
+    [*Riesgo principal:*], [Que un cambio de código pase todos los tests de software y aun así rompa la validez causal],
   )
 ]
 
@@ -41,6 +41,10 @@ El Capítulo 15 construyó el servicio; el Capítulo 19 lo publicó en el Hub. N
 <sec-cicd-decision>
 
 El pipeline de referencia del curso corre en dos etapas: una etapa rápida de pruebas de software (segundos) en cada _push_, y una etapa de pruebas estadísticas (la prueba placebo del @cap-validacion sobre un dataset de referencia fijo) que se ejecuta antes de cualquier publicación al Hub, no en cada _commit_. Esta separación —común en la práctica de CI/CD general y aquí adaptada al caso causal— evita que cada cambio menor de código dispare un reentrenamiento costoso, sin sacrificar la garantía de que nada se publica sin pasar la prueba de sanidad estadística.
+
+El curso implementa este pipeline con GitHub Actions y `pytest` por una razón puramente pedagógica —son las herramientas de menor fricción para un estudiante sin infraestructura previa—, no porque sean las únicas ni las mejores. Conviene por tanto situar la decisión dentro del ecosistema estándar, porque un equipo real ya tendrá parte de esta infraestructura resuelta: *MLflow* o *Weights & Biases* para registrar experimentos y versionar artefactos de modelo (aquí, el `.joblib` del estimador y su `CausalSchema`); *DVC* para versionar el dataset de referencia sobre el que corren las pruebas estadísticas, resolviendo el problema que el checklist de este capítulo señala como crítico; *Great Expectations* o *Pandera* para validar el esquema y los rangos de los datos de entrada; *Evidently* para el monitoreo de _drift_ que el @cap-monitoreo-causal desarrolla. Ninguna de estas herramientas, sin embargo, ofrece la etapa que este capítulo considera el aporte distintivo: *ninguna sabe qué es un placebo, ni un chequeo de balance, ni un intervalo de confianza sobre un efecto*. Sus pruebas se detienen en la integridad de los datos y la estabilidad de las métricas predictivas. La etapa `tests-estadisticos` es específica del dominio causal y hay que escribirla; lo que las herramientas estándar aportan es todo lo demás, y no conviene reimplementarlo.
+
+Tres criterios de diseño de esa etapa merecen ser explícitos, porque determinan si el pipeline es útil o solo ruidoso. Primero, *el dataset de referencia debe estar congelado y versionado*: una prueba estadística sobre datos que cambian no distingue una regresión del código de un cambio en los datos. Segundo, *los umbrales deben fijarse antes y documentarse*, no ajustarse cuando la prueba falla —la tentación de relajar el umbral para desbloquear un _merge_ es exactamente el fallo que el pipeline existe para prevenir—. Tercero, *un fallo estadístico no debe tratarse como un fallo de software*: el bloqueo correcto no es "arreglar el código hasta que pase" sino "un humano decide si el cambio en el efecto es legítimo"; un cambio genuino en el mundo también rompe un umbral, y esa es información valiosa, no un error.
 
 == Implementación de referencia
 <sec-cicd-implementacion>
@@ -75,6 +79,8 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: "3.11" }
       - run: pip install -r requirements.txt
+      - name: Validar schema de la model card (Ap. G.4)
+        run: python scripts/validar_schema.py
       - name: Prueba placebo (Cap. 14)
         run: pytest tests/test_placebo.py -v --tb=short
       - name: Chequeo de balance (Cap. 7)
@@ -152,4 +158,4 @@ El _job_ `publicar-hub` del listado @lst-cicd-workflow solo se ejecuta si `tests
 === Notas bibliográficas
 <sec-cicd-notas>
 
-La práctica general de CI/CD para sistemas de ML se documenta en @huyen2022dmls y @kastner2024mlip, ya citados en capítulos anteriores; @breck2017mltestscore (citado en el @cap-anatomia-sistema) incluye explícitamente pruebas de "reproducibilidad del pipeline de entrenamiento" en su rúbrica, que este capítulo extiende con pruebas específicas de validez causal.
+La práctica general de CI/CD para sistemas de ML se documenta en @huyen2022dmls y @kastner2024mlip, ya citados en capítulos anteriores; #cite(<breck2017mltestscore>, form: "prose") (citado en el @cap-anatomia-sistema) incluye explícitamente pruebas de "reproducibilidad del pipeline de entrenamiento" en su rúbrica, que este capítulo extiende con pruebas específicas de validez causal.

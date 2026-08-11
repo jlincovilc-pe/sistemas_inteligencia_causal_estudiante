@@ -12,17 +12,17 @@
     columns: (auto, 1fr),
     align: (left, left),
     stroke: none,
-    [*[Decisión]*], [Comunicar resultados causales con sus supuestos e incertidumbre explícitos, incluso a audiencias no técnicas],
-    [*[Alternativas]*], [Comunicación simplificada (solo el número/la historia) vs. comunicación con supuestos e incertidumbre explícitos],
-    [*[Trade-off clave]*], [Claridad y persuasión inmediata vs. honestidad sobre los límites del hallazgo],
-    [*[Riesgo principal]*], [Que un resultado válido *bajo supuestos* se comunique y se use como si fuera una verdad incondicional],
+    [*Decisión:*], [Comunicar resultados causales con sus supuestos e incertidumbre explícitos, incluso a audiencias no técnicas],
+    [*Alternativas:*], [Comunicación simplificada (solo el número/la historia) vs. comunicación con supuestos e incertidumbre explícitos],
+    [*Trade-off clave:*], [Claridad y persuasión inmediata vs. honestidad sobre los límites del hallazgo],
+    [*Riesgo principal:*], [Que un resultado válido *bajo supuestos* se comunique y se use como si fuera una verdad incondicional],
   )
 ]
 
 == El problema de diseño
 <sec-ladohumano-problema>
 
-Cada capítulo de este libro terminó con una advertencia sobre límites y supuestos —la sección de "riesgos" en los capítulos de teoría, la de "señales de alerta" en los de ingeniería—. Ese cuidado se pierde con facilidad en el último paso, casi nunca técnico, del ciclo de vida de un sistema causal: comunicar el resultado a quien debe tomar una decisión con él. @huyen2022dmls dedica su último capítulo a un punto que la formación técnica rara vez cubre: la mayoría de los proyectos de ML no fallan por un error de modelado, sino por una desconexión entre lo que el equipo técnico sabe sobre las limitaciones de su sistema y lo que la organización termina entendiendo y usando. Para un sistema causal, este riesgo es todavía mayor, porque la diferencia entre "$X$ predice $Y$" y "$X$ causa $Y$" —el problema con el que abrió este libro en el @cap-causalidad-elemental— es exactamente el tipo de matiz que se pierde primero en una comunicación simplificada.
+Cada capítulo de este libro terminó con una advertencia sobre límites y supuestos —la sección de "riesgos" en los capítulos de teoría, la de "señales de alerta" en los de ingeniería—. Ese cuidado se pierde con facilidad en el último paso, casi nunca técnico, del ciclo de vida de un sistema causal: comunicar el resultado a quien debe tomar una decisión con él. #cite(<huyen2022dmls>, form: "prose") dedica su último capítulo a un punto que la formación técnica rara vez cubre: la mayoría de los proyectos de ML no fallan por un error de modelado, sino por una desconexión entre lo que el equipo técnico sabe sobre las limitaciones de su sistema y lo que la organización termina entendiendo y usando. Para un sistema causal, este riesgo es todavía mayor, porque la diferencia entre "$X$ predice $Y$" y "$X$ causa $Y$" —el problema con el que abrió este libro en el @cap-causalidad-elemental— es exactamente el tipo de matiz que se pierde primero en una comunicación simplificada.
 
 == Opciones y trade-offs
 <sec-ladohumano-opciones>
@@ -33,6 +33,10 @@ Cada capítulo de este libro terminó con una advertencia sobre límites y supue
 ]
 
 La resolución de este trade-off no es elegir un extremo sino *estructurar* la comunicación en capas: un titular memorable, respaldado inmediatamente por los supuestos y la incertidumbre en un lugar visible y accesible, no enterrado en un apéndice que nadie lee.
+
+Vale la pena añadir que la forma de comunicar la incertidumbre no es neutral, y que la literatura de comunicación de riesgo ha establecido regularidades que conviene aprovechar en lugar de redescubrir. #cite(<spiegelhalter2019art>, form: "prose") documenta tres que aplican directamente aquí. Primera, las *frecuencias naturales* se comprenden mejor que las probabilidades o los porcentajes: "de cada 100 hogares que reciben el programa, entre 8 y 16 salen de la pobreza" se retiene y se razona mejor que "el efecto es del 12% (IC 95%: 8–16%)", aunque digan lo mismo. Segunda, los *riesgos relativos exageran sistemáticamente* la percepción del efecto: "duplica la probabilidad" es correcto y engañoso si la probabilidad basal es del 0.1%; reportar siempre el cambio absoluto junto al relativo. Tercera, y la más relevante para un resultado causal: la comunicación debe explicitar *sobre qué población* aplica el número, porque la audiencia asumirá por defecto que aplica a la suya.
+
+Hay además una asimetría que conviene tener presente al decidir cuánto matizar. Sobreestimar la certeza de un resultado causal produce decisiones que fallan de forma silenciosa —el programa se implementa, no funciona, y rara vez se atribuye el fracaso al análisis—. Subestimarla produce, en el peor caso, que la decisión se posponga o se tome sin el análisis. Los dos errores tienen costos, pero solo el primero se disfraza de éxito, y esa es una razón práctica, no solo ética, para inclinarse por la comunicación con supuestos explícitos.
 
 == Decisión de referencia para el curso
 <sec-ladohumano-decision>
@@ -94,4 +98,14 @@ Este capítulo cierra el libro donde el Capítulo 1 lo abrió: con la distinció
 === Notas bibliográficas
 <sec-ladohumano-notas>
 
-@huyen2022dmls, Capítulo 11 ("The Human Side of Machine Learning"), es la referencia central de este capítulo. Sobre comunicación de incertidumbre estadística a audiencias no técnicas en particular, véase también las buenas prácticas de reporte de resultados en @imbens2015causal.
+#cite(<huyen2022dmls>, form: "prose"), Capítulo 11 ("The Human Side of Machine Learning"), es la referencia central de este capítulo. Sobre comunicación de incertidumbre estadística a audiencias no técnicas, #cite(<spiegelhalter2019art>, form: "prose") es la referencia práctica más útil —frecuencias naturales, riesgos absolutos frente a relativos, representación visual de la incertidumbre— y la fuente de las tres regularidades de la @sec-ladohumano-opciones. #cite(<lipton2018mythos>, form: "prose") complementa la discusión desde el otro lado: qué se le está pidiendo realmente a un modelo cuando se pide que sea "interpretable" o "explicable", y por qué esas demandas encubren objetivos distintos (confianza, causalidad, transferibilidad) que conviene separar antes de intentar satisfacerlos. Sobre las buenas prácticas de reporte de resultados causales en particular, véase @imbens2015causal.
+
+== Comunicación efectiva de incertidumbre
+
+La comunicación de incertidumbre causal a stakeholders no técnicos requiere visualizaciones claras y narrativas accesibles. @spiegelhalter2019art (Spiegelhalter 2019) proporciona un marco para comunicar resultados estadísticos con transparencia. Para visualización de riesgo y gráficos de incertidumbre, ver @galesic2011 (Galesic & Garcia-Retamero 2011) sobre alfabetización gráfica cross-cultural.
+
+**Principios clave:**
+- Usar intervalos de confianza visuales en lugar de solo estimados puntuales
+- Comunicar bounds cuando la identificación es parcial
+- Explicar supuestos de identificación en lenguaje no técnico
+- Proveer contexto sobre magnitud práctica (¿es el efecto grande?)

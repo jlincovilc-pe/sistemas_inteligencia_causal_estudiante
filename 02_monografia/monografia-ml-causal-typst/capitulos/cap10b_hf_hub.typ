@@ -12,11 +12,11 @@
     columns: (auto, 1fr),
     align: (left, left),
     stroke: none,
-    [*[Decisión]*], [Documentar supuestos de identificación en la _model card_, no solo métricas de desempeño],
-    [*[Alternativas]*], [_Model card_ estándar (solo _accuracy_/desempeño) vs. _model card_ causal extendida],
-    [*[Trade-off clave]*], [Fricción de documentar más campos vs. riesgo de uso indebido del modelo por otros equipos],
-    [*[Stack]*], [`huggingface_hub`, Hugging Face Hub],
-    [*[Riesgo principal]*], [Que un consumidor del modelo lo use fuera de su población o supuestos de validez sin saberlo],
+    [*Decisión:*], [Documentar supuestos de identificación en la _model card_, no solo métricas de desempeño],
+    [*Alternativas:*], [_Model card_ estándar (solo _accuracy_/desempeño) vs. _model card_ causal extendida],
+    [*Trade-off clave:*], [Fricción de documentar más campos vs. riesgo de uso indebido del modelo por otros equipos],
+    [*Stack:*], [`huggingface_hub`, Hugging Face Hub],
+    [*Riesgo principal:*], [Que un consumidor del modelo lo use fuera de su población o supuestos de validez sin saberlo],
   )
 ]
 
@@ -27,7 +27,7 @@
 == El problema de diseño
 <sec-hfhub-problema>
 
-El Capítulo 15 sirvió el estimador DML como un endpoint que cualquiera puede consultar. Pero "poder consultarlo" no es lo mismo que "poder usarlo correctamente". Una _model card_ —la práctica, ya estándar en la comunidad de ML, de documentar un modelo junto con sus métricas, datos de entrenamiento y limitaciones (@mitchell2019modelcards)— resuelve ese problema para modelos predictivos. El problema de diseño de este capítulo es que la _model card_ estándar no tiene ningún campo para lo que más importa en un modelo *causal*: bajo qué supuestos de identificación es válido, para qué población se estimó el efecto, y qué covariables se controlaron. Publicar un estimador causal en Hugging Face Hub con una _model card_ genérica es, en la práctica, invitar a que se use fuera de su dominio de validez.
+El Capítulo 15 sirvió el estimador DML como un endpoint que cualquiera puede consultar. Pero "poder consultarlo" no es lo mismo que "poder usarlo correctamente". Una _model card_ —la práctica, ya estándar en la comunidad de ML, de documentar un modelo junto con sus métricas, datos de entrenamiento y limitaciones @mitchell2019modelcards— resuelve ese problema para modelos predictivos. El problema de diseño de este capítulo es que la _model card_ estándar no tiene ningún campo para lo que más importa en un modelo *causal*: bajo qué supuestos de identificación es válido, para qué población se estimó el efecto, y qué covariables se controlaron. Publicar un estimador causal en Hugging Face Hub con una _model card_ genérica es, en la práctica, invitar a que se use fuera de su dominio de validez.
 
 == Opciones y trade-offs
 <sec-hfhub-opciones>
@@ -112,6 +112,7 @@ La sección "No usar este modelo para" del listado @lst-model-card-causal cita d
   - No existe una sección explícita de "no usar para", dejando implícito el dominio de validez.
   - El repositorio del Hub no incluye el `CausalSchema` (@cap-ingenieria-datos-causales) junto al modelo serializado, obligando a cualquier consumidor a adivinar qué covariables espera.
   - La _model card_ no se actualizó tras reentrenar el modelo con datos nuevos (riesgo ya anticipado en el @cap-anatomia-sistema).
+  - El bundle publicado incluye el JSON Schema validado (Ap. G.4), no solo el Markdown.
 ]
 
 == Ejercicios y notas bibliográficas
@@ -132,4 +133,4 @@ La sección "No usar este modelo para" del listado @lst-model-card-causal cita d
 === Notas bibliográficas
 <sec-hfhub-notas>
 
-@mitchell2019modelcards introduce el formato de _model card_ que este capítulo extiende. @arnold2019factsheets propone un formato relacionado, orientado a proveedores de servicios de IA, con más énfasis en cumplimiento normativo. La discusión de documentación de interfaces de inferencia en general se retoma de @kastner2024mlip, Capítulo 10.
+#cite(<mitchell2019modelcards>, form: "prose") introduce el formato de _model card_ que este capítulo extiende. #cite(<gebru2021datasheets>, form: "prose") propone la pieza complementaria y, para un sistema causal, igual de necesaria: las *datasheets for datasets*, que documentan cómo se recolectaron los datos, con qué propósito, quién los financió y qué preprocesamiento sufrieron. La documentación de datasets mediante **datasheets** (@gebru2021datasheets, Gebru et al. 2021) es análoga a las Model Cards para modelos causales (Apéndice G) y debe incluir información sobre motivación, composición, proceso de recolección, preprocesamiento, usos recomendados y consideraciones éticas. La conexión con este curso es directa y vale la pena hacerla explícita: la mitad de los campos que una datasheet exige —cómo se seleccionaron las unidades, si hubo criterios de elegibilidad, qué instancias faltan— son exactamente la *ficha de procedencia del tratamiento* del @cap-datos-entrenamiento-causales, y son la información sin la cual un consumidor externo no puede evaluar si el supuesto de identificación declarado en la _model card_ es siquiera plausible. Una _model card_ causal sin su datasheet documenta el modelo pero no lo que lo hace válido. #cite(<arnold2019factsheets>, form: "prose") propone un tercer formato, orientado a proveedores de servicios de IA, con más énfasis en cumplimiento normativo. La discusión de documentación de interfaces de inferencia en general se retoma de @kastner2024mlip, Capítulo 10; su versión legible por máquina es el endpoint `/metadata` del @cap-despliegue-servicio.

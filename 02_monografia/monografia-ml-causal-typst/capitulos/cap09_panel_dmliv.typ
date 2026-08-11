@@ -1,4 +1,5 @@
-// Capítulo 9 — Machine learning causal en datos de panel
+// Capítulo 17 — Machine learning causal en datos de panel
+// (La numeración `cap09` del nombre de archivo es histórica: proviene de la edición corta anterior y se conserva para no romper referencias.)
 #import "../template/template.typ": *
 
 #chapter[Machine learning causal en datos de panel]
@@ -12,15 +13,15 @@
     columns: (auto, 1fr),
     align: (left, left),
     stroke: none,
-    [*[Problema]*], [Estimar efecto causal en panel con controles de alta dimensión],
-    [*[Estimando]*], [$theta_0$, efecto parcial en PLR de panel con efectos fijos],
-    [*[Identificación]*], [Exogeneidad + within-transformation + FE],
-    [*[Método]*], [DML-panel (within + cross-fitting), DMLIV],
-    [*[Nuisance]*], [$tilde(g)(tilde(X))$, $tilde(m)(tilde(X))$ en espacio within-transformado],
-    [*[Garantía]*], [$sqrt(n)(hat(theta) - theta_0) arrow.r^(d) N(0, cal(V))$ con errores cluster-robustos],
-    [*[Condición clave]*], [Within-transformation + cross-fitting por clúster],
-    [*[Librerías]*], [DoubleML (DoubleMLClusterData), econml],
-    [*[Validación]*], [FE vs DML, placebos, event study, sensibilidad a $K$],
+    [*Problema:*], [Estimar efecto causal en panel con controles de alta dimensión],
+    [*Estimando:*], [$theta_0$, efecto parcial en PLR de panel con efectos fijos],
+    [*Identificación:*], [Exogeneidad + within-transformation + FE],
+    [*Método:*], [DML-panel (within + cross-fitting), DMLIV],
+    [*Nuisance:*], [$tilde(g)(tilde(X))$, $tilde(m)(tilde(X))$ en espacio within-transformado],
+    [*Garantía:*], [$sqrt(n)(hat(theta) - theta_0) arrow.r^(d) N(0, cal(V))$ con errores cluster-robustos],
+    [*Condición clave:*], [Within-transformation + cross-fitting por clúster],
+    [*Librerías:*], [DoubleML (DoubleMLClusterData), econml],
+    [*Validación:*], [FE vs DML, placebos, event study, sensibilidad a $K$],
   )
 ]
 
@@ -33,7 +34,7 @@ Con Post-Double-Selection (@cap-pds) como primer diseño de identificación comp
 
 Una consultora evalúa el efecto de una reforma laboral sobre el empleo formal en 32 regiones observadas durante 10 años. La reforma se adoptó en distintas regiones en distintos años, generando un panel con _staggered adoption_. La pregunta de política es: ¿cuál es el efecto promedio de la reforma sobre el empleo formal?
 
-Los métodos clásicos—efectos fijos (FE), DiD, _synthetic DiD_— funcionan bien cuando hay pocos controles y se asume linealidad. Pero si hay muchas características regionales (sectoriales, demográficas, macroeconómicas) que afectan tanto la adopción de la reforma como el empleo, los FE clásicos pueden no bastar. @chernozhukov2018double extienden DML a datos de panel combinando _within-transformation_ con _cross-fitting_.
+Los métodos clásicos—efectos fijos (FE), DiD, _synthetic DiD_— funcionan bien cuando hay pocos controles y se asume linealidad. Pero si hay muchas características regionales (sectoriales, demográficas, macroeconómicas) que afectan tanto la adopción de la reforma como el empleo, los FE clásicos pueden no bastar. #cite(<chernozhukov2018double>, form: "prose") extienden DML a datos de panel combinando _within-transformation_ con _cross-fitting_.
 
 Este capítulo desarrolla DML para paneles: la _within-transformation_ que elimina efectos fijos, el _cross-fitting_ que preserva inferencia válida, y la extensión a instrumentos (DMLIV). Aplicamos el método al dataset #code[panel_fe_dynamic] del repositorio, que tiene CATE verdadero conocido.
 
@@ -68,7 +69,7 @@ Ahora el modelo está en forma PLR y se le puede aplicar DML directamente.
 Para que el estimador DML-panel sea $sqrt(n)$-consistente y asintóticamente normal, se requieren los siguientes supuestos:
 
 #assumption(name: [Exogeneidad del tratamiento])[
-  $E[epsilon_(i t) mid D_(i 1), dots, D_(i T), X_(i 1), dots, X_(i T), alpha_i, delta_t] = 0$ para todo $i, t$.
+  $E[epsilon_(i t) | D_(i 1), dots, D_(i T), X_(i 1), dots, X_(i T), alpha_i, delta_t] = 0$ para todo $i, t$.
 ] <asu-panel-exogeneity>
 
 El supuesto de exogeneidad del panel es la versión para panel de la no confusión condicional: una vez que controlamos por efectos fijos de unidad ($alpha_i$) y periodo ($delta_t$), y por las covariables observadas $X_(i t)$, la asignación del tratamiento es tan buena como aleatoria condicional en esos factores.
@@ -96,7 +97,7 @@ $
 psi(W, theta, eta) = (tilde(D) - m(tilde(X)))(tilde(Y) - g(tilde(X)) - theta tilde(D)),
 $ <eq-score-panel>
 
-donde $eta = (g, m)$ son las funciones _nuisance_: $g(tilde(X)) = E[tilde(Y) mid tilde(X)]$ y $m(tilde(X)) = E[tilde(D) mid tilde(X)]$. La ortogonalidad del score garantiza que los errores de estimación de $hat(g)$ y $hat(m)$ no contaminan la estimación de $theta_0$ en primer orden.
+donde $eta = (g, m)$ son las funciones _nuisance_: $g(tilde(X)) = E[tilde(Y) | tilde(X)]$ y $m(tilde(X)) = E[tilde(D) | tilde(X)]$. La ortogonalidad del score garantiza que los errores de estimación de $hat(g)$ y $hat(m)$ no contaminan la estimación de $theta_0$ en primer orden.
 
 El estimador DML-panel se obtiene resolviendo la ecuación de momento $sum_(i, t) psi(W_(i t), hat(theta), hat(eta)) = 0$ tras aplicar _cross-fitting_ por clúster (unidad).
 
@@ -107,7 +108,7 @@ Cuando $D$ es endógeno y se dispone de un instrumento $Z$, el modelo es:
 $
 Y = D theta_0 + g_0(X) + epsilon, quad Z = r_0(X) + zeta, quad D = m_0(Z, X) + v,
 $ <eq-dmliv-system>
-con $E[epsilon mid Z, X] = 0$ (exclusión) y $"Cov"(Z, v) != 0$ (relevancia). El score ortogonal correspondiente, derivado por @chernozhukov2018double, es:
+con $E[epsilon | Z, X] = 0$ (exclusión) y $"Cov"(Z, v) != 0$ (relevancia). El score ortogonal correspondiente, derivado por @chernozhukov2018double, es:
 $
 psi_(t "PLIV")(W, theta, eta) = (Z - r(X))(Y - g(X) - theta D),
 $ <eq-score-pliv>
@@ -116,6 +117,14 @@ con $eta = (g, r, m)$.
 #theorem(name: [DML-PLIV])[
   Bajo los supuestos de exclusión, relevancia, y tasas apropiadas para $hat(eta)$, el estimador DML-PLIV es $sqrt(n)$-consistente y asintóticamente Gaussiano.
 ] <thm-dml-pliv>
+
+*La relevancia no es un supuesto binario.* El teorema pide $"Cov"(Z, v) != 0$, pero la aproximación asintótica que lo respalda se degrada continuamente a medida que esa covarianza se acerca a cero. Con instrumentos *débiles*, el estimador IV es sesgado hacia OLS, su distribución muestral deja de ser aproximadamente normal, y los intervalos de confianza convencionales sub-cubren de forma severa —el problema es de la aproximación asintótica misma, no del tamaño de muestra—. El diagnóstico convencional es el estadístico $F$ de la primera etapa sobre los instrumentos excluidos, con el umbral $F > 10$ que #cite(<stock2005testing>, form: "prose") derivaron: no es una regla arbitraria, sino el valor que acota el sesgo relativo del 2SLS respecto al OLS por debajo del 10% en el caso de un instrumento. Reportar ese $F$ es obligatorio en cualquier diseño IV de este curso, y el @cap-monitoreo-causal lo convierte además en una métrica de monitoreo continuo, porque la fuerza de un instrumento puede erosionarse con el tiempo sin que ninguna otra señal lo advierta.
+
+Dos advertencias específicas del contexto de este capítulo. Primera: con muchos instrumentos —el escenario natural cuando se generan instrumentos con ML— el umbral de 10 deja de ser adecuado y hay que recurrir a diagnósticos para muchos instrumentos; #cite(<belloni2012sparse>, form: "prose") tratan precisamente el caso de selección de instrumentos óptimos con LASSO. Segunda: usar ML para estimar $hat(r)(X) = E[Z | X]$ y luego calcular el $F$ sobre los residuos ortogonalizados no es lo mismo que el $F$ de una primera etapa lineal, y las tablas de Stock–Yogo no son directamente aplicables; conviene reportar ambos y no presentar el segundo como si tuviera la garantía del primero.
+
+El complemento del diagnóstico de primera etapa es la *inferencia robusta a instrumentos débiles*. El test de *Anderson--Rubin* invierte tests de hipótesis sobre $theta$: el IC se construye como el conjunto de valores $theta_0$ para los que no se rechaza $H_0: theta = theta_0$, y es válido cualquiera sea la fuerza del instrumento — a costa de poder ser un conjunto, no un intervalo, cuando la identificación es débil. Con muchos instrumentos, los tests de *Kleibergen--Paap* y el criterio de *Stock--Yogo* para tamaño de test (#cite(<stock2002survey>, form: "prose"); #cite(<andrews2019robust>, form: "prose")) reemplazan al $F$ de un solo instrumento.
+
+*Regla operativa del curso:* si $F <= 10$, el reporte del diseño IV incluye el IC de Anderson--Rubin junto al de Wald; si el IC-AR difiere materialmente del IC-Wald, la estimación se declara sensible a la fuerza del instrumento y el @cap-monitoreo-causal la monitorea con doble umbral.
 
 #algorithm("DML-panel con within-transformation")[
   #kwin[Entrada][Panel ${(Y_(i t), D_(i t), X_(i t))}_{i=1, dots, N}^{t=1, dots, T}$, $K$ folds, learners $cal(L)_g$, $cal(L)_m$ para estimar nuisance.]
@@ -157,6 +166,8 @@ El teorema de DML-PLIV extiende estas garantías al caso con instrumentos, siemp
   kind: raw,
   caption: [DML sobre panel sintético.],
   ```python
+# Requiere DoubleML >= 0.6.0
+# pip install doubleml>=0.6.0
 import pandas as pd
 import numpy as np
 from doubleml import DoubleMLPLR, DoubleMLData
@@ -264,7 +275,8 @@ La figura muestra que el estimador DML-panel es estable en $K$ y consistente con
       table.hline(stroke: 0.4pt),
       [No hacer within-transformation], [Sesgo por $alpha_i$ no observado], [Comparar FE vs DML sin within], [Aplicar within-transformation siempre],
       [Cross-fitting por observación en lugar de por clúster], [Errores estándar incorrectos (subestimación)], [Verificar cluster folds en código (#code[cluster_vars])], [Usar #code[GroupKFold] o #code[DoubleMLClusterData]],
-      [Efectos dinámicos o tratamiento heterogéneo en el tiempo], [Estimación incompleta del efecto dinámico], [_Event study_, leads y lags], [Extensiones DiD con DML (Sun–Abraham, Callaway–Sant'Anna)],
+      [Adopción escalonada con efectos heterogéneos], [*Estimando mal definido*: pesos negativos en TWFE; el coeficiente puede tener signo opuesto al efecto verdadero], [_Event study_ con leads y lags; descomposición de Goodman-Bacon para cuantificar las comparaciones ``prohibidas'' y sus pesos], [Cambiar de estimador, no de _learner_: Callaway–Sant'Anna, Sun–Abraham o Borusyak et al. Ningún ajuste de $hat(g), hat(m)$ corrige un peso negativo],
+      [Instrumento débil (DML-PLIV)], [Sesgo hacia OLS, distribución no normal, IC que sub-cubren], [$F$ de primera etapa sobre instrumentos excluidos; umbral convencional $F > 10$ @stock2005testing], [Reportar siempre el $F$; IC de Anderson--Rubin junto al Wald si $F <= 10$; con muchos instrumentos usar diagnósticos específicos],
       [Varianza IID en presencia de correlación intra-clúster], [Errores estándar subestimados, inferencia inválida], [Calcular SE cluster-robustos y comparar con IID], [Agregar influence function por clúster: $hat("Var")(hat(theta)) = (1 / n^2) sum_c (sum_(i in c) hat(psi)_i)^2$],
       [Within-transformar $Y$ y $D$ pero no $X$], [Interpretación incorrecta de los controles], [Verificar que $X_(i t)$ también se transforme o justificar su inclusión cruda], [Aplicar within-transformation también a $X_(i t)$ o explicitar que #code[unit_id] es proxy de FE],
       table.hline(stroke: 0.8pt),
@@ -275,17 +287,33 @@ La figura muestra que el estimador DML-panel es estable en $K$ y consistente con
 #intuicion[
   *Caja de profundización 9.1: Diferencias-en-Diferencias moderno*
 
-  *Objetivo.* Entender los problemas del DiD clásico cuando el tratamiento se adopta en distintos momentos y cómo solucionarlos.
+  *Objetivo.* Entender los problemas del DiD clásico cuando el tratamiento se adopta en distintos momentos, y por qué la within-transformation de este capítulo no los resuelve.
 
-  *El problema de la adopción escalonada.* Cuando distintas unidades reciben el tratamiento en distintos períodos (``staggered adoption''), el estimador clásico de Two-Way Fixed Effects (TWFE) compara unidades tratadas con unidades que YA fueron tratadas antes. Esto puede generar *pesos negativos*: el promedio ponderado puede tener signo opuesto al efecto real.
+  *El problema de la adopción escalonada.* Cuando distintas unidades reciben el tratamiento en distintos períodos (``staggered adoption''), el estimador de Two-Way Fixed Effects (TWFE) no estima el ATT sino un promedio ponderado de comparaciones $2 times 2$. #cite(<goodmanbacon2021>, form: "prose") descompone exactamente ese promedio (la *descomposición de Goodman-Bacon*) y muestra que incluye comparaciones ``prohibidas'': unidades recién tratadas contra unidades *ya tratadas antes*, que actúan como controles pese a estar bajo tratamiento.
 
-  *Soluciones modernas.*
-  - *Event study:* graficar el efecto en cada período alrededor del tratamiento. Permite ver tendencias pre-tratamiento y dinámica post-tratamiento.
-  - *Callaway-Sant'Anna:* estimar el ATT para cada grupo (definido por momento de adopción) y cada período, luego combinar.
-  - *Sun-Abraham:* similar, con ponderación por tamaño de cohorte.
+  *La consecuencia es más grave de lo que parece.* #cite(<dechaisemartin2020twoway>, form: "prose") demuestran que, con efectos heterogéneos en el tiempo, algunos de esos pesos son *negativos*: el coeficiente TWFE puede tener signo opuesto al efecto verdadero *aunque el efecto sea del mismo signo para todas las unidades y todos los períodos*. No es un problema de precisión que más datos resuelvan; es un problema de que el estimando implícito no es el que se quiere.
 
-  *Recomendación.* Siempre comenzar con un event study para visualizar. Si hay adopción escalonada, evitar TWFE y usar estimadores robustos.
+  *Qué implica esto para el DML-panel de este capítulo.* La within-transformation de la @sec-cap09_fe_model es TWFE, y por tanto *hereda el problema completo* si la adopción es escalonada y los efectos heterogéneos. El supuesto de efecto constante de la @sec-cap09_supuestos no es una simplificación pedagógica menor: es exactamente lo que sostiene la validez del procedimiento. Flexibilizar los _nuisance_ con ML no repara un estimando mal definido — ninguna cantidad de _gradient boosting_ en $hat(g)$ y $hat(m)$ corrige un peso negativo.
+
+  *Estimadores robustos.*
+  - *Event study:* graficar el efecto en cada período alrededor del tratamiento. Permite ver tendencias pre-tratamiento y dinámica post-tratamiento. Punto de partida obligatorio.
+  - *#cite(<callaway2021difference>, form: "prose"):* estimar el $"ATT"(g,t)$ para cada cohorte de adopción $g$ y período $t$ usando solo controles nunca tratados o aún no tratados, y agregarlos con pesos explícitos y declarados.
+  - *#cite(<sun2021estimating>, form: "prose"):* corrección análoga para especificaciones de _event study_, mediante interacciones cohorte $times$ período (estimador ``interaction-weighted'').
+  - *#cite(<borusyak2024revisiting>, form: "prose"):* enfoque de imputación —estimar el contrafactual con los datos no tratados y imputar— eficiente bajo homocedasticidad.
+
+  *Recomendación.* Comenzar siempre con un _event study_. Si hay adopción escalonada, no usar TWFE (ni DML-panel sobre datos within-transformados) sin antes verificar la descomposición de Goodman-Bacon; si hay pesos negativos materiales, cambiar de estimador antes de preocuparse por la flexibilidad de los controles.
 ]
+
+=== Diseños con tiempos de tratamiento escalonados
+
+Para diseños con **staggered adoption** (tratamiento adoptado en diferentes periodos), los estimadores de efectos fijos bidireccionales (TWFE) pueden producir ponderaciones negativas y sesgo de heterogeneidad (@goodmanbacon2021, Goodman-Bacon 2021; @dechaisemartin2020twoway, de Chaisemartin & D'Haultfœuille 2020). 
+
+Extensiones modernas que corrigen este problema:
+- **Estimador de Callaway & Sant'Anna** (@callaway2021difference): agregación de ATT(g,t) por cohorte
+- **Estimador de Sun & Abraham** (@sun2021estimating): interacción de cohorte × periodo
+- **Estimador de Borusyak et al.** (@borusyak2024revisiting): imputación de contrafactuales
+
+En la práctica, usar el paquete `did` (Callaway & Sant'Anna) o `fixest` (Sun & Abraham) para DiD con tratamiento heterogéneo en tiempo.
 
 == Ejercicios propuestos
 <sec-cap09_ejercicios>
@@ -301,4 +329,6 @@ La figura muestra que el estimador DML-panel es estable en $K$ y consistente con
 == Lecturas complementarias
 <sec-cap09_lecturas>
 
-@chernozhukov2018double cubre DML-PLIV. @bach2021doubleml documenta la implementación. Para extensiones a _event-study_, @freyaldenhoven2021local. Para paneles con treatment timing staggered, @callaway2021difference.
+#cite(<chernozhukov2018double>, form: "prose") cubre DML-PLIV; #cite(<bach2021doubleml>, form: "prose") documenta la implementación en `DoubleML`, incluida la variante con _cluster cross-fitting_ usada en la @sec-cap09_dml_panel. Sobre instrumentos débiles, #cite(<stock2005testing>, form: "prose") es la referencia del umbral $F > 10$ y #cite(<belloni2012sparse>, form: "prose") la del caso con muchos instrumentos seleccionados por LASSO.
+
+La literatura de DiD con adopción escalonada es donde más ha cambiado el estado del arte en los últimos años, y conviene leerla en orden: #cite(<goodmanbacon2021>, form: "prose") descompone el estimador TWFE y muestra de dónde vienen las comparaciones problemáticas; #cite(<dechaisemartin2020twoway>, form: "prose") establecen el resultado de pesos negativos que hace inservible a TWFE bajo heterogeneidad; y las tres propuestas correctivas principales son #cite(<callaway2021difference>, form: "prose") (agregación explícita de $"ATT"(g,t)$), #cite(<sun2021estimating>, form: "prose") (event study con interacciones cohorte–período) y #cite(<borusyak2024revisiting>, form: "prose") (imputación del contrafactual). Para el diagnóstico de tendencias pre-tratamiento en diseños de event study, @freyaldenhoven2021local. El @cap-scm-mc retoma esta misma familia de problemas desde el ángulo del control sintético y la _matrix completion_.

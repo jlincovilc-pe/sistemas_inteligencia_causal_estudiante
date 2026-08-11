@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | **Sesiones** | S12–S14 |
-| **Lectura monografía** | Cap. **15** — Despliegue de un estimador causal como servicio |
+| **Lectura monografía** | Cap. **15** — Despliegue de un estimador causal como servicio · **Ap. H** (checklist de arquitectura de despliegue) |
 | **Labs** | L12 · L14 |
 | **Insumo** | Serie A2: `artifacts/A2/dml_estimator.joblib` + `feature_list.json` + `training_meta.json` |
 | **Planes** | [`PLAN_CURSO_COMPLETO.md`](../../PLAN_CURSO_COMPLETO.md) · [`PLAN_INTEGRACION_MONOGRAFIA.md`](../../PLAN_INTEGRACION_MONOGRAFIA.md) |
