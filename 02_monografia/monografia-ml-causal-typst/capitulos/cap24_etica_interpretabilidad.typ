@@ -1,5 +1,4 @@
 // Capítulo 24 — Ética, interpretabilidad y comunicación de resultados
-// (La numeración `cap16` del nombre de archivo es histórica: proviene de la edición corta anterior y se conserva para no romper referencias.)
 #import "../template/template.typ": *
 
 #chapter[Ética, interpretabilidad y comunicación de resultados]
@@ -16,7 +15,7 @@
     [*Estimando:*], [CATE por grupo demográfico, policy value, importancia de variables],
     [*Identificación:*], [No confusión, modelo causal del atributo protegido, SUTVA],
     [*Método:*], [Las tres familias canónicas (independencia / separación / suficiencia) y su incompatibilidad; equidad en el efecto; SHAP sobre sustituto del CATE; policy trees],
-    [*Nuisance:*], [$mu_d(x), e(x)$, modelo de outcome],
+    [*Nuisance:*], [$mu_(d)(x), e(x)$, modelo de outcome],
     [*Garantía:*], [Identificación bajo supuestos; cobertura de IC bajo normalidad asintótica],
     [*Librerías:*], [#code[econml], #code[shap], #code[scikit-learn]],
     [*Validación:*], [Auditoría causal, placebos, counterfactual fairness],
@@ -28,17 +27,17 @@ El @cap-explicacion-equidad formalizó la equidad como una pregunta de descompos
 ]
 
 == Motivación aplicada
-<sec-cap16-motivacion>
+<sec-cap24-motivacion>
 
 Un ministerio usa un modelo de ML causal para decidir qué hogares reciben un subsidio. El modelo se entrenó sobre datos históricos que reflejan desigualdades preexistentes: hogares encabezados por mujeres, minorías étnicas, y zonas rurales tienen históricamente menor acceso a programas sociales. El modelo, al optimizar predicción sobre estos datos, puede perpetuar o amplificar esas desigualdades — un fenómeno conocido como _algorithmic bias_.
 
 Este capítulo aborda tres dimensiones éticas del ML causal aplicado a políticas públicas: (i) sesgo algorítmico y equidad, (ii) interpretabilidad de modelos causales complejos, y (iii) comunicación de incertidumbre a tomadores de decisión. Argumentamos que la calidad técnica de un modelo causal no se mide solo en su precisión estadística, sino en sus consecuencias sociales y en la transparencia con que se comunica.
 
 == Teoría, supuestos y garantías
-<sec-cap16-teoria>
+<sec-cap24-teoria>
 
 === Equidad causal
-<sec-cap16-equidad>
+<sec-cap24-equidad>
 
 *Nota:* Las tres familias canónicas de equidad en ML son:
 1. *Demographic parity* (independencia estadística)
@@ -74,7 +73,7 @@ Este resultado es la pieza que más se omite al presentar el tema y la que más 
 Una advertencia adicional sobre el punto de partida de toda esta familia: #cite(<dwork2012fairness>, form: "prose") ya señalaron que la paridad demográfica es un criterio débil y manipulable —se puede satisfacer tratando bien a los miembros cualificados de un grupo y arbitrariamente a los del otro— y propusieron en su lugar la *equidad individual*: individuos similares respecto a una métrica de tarea deben recibir decisiones similares. Su límite práctico, reconocido por los propios autores, es que la métrica de similitud es exactamente lo difícil de especificar, y en ella se esconde el mismo juicio normativo que se pretendía evitar.
 
 === Del criterio observacional al criterio causal
-<sec-cap16-equidad-causal>
+<sec-cap24-equidad-causal>
 
 Las tres familias anteriores son criterios de $cal(L)_1$: se definen sobre la distribución conjunta observada, sin referencia a mecanismos. Un sistema *causal* admite además un criterio propio, que este curso usa como complemento y no como sustituto:
 
@@ -86,12 +85,12 @@ Las tres familias anteriores son criterios de $cal(L)_1$: se definen sobre la di
 
 *Nota sobre Equalized CATE:* La noción de _Equalized CATE_ extiende equalized odds al contexto de efectos heterogéneos. Ver @barocas2019fairness para un tratamiento completo de las familias de equidad.
 
-Conviene ser explícitos sobre el estatus de esta definición: *no* pertenece al canon de la literatura de _fair ML_ y no debe presentarse como si lo hiciera. Es una noción específica de sistemas de asignación causal, y responde a una pregunta que los tres criterios canónicos no formulan: no "¿a quién se le asigna el tratamiento?" sino "¿quién se beneficia de él?". La distinción importa porque las dos preguntas pueden dar respuestas opuestas —una política puede satisfacer paridad demográfica en la asignación y, sin embargo, concentrar todo el beneficio real en un solo grupo, si el efecto es heterogéneo—. Y tiene un límite serio que debe declararse: si el CATE es genuinamente menor en un grupo por razones estructurales (como en el caso de los hogares rurales de la @sec-cap16-auditoria), *imponer* equidad en el efecto no es posible ni deseable; lo que la métrica aporta es hacer visible esa desigualdad estructural, no corregirla por decreto.
+Conviene ser explícitos sobre el estatus de esta definición: *no* pertenece al canon de la literatura de _fair ML_ y no debe presentarse como si lo hiciera. Es una noción específica de sistemas de asignación causal, y responde a una pregunta que los tres criterios canónicos no formulan: no "¿a quién se le asigna el tratamiento?" sino "¿quién se beneficia de él?". La distinción importa porque las dos preguntas pueden dar respuestas opuestas —una política puede satisfacer paridad demográfica en la asignación y, sin embargo, concentrar todo el beneficio real en un solo grupo, si el efecto es heterogéneo—. Y tiene un límite serio que debe declararse: si el CATE es genuinamente menor en un grupo por razones estructurales (como en el caso de los hogares rurales de la @sec-cap24-auditoria), *imponer* equidad en el efecto no es posible ni deseable; lo que la métrica aporta es hacer visible esa desigualdad estructural, no corregirla por decreto.
 
 #cite(<kitagawa2021constrained>, form: "prose") formalizan el trade-off resultante: maximizar $V(pi)$ sujeto a restricciones de equidad —de cualquiera de las familias anteriores— define un problema de *clasificación restringida* cuyas garantías de regret difieren de las del @cap-policy-learning sin restricciones. El resultado operativo es que el costo en _welfare_ de imponer equidad es cuantificable y debe reportarse: no como argumento contra la restricción, sino como el precio explícito de una decisión distributiva que alguien debe tomar a sabiendas.
 
 === Interpretabilidad
-<sec-cap16-interpretabilidad>
+<sec-cap24-interpretabilidad>
 
 Los modelos de ML causal (causal forest, deep causal) son cajas negras. Tres estrategias de interpretabilidad:
 
@@ -114,7 +113,7 @@ Los modelos de ML causal (causal forest, deep causal) son cajas negras. Tres est
 Aplicar SHAP a $hat(mu)_Y$ y presentarlo como "las variables que más influyen en el efecto" es un error de categoría, no una aproximación tolerable: la edad puede ser el predictor dominante del salario y ser completamente irrelevante para la heterogeneidad del retorno a la educación. Para explicar el CATE hay que explicar el CATE, y como `CausalForestDML` no expone un modelo `sklearn` sobre el que SHAP pueda operar directamente, la vía practicable es ajustar un *modelo sustituto* (_surrogate_) sobre las predicciones $hat(tau)(X)$ y explicar ese —con la salvedad, que hay que reportar, de que se está explicando la aproximación y no el estimador—.
 
 === Comunicación de incertidumbre
-<sec-cap16-comunicacion>
+<sec-cap24-comunicacion>
 
 El error más común al comunicar resultados causales a no-técnicos es reportar solo el estimado puntual sin IC. La regla operacional: _todo número reportado debe acompañarse de una medida de incertidumbre_.
 
@@ -123,10 +122,10 @@ El error más común al comunicar resultados causales a no-técnicos es reportar
 - Distinguir afirmaciones predictivas ("el modelo predice") de afirmaciones causales ("el efecto causal estimado es").
 
 == Implementación en Python
-<sec-cap16-implementacion>
+<sec-cap24-implementacion>
 
 === Interpretabilidad con SHAP
-<sec-cap16-shap>
+<sec-cap24-shap>
 
 #figure(
   kind: raw,
@@ -202,7 +201,7 @@ El contraste final del listado no es decorativo: en este DGP, construido de modo
 Dos cautelas más, sobre las que conviene ser explícito en cualquier informe. Primera: el sustituto explica $hat(tau)$, no $tau$ — si el estimador de CATE está sesgado, SHAP explicará fielmente un artefacto. Segunda, y más de fondo: incluso una atribución correcta sobre el CATE es *asociativa dentro del modelo*, no causal sobre el mundo. Que $x_0$ explique la heterogeneidad no significa que intervenir sobre $x_0$ cambie el efecto del tratamiento; responder eso exige el aparato de rutas del @cap-explicacion-equidad, no una atribución de importancia.
 
 === Tabla de resultados para policymakers
-<sec-cap16-policymakers>
+<sec-cap24-policymakers>
 
 #figure(
   kind: raw,
@@ -242,7 +241,7 @@ print(df_comm.to_markdown(index=False))
 ) <lst-comm-table>
 
 === Análisis de equidad
-<sec-cap16-fairness>
+<sec-cap24-fairness>
 
 #figure(
   kind: raw,
@@ -287,10 +286,10 @@ def brecha_bootstrap(Y, D, X, A, B=200, seed=0):
 La diferencia entre este listado y la versión ingenua no es un tecnicismo. Aplicar un $t$-test a los $hat(tau)_i$ trata las *predicciones* del modelo como si fueran observaciones independientes: ignora por completo que cada $hat(tau)_i$ arrastra el error de estimación de los _nuisance_ y del bosque, y produce $p$-valores que pueden ser órdenes de magnitud demasiado pequeños. En una auditoría de equidad, ese error tiene una consecuencia concreta y grave: declarar una brecha de efecto entre grupos como estadísticamente significativa cuando la evidencia no lo respalda —o, peor, sostener sobre esa base una decisión de asignación diferenciada por grupo protegido—.
 
 == Caso empírico y validación
-<sec-cap16-caso>
+<sec-cap24-caso>
 
 === Auditoría de equidad en focalización de transferencias
-<sec-cap16-auditoria>
+<sec-cap24-auditoria>
 
 Sobre el dataset #code[gov_transfers], aplicamos causal forest y detectamos que el CATE estimado para hogares rurales es 30% menor que para hogares urbanos. Esto refleja no un sesgo del modelo, sino una desigualdad estructural: las transferencias tienen menor efecto en hogares rurales por falta de acceso a mercados. La recomendación de política no es excluir hogares rurales (eso amplificaría la desigualdad), sino complementar las transferencias con inversión en infraestructura rural.
 
@@ -320,10 +319,10 @@ La auditoría incluye los siguientes pasos:
 ]
 
 == Riesgos, límites y sensibilidad
-<sec-cap16-riesgos>
+<sec-cap24-riesgos>
 
 === Tabla de riesgos
-<sec-cap16-tabla-riesgos>
+<sec-cap24-tabla-riesgos>
 
 La tabla @tab-riesgos-cap16 resume los riesgos principales al usar ML causal en contextos de política pública, junto con sus consecuencias, diagnósticos y estrategias de mitigación.
 
@@ -337,7 +336,7 @@ La tabla @tab-riesgos-cap16 resume los riesgos principales al usar ML causal en 
       table.hline(stroke: 0.8pt),
       table.header([*Riesgo*], [*Consecuencia*], [*Diagnóstico*], [*Mitigación*]),
       table.hline(stroke: 0.4pt),
-      [SHAP sobre el modelo equivocado], [Reportar los predictores de $Y$ como si fueran los determinantes del efecto: conclusión falsa sobre el mecanismo], [Verificar sobre qué objeto se calculó la atribución (@sec-cap16-interpretabilidad): ¿$hat(mu)_Y$, $hat(e)$ o $hat(tau)$?], [Explicar un sustituto ajustado sobre $hat(tau)(X)$ y reportar su fidelidad ($R^2$ CV); contrastar ambos rankings como en el listado @lst-shap],
+      [SHAP sobre el modelo equivocado], [Reportar los predictores de $Y$ como si fueran los determinantes del efecto: conclusión falsa sobre el mecanismo], [Verificar sobre qué objeto se calculó la atribución (@sec-cap24-interpretabilidad): ¿$hat(mu)_Y$, $hat(e)$ o $hat(tau)$?], [Explicar un sustituto ajustado sobre $hat(tau)(X)$ y reportar su fidelidad ($R^2$ CV); contrastar ambos rankings como en el listado @lst-shap],
       [SHAP como causal], [Sobreinterpretación: creer que intervenir sobre la variable cambia el efecto], [Nota explícita de que la atribución es asociativa dentro del modelo, incluso cuando se calcula sobre el CATE], [Para preguntas de mecanismo, usar descomposición por rutas (@cap-explicacion-equidad); validar el CATE con placebos y refutación],
       [IC sobre CATE por grupo con $t$-test], [Intervalos demasiado estrechos; brechas de equidad declaradas significativas sin evidencia], [Comprobar si el IC usa la desviación de los $hat(tau)_i$ o la _influence function_ del estimador], [Usar #code[ate_interval] por subgrupo o bootstrap del pipeline completo (listado @lst-fairness)],
       [Fairness sin causalidad], [Métrica engañosa al no considerar la estructura causal del sesgo], [Auditoría causal comparando CATE entre grupos], [Counterfactual fairness con modelo causal explícito],
@@ -350,14 +349,14 @@ La tabla @tab-riesgos-cap16 resume los riesgos principales al usar ML causal en 
 ]
 
 === Cuándo no usar este método
-<sec-cap16-cuando-no>
+<sec-cap24-cuando-no>
 
-La equidad causal es un campo activo de investigación. Las definiciones existentes no solo "pueden" entrar en conflicto: el teorema de incompatibilidad de la @sec-cap16-equidad garantiza que, fuera de casos degenerados, *no pueden satisfacerse a la vez*. No hay por tanto una solución técnica única, y presentar una auditoría de equidad como si la hubiera es en sí mismo un error de método. Lo que este capítulo sostiene es más modesto y más defendible: hacer explícito qué criterio se adoptó, por qué, y cuánto _welfare_ cuesta.
+La equidad causal es un campo activo de investigación. Las definiciones existentes no solo "pueden" entrar en conflicto: el teorema de incompatibilidad de la @sec-cap24-equidad garantiza que, fuera de casos degenerados, *no pueden satisfacerse a la vez*. No hay por tanto una solución técnica única, y presentar una auditoría de equidad como si la hubiera es en sí mismo un error de método. Lo que este capítulo sostiene es más modesto y más defendible: hacer explícito qué criterio se adoptó, por qué, y cuánto _welfare_ cuesta.
 
 Una limitación adicional del enfoque de este capítulo merece declararse. Todos los criterios discutidos evalúan la *decisión* o el *efecto*, dando por buenos los datos sobre los que se estimaron. Si el sesgo está en la medición misma —si $Y$ se registra de forma sistemáticamente distinta entre grupos, o si la población de entrenamiento excluye a un grupo por el diseño del muestreo (@cap-datos-entrenamiento-causales)— ninguna restricción de equidad sobre la política corrige el problema, y la auditoría producirá métricas satisfactorias sobre un sistema injusto. La comunicación a no-técnicos requiere, además, traducir conceptos estadísticos (IC, CATE, regret) a lenguaje sustantivo sin perder rigor, tema que cierra el libro en el @cap-lado-humano.
 
 == Ejercicios propuestos
-<sec-cap16-ejercicios>
+<sec-cap24-ejercicios>
 
 + Replique el listado @lst-fairness sobre #code[gov_transfers] o #code[nsw_mixtape]. ¿Hay diferencias de CATE entre grupos demográficos?
 
@@ -368,8 +367,8 @@ Una limitación adicional del enfoque de este capítulo merece declararse. Todos
 + Escriba un _policy brief_ (1 página) comunicando los resultados de un análisis causal a un ministro no técnico. Incluya IC, recomendación de política y limitaciones.
 
 == Lecturas complementarias
-<sec-cap16-lecturas>
+<sec-cap24-lecturas>
 
-#cite(<barocas2019fairness>, form: "prose") es el tratamiento de referencia de la equidad algorítmica y la fuente de la organización en tres familias (independencia, separación, suficiencia) adoptada en la @sec-cap16-equidad, incluido el teorema de incompatibilidad. #cite(<dwork2012fairness>, form: "prose") es el trabajo fundacional del campo y de la noción de equidad individual; #cite(<hardt2016equality>, form: "prose") introduce _equalized odds_ y _equality of opportunity_, junto con un procedimiento de post-procesamiento para imponerlas. Para la vía causal —descomposición por rutas y equidad contrafactual— véase el @cap-explicacion-equidad y sus referencias. #cite(<kitagawa2021constrained>, form: "prose") formalizan el policy learning bajo restricciones y permiten cuantificar el costo en _welfare_ de cada criterio.
+#cite(<barocas2019fairness>, form: "prose") es el tratamiento de referencia de la equidad algorítmica y la fuente de la organización en tres familias (independencia, separación, suficiencia) adoptada en la @sec-cap24-equidad, incluido el teorema de incompatibilidad. #cite(<dwork2012fairness>, form: "prose") es el trabajo fundacional del campo y de la noción de equidad individual; #cite(<hardt2016equality>, form: "prose") introduce _equalized odds_ y _equality of opportunity_, junto con un procedimiento de post-procesamiento para imponerlas. Para la vía causal —descomposición por rutas y equidad contrafactual— véase el @cap-explicacion-equidad y sus referencias. #cite(<kitagawa2021constrained>, form: "prose") formalizan el policy learning bajo restricciones y permiten cuantificar el costo en _welfare_ de cada criterio.
 
-Sobre interpretabilidad, #cite(<lundberg2017unified>, form: "prose") es la referencia de SHAP, y #cite(<lipton2018mythos>, form: "prose") la lectura crítica indispensable antes de usarlo: muestra que "interpretabilidad" designa objetivos distintos y a veces incompatibles (confianza, causalidad, transferibilidad, comunicabilidad), y que una técnica de atribución no satisface automáticamente ninguno de ellos —el argumento que la @sec-cap16-interpretabilidad aplica al caso específico de explicar un estimador causal—. Para comunicación de incertidumbre a audiencias no técnicas, @spiegelhalter2019art.
+Sobre interpretabilidad, #cite(<lundberg2017unified>, form: "prose") es la referencia de SHAP, y #cite(<lipton2018mythos>, form: "prose") la lectura crítica indispensable antes de usarlo: muestra que "interpretabilidad" designa objetivos distintos y a veces incompatibles (confianza, causalidad, transferibilidad, comunicabilidad), y que una técnica de atribución no satisface automáticamente ninguno de ellos —el argumento que la @sec-cap24-interpretabilidad aplica al caso específico de explicar un estimador causal—. Para comunicación de incertidumbre a audiencias no técnicas, @spiegelhalter2019art.

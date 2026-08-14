@@ -1,5 +1,4 @@
 // Capítulo 18 — Diseño de investigación y selección de método
-// (La numeración `cap10` del nombre de archivo es histórica: proviene de la edición corta anterior y se conserva para no romper referencias.)
 #import "../template/template.typ": *
 
 #chapter[Diseño de investigación y selección de método]
@@ -29,14 +28,14 @@ Este capítulo cierra la Parte III sintetizando los tres diseños de identificac
 ]
 
 == Motivación aplicada
-<sec-cap10_motivacion>
+<sec-cap18_motivacion>
 
 Un analista del Banco Central recibe un encargo: estimar el efecto causal de una política monetaria sobre la inflación. Dispone de datos mensuales de 10 años, 30 covariables macroeconómicas, y la política se implementó en distintos momentos en distintos países. ¿Qué método usar? ¿DML? ¿DiD clásico? ¿Control sintético? ¿Causal Forest? ¿Alguno de los anteriores?
 
 La elección metodológica es la decisión más importante en inferencia causal aplicada. Un método inadecuado produce estimaciones sesgadas y conclusiones equivocadas, sin importar cuán sofisticada sea la implementación. Este capítulo no presenta métodos nuevos: organiza los ya vistos en un _mapa de decisión_ operacional, conectando las características del problema (dimensión, heterogeneidad, diseño, disponibilidad de instrumentos) con el método apropiado.
 
 == Problema causal, estimando e identificación
-<sec-cap10_problema_causal>
+<sec-cap18_problema_causal>
 
 === Dimensiones del problema causal
 
@@ -59,10 +58,10 @@ El estimando define qué cantidad poblacional queremos aprender. Los más frecue
 - *"LATE"* $= E[Y(1) - Y(0) | "compliers"]$: efecto local en compliers. Identificable bajo monotonía y exclusión con IV.
 - *Policy value* $= E[Y(pi(X))]$: valor de una regla de asignación. Estimable con policy learning.
 
-La identificación—esto es, expresar el estimando como función de la distribución observada— depende de supuestos propios de cada diseño. La tabla de identificación jerárquica de la sección @sec-cap10_teoria_supuestos resume la fuerza de cada diseño y el supuesto clave que la sostiene.
+La identificación—esto es, expresar el estimando como función de la distribución observada— depende de supuestos propios de cada diseño. La tabla de identificación jerárquica de la sección @sec-cap18_teoria_supuestos resume la fuerza de cada diseño y el supuesto clave que la sostiene.
 
 == Teoría, supuestos y garantías
-<sec-cap10_teoria_supuestos>
+<sec-cap18_teoria_supuestos>
 
 === Mapa de decisión metodológica
 
@@ -146,7 +145,7 @@ Más allá del mapa y la jerarquía de identificación, tres criterios refinan l
 ]
 
 == Implementación en Python
-<sec-cap10_implementacion>
+<sec-cap18_implementacion>
 
 === Función #code[choose_method]
 
@@ -202,7 +201,7 @@ print(choose_method(n=200, p=10, has_iv=False, is_panel=True, has_heterogeneity=
 ) <lst-decision-map>
 
 == Caso empírico y validación
-<sec-cap10_caso_empirico>
+<sec-cap18_caso_empirico>
 
 === Análisis crítico de 4 problemas
 
@@ -225,7 +224,7 @@ Para cada caso aplicado, la elección metodológica debe validarse mediante:
 - *Comparación con diseños más débiles:* si es posible, estimar con un diseño de menor fuerza y documentar la diferencia.
 
 == Errores comunes y límites
-<sec-cap10_errores>
+<sec-cap18_errores>
 
 #riesgos[
   #figure(
@@ -247,10 +246,10 @@ Para cada caso aplicado, la elección metodológica debe validarse mediante:
 
 *Límites.* El mapa es orientativo. Casos límite (panel con _staggered adoption_ y heterogeneidad, IV con muchos instrumentos débiles, RDD con covariables de alta dimensión) requieren análisis experto más allá del mapa.
 
-Hay además un límite de fondo que conviene explicitar, porque la existencia misma de una función `choose_method` invita a olvidarlo. El mapa organiza la elección de *estimador* dando por resuelta la de *identificación*, y esa es la parte fácil del problema. Las seis dimensiones de la @sec-cap10_problema_causal son observables en los datos —$n$, $p$, si hay panel, si hay un instrumento candidato—; las condiciones que realmente determinan la validez del resultado no lo son: si las covariables observadas cierran las rutas de puerta trasera, si el instrumento satisface la restricción de exclusión, si las tendencias habrían sido paralelas. Ningún argumento de la función captura eso, y ninguna heurística puede. La jerarquía de la @tab-identificacion-jerarquica ordena diseños por la *credibilidad* de esos supuestos precisamente porque es lo que el mapa no puede decidir: elegir DML sobre OLS mejora la flexibilidad de la estimación, pero un diseño de mayor fuerza identificadora —cuando los datos lo permiten— mejora algo que ninguna cantidad de flexibilidad compensa.
+Hay además un límite de fondo que conviene explicitar, porque la existencia misma de una función `choose_method` invita a olvidarlo. El mapa organiza la elección de *estimador* dando por resuelta la de *identificación*, y esa es la parte fácil del problema. Las seis dimensiones de la @sec-cap18_problema_causal son observables en los datos —$n$, $p$, si hay panel, si hay un instrumento candidato—; las condiciones que realmente determinan la validez del resultado no lo son: si las covariables observadas cierran las rutas de puerta trasera, si el instrumento satisface la restricción de exclusión, si las tendencias habrían sido paralelas. Ningún argumento de la función captura eso, y ninguna heurística puede. La jerarquía de la @tab-identificacion-jerarquica ordena diseños por la *credibilidad* de esos supuestos precisamente porque es lo que el mapa no puede decidir: elegir DML sobre OLS mejora la flexibilidad de la estimación, pero un diseño de mayor fuerza identificadora —cuando los datos lo permiten— mejora algo que ninguna cantidad de flexibilidad compensa.
 
 == Ejercicios propuestos
-<sec-cap10_ejercicios>
+<sec-cap18_ejercicios>
 
 + Para los siguientes cinco problemas, recomiende un método:
   - Efecto de un RCT sobre rendimiento escolar ($n = 5\,000$, $p = 10$).
@@ -264,6 +263,6 @@ Hay además un límite de fondo que conviene explicitar, porque la existencia mi
 + Discuta: ¿en qué casos el causal forest es preferible al R-learner, y viceversa?
 
 == Lecturas complementarias
-<sec-cap10_lecturas>
+<sec-cap18_lecturas>
 
 #cite(<athey2019econometric>, form: "prose") ofrece una revisión moderna de métodos. #cite(<imbens2015causal>, form: "prose") es la referencia canónica para métodos clásicos. #cite(<chernozhukov2018applied>, form: "prose") para DML. #cite(<athey2017beyond>, form: "prose") para una perspectiva de política.

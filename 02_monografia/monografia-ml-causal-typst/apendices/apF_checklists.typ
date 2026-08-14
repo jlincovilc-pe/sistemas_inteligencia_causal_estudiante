@@ -81,7 +81,7 @@
   - Política aprendida interpretable y comunicable.
   - _Welfare regret_ acotado.
   - Política evaluada fuera de muestra.
-  - IC del _policy value_ vía _influence function_ (@sec-cap11-estimacion); test de diferencia al comparar dos políticas.
+  - IC del _policy value_ vía _influence function_ (@sec-cap21-estimacion); test de diferencia al comparar dos políticas.
 ]
 
 == Checklist uplift

@@ -1,5 +1,4 @@
 // Capítulo 6 — Regularización, selección de variables y sesgo post-selección
-// (Parte I. La numeración `cap02` del nombre de archivo es histórica.)
 #import "../template/template.typ": *
 
 #chapter[Regularización, selección de variables y sesgo post-selección]
@@ -29,7 +28,7 @@ El @cap-prediccion-causalidad estableció que responder una pregunta causal en a
 ]
 
 == Problema causal, estimando e identificación
-<sec-cap02_problema>
+<sec-cap06_problema>
 
 Una economista laboral desea estimar el efecto de un programa de capacitación sobre el salario posterior. Dispone de un panel con 80 variables de control potenciales: características demográficas, historial laboral, sector, región, características del empleador, expectativas subjetivas, y un conjunto de variables administrativas. No sabe cuáles de estas variables son realmente confusoras (correlacionadas con la asignación al programa y con el salario) y cuáles son irrelevantes. La intuición clásica sugeriría incluir todas en la regresión, pero con 80 controles y $n = 1\,000$ observaciones, OLS sufre de alta varianza y potencia estadística reducida.
 
@@ -38,10 +37,10 @@ La solución aparentemente natural es seleccionar variables con LASSO y luego co
 Este capítulo desarrolla tres ideas centrales. Primero, presentamos LASSO, Ridge y Elastic Net como métodos de regularización con propiedades estadísticas distintas. Segundo, formalizamos el problema del sesgo post-selección y mostramos por qué la inferencia naïve es inválida. Tercero, anticipamos la solución—Post-Double-Selection de Belloni, Chernozhukov y Hansen (2014), que se desarrolla plenamente en el capítulo @cap-pds— como ejemplo paradigmático de cómo el ML puede integrarse con inferencia válida cuando se diseñan procedimientos que respetan la estructura del problema causal.
 
 == Teoría, supuestos y garantías
-<sec-cap02_teoria>
+<sec-cap06_teoria>
 
 === Supuestos
-<sec-cap02_supuestos>
+<sec-cap06_supuestos>
 
 Para que LASSO sea consistente en alta dimensión, se requiere el supuesto de _sparsity_: solo unas pocas componentes de $beta$ son distintas de cero.
 
@@ -50,7 +49,7 @@ Para que LASSO sea consistente en alta dimensión, se requiere el supuesto de _s
 ] <asu-sparsity>
 
 === Estimador y score
-<sec-cap02_estimador>
+<sec-cap06_estimador>
 
 Consideremos el modelo lineal de alta dimensión $bold(Y) = bold(X) beta + epsilon$ con $bold(X) in R^(n times p)$ y $beta in R^p$. Cuando $p$ es comparable a $n$ o mayor, OLS tiene alta varianza o no está siquiera definido ($p > n$). Los estimadores penalizados resuelven esto añadiendo una penalización que contrae los coeficientes hacia cero.
 
@@ -80,15 +79,15 @@ Consideremos el modelo lineal de alta dimensión $bold(Y) = bold(X) beta + epsil
 La diferencia clave es que LASSO produce _selección de variables_ (algunos $hat(beta)_j = 0$ exactamente), mientras que Ridge solo contrae los coeficientes sin hacer selección. Elastic Net combina ambos comportamientos y es preferible cuando hay grupos de variables altamente correlacionadas.
 
 === Garantías
-<sec-cap02_garantias>
+<sec-cap06_garantias>
 
 Bajo sparsity y condiciones regulares (designado _restricted eigenvalue condition_, @bickel2009simultaneous), LASSO satisface:
 
 #theorem(name: [Tasa de convergencia de LASSO])[
   Bajo el supuesto de _sparsity_ y _restricted eigenvalue condition_ con constante $kappa > 0$, si $lambda asymp sqrt(log p / n)$, entonces con probabilidad alta:
   $
-  norm(hat(beta)_("LASSO") - beta_0)_1 = O_p(s sqrt(log p / n)), quad
-  norm(hat(beta)_("LASSO") - beta_0)_2 = O_p(sqrt(s log p / n)).
+  norm(hat(beta)_("LASSO") - beta_0)_1 = O_(p)(s sqrt(log p / n)), quad
+  norm(hat(beta)_("LASSO") - beta_0)_2 = O_(p)(sqrt(s log p / n)).
   $
 ] <thm-lasso-rate>
 
@@ -148,7 +147,7 @@ La segunda familia es la relevante para este curso, y por una razón conceptual,
 La clave del éxito de PDS es la _doble selección_: las variables confusoras son aquellas que predicen tanto $Y$ como $D$. Seleccionando por separado cada conjunto y tomando la unión, se capturan todas las confusoras relevantes con alta probabilidad, mientras que el sesgo de selección individual se diluye. Desarrollamos este método en detalle en el capítulo @cap-pds.
 
 == Algoritmo e implementación
-<sec-cap02_algoritmo>
+<sec-cap06_algoritmo>
 
 === Pseudocódigo
 
@@ -165,7 +164,7 @@ El procedimiento Post-LASSO OLS (o _naive_ post-selection) se describe a continu
 ] <alg-post-lasso-ols>
 
 === Implementación en Python
-<sec-cap02_implementacion>
+<sec-cap06_implementacion>
 
 Ilustramos el sesgo post-selección con un dataset sintético donde conocemos el verdadero $theta$.
 
@@ -244,7 +243,7 @@ print(f"Cobertura real IC post-selección: {covers.mean():.3f}")
 El _output_ típico muestra un sesgo de aproximadamente $-0.05$ a $-0.10$ y cobertura real de aproximadamente 0.85–0.90, claramente inferior al nominal 0.95. La conclusión práctica: *no se debe reportar IC construidos después de selección LASSO sin corrección*.
 
 === Diagnósticos de nuisance
-<sec-cap02_nuisance>
+<sec-cap06_nuisance>
 
 #intuicion[
   *Caja de profundización 2.1: Partialling-out y double lasso*
@@ -287,7 +286,7 @@ def partialling_out_theta(Y, D, X):
 ) <lst-partialling-out>
 
 == Caso empírico y validación
-<sec-cap02_caso>
+<sec-cap06_caso>
 
 #cite(<belloni2014inference>, form: "prose") aplicaron PDS al dataset de @card1995 sobre retornos a la educación. Encuentran un efecto positivo y significativo del orden de las estimaciones 2SLS clásicas, con diferencias moderadas entre PDS y los estimadores IV con controles seleccionados manualmente; las cifras exactas dependen del set de instrumentos y controles considerados y no se reproducen aquí para evitar imprecisiones.
 
@@ -296,7 +295,7 @@ def partialling_out_theta(Y, D, X):
 Sobre el dataset #code[nhefs] del repositorio, que tiene 51 covariables utilizables (tras excluir variables post-tratamiento y de fecha), podemos aplicar el mismo principio. La pregunta causal es: ¿cuál es el efecto de dejar de fumar sobre el cambio de peso? Réplica propia sobre $n = 1\,566$ observaciones: OLS con selección manual de 5 controles reporta un coeficiente de 3.20 kg (IC 95% [2.26, 4.14]); PDS con LASSO aplicado a los 51 controles reporta un coeficiente de 3.22 kg (IC 95% [2.29, 4.14]). La diferencia es pequeña en este caso, pero PDS selecciona 18 variables, capturando confusoras adicionales (estado civil, hábitos de alcohol, condiciones médicas) que el análisis manual omitía.
 
 == Riesgos, límites y sensibilidad
-<sec-cap02_riesgos>
+<sec-cap06_riesgos>
 
 === Tabla de riesgos
 
@@ -335,12 +334,12 @@ Sobre el dataset #code[nhefs] del repositorio, que tiene 51 covariables utilizab
 
 == Inferencia post-selección
 
-La construcción de intervalos de confianza **válidos tras selección de variables** requiere métodos especializados que corrijan el sesgo condicional: @lee2016exact (Lee et al. 2016) para inferencia exacta post-LASSO, @zhang2014confidence (Zhang & Zhang 2014) para parámetros de baja dimensión en modelos de alta dimensión, y @vandegeer2014asymptotically (van de Geer et al. 2014) para regiones de confianza asintóticamente óptimas.
+La construcción de intervalos de confianza *válidos tras selección de variables* requiere métodos especializados que corrijan el sesgo condicional: @lee2016exact (Lee et al. 2016) para inferencia exacta post-LASSO, @zhang2014confidence (Zhang & Zhang 2014) para parámetros de baja dimensión en modelos de alta dimensión, y @vandegeer2014asymptotically (van de Geer et al. 2014) para regiones de confianza asintóticamente óptimas.
 
-En la práctica del curso, el enfoque DML (Cap. 11) **evita este problema** mediante cross-fitting y scores ortogonales: la selección de variables ocurre en datos auxiliares separados, preservando la validez de la inferencia.
+En la práctica del curso, el enfoque DML (Cap. 11) *evita este problema* mediante cross-fitting y scores ortogonales: la selección de variables ocurre en datos auxiliares separados, preservando la validez de la inferencia.
 
 == Ejercicios y notas bibliográficas
-<sec-cap02_ejercicios>
+<sec-cap06_ejercicios>
 
 + Replique el experimento Monte Carlo del listado @lst-post-selection-bias variando $p in {20, 50, 100, 200}$. ¿Cómo cambia el sesgo y la cobertura con la dimensionalidad?
 

@@ -1,5 +1,4 @@
 // Capítulo 10 — Ortogonalidad de Neyman, cross-fitting e influence functions
-// (La numeración `cap03` del nombre de archivo es histórica: proviene de la edición corta anterior y se conserva para no romper referencias.)
 #import "../template/template.typ": *
 
 #chapter[Ortogonalidad de Neyman, cross-fitting e influence functions]
@@ -28,7 +27,7 @@ Con el criterio de puerta trasera (@cap-intervencion-contrafactual) y la auditor
 ]
 
 == Problema causal, estimando e identificación
-<sec-cap03_problema>
+<sec-cap10_problema>
 
 Una consultora económica está evaluando el efecto de una reforma tributaria sobre la inversión empresarial. Dispone de un panel de $5\,000$ firmas con 200 covariables (características financieras, sectoriales, de propiedad, de gobernanza). La asignación de la reforma no fue aleatoria: las firmas grandes y rentables fueron más propensas a ser tratadas. El estimador ideal debería: (i) usar ML para modelar flexiblemente la relación entre covariables y asignación al tratamiento (_propensity score_), (ii) usar ML para modelar la relación entre covariables e inversión en ausencia de tratamiento (_outcome regression_), (iii) combinar ambas estimaciones para obtener un estimador del efecto causal con inferencia válida.
 
@@ -37,10 +36,10 @@ El problema es que si simplemente "enchufamos" los estimadores de ML en una fór
 Este capítulo formaliza el problema del _doble sesgo_ y presenta la solución conceptual central del ML causal moderno: la *ortogonalidad de Neyman*. Mostramos que existe una manera de construir un _score_ (función de momento) cuya derivada respecto a los parámetros _nuisance_ es cero en el valor verdadero, de modo que los errores de estimación de los _nuisance_ solo afectan la inferencia causal en el segundo orden. Esta propiedad, combinada con _cross-fitting_ (capítulo @cap-dml), permite construir estimadores $sqrt(n)$-consistentes y asintóticamente normales incluso cuando los _nuisance_ se estiman con ML a tasas más lentas que $sqrt(n)$.
 
 == Teoría, supuestos y garantías
-<sec-cap03_teoria>
+<sec-cap10_teoria>
 
 === El problema del doble sesgo
-<sec-cap03_doble_sesgo>
+<sec-cap10_doble_sesgo>
 
 Consideremos el modelo parcialmente lineal (PLR, _partial linear model_):
 $
@@ -61,9 +60,9 @@ $
 tilde(theta) = (sum_i D_i^2)^(-1) sum_i D_i (Y_i - hat(g)(X_i)).
 $
 
-El problema: $hat(g)(X_i)$ tiene error $O_p(a_n)$ con $a_n >> n^(-1/2)$ en general (bosques aleatorios tienen $a_n = n^(-2/5)$ típicamente). Este error de primer orden contamina $tilde(theta)$:
+El problema: $hat(g)(X_i)$ tiene error $O_(p)(a_n)$ con $a_n >> n^(-1/2)$ en general (bosques aleatorios tienen $a_n = n^(-2/5)$ típicamente). Este error de primer orden contamina $tilde(theta)$:
 $
-tilde(theta) - theta_0 = underbrace((sum D_i^2)^(-1) sum D_i epsilon_i, "ruido " O_p(n^(-1/2))) + underbrace((sum D_i^2)^(-1) sum D_i (g_0(X_i) - hat(g)(X_i)), "sesgo " O_p(a_n)).
+tilde(theta) - theta_0 = underbrace((sum D_i^2)^(-1) sum D_i epsilon_i, "ruido " O_(p)(n^(-1/2))) + underbrace((sum D_i^2)^(-1) sum D_i (g_0(X_i) - hat(g)(X_i)), "sesgo " O_(p)(a_n)).
 $
 
 Como $a_n >> n^(-1/2)$, el sesgo domina la varianza asintótica y la inferencia basada en la distribución normal es inválida.
@@ -78,7 +77,7 @@ $
 El mismo problema: el error $hat(m) - m_0$ contamina $tilde(theta)'$ en primer orden.
 
 === Ortogonalidad de Neyman
-<sec-cap03_ortogonalidad_neyman>
+<sec-cap10_ortogonalidad_neyman>
 
 La solución es construir un _score_ $psi(W, theta, eta)$, donde $W = (Y, D, X)$ y $eta = (g, m)$ son los _nuisance parameters_, que satisfaga:
 
@@ -89,10 +88,10 @@ La solución es construir un _score_ $psi(W, theta, eta)$, donde $W = (Y, D, X)$
   $ <eq-neyman-orth>
 ] <def-neyman-orth>
 
-La propiedad de ortogonalidad implica que pequeñas desviaciones de $eta$ respecto a $eta_0$ _no afectan_ el valor esperado del score en primer orden. Esto es lo que permite que errores de estimación de $hat(eta)$ (que son $O_p(a_n)$) solo afecten la estimación de $theta$ en orden $a_n^2$ o $a_n dot.c n^(-1/2)$, preservando así la $sqrt(n)$-consistencia.
+La propiedad de ortogonalidad implica que pequeñas desviaciones de $eta$ respecto a $eta_0$ _no afectan_ el valor esperado del score en primer orden. Esto es lo que permite que errores de estimación de $hat(eta)$ (que son $O_(p)(a_n)$) solo afecten la estimación de $theta$ en orden $a_n^2$ o $a_n dot.c n^(-1/2)$, preservando así la $sqrt(n)$-consistencia.
 
 === Construcción del score ortogonal para PLR
-<sec-cap03_score_ortogonal>
+<sec-cap10_score_ortogonal>
 
 Para el modelo @eq-plr, el score ortogonal se construye con un truco algebraico. Primero, observemos que $Y - g_0(X) = theta_0 D + epsilon$ y $D - m_0(X) = v$, con $E[epsilon | X] = 0$ y $E[v | X] = 0$. Por la ley de expectativas iteradas, $E[v epsilon] = E[v E[epsilon | X, D]] = 0$ si $E[epsilon | D, X] = 0$ y $E[v | X] = 0$.
 
@@ -112,7 +111,7 @@ Es crucial distinguir dos nuisance posibles.
   $
   g_0(X) = E[Y - theta_0 D | X],
   $
-  No confundir con $mu_d(x) = E[Y | X = x, D = d]$ de los @cap-prediccion-causalidad, @cap-meta-learners y @cap-causal-forests. Bajo el PLR, $mu_d(x) = g_0(x) + theta_0 d$, de modo que $mu_1(x) - mu_0(x) = theta_0$.
+  No confundir con $mu_(d)(x) = E[Y | X = x, D = d]$ de los @cap-prediccion-causalidad, @cap-meta-learners y @cap-causal-forests. Bajo el PLR, $mu_(d)(x) = g_0(x) + theta_0 d$, de modo que $mu_1(x) - mu_0(x) = theta_0$.
   entonces el score puede escribirse como
   $
   psi(D, X, Y, theta, eta) = (D - m(X))(Y - g(X) - theta D).
@@ -126,7 +125,7 @@ Es crucial distinguir dos nuisance posibles.
   $
   m_0(X) = E[D | X].
   $
-  En ese caso, el score ortogonal correcto es el **score de Robinson** (@robinson1988, Robinson 1988):
+  En ese caso, el score ortogonal correcto es el *score de Robinson* (@robinson1988, Robinson 1988):
   $
   psi(D, X, Y, theta, eta) = (D - m(X)) {Y - l(X) - theta (D - m(X))}.
   $
@@ -149,11 +148,11 @@ $ <eq-plr-orth-score>
   partial_eta E[psi] [r_g, r_m] &= partial_alpha E[(D - (m_0 + alpha r_m))(Y - (g_0 + alpha r_g) - theta_0 D)] |_(alpha=0) \
   &= -E[r_m epsilon] - E[v r_g] = 0,
   $
-  donde hemos usado que $E[epsilon | D, X] = 0$ implica $E[r_m(X) epsilon] = 0$, y que $E[v | X] = 0$ implica $E[v r_g(X)] = 0$.
+  donde hemos usado que $E[epsilon | D, X] = 0$ implica $E[r_(m)(X) epsilon] = 0$, y que $E[v | X] = 0$ implica $E[v r_(g)(X)] = 0$.
 ]
 
 #notatecnica[
-  *Forma canónica del score ortogonal.* Todos los scores que el libro deriva en capítulos distintos son instancias de un único objeto: un funcional $psi(W, theta, eta)$ con $E[psi(W, theta_0, eta_0)] = 0$ y derivada de Gateaux nula respecto a $eta$ en $(theta_0, eta_0)$ (Def. de la @sec-cap03_ortogonalidad_neyman). La tabla reúne las instancias del curso:
+  *Forma canónica del score ortogonal.* Todos los scores que el libro deriva en capítulos distintos son instancias de un único objeto: un funcional $psi(W, theta, eta)$ con $E[psi(W, theta_0, eta_0)] = 0$ y derivada de Gateaux nula respecto a $eta$ en $(theta_0, eta_0)$ (Def. de la @sec-cap10_ortogonalidad_neyman). La tabla reúne las instancias del curso:
 ]
 
 #figure(
@@ -168,22 +167,22 @@ $ <eq-plr-orth-score>
     [PLR / ATE constante (@cap-dml)], [$(D - m(X))(Y - l(X) - theta (D - m(X)))$], [$(l, m)$],
     [ATE bajo IRM (@cap-dml)], [$mu(1,X) - mu(0,X) + (D(Y - mu(1,X))) / e(X) - ((1-D)(Y - mu(0,X))) / (1 - e(X)) - theta$], [$(mu, e)$],
     [CATE, DR-learner (@cap-meta-learners)], [$Gamma_i$ = score IRM antes de promediar], [$(mu, e)$],
-    [CATE, R-learner (@cap-meta-learners)], [$[(Y - m_Y(X)) - tau(X)(D - e(X))]^2$], [$(m_Y, e)$],
+    [CATE, R-learner (@cap-meta-learners)], [$[(Y - m_(Y)(X)) - tau(X)(D - e(X))]^2$], [$(m_Y, e)$],
     [PLIV (@cap-panel-dmliv)], [$(Z - r(X))(Y - g(X) - theta D)$], [$(g, r, m)$],
     [Policy value (@cap-policy-learning)], [$mu_(pi(X))(X) + (bold(1){D = pi(X)}) / (e_(pi(X))(X)) dot.op (Y - mu_(pi(X))(X)) - V(pi)$], [$(mu, e)$],
     table.hline(stroke: 0.8pt),
   )
 ) <tab-score-canonico>
 
-*Consecuencia operativa.* El _cross-fitting_, la condición de tasa $sqrt(n) dot.op a_n^2 arrow.r 0$ y el error estándar vía _influence function_ (algoritmo de cross-fitting de la @sec-cap03_crossfitting) son idénticos en todas las filas de la tabla @tab-score-canonico. Cuando el curso presenta un "nuevo" estimador (@cap-dml, @cap-meta-learners, @cap-panel-dmliv, @cap-policy-learning), lo que cambia es $psi$ y el estimando — no el aparato de inferencia. Esta es la perspectiva de funcionales de Riesz que el @cap-deep-causal retoma: el score ortogonal de cada fila es el representador de Riesz de su funcional.
+*Consecuencia operativa.* El _cross-fitting_, la condición de tasa $sqrt(n) dot.op a_n^2 arrow.r 0$ y el error estándar vía _influence function_ (algoritmo de cross-fitting de la @sec-cap10_crossfitting) son idénticos en todas las filas de la tabla @tab-score-canonico. Cuando el curso presenta un "nuevo" estimador (@cap-dml, @cap-meta-learners, @cap-panel-dmliv, @cap-policy-learning), lo que cambia es $psi$ y el estimando — no el aparato de inferencia. Esta es la perspectiva de funcionales de Riesz que el @cap-deep-causal retoma: el score ortogonal de cada fila es el representador de Riesz de su funcional.
 
 === Teorema central de DML
-<sec-cap03_teorema_dml>
+<sec-cap10_teorema_dml>
 
 El teorema central de @chernozhukov2018double combina ortogonalidad con _cross-fitting_:
 
 #theorem(name: [DML — versión simplificada])[
-  Sea $hat(eta)_0$ un estimador de $eta_0$ obtenido en una muestra auxiliar independiente de la muestra principal, con $norm(hat(eta)_0 - eta_0)_(L^2) = O_p(a_n)$ para algún $a_n -> 0$ con $sqrt(n) a_n^2 -> 0$. Sea $hat(theta)$ solución de
+  Sea $hat(eta)_0$ un estimador de $eta_0$ obtenido en una muestra auxiliar independiente de la muestra principal, con $norm(hat(eta)_0 - eta_0)_(L^2) = O_(p)(a_n)$ para algún $a_n -> 0$ con $sqrt(n) a_n^2 -> 0$. Sea $hat(theta)$ solución de
   $
   (1 / n) sum_(i=1)^n psi(W_i, hat(theta), hat(eta)_0) = 0.
   $
@@ -195,7 +194,7 @@ El teorema central de @chernozhukov2018double combina ortogonalidad con _cross-f
 ] <thm-dml-main>
 
 #proof(kind: "sketch")[
-  **Sketch de prueba (cross-fitting):**  
+  *Sketch de prueba (cross-fitting):*  
   El cross-fitting garantiza que los residuos $tilde(D)_i$ y $tilde(Y)_i$ sean independientes de los predictores $hat(m)$ y $hat(l)$ en la muestra donde se evalúan. Esto elimina el sesgo de overfitting de orden $O_p (n^(-1/2))$, permitiendo que la tasa $sqrt(n) dot.op a_n^2 arrow.r 0$ sea suficiente (en lugar de $n dot.op a_n^2 arrow.r 0$ sin cross-fitting). La prueba formal requiere la expansión del influence function con ortogonalidad de Neyman; ver @chernozhukov2018double §3.2. $qed$
 ]
 
@@ -206,28 +205,28 @@ El teorema central de @chernozhukov2018double combina ortogonalidad con _cross-f
 #notatecnica[
   *Condiciones completas y variante DML2.* El Teorema central de DML enunciado arriba está deliberadamente simplificado. Las condiciones completas (@chernozhukov2018double, Teorema 3.1) son:
 
-  + (C1) *Ortogonalidad de Neyman* del score (Def. de la @sec-cap03_ortogonalidad_neyman).
+  + (C1) *Ortogonalidad de Neyman* del score (Def. de la @sec-cap10_ortogonalidad_neyman).
   + (C2) *Identificabilidad local:* $abs(E[partial_theta psi(W, theta, eta_0)]) >= c > 0$ en una vecindad de $theta_0$.
-  + (C3) *Tasas de nuisance:* $norm(hat(eta) - eta_0)^2 = o_p(n^(-1/2))$, equivalentemente $sqrt(n) dot.op a_n^2 arrow.r 0$.
+  + (C3) *Tasas de nuisance:* $norm(hat(eta) - eta_0)^2 = o_(p)(n^(-1/2))$, equivalentemente $sqrt(n) dot.op a_n^2 arrow.r 0$.
   + (C4) *Momentos acotados:* $E[psi^2] < infinity$ y $E[abs(partial_theta psi)^2]$ acotado en una vecindad de $theta_0$.
 
   Dos decisiones de implementación que la literatura distingue y el curso debe nombrar. Sea $hat(theta)_k$ la solución del score restringida al _fold_ $k$:
 
-  - *DML1* reporta la mediana de ${hat(theta)_k}$; *DML2* reporta el estimador del momento promediado sobre toda la muestra (equivalente al promedio ponderado por tamaño de _fold_). La recomendación de @chernozhukov2018double (§6) es *DML2*, con *repeated cross-fitting*: repetir la partición K-fold $R$ veces ($R = 5$--10) y promediar, reduciendo la varianza inducida por la partición aleatoria. La Figura @fig-cap4-sensibilidad-K —varianza creciente a $K$ bajo— es la manifestación empírica de ese término de varianza; el _repeated cross-fitting_ es su mitigación formal, no solo empírica.
+  - *DML1* reporta la mediana de ${hat(theta)_k}$; *DML2* reporta el estimador del momento promediado sobre toda la muestra (equivalente al promedio ponderado por tamaño de _fold_). La recomendación de @chernozhukov2018double (§6) es *DML2*, con *repeated cross-fitting*: repetir la partición K-fold $R$ veces ($R = 5$--10) y promediar, reduciendo la varianza inducida por la partición aleatoria. La Figura @fig-cap11-sensibilidad-K —varianza creciente a $K$ bajo— es la manifestación empírica de ese término de varianza; el _repeated cross-fitting_ es su mitigación formal, no solo empírica.
 ]
 
 #notatecnica[
   La expansión de influence function permite escribir
   $
-  hat(theta) - theta_0 = (1/n) sum_i psi(W_i, theta_0, eta_0) + O_p(n^(-1/2)).
+  hat(theta) - theta_0 = (1/n) sum_i psi(W_i, theta_0, eta_0) + O_(p)(n^(-1/2)).
   $
 ]
 
 == Algoritmo e implementación
-<sec-cap03_algoritmo>
+<sec-cap10_algoritmo>
 
 === El rol del cross-fitting
-<sec-cap03_crossfitting>
+<sec-cap10_crossfitting>
 
 El teorema central de DML asume que $hat(eta)$ se estima en una muestra _independiente_ de la muestra principal. En la práctica, no queremos desperdiciar datos. La solución es el _cross-fitting_: dividir la muestra en $K$ _folds_; para cada _fold_ $k$, estimar $hat(eta)_(-k)$ en los otros $K - 1$ _folds_ y evaluar el score en el _fold_ $k$. Esto preserva la independencia entre $hat(eta)$ y los datos sobre los que se evalúa, sin perder datos.
 
@@ -261,7 +260,7 @@ El teorema central de DML asume que $hat(eta)$ se estima en una muestra _indepen
 ]
 
 === Pseudocódigo
-<sec-cap03_pseudocodigo>
+<sec-cap10_pseudocodigo>
 
 El siguiente algoritmo detalla los pasos concretos de DML manual con cross-fitting para PLR, utilizando el score de Robinson y los residuos del tratamiento y del _outcome_:
 
@@ -281,7 +280,7 @@ El siguiente algoritmo detalla los pasos concretos de DML manual con cross-fitti
 ] <alg-dml-manual-cf>
 
 === Implementación en Python
-<sec-cap03_implementacion>
+<sec-cap10_implementacion>
 
 Implementamos manualmente un score ortogonal para PLR sobre un dataset sintético con confusores de alta dimensión.
 
@@ -359,7 +358,7 @@ print(f"Cobertura 95%: {np.mean(np.abs(ests - 2.0) < 1.96*ses):.3f}")
 El _output_ típico muestra sesgo cercano a cero y cobertura nominal de aproximadamente 0.94–0.96, demostrando la validez de la inferencia.
 
 == Caso empírico y validación
-<sec-cap03_caso>
+<sec-cap10_caso>
 
 Aplicamos DML-PLR al dataset #code[nsw_mixtape] (Lalonde). El estimando es el efecto del programa de capacitación sobre ingresos en 1978 (#code[re78]). Las covariables son edad, educación, raza, estado civil, diploma, e ingresos previos (#code[re74, re75]).
 
@@ -385,7 +384,7 @@ print(f"IC 95%: [{theta - 1.96*se:.2f}, {theta + 1.96*se:.2f}]")
 El resultado típico es un ATE de aproximadamente \$1\,600 USD con IC al 95% de [\$800, \$2\,400], consistente con la estimación clásica de @dehejia1999causal por _matching_.
 
 == Riesgos, límites y sensibilidad
-<sec-cap03_riesgos>
+<sec-cap10_riesgos>
 
 #figure(
   caption: [Errores comunes en la implementación de DML-PLR.],
@@ -409,7 +408,7 @@ El resultado típico es un ATE de aproximadamente \$1\,600 USD con IC al 95% de 
 *Límites.* El PLR supone que el efecto de $D$ es constante (lineal en $D$). Si el efecto es heterogéneo en $X$, se requiere el modelo interactivo (capítulo @cap-dml). Adicionalmente, la ortogonalidad no resuelve problemas de identificación: si el supuesto de no confusión se vulnera, ningún score ortogonal lo corrige.
 
 == Ejercicios y notas bibliográficas
-<sec-cap03_ejercicios>
+<sec-cap10_ejercicios>
 
 + Replique el Monte Carlo del listado @lst-dml-manual comparando: (a) DML con cross-fitting, (b) DML sin cross-fitting (misma muestra para nuisance y score). ¿En cuánto se degrada la cobertura sin cross-fitting?
 

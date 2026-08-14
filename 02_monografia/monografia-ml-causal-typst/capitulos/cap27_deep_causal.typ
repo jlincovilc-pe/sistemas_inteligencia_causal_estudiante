@@ -1,5 +1,4 @@
 // Capítulo 27 — Deep learning para inferencia causal
-// (La numeración `cap13` del nombre de archivo es histórica: proviene de la edición corta anterior y se conserva para no romper referencias.)
 #import "../template/template.typ": *
 
 #chapter[Deep learning para inferencia causal]
@@ -28,7 +27,7 @@ Con la Parte VI completa —el curso ya cubrió estimación, decisión, equidad 
 ]
 
 == Motivación aplicada
-<sec-cap13_motivacion>
+<sec-cap27_motivacion>
 
 Una plataforma de salud digital desea estimar el efecto de un programa de recordatorios personalizados sobre la adherencia a medicamentos. Cada usuario tiene cientos de características (historial médico, comportamiento en la app, demografía). El efecto del tratamiento es altamente no lineal: para algunos subgrupos el recordatorio es muy efectivo, para otros es nulo. Los métodos basados en árboles (Causal Forest) pueden no capturar la estructura compleja; una red neuronal podría.
 
@@ -37,17 +36,17 @@ El _deep causal learning_ aplica redes neuronales al problema de estimación cau
 Este capítulo desarrolla TARNet y CFRNet con implementación nativa en PyTorch, presenta DeepIV @hartford2017deep para variables instrumentales, y discute las extensiones modernas (CEVAE, contrastive balance).
 
 == Teoría, supuestos y garantías
-<sec-cap13_teoria>
+<sec-cap27_teoria>
 
 === TARNet: representación compartida
-<sec-cap13_tarnet>
+<sec-cap27_tarnet>
 
 TARNet (_Treatment-Agnostic Representation Network_) tiene arquitectura:
 
 + *Capa de representación* $Phi: R^p arrow.r R^k$ que mapea covariables a un embedding.
 + *Cabezas de outcome* $h_0, h_1: R^k arrow.r R$ separadas para tratados y controles.
 
-La predicción es $hat(mu)_d (x) = h_d(Phi(x))$. El CATE estimado es $hat(tau)(x) = h_1(Phi(x)) - h_0(Phi(x))$.
+La predicción es $hat(mu)_d (x) = h_(d)(Phi(x))$. El CATE estimado es $hat(tau)(x) = h_1(Phi(x)) - h_0(Phi(x))$.
 
 La _loss_ es el error cuadrático medio:
 $
@@ -55,7 +54,7 @@ cal(L)_"TARNet" = (1 / n) sum_i (Y_i - h_(D_i)(Phi(X_i)))^2.
 $
 
 === CFRNet: balance integral probability metric
-<sec-cap13_cfrnet>
+<sec-cap27_cfrnet>
 
 CFRNet (_Counterfactual Regression with IPM_) añade a TARNet una penalización de _Integral Probability Metric_ (IPM) que fuerza el balance entre las distribuciones de $Phi(X)$ para tratados y controles:
 $
@@ -73,7 +72,7 @@ El IPM puede ser la distancia Wasserstein, la divergencia MMD, o la _adversarial
 ] <thm-cfrnet>
 
 === DeepIV
-<sec-cap13_deepiv>
+<sec-cap27_deepiv>
 
 Para casos con variable instrumental, @hartford2017deep proponen DeepIV: una red neuronal que modela la distribución del tratamiento dado el instrumento y covariables, y luego estima el structural function. La arquitectura es:
 
@@ -83,7 +82,7 @@ Para casos con variable instrumental, @hartford2017deep proponen DeepIV: una red
 La loss combina la verosimilitud del tratamiento y el error del outcome.
 
 == Algoritmo de entrenamiento TARNet/CFRNet
-<sec-cap13_algoritmo>
+<sec-cap27_algoritmo>
 
 El siguiente pseudocódigo describe el procedimiento de entrenamiento de TARNet y su extensión CFRNet. La diferencia clave es la penalización IPM que fuerza el balance de la representación latente $Phi(X)$ entre grupos de tratamiento y control.
 
@@ -106,7 +105,7 @@ El siguiente pseudocódigo describe el procedimiento de entrenamiento de TARNet 
 ] <alg-tarnet-cfrnet-training>
 
 == Implementación en Python
-<sec-cap13_implementacion>
+<sec-cap27_implementacion>
 
 #figure(
   kind: raw,
@@ -182,7 +181,7 @@ print(f"RMSE en CATE: {rmse:.4f}")
 ) <lst-tarnet>
 
 === CFRNet con penalización MMD
-<sec-cap13_cfrnet_mmd>
+<sec-cap27_cfrnet_mmd>
 
 #figure(
   kind: raw,
@@ -227,17 +226,17 @@ print(f"CFRNet RMSE: {np.sqrt(np.mean((cate_cfr - tau_true)**2)):.4f}")
 ) <lst-cfrnet>
 
 == Arquitectura de TARNet/CFRNet
-<sec-cap13_arquitectura>
+<sec-cap27_arquitectura>
 
-La figura @fig-cap13-tarnet muestra la arquitectura común de TARNet y CFRNet. Una red de representación compartida $Phi(X)$ mapea las covariables a un embedding de menor dimensión; dos cabezas separadas $h_0, h_1$ estiman $mu_0(Phi(X))$ y $mu_1(Phi(X))$ respectivamente. El CATE se obtiene por diferencia: $hat(tau)(X) = h_1(Phi(X)) - h_0(Phi(X))$. CFRNet añade a TARNet una penalización IPM (Integral Probability Metric) que fuerza el balance entre las distribuciones de $Phi(X)$ para tratados y controles, reduciendo el desbalance observado de covariables en el espacio de representación, bajo el supuesto previo de no confusión.
+La figura @fig-cap27-tarnet muestra la arquitectura común de TARNet y CFRNet. Una red de representación compartida $Phi(X)$ mapea las covariables a un embedding de menor dimensión; dos cabezas separadas $h_0, h_1$ estiman $mu_0(Phi(X))$ y $mu_1(Phi(X))$ respectivamente. El CATE se obtiene por diferencia: $hat(tau)(X) = h_1(Phi(X)) - h_0(Phi(X))$. CFRNet añade a TARNet una penalización IPM (Integral Probability Metric) que fuerza el balance entre las distribuciones de $Phi(X)$ para tratados y controles, reduciendo el desbalance observado de covariables en el espacio de representación, bajo el supuesto previo de no confusión.
 
 #figure(
-  image("../figuras/fig_cap13_tarnet_arch.png", width: 95%),
+  image("../figuras/fig_cap27_tarnet_arch.png", width: 95%),
   caption: [Arquitectura de TARNet / CFRNet (Shalit, Johansson & Sontag, 2017). La capa de representación compartida $Phi$ es seguida por dos cabezas separadas $h_0, h_1$ para $D = 0$ y $D = 1$. CFRNet añade una penalización IPM (Wasserstein o MMD) que fuerza el balance entre las distribuciones de $Phi(X)$ condicionales al tratamiento.],
-) <fig-cap13-tarnet>
+) <fig-cap27-tarnet>
 
 == Caso empírico y validación
-<sec-cap13_caso_empirico>
+<sec-cap27_caso_empirico>
 
 Sobre el dataset sintético con no linealidades, TARNet y CFRNet producen un RMSE en CATE competitivo con X-learner y T-learner (con GBM). La ventaja de los métodos deep es mayor cuando el DGP tiene no linealidades complejas o interacciones de alto orden; para DGPs simples o con muestras pequeñas ($n < 1\,000$), los métodos basados en árboles son competitivos y más rápidos de entrenar.
 
@@ -259,7 +258,7 @@ Sobre el dataset sintético con no linealidades, TARNet y CFRNet producen un RMS
 ]
 
 == Límites y errores comunes
-<sec-cap13_limites>
+<sec-cap27_limites>
 
 #riesgos[
   #figure(
@@ -274,7 +273,7 @@ Sobre el dataset sintético con no linealidades, TARNet y CFRNet producen un RMS
       [Balance sin identificación], [Falsa seguridad: balancear $Phi(X)$ no crea el supuesto de no confusión], [DAG y supuestos declarados; el balance es sobre covariables *observadas*], [No confusión explícita y justificada; ningún ajuste arquitectónico la sustituye],
       [Overfitting profundo], [Mala generalización], [Train/test loss], [Regularización, _early stopping_, validación],
       [$alpha$ (peso IPM) fijado sin validar], [Representación sobre-balanceada y poco informativa; error en $tau$ mayor que sin penalización @curth2021inductive], [Barrido de $alpha$ incluyendo $alpha = 0$ (TARNet) y comparación de RMSE en $tau$ sobre un DGP con _ground truth_], [Tratar $alpha$ como hiperparámetro a validar y reportar su valor; no asumir que CFRNet domina a TARNet],
-      [Reportar $hat(tau)(x)$ sin cuantificar incertidumbre], [Decisiones individuales basadas en un punto sin intervalo], [Verificar si el pipeline produce algún IC], [Usar la red como _nuisance_ dentro de DML (@sec-cap13_inferencia), o _bootstrap_ asumiendo su costo; para decisiones individuales, intervalos conformes (@sec-cap07_conformal)],
+      [Reportar $hat(tau)(x)$ sin cuantificar incertidumbre], [Decisiones individuales basadas en un punto sin intervalo], [Verificar si el pipeline produce algún IC], [Usar la red como _nuisance_ dentro de DML (@sec-cap27_inferencia), o _bootstrap_ asumiendo su costo; para decisiones individuales, intervalos conformes (@sec-cap14_conformal)],
       table.hline(stroke: 0.8pt),
     )
   ) <tab-riesgos-cap13>
@@ -283,7 +282,7 @@ Sobre el dataset sintético con no linealidades, TARNet y CFRNet producen un RMS
 Deep causal requiere muestras grandes ($n > 5\,000$) y ajuste cuidadoso de hiperparámetros. Para muestras pequeñas, los métodos basados en árboles son preferibles. Dos límites merecen un tratamiento más detenido, porque la literatura reciente los ha precisado y en ambos casos la lectura ingenua del método es la equivocada.
 
 === ¿Balancear la representación ayuda realmente?
-<sec-cap13_limites_balance>
+<sec-cap27_limites_balance>
 
 La penalización IPM de CFRNet se presenta habitualmente como una mejora inequívoca sobre TARNet, y la ecuación @eq-cfrnet-loss lo sugiere: forzar $Phi(X | D=0)$ y $Phi(X | D=1)$ a parecerse debería reducir el término de discrepancia del _bound_ de #cite(<shalit2017estimating>, form: "prose"). #cite(<curth2021inductive>, form: "prose") muestran que el argumento es más frágil de lo que parece, y por una razón instructiva: la cota que justifica la penalización es *laxa*, y minimizarla no equivale a minimizar el error en $tau$.
 
@@ -302,7 +301,7 @@ La inferencia estadística válida (construcción de intervalos de confianza, te
 *Limitaciones de representaciones balanceadas:* @curth2021inductive (Curth & van der Schaar 2021) muestran que las arquitecturas con representación compartida $Phi(X)$ para $mu_0$ y $mu_1$ introducen sesgos inductivos que pueden ser subóptimos para HTE estimation cuando los outcomes potenciales tienen estructuras heterogéneas.
 
 === Detalles técnicos
-<sec-cap13_inferencia>
+<sec-cap27_inferencia>
 
 Es cierto que TARNet y CFRNet, tal como se han presentado, no producen intervalos de confianza: se optimiza una pérdida predictiva y no hay ninguna garantía distribucional sobre $hat(tau)(x)$. Pero sería inexacto concluir que la inferencia con redes neuronales sea un problema sin tratamiento teórico. Dos líneas de trabajo lo abordan directamente y conviene conocerlas.
 
@@ -313,7 +312,7 @@ La segunda línea automatiza el paso de ortogonalización. #cite(<chernozhukov20
 La conclusión operativa para este capítulo es una inversión de la práctica habitual: en vez de usar una red para estimar $tau$ directamente y luego buscar cómo hacer inferencia sobre ella, conviene usar la red donde su capacidad de aproximación aporta —los _nuisance_ de alta dimensión— y dejar la inferencia al aparato ortogonal que ya la tiene resuelta. El _bootstrap_ sobre TARNet/CFRNet sigue siendo una opción práctica para cuantificar incertidumbre, pero es costoso y sus garantías bajo regularización y optimización no convexa son mucho menos claras.
 
 == Ejercicios propuestos
-<sec-cap13_ejercicios>
+<sec-cap27_ejercicios>
 
 + Replique el listado @lst-tarnet variando la profundidad de la red (1, 2, 3 capas ocultas). ¿Cuándo aparece overfitting?
 
@@ -321,15 +320,15 @@ La conclusión operativa para este capítulo es una inversión de la práctica h
 
 + Compare TARNet, CFRNet y Causal Forest sobre un DGP con no linealidades crecientes. ¿En qué punto el deep causal supera a los árboles?
 
-+ Barra el peso de la penalización IPM en $alpha in {0, 0.1, 1, 10, 100}$ y grafique el RMSE en $tau$ contra el MMD de la representación. Verifique que el $alpha$ que minimiza el MMD *no* es el que minimiza el RMSE, y relacione el resultado con la @sec-cap13_limites_balance.
++ Barra el peso de la penalización IPM en $alpha in {0, 0.1, 1, 10, 100}$ y grafique el RMSE en $tau$ contra el MMD de la representación. Verifique que el $alpha$ que minimiza el MMD *no* es el que minimiza el RMSE, y relacione el resultado con la @sec-cap27_limites_balance.
 
-+ Use la red TARNet (sin las cabezas causales: solo la representación más una cabeza) como #code[model_y] y #code[model_t] dentro de #code[LinearDML], y compare el ATE con IC obtenido así frente al ATE que produce TARNet directamente por promedio de $hat(tau)(x)$. ¿Cuál de los dos permite reportar un intervalo con respaldo teórico, y por qué (@sec-cap13_inferencia)?
++ Use la red TARNet (sin las cabezas causales: solo la representación más una cabeza) como #code[model_y] y #code[model_t] dentro de #code[LinearDML], y compare el ATE con IC obtenido así frente al ATE que produce TARNet directamente por promedio de $hat(tau)(x)$. ¿Cuál de los dos permite reportar un intervalo con respaldo teórico, y por qué (@sec-cap27_inferencia)?
 
 + Implemente DeepIV sobre el dataset #code[iv_noncompliance] (sintético) y verifique que recupera el "LATE".
 
 == Lecturas complementarias
-<sec-cap13_lecturas>
+<sec-cap27_lecturas>
 
 #cite(<shalit2017estimating>, form: "prose") es la referencia fundacional de TARNet/CFRNet y del _bound_ de error con IPM. #cite(<hartford2017deep>, form: "prose") introduce DeepIV. #cite(<louizos2017causal>, form: "prose") propone CEVAE. #cite(<shi2019adaptively>, form: "prose") extiende a DragonNet, que incorpora el _propensity_ como cabeza adicional y aplica una corrección dirigida al estimando.
 
-Tres lecturas son indispensables para no quedarse en el estado del arte de 2017. #cite(<curth2021inductive>, form: "prose") revisan críticamente la familia completa desde el ángulo de los sesgos inductivos y son la fuente del análisis de la @sec-cap13_limites_balance sobre los límites de la representación balanceada; su comparación empírica sistemática es también el mejor punto de partida para elegir arquitectura. #cite(<farrell2021deep>, form: "prose") establecen las tasas y la teoría de inferencia que hacen de las redes profundas un _nuisance learner_ legítimo dentro de DML. #cite(<chernozhukov2022riesznet>, form: "prose") proponen aprender el representador de Riesz —y con él, el score ortogonal— en lugar de derivarlo analíticamente, extendiendo el aparato de la Parte II a funcionales arbitrarios.
+Tres lecturas son indispensables para no quedarse en el estado del arte de 2017. #cite(<curth2021inductive>, form: "prose") revisan críticamente la familia completa desde el ángulo de los sesgos inductivos y son la fuente del análisis de la @sec-cap27_limites_balance sobre los límites de la representación balanceada; su comparación empírica sistemática es también el mejor punto de partida para elegir arquitectura. #cite(<farrell2021deep>, form: "prose") establecen las tasas y la teoría de inferencia que hacen de las redes profundas un _nuisance learner_ legítimo dentro de DML. #cite(<chernozhukov2022riesznet>, form: "prose") proponen aprender el representador de Riesz —y con él, el score ortogonal— en lugar de derivarlo analíticamente, extendiendo el aparato de la Parte II a funcionales arbitrarios.

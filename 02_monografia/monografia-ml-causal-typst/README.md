@@ -51,7 +51,7 @@ Ajustes aplicados para compilar en este entorno:
 ├── partes/
 │   └── parte0.typ … parte8.typ    # 9 partes
 ├── capitulos/
-│   └── cap00_causalidad_elemental.typ … cap15d_lado_humano.typ   # 32 capítulos
+│   └── cap01_causalidad_elemental.typ … cap32_lado_humano.typ   # 32 capítulos
 ├── apendices/
 │   └── apA_notacion_fundamentos.typ … apH_checklist_despliegue.typ  # 8 apéndices
 ├── bibliografia/

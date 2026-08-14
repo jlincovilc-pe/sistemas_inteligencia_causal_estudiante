@@ -104,7 +104,7 @@ Este capítulo cierra el libro donde el Capítulo 1 lo abrió: con la distinció
 
 La comunicación de incertidumbre causal a stakeholders no técnicos requiere visualizaciones claras y narrativas accesibles. @spiegelhalter2019art (Spiegelhalter 2019) proporciona un marco para comunicar resultados estadísticos con transparencia. Para visualización de riesgo y gráficos de incertidumbre, ver @galesic2011 (Galesic & Garcia-Retamero 2011) sobre alfabetización gráfica cross-cultural.
 
-**Principios clave:**
+*Principios clave:*
 - Usar intervalos de confianza visuales en lugar de solo estimados puntuales
 - Comunicar bounds cuando la identificación es parcial
 - Explicar supuestos de identificación en lenguaje no técnico

@@ -1,6 +1,4 @@
 // Capítulo 5 — Predicción y causalidad: por qué el ML no es causal por defecto
-// (Parte I. La numeración `cap01` del nombre de archivo es histórica: proviene
-//  de la edición corta anterior y se conserva para no romper referencias.)
 #import "../template/template.typ": *
 
 #chapter[Predicción y causalidad: por qué el ML no es causal por defecto]
@@ -18,7 +16,7 @@
     [*Estimando:*], [$"ATE"$, $"CATE"(x)$],
     [*Identificación:*], [No confusión, soporte común, SUTVA],
     [*Método:*], [Comparación predictiva vs causal],
-    [*Nuisance:*], [$mu_d(x)$],
+    [*Nuisance:*], [$mu_(d)(x)$],
     [*Garantía:*], [Identificación bajo supuestos],
     [*Librerías:*], [scikit-learn, statsmodels],
     [*Validación:*], [Simulación de collider, placebos],
@@ -30,7 +28,7 @@ Este capítulo retoma, con el aparato formal de la econometría con _machine lea
 ]
 
 == Problema causal, estimando e identificación
-<sec-cap01_problema>
+<sec-cap05_problema>
 
 Considere un economista del Ministerio de Desarrollo Social que debe decidir a qué hogares beneficiar con un programa de transferencias condicionadas. El programa tiene presupuesto limitado: solo puede cubrir al 30% de la población elegible. El analista dispone de cien variables socioeconómicas por hogar (ingresos, composición familiar, escolaridad, empleo, vivienda, salud) y un registro histórico de hogares que recibieron o no el programa, junto con el ingreso posterior observado. La pregunta relevante es _causal_: ¿qué hogares experimentarían el mayor incremento de ingresos si recibieran el programa? La pregunta _predictiva_ —qué hogares tendrán mayores ingresos en el futuro, independientemente del programa— es distinta y, para fines de focalización, equivocada.
 
@@ -65,12 +63,12 @@ La tabla @tab-pred-causal sistematiza la diferencia entre el régimen predictivo
 ) <tab-pred-causal>
 
 == Teoría, supuestos y garantías
-<sec-cap01_teoria>
+<sec-cap05_teoria>
 
 === Supuestos
-<sec-cap01_supuestos>
+<sec-cap05_supuestos>
 
-Adoptamos el marco de @neyman1923 y @rubin1974. Para cada unidad $i$ se definen dos resultados potenciales: $Y_i(1)$ si recibe tratamiento y $Y_i(0)$ si no lo recibe. La asignación observada es $D_i in {0,1}$ y el resultado observado obedece la restricción de consistencia $Y_i = D_i Y_i(1) + (1-D_i) Y_i(0)$. Las covariables pre-tratamiento $X_i in R^p$ son un vector de dimensión $p$, donde en este curso $p$ puede ser grande (decenas o cientos) e incluso crecer con $n$.
+Adoptamos el marco de @neyman1923 y @rubin1974. Para cada unidad $i$ se definen dos resultados potenciales: $Y_(i)(1)$ si recibe tratamiento y $Y_(i)(0)$ si no lo recibe. La asignación observada es $D_i in {0,1}$ y el resultado observado obedece la restricción de consistencia $Y_i = D_i Y_(i)(1) + (1-D_i) Y_(i)(0)$. Las covariables pre-tratamiento $X_i in R^p$ son un vector de dimensión $p$, donde en este curso $p$ puede ser grande (decenas o cientos) e incluso crecer con $n$.
 
 Los supuestos económicos que permiten identificar $tau(x)$ a partir de datos observacionales son tres.
 
@@ -83,13 +81,13 @@ Los supuestos económicos que permiten identificar $tau(x)$ a partir de datos ob
 ] <asu-overlap>
 
 #assumption(name: [SUTVA / No interferencia])[
-  $Y_i(d) = Y_i(d, d_(-i))$ para todo $d$ y todo $i$, donde $d_(-i)$ son los tratamientos de las demás unidades.
+  $Y_(i)(d) = Y_(i)(d, d_(-i))$ para todo $d$ y todo $i$, donde $d_(-i)$ son los tratamientos de las demás unidades.
 ] <asu-sutva>
 
 Estos supuestos son _económicos_: su validez depende del contexto sustantivo, no de la cantidad de datos. El supuesto de no confusión condicional exige que el investigador observe todas las variables que afectan simultáneamente la asignación al tratamiento y el resultado; el supuesto de soporte común requiere que haya unidades tratadas y no tratadas en cada región del espacio de covariables; el supuesto de SUTVA / no interferencia prohíbe efectos cruzados entre unidades. La responsabilidad de justificarlos recae en el economista, no en el algoritmo.
 
 === Estimador y score
-<sec-cap01_estimador>
+<sec-cap05_estimador>
 
 #definition(name: [Estimandos causales centrales])[
   Bajo no interferencia (SUTVA), los estimandos de interés son:
@@ -106,20 +104,20 @@ El curso se centra casi exclusivamente en $tau(x)$ y $V(pi)$, porque son los est
 
 Bajo los supuestos de no confusión condicional–de soporte común, el CATE es identificable como diferencia de dos funciones de regresión condicional:
 $
-tau(x) = mu_1(x) - mu_0(x), quad mu_d(x) = E[Y | X = x, D = d].
+tau(x) = mu_1(x) - mu_0(x), quad mu_(d)(x) = E[Y | X = x, D = d].
 $
 
 Si estimamos $hat(mu)_0$ y $hat(mu)_1$ con un método de ML flexible (bosque aleatorio, _gradient boosting_, red neuronal) y calculamos $hat(tau)(x) = hat(mu)_1(x) - hat(mu)_0(x)$, se obtiene el _T-learner_ que estudiaremos en el capítulo @cap-meta-learners. La pregunta crítica es: ¿bajo qué condiciones $hat(tau)(x) -> tau(x)$ en alta dimensión?
 
 === Garantías
-<sec-cap01_garantias>
+<sec-cap05_garantias>
 
 El problema es que los algoritmos de ML regularizan para optimizar predicción, no estimación de efectos. #cite(<athey2017beyond>, form: "prose") ilustra esto con un ejemplo simple: si $X$ contiene una variable fuertemente correlacionada con $D$ pero sin efecto causal sobre $Y$, el algoritmo predictivo puede _descartar_ $D$ en la regresión de $Y$ (porque $X$ ya explica $Y$ casi igual de bien), generando un $hat(mu)_d$ que ignora el efecto del tratamiento. La predicción de $Y$ mejora, pero la estimación de $tau$ se degrada.
 
 #theorem(name: [Sesgo de regularización en T-learner, versión informal])[
-  Sea $hat(mu)_d$ un estimador de ML con error $norm(hat(mu)_d - mu_d)_(L^2) = O_p(a_n)$ donde $a_n -> 0$. Entonces el T-learner $hat(tau) = hat(mu)_1 - hat(mu)_0$ satisface
+  Sea $hat(mu)_d$ un estimador de ML con error $norm(hat(mu)_d - mu_d)_(L^2) = O_(p)(a_n)$ donde $a_n -> 0$. Entonces el T-learner $hat(tau) = hat(mu)_1 - hat(mu)_0$ satisface
   $
-  norm(hat(tau) - tau)_(L^2) <= norm(hat(mu)_1 - mu_1)_(L^2) + norm(hat(mu)_0 - mu_0)_(L^2) = O_p(a_n).
+  norm(hat(tau) - tau)_(L^2) <= norm(hat(mu)_1 - mu_1)_(L^2) + norm(hat(mu)_0 - mu_0)_(L^2) = O_(p)(a_n).
   $
   Sin embargo, la _distribución_ asintótica de $hat(tau)$ no es $sqrt(n)$-Gaussiana en general: la regularización introduce un sesgo de orden $a_n$ que puede dominar la varianza $sqrt(n)$.
 ] <thm-reg-bias>
@@ -127,14 +125,14 @@ El problema es que los algoritmos de ML regularizan para optimizar predicción, 
 La consecuencia operacional es directa: no se pueden construir intervalos de confianza válidos para $tau(x) approx hat(tau)(x) plus.minus 1.96 hat("SE")(hat(tau))$ si el sesgo de regularización domina la varianza. Se requieren mecanismos adicionales—ortogonalización y _cross-fitting_, que estudiaremos en los capítulos @cap-ortogonalidad y @cap-dml— para recuperar la $sqrt(n)$-consistencia y la validez de la inferencia.
 
 == Algoritmo e implementación
-<sec-cap01_algoritmo>
+<sec-cap05_algoritmo>
 
 ==== Pseudocódigo
 
 El método conceptual de este capítulo no requiere pseudocódigo; las implementaciones prácticas se presentan en los siguientes capítulos.
 
 === Implementación en Python
-<sec-cap01_implementacion>
+<sec-cap05_implementacion>
 
 Para hacer concreta la distinción entre predicción y causalidad, comparamos dos enfoques sobre el dataset de @card1995 sobre retornos a la educación. La pregunta económica es: ¿cuál es el efecto causal de un año adicional de educación sobre el logaritmo del salario? El dataset #code[close_college] contiene una variable instrumental #code[nearc4] (proximidad a una universidad de cuatro años) que usaremos solo como referencia, pero el foco aquí es contrastar la respuesta predictiva de un bosque aleatorio con la respuesta causal de una regresión OLS con controles.
 
@@ -183,22 +181,22 @@ El _output_ típico de este ejercicio muestra una divergencia instructiva. El bo
 Los diagnósticos de componentes _nuisance_ (propensity score, outcome regression) se desarrollan en detalle en el capítulo @cap-dml, donde se presentan las herramientas específicas para evaluar la calidad de los estimadores auxiliares.
 
 == Caso empírico y validación
-<sec-cap01_caso>
+<sec-cap05_caso>
 
 === Datos y preprocesamiento
-<sec-cap01_datos>
+<sec-cap05_datos>
 
 #cite(<card1995>, form: "prose") es un caso paradigmático porque combina un instrumento (#code[nearc4]) con un set de controles de dimensión moderada. En su análisis original, Card reporta un retorno a la educación de aproximadamente 7.5% usando IV. Estudios posteriores con más controles (Belloni, Chernozhukov y Hansen, 2014) muestran que la selección de controles afecta la estimación en no menos de 1.5 puntos porcentuales.
 
 === Estimación principal
-<sec-cap01_estimacion_principal>
+<sec-cap05_estimacion_principal>
 
 En nuestra aplicación con #code[close_college], OLS con cinco controles básicos reporta un coeficiente de aproximadamente 0.07 (7%) con error estándar robusto de 0.004. El bosque aleatorio, al no distinguir el rol causal de #code[educ], reporta un "efecto predictivo" de aproximadamente 0.04, sustancialmente menor. La diferencia se debe a que el bosque estima una derivada parcial predictiva que no aísla el efecto causal de educ: mezcla variación causal con correlaciones observadas (por ejemplo, exper) y no controla por confusores no observados (por ejemplo, habilidad). Adicionalmente, la regularización puede contraer el efecto estimado de educ si otras covariables predicen bien el salario. Desde el punto de vista predictivo esto es correcto (mejora el RMSE), pero desde el punto de vista causal es un sesgo por variable de confusión no controlada adecuadamente.
 
-Este ejemplo motivará el desarrollo del curso: ¿cómo combinar la flexibilidad del bosque aleatorio para estimar $mu_d(x)$ con la garantía de inferencia válida para $tau$? La respuesta, que se desarrolla en los capítulos @cap-ortogonalidad–@cap-dml, es la _ortogonalización de Neyman_ combinada con _cross-fitting_.
+Este ejemplo motivará el desarrollo del curso: ¿cómo combinar la flexibilidad del bosque aleatorio para estimar $mu_(d)(x)$ con la garantía de inferencia válida para $tau$? La respuesta, que se desarrolla en los capítulos @cap-ortogonalidad–@cap-dml, es la _ortogonalización de Neyman_ combinada con _cross-fitting_.
 
 === Validación
-<sec-cap01_validacion>
+<sec-cap05_validacion>
 
 #figure(
   kind: raw,
@@ -232,7 +230,7 @@ El listado ilustra el fenómeno que #cite(<elwert2014endogenous>, form: "prose")
 El sesgo por condicionamiento en un collider se trata formalmente en @elwert2014endogenous (Elwert & Winship 2014).
 
 === Interpretación económica
-<sec-cap01_interpretacion>
+<sec-cap05_interpretacion>
 
 #intuicion[
   *Caja de profundización 1.1: Modelos causales estructurales y jerarquía causal*
@@ -256,10 +254,10 @@ El sesgo por condicionamiento en un collider se trata formalmente en @elwert2014
 ]
 
 == Riesgos, límites y sensibilidad
-<sec-cap01_riesgos>
+<sec-cap05_riesgos>
 
 === Tabla de riesgos
-<sec-cap01_tabla_riesgos>
+<sec-cap05_tabla_riesgos>
 
 La tabla @tab-riesgos-cap01 resume los riesgos principales al confundir predicción con causalidad, junto con sus consecuencias, diagnósticos y estrategias de mitigación.
 
@@ -300,7 +298,7 @@ La tabla @tab-riesgos-cap01 resume los riesgos principales al confundir predicci
 ]
 
 === Cuándo no usar este método
-<sec-cap01_cuando_no>
+<sec-cap05_cuando_no>
 
 *Límites del marco.* El marco de resultados potenciales supone _no interferencia_ (supuesto de SUTVA / no interferencia). En contextos con efectos cruzados—epidemias, redes sociales, externalidades— este supuesto se vulnera y se requieren métodos específicos (inferencia causal bajo interferencia, diseño _cluster-randomized_). El curso no aborda estos casos; ver @aronow2017 para una referencia.
 
@@ -309,15 +307,15 @@ La tabla @tab-riesgos-cap01 resume los riesgos principales al confundir predicci
 Ver el apéndice @ap-checklists para el checklist completo de validación de métodos causales.
 
 == Ejercicios y notas bibliográficas
-<sec-cap01_ejercicios>
+<sec-cap05_ejercicios>
 
 === Ejercicios teóricos
-<sec-cap01_ejercicios_teoricos>
+<sec-cap05_ejercicios_teoricos>
 
 + Clasifique cada pregunta en asociación, intervención o contrafactual: (a) ¿Los alumnos con mejores notas tienen mejor salario? (b) ¿Sirve dar becas para mejorar notas? (c) ¿María habría entrado a la universidad si le hubieran dado la beca?
 
 === Ejercicios computacionales
-<sec-cap01_ejercicios_computacionales>
+<sec-cap05_ejercicios_computacionales>
 
 + Replique la comparación predictivo vs. causal del listado @lst-card-comparison usando #code[GradientBoostingRegressor] en lugar de #code[RandomForestRegressor]. ¿La divergencia entre el "efecto predictivo" y el coeficiente OLS aumenta o disminuye? ¿Por qué?
 
@@ -326,13 +324,13 @@ Ver el apéndice @ap-checklists para el checklist completo de validación de mé
 + Ejecute el listado @lst-collider-simulation y explique por qué al condicionar en $C$ apareció una correlación espuria entre $A$ y $B$.
 
 === Ejercicios aplicados
-<sec-cap01_ejercicios_aplicados>
+<sec-cap05_ejercicios_aplicados>
 
 + Sobre el dataset #code[close_college], estime el retorno a la educación con: (a) OLS sin controles, (b) OLS con cinco controles, (c) OLS con la interacción #code[educ] $times$ #code[exper]. Compare los tres coeficientes y explique conceptualmente por qué difieren.
 
 + Sobre el dataset #code[nsw_mixtape] (Lalonde), calcule la diferencia de medias entre tratados y controles en la variable #code[re78]. Luego estime el ATE por OLS con los controles #code[age, educ, black, hisp, marr, nodegree, re74, re75]. ¿En cuánto cambia la estimación? ¿Qué dice esto sobre el balance observacional del dataset?
 
 === Notas bibliográficas
-<sec-cap01_notas>
+<sec-cap05_notas>
 
-#cite(<athey2017beyond>, form: "prose") provee la motivación conceptual del campo. #cite(<imbens2015causal>, form: "prose") es la referencia canónica sobre resultados potenciales. #cite(<hernan2020whatif>, form: "prose") ofrece una introducción accesible al marco contrafactual. #cite(<mullainathan2017machine>, form: "prose") discute las diferencias prácticas entre predicción y estimación causal en políticas públicas, y #cite(<kleinberg2015prediction>, form: "prose") es la referencia obligada para el argumento simétrico —cuándo la pregunta de política es genuinamente predictiva y no causal— desarrollado en la @sec-cap01_problema. #cite(<elwert2014endogenous>, form: "prose") es el tratamiento de referencia del sesgo por _collider_ simulado en el listado @lst-collider-simulation. Para una revisión técnica moderna, véanse @athey2019econometric y @chernozhukov2018applied. Adicionalmente, @pearl2009causality (disponible en español como _Causalidad_) proporciona una exposición profunda de la jerarquía causal y los modelos estructurales, cubriendo los fundamentos conceptuales que subyacen a la distinción entre los niveles de asociación, intervención y contrafactual discutidos en este capítulo.
+#cite(<athey2017beyond>, form: "prose") provee la motivación conceptual del campo. #cite(<imbens2015causal>, form: "prose") es la referencia canónica sobre resultados potenciales. #cite(<hernan2020whatif>, form: "prose") ofrece una introducción accesible al marco contrafactual. #cite(<mullainathan2017machine>, form: "prose") discute las diferencias prácticas entre predicción y estimación causal en políticas públicas, y #cite(<kleinberg2015prediction>, form: "prose") es la referencia obligada para el argumento simétrico —cuándo la pregunta de política es genuinamente predictiva y no causal— desarrollado en la @sec-cap05_problema. #cite(<elwert2014endogenous>, form: "prose") es el tratamiento de referencia del sesgo por _collider_ simulado en el listado @lst-collider-simulation. Para una revisión técnica moderna, véanse @athey2019econometric y @chernozhukov2018applied. Adicionalmente, @pearl2009causality (disponible en español como _Causalidad_) proporciona una exposición profunda de la jerarquía causal y los modelos estructurales, cubriendo los fundamentos conceptuales que subyacen a la distinción entre los niveles de asociación, intervención y contrafactual discutidos en este capítulo.

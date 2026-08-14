@@ -1,5 +1,4 @@
 // Capítulo 17 — Machine learning causal en datos de panel
-// (La numeración `cap09` del nombre de archivo es histórica: proviene de la edición corta anterior y se conserva para no romper referencias.)
 #import "../template/template.typ": *
 
 #chapter[Machine learning causal en datos de panel]
@@ -30,7 +29,7 @@ Con Post-Double-Selection (@cap-pds) como primer diseño de identificación comp
 ]
 
 == Problema causal, estimando e identificación
-<sec-cap09_problema>
+<sec-cap17_problema>
 
 Una consultora evalúa el efecto de una reforma laboral sobre el empleo formal en 32 regiones observadas durante 10 años. La reforma se adoptó en distintas regiones en distintos años, generando un panel con _staggered adoption_. La pregunta de política es: ¿cuál es el efecto promedio de la reforma sobre el empleo formal?
 
@@ -39,10 +38,10 @@ Los métodos clásicos—efectos fijos (FE), DiD, _synthetic DiD_— funcionan b
 Este capítulo desarrolla DML para paneles: la _within-transformation_ que elimina efectos fijos, el _cross-fitting_ que preserva inferencia válida, y la extensión a instrumentos (DMLIV). Aplicamos el método al dataset #code[panel_fe_dynamic] del repositorio, que tiene CATE verdadero conocido.
 
 == Teoría, supuestos y garantías
-<sec-cap09_teoria>
+<sec-cap17_teoria>
 
 === Modelo de panel con efectos fijos
-<sec-cap09_fe_model>
+<sec-cap17_fe_model>
 
 Consideramos un panel balanceado con $N$ unidades observadas durante $T$ periodos. El modelo es:
 $
@@ -64,7 +63,7 @@ $ <eq-within-plr>
 Ahora el modelo está en forma PLR y se le puede aplicar DML directamente.
 
 === Supuestos
-<sec-cap09_supuestos>
+<sec-cap17_supuestos>
 
 Para que el estimador DML-panel sea $sqrt(n)$-consistente y asintóticamente normal, se requieren los siguientes supuestos:
 
@@ -87,10 +86,10 @@ Este supuesto es restrictivo pero necesario para la formulación PLR estándar. 
 Esta condición es la misma del DML estándar (capítulo @cap-ortogonalidad): los errores de estimación de las _nuisance_ deben converger más rápido que $n^(-1/4)$ para que el sesgo de regularización sea de segundo orden.
 
 === Estimador y score
-<sec-cap09_estimador>
+<sec-cap17_estimador>
 
 ==== DML para panel
-<sec-cap09_dml_panel>
+<sec-cap17_dml_panel>
 
 Una vez aplicada la within-transformation, el modelo @eq-within-plr es un PLR estándar en los datos transformados ${tilde(Y)_(i t), tilde(D)_(i t), tilde(X)_(i t)}$. El score ortogonal de Neyman para este modelo es:
 $
@@ -102,7 +101,7 @@ donde $eta = (g, m)$ son las funciones _nuisance_: $g(tilde(X)) = E[tilde(Y) | t
 El estimador DML-panel se obtiene resolviendo la ecuación de momento $sum_(i, t) psi(W_(i t), hat(theta), hat(eta)) = 0$ tras aplicar _cross-fitting_ por clúster (unidad).
 
 ==== DML con instrumentos (DMLIV)
-<sec-cap09_dmliv>
+<sec-cap17_dmliv>
 
 Cuando $D$ es endógeno y se dispone de un instrumento $Z$, el modelo es:
 $
@@ -146,7 +145,7 @@ El complemento del diagnóstico de primera etapa es la *inferencia robusta a ins
 ] <alg-dml-panel-within>
 
 === Garantías
-<sec-cap09_garantias>
+<sec-cap17_garantias>
 
 El algoritmo anterior hereda las garantías del DML estándar (capítulo @cap-dml) sobre los datos within-transformados. Específicamente:
 
@@ -157,10 +156,10 @@ El algoritmo anterior hereda las garantías del DML estándar (capítulo @cap-dm
 El teorema de DML-PLIV extiende estas garantías al caso con instrumentos, siempre que se cumplan las condiciones de exclusión y relevancia.
 
 == Implementación en Python
-<sec-cap09_implementacion>
+<sec-cap17_implementacion>
 
 === DML sobre panel sintético con ground truth
-<sec-cap09_panel_sintetico>
+<sec-cap17_panel_sintetico>
 
 #figure(
   kind: raw,
@@ -218,7 +217,7 @@ print(f"ATE verdadero: {truth['tau_i_truth'].mean():.4f}")
 ) <lst-dml-panel>
 
 === DMLIV sobre close_college
-<sec-cap09_dmliv_closecollege>
+<sec-cap17_dmliv_closecollege>
 
 #figure(
   kind: raw,
@@ -252,14 +251,14 @@ print(obj.summary)
 ) <lst-dml-pliv>
 
 == Caso empírico y validación
-<sec-cap09_caso>
+<sec-cap17_caso>
 
-*Réplica propia sobre el dataset del repositorio.* Sobre el dataset sintético #code[panel_fe_dynamic] (con ground truth conocido), el DML-panel produce un estimado ATE consistente con el valor verdadero $tau approx 1.0$. El estimador FE clásico (LSDV) puede sobreestimar el efecto al no capturar no linealidades en $X_(i t)$. La figura @fig-cap9-dml-panel muestra la sensibilidad de DML-panel al número de folds $K$ del cross-fitting.
+*Réplica propia sobre el dataset del repositorio.* Sobre el dataset sintético #code[panel_fe_dynamic] (con ground truth conocido), el DML-panel produce un estimado ATE consistente con el valor verdadero $tau approx 1.0$. El estimador FE clásico (LSDV) puede sobreestimar el efecto al no capturar no linealidades en $X_(i t)$. La figura @fig-cap17-dml-panel muestra la sensibilidad de DML-panel al número de folds $K$ del cross-fitting.
 
 #figure(
-  image("../figuras/fig_cap9_dml_panel.png", width: 85%),
+  image("../figuras/fig_cap17_dml_panel.png", width: 85%),
   caption: [DML-panel vs. FE clásico (LSDV): sensibilidad al número de folds $K$ del cross-fitting. Las barras indican IC al 95%. La línea verde punteada es el ATE verdadero; la naranja punteada es el estimador FE clásico. Dataset: #code[panel_fe_dynamic] (sintético con ground truth).],
-) <fig-cap9-dml-panel>
+) <fig-cap17-dml-panel>
 
 La figura muestra que el estimador DML-panel es estable en $K$ y consistente con el valor verdadero, mientras que el FE clásico (LSDV) exhibe un sesgo sistemático atribuible a la omisión de la estructura no lineal en $X_(i t)$. Esto valida la recomendación de usar DML-panel cuando se sospecha no linealidad sustantiva en los controles.
 
@@ -293,7 +292,7 @@ La figura muestra que el estimador DML-panel es estable en $K$ y consistente con
 
   *La consecuencia es más grave de lo que parece.* #cite(<dechaisemartin2020twoway>, form: "prose") demuestran que, con efectos heterogéneos en el tiempo, algunos de esos pesos son *negativos*: el coeficiente TWFE puede tener signo opuesto al efecto verdadero *aunque el efecto sea del mismo signo para todas las unidades y todos los períodos*. No es un problema de precisión que más datos resuelvan; es un problema de que el estimando implícito no es el que se quiere.
 
-  *Qué implica esto para el DML-panel de este capítulo.* La within-transformation de la @sec-cap09_fe_model es TWFE, y por tanto *hereda el problema completo* si la adopción es escalonada y los efectos heterogéneos. El supuesto de efecto constante de la @sec-cap09_supuestos no es una simplificación pedagógica menor: es exactamente lo que sostiene la validez del procedimiento. Flexibilizar los _nuisance_ con ML no repara un estimando mal definido — ninguna cantidad de _gradient boosting_ en $hat(g)$ y $hat(m)$ corrige un peso negativo.
+  *Qué implica esto para el DML-panel de este capítulo.* La within-transformation de la @sec-cap17_fe_model es TWFE, y por tanto *hereda el problema completo* si la adopción es escalonada y los efectos heterogéneos. El supuesto de efecto constante de la @sec-cap17_supuestos no es una simplificación pedagógica menor: es exactamente lo que sostiene la validez del procedimiento. Flexibilizar los _nuisance_ con ML no repara un estimando mal definido — ninguna cantidad de _gradient boosting_ en $hat(g)$ y $hat(m)$ corrige un peso negativo.
 
   *Estimadores robustos.*
   - *Event study:* graficar el efecto en cada período alrededor del tratamiento. Permite ver tendencias pre-tratamiento y dinámica post-tratamiento. Punto de partida obligatorio.
@@ -306,17 +305,17 @@ La figura muestra que el estimador DML-panel es estable en $K$ y consistente con
 
 === Diseños con tiempos de tratamiento escalonados
 
-Para diseños con **staggered adoption** (tratamiento adoptado en diferentes periodos), los estimadores de efectos fijos bidireccionales (TWFE) pueden producir ponderaciones negativas y sesgo de heterogeneidad (@goodmanbacon2021, Goodman-Bacon 2021; @dechaisemartin2020twoway, de Chaisemartin & D'Haultfœuille 2020). 
+Para diseños con *staggered adoption* (tratamiento adoptado en diferentes periodos), los estimadores de efectos fijos bidireccionales (TWFE) pueden producir ponderaciones negativas y sesgo de heterogeneidad (@goodmanbacon2021, Goodman-Bacon 2021; @dechaisemartin2020twoway, de Chaisemartin & D'Haultfœuille 2020). 
 
 Extensiones modernas que corrigen este problema:
-- **Estimador de Callaway & Sant'Anna** (@callaway2021difference): agregación de ATT(g,t) por cohorte
-- **Estimador de Sun & Abraham** (@sun2021estimating): interacción de cohorte × periodo
-- **Estimador de Borusyak et al.** (@borusyak2024revisiting): imputación de contrafactuales
+- *Estimador de Callaway & Sant'Anna* (@callaway2021difference): agregación de ATT(g,t) por cohorte
+- *Estimador de Sun & Abraham* (@sun2021estimating): interacción de cohorte × periodo
+- *Estimador de Borusyak et al.* (@borusyak2024revisiting): imputación de contrafactuales
 
 En la práctica, usar el paquete `did` (Callaway & Sant'Anna) o `fixest` (Sun & Abraham) para DiD con tratamiento heterogéneo en tiempo.
 
 == Ejercicios propuestos
-<sec-cap09_ejercicios>
+<sec-cap17_ejercicios>
 
 + Replique el listado @lst-dml-panel usando #code[GradientBoostingRegressor] en lugar de #code[RandomForestRegressor]. ¿Mejora la precisión?
 
@@ -327,8 +326,8 @@ En la práctica, usar el paquete `did` (Callaway & Sant'Anna) o `fixest` (Sun & 
 + Construya un panel donde el supuesto de tendencias paralelas se vulnere. Muestre que DML-panel produce un estimado sesgado en ese caso.
 
 == Lecturas complementarias
-<sec-cap09_lecturas>
+<sec-cap17_lecturas>
 
-#cite(<chernozhukov2018double>, form: "prose") cubre DML-PLIV; #cite(<bach2021doubleml>, form: "prose") documenta la implementación en `DoubleML`, incluida la variante con _cluster cross-fitting_ usada en la @sec-cap09_dml_panel. Sobre instrumentos débiles, #cite(<stock2005testing>, form: "prose") es la referencia del umbral $F > 10$ y #cite(<belloni2012sparse>, form: "prose") la del caso con muchos instrumentos seleccionados por LASSO.
+#cite(<chernozhukov2018double>, form: "prose") cubre DML-PLIV; #cite(<bach2021doubleml>, form: "prose") documenta la implementación en `DoubleML`, incluida la variante con _cluster cross-fitting_ usada en la @sec-cap17_dml_panel. Sobre instrumentos débiles, #cite(<stock2005testing>, form: "prose") es la referencia del umbral $F > 10$ y #cite(<belloni2012sparse>, form: "prose") la del caso con muchos instrumentos seleccionados por LASSO.
 
 La literatura de DiD con adopción escalonada es donde más ha cambiado el estado del arte en los últimos años, y conviene leerla en orden: #cite(<goodmanbacon2021>, form: "prose") descompone el estimador TWFE y muestra de dónde vienen las comparaciones problemáticas; #cite(<dechaisemartin2020twoway>, form: "prose") establecen el resultado de pesos negativos que hace inservible a TWFE bajo heterogeneidad; y las tres propuestas correctivas principales son #cite(<callaway2021difference>, form: "prose") (agregación explícita de $"ATT"(g,t)$), #cite(<sun2021estimating>, form: "prose") (event study con interacciones cohorte–período) y #cite(<borusyak2024revisiting>, form: "prose") (imputación del contrafactual). Para el diagnóstico de tendencias pre-tratamiento en diseños de event study, @freyaldenhoven2021local. El @cap-scm-mc retoma esta misma familia de problemas desde el ángulo del control sintético y la _matrix completion_.

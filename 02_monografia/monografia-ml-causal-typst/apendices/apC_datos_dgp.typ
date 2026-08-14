@@ -81,16 +81,16 @@ Cada dataset sintético tiene:
 == Recomendaciones de uso por capítulo
 <sec-apC_recomendaciones>
 
-- *Capítulos 1--2 (intro, regularización):* usar #code[close_college] para motivación; sintéticos para ilustrar sesgo.
-- *Capítulos 3--4 (DML):* #code[nsw_mixtape] para aplicación; sintético DML para verificar cobertura.
-- *Capítulos 5--6 (meta-learners, forests):* sintético con CATE heterogéneo; #code[nsw_mixtape] (aplicación).
-- *Capítulo 7 (validación):* sintético con _ground truth_; #code[thornton_hiv] para _placebos_.
-- *Capítulo 8 (PDS):* #code[nhefs] para alta dimensión.
-- *Capítulo 9 (panel):* #code[panel_fe_dynamic].
-- *Capítulos 11--12 (policy, uplift):* #code[gov_transfers], #code[thornton_hiv].
-- *Capítulo 13 (deep causal):* sintético IHDP-like.
-- *Capítulo 14 (SCM, MC):* #code[texas], #code[scm_placebo].
-- *Capítulo 15 (discovery):* sintético con estructura causal conocida.
+- *Capítulos 5--6 (predicción vs. causalidad, regularización):* usar #code[close_college] para motivación; sintéticos para ilustrar sesgo.
+- *Capítulos 10--11 (ortogonalidad, DML):* #code[nsw_mixtape] para aplicación; sintético DML para verificar cobertura.
+- *Capítulos 12--13 (meta-learners, forests):* sintético con CATE heterogéneo; #code[nsw_mixtape] (aplicación).
+- *Capítulo 14 (validación):* sintético con _ground truth_; #code[thornton_hiv] para _placebos_.
+- *Capítulo 16 (PDS):* #code[nhefs] para alta dimensión.
+- *Capítulo 17 (panel):* #code[panel_fe_dynamic].
+- *Capítulos 21--22 (policy, uplift):* #code[gov_transfers], #code[thornton_hiv].
+- *Capítulo 27 (deep causal):* sintético IHDP-like.
+- *Capítulo 28 (SCM, MC):* #code[texas], #code[scm_placebo].
+- *Capítulo 29 (discovery):* sintético con estructura causal conocida.
 
 == Datasets complementarios sugeridos
 <sec-apC_complementarios>
@@ -104,13 +104,13 @@ Cada dataset sintético tiene:
     table.hline(stroke: 0.8pt),
     table.header([*Dataset sugerido*], [*Diseño causal*], [*Uso en capítulo*], [*Fuente*]),
     table.hline(stroke: 0.4pt),
-    [Progresa/Opportunidades], [RDD], [Capítulo 10 (RDD)], [Evaluación de impacto],
-    [Minimum wage panel], [DiD], [Capítulo 9 (panel)], [Literatura salario mínimo],
-    [Reemployment bonus], [RCT], [Capítulos 1, 4 (fundamentos)], [Literatura seguros desempleo],
-    [Wage gap CPS], [Double lasso], [Capítulos 2, 8 (PDS)], [CPS data],
-    [Growth convergence], [PDS/DML], [Capítulo 8 (alta dimensión)], [Literatura crecimiento],
-    [IHDP-like], [CATE benchmark], [Capítulo 13 (deep causal)], [Literatura deep causal],
-    [Text/product embeddings], [CATE con texto], [Capítulos 12--13], [NLP / embeddings],
+    [Progresa/Opportunidades], [RDD], [Capítulo 18 (RDD)], [Evaluación de impacto],
+    [Minimum wage panel], [DiD], [Capítulo 17 (panel)], [Literatura salario mínimo],
+    [Reemployment bonus], [RCT], [Capítulos 5, 11 (fundamentos)], [Literatura seguros desempleo],
+    [Wage gap CPS], [Double lasso], [Capítulos 6, 16 (PDS)], [CPS data],
+    [Growth convergence], [PDS/DML], [Capítulo 16 (alta dimensión)], [Literatura crecimiento],
+    [IHDP-like], [CATE benchmark], [Capítulo 27 (deep causal)], [Literatura deep causal],
+    [Text/product embeddings], [CATE con texto], [Capítulos 22--27], [NLP / embeddings],
     table.hline(stroke: 0.8pt),
   )
 ) <tab-apC-complementarios>

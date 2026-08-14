@@ -67,12 +67,12 @@ El criterio de puerta trasera implica una clasificación de variables candidatas
 
 La fila de mediadores explica formalmente algo que ya se mencionó en el @cap-ingenieria-datos-causales sin desarrollar: por qué una variable "post-tratamiento" es peligrosa como control, incluso si parece un predictor razonable de $Y$ — con probabilidad no trivial es un mediador (controla por parte del efecto que se busca medir) o un collider (introduce sesgo de selección). La fila de colliders es la que más sorprende a quien viene de _machine learning_ predictivo, porque contradice el reflejo de "controlar por todo": #cite(<elwert2014endogenous>, form: "prose") documentan cómo este *sesgo de selección endógena* aparece de forma encubierta en la práctica aplicada, no solo al añadir un control explícito, sino cada vez que la muestra misma se define condicionando en una variable afectada por el tratamiento (restringir el análisis a quienes completaron el programa, a quienes siguen siendo clientes, a quienes respondieron la encuesta de seguimiento).
 
-El tratamiento formal del **sesgo por collider** y su rol en selección de controles se desarrolla en @elwert2014endogenous (Elwert & Winship 2014).
+El tratamiento formal del *sesgo por collider* y su rol en selección de controles se desarrolla en @elwert2014endogenous (Elwert & Winship 2014).
 
 === Las tres reglas del cálculo-$"do"$
 <sec-intervcontra-docalculus>
 
-Este capítulo formaliza el **criterio de puerta trasera** con su prueba completa. Las tres reglas del **cálculo-$"do"$** (*do-calculus*, @pearl2009causality, Pearl 2009) proporcionan un sistema completo para determinar identificabilidad causal en grafos arbitrarios; su automatización se implementa en `dowhy` (@sharma2020dowhy).
+Este capítulo formaliza el *criterio de puerta trasera* con su prueba completa. Las tres reglas del *cálculo-$"do"$* (*do-calculus*, @pearl2009causality, Pearl 2009) proporcionan un sistema completo para determinar identificabilidad causal en grafos arbitrarios; su automatización se implementa en `dowhy` (@sharma2020dowhy).
 
 El criterio de puerta trasera resuelve el caso más frecuente, pero no es la herramienta general. Hay grafos donde ningún conjunto observado satisface el criterio y, sin embargo, el efecto *sí* es identificable por otra vía. La herramienta completa es el *cálculo-$"do"$*: tres reglas de reescritura que permiten transformar una expresión que contiene el operador $"do"()$ en otra equivalente, con el objetivo de eliminar todos los $"do"$ y quedar con una fórmula puramente observacional —es decir, estimable con los datos.
 

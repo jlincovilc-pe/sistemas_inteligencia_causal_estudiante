@@ -1,5 +1,4 @@
 // Capítulo 28 — Control sintético y matrix completion
-// (La numeración `cap14` del nombre de archivo es histórica: proviene de la edición corta anterior y se conserva para no romper referencias.)
 #import "../template/template.typ": *
 
 #chapter[Control sintético y matrix completion]
@@ -17,7 +16,7 @@
     [*Identificación:*], [Combinación convexa (SCM), low-rank + incoherence (MC)],
     [*Método:*], [Synthetic Control (SCM), Matrix Completion (MC)],
     [*Nuisance:*], [Pesos $w_j$ (SCM), matriz $L$ (MC)],
-    [*Garantía:*], [Fit pre-tratamiento exacto (SCM), $O_p(sqrt(r(N+T)\/|cal(O)|))$ (MC)],
+    [*Garantía:*], [Fit pre-tratamiento exacto (SCM), $O_(p)(sqrt(r(N+T)\/|cal(O)|))$ (MC)],
     [*Librerías:*], [scipy.optimize, numpy],
     [*Validación:*], [Placebos espaciales y temporales, gráfico pre-tratamiento],
   )
@@ -28,7 +27,7 @@ Los capítulos anteriores de esta parte estiman efectos a nivel de unidad indivi
 ]
 
 == Motivación aplicada
-<sec-cap14_motivacion>
+<sec-cap28_motivacion>
 
 Una economista del Banco Central debe estimar el efecto de una reforma tributaria implementada en una región específica sobre la recaudación. No hay región de control perfecta: todas las regiones tienen trayectorias distintas. El _synthetic control method_ (SCM) clásico de @abadie2003economic construye un "control sintético" ponderando regiones no tratadas para reproducir la trayectoria pre-tratamiento de la región tratada.
 
@@ -37,10 +36,10 @@ Pero SCM clásico tiene limitaciones: requiere _fit_ pre-tratamiento perfecto, n
 Este capítulo desarrolla ambos métodos, los compara, y aplica al dataset #code[texas] (efecto de una ley de aborto sobre mortalidad materna) y al sintético #code[scm_placebo].
 
 == Teoría, supuestos y garantías
-<sec-cap14_teoria>
+<sec-cap28_teoria>
 
 === SCM clásico
-<sec-cap14_scm>
+<sec-cap28_scm>
 
 Para una unidad tratada $i = 1$ y controles $i = 2, dots, N+1$ observadas en $t = 1, dots, T$ con tratamiento en $t = T_0+1, dots, T$ para la unidad 1, SCM busca pesos $bold(w) = (w_2, dots, w_(N+1))$ con $w_j >= 0$ y $sum_j w_j = 1$ que minimicen:
 $
@@ -50,7 +49,7 @@ $
 El estimador del efecto es $hat(tau)_t = Y_(1 t) - sum_j hat(w)_j Y_(j t)$ para $t > T_0$.
 
 === Matrix completion
-<sec-cap14_matrix_completion>
+<sec-cap28_matrix_completion>
 
 #cite(<athey2021matrix>, form: "prose") reinterpretan el problema como imputación de matriz. Sea $Y in R^(N times T)$ la matriz de outcomes, donde las entradas post-tratamiento para unidades tratadas son conceptualmente "missing" (porque no observamos el counterfactual). El modelo es:
 $
@@ -71,11 +70,11 @@ donde $norm(L)_* = sum_i sigma_i (L)$ es la suma de los valores singulares. La j
 #theorem(
   name: [Athey et al., 2021]
 )[
-  Bajo condiciones regulares (low-rank, incoherence), $hat(L)$ estima $L$ con error $O_p(sqrt(r(N+T)\/|cal(O)|))$.
+  Bajo condiciones regulares (low-rank, incoherence), $hat(L)$ estima $L$ con error $O_(p)(sqrt(r(N+T)\/|cal(O)|))$.
 ] <thm-matrix-completion>
 
 === Elegir $r$ o $lambda$: el hiperparámetro que fija el contrafactual
-<sec-cap14_rango>
+<sec-cap28_rango>
 
 La cota anterior es informativa sobre cómo escala el error con el rango $r$, pero deja abierta la pregunta operativa: ¿qué valor usar? Es la decisión más consecuente del método, y conviene no tratarla como un detalle de implementación, porque el hiperparámetro determina literalmente el contrafactual estimado. Con $lambda$ muy alto ($r$ efectivo bajo) el modelo es rígido y no reproduce la trayectoria pre-tratamiento —el sesgo aparece como un mal ajuste visible—. Con $lambda$ muy bajo ($r$ efectivo alto), el modelo tiene grados de libertad suficientes para ajustar el ruido pre-tratamiento y, al extrapolar al periodo post, el "efecto" estimado puede ser en buena parte ese sobreajuste proyectado.
 
@@ -84,7 +83,7 @@ El procedimiento estándar, y el que este curso recomienda, es *validación cruz
 Dos diagnósticos complementarios deben acompañar a la elección. Primero, reportar la *curva de efecto estimado frente a $lambda$*, con la misma lectura que en el @cap-pds: una meseta indica robustez, una pendiente pronunciada indica que el resultado es función del hiperparámetro. Segundo, y más informativo, verificar el *ajuste pre-tratamiento* del $lambda$ elegido: si el error de imputación pre-tratamiento es comparable a la magnitud del efecto post-tratamiento estimado, no hay señal que distinguir del ruido, por bueno que sea el valor de validación cruzada.
 
 === Comparación SCM vs. matrix completion
-<sec-cap14_comparacion>
+<sec-cap28_comparacion>
 
 #figure(
   caption: [SCM clásico vs. matrix completion],
@@ -115,10 +114,10 @@ La inferencia en synthetic control se formaliza mediante *placebos en espacio* (
 *Selección de hiperparámetros:* En matrix completion, el rango $r$ o parámetro de regularización $lambda$ se seleccionan por validación cruzada temporal (ver §28.4).
 
 == Algoritmo e implementación
-<sec-cap14_algoritmo>
+<sec-cap28_algoritmo>
 
 === Algoritmo: Synthetic control clásico
-<sec-cap14_algoritmo_scm>
+<sec-cap28_algoritmo_scm>
 
 El algoritmo siguiente formaliza el procedimiento de estimación por control sintético para una unidad tratada y un panel de donantes.
 
@@ -136,7 +135,7 @@ El algoritmo siguiente formaliza el procedimiento de estimación por control sin
 ] <alg-scm_clasico>
 
 === SCM clásico sobre Texas
-<sec-cap14_scm_texas>
+<sec-cap28_scm_texas>
 
 #figure(
   kind: raw,
@@ -172,7 +171,7 @@ def synthetic_control(Y_treated_pre, Y_donors_pre, Y_donors_post):
 ) <lst-scm-texas>
 
 === Matrix completion
-<sec-cap14_mc_implementacion>
+<sec-cap28_mc_implementacion>
 
 #figure(
   kind: raw,
@@ -219,14 +218,14 @@ print(f"Efecto estimado (matrix completion): {effect:.4f}")
 ) <lst-matrix-completion>
 
 == Caso empírico y validación
-<sec-cap14_caso_empirico>
+<sec-cap28_caso_empirico>
 
-La figura @fig-cap14-scm-mc ilustra el ajuste pre/post-tratamiento con SCM clásico y matrix completion, sobre un panel sintético con efecto verdadero conocido ($tau = 2.5$). El panel izquierdo muestra que ambos métodos reproducen razonablemente la trayectoria pre-tratamiento de la unidad tratada; el panel derecho muestra el efecto estimado en el periodo post-tratamiento, comparado con un placebo espacial (aplicar SCM a una unidad no tratada).
+La figura @fig-cap28-scm-mc ilustra el ajuste pre/post-tratamiento con SCM clásico y matrix completion, sobre un panel sintético con efecto verdadero conocido ($tau = 2.5$). El panel izquierdo muestra que ambos métodos reproducen razonablemente la trayectoria pre-tratamiento de la unidad tratada; el panel derecho muestra el efecto estimado en el periodo post-tratamiento, comparado con un placebo espacial (aplicar SCM a una unidad no tratada).
 
 #figure(
-  image("../figuras/fig_cap14_scm_mc.png", width: 100%),
+  image("../figuras/fig_cap28_scm_mc.png", width: 100%),
   caption: [Izquierda: trayectoria de la unidad tratada vs. control sintético (SCM) y matrix completion (MC), con periodo pre-tratamiento $T_0 = 15$. Derecha: efecto estimado post-tratamiento para la unidad tratada (efecto verdadero = 2.5) y para un placebo espacial (unidad no tratada, debe ser $approx 0$). Panel sintético $N = 20$, $T = 30$.],
-) <fig-cap14-scm-mc>
+) <fig-cap28-scm-mc>
 
 *Interpretación.* El SCM clásico y el matrix completion producen estimaciones consistentes del efecto post-tratamiento (cerca del valor verdadero 2.5). El placebo espacial —aplicar el mismo procedimiento a una unidad no tratada— produce un efecto cercano a cero, validando la especificación. #cite(<abadie2010synthetic>, form: "prose") aplicaron SCM al efecto de la ley de tabaco de California (Proposición 99) sobre el consumo de cigarrillos; la cifra original de reducción post-tratamiento no se reproduce aquí para evitar imprecisiones, pero el orden de magnitud (varios paquetes per cápita) es consistente con la literatura.
 
@@ -237,7 +236,7 @@ La misma referencia añade un refinamiento necesario: los placebos con mal ajust
 *Cuándo el supuesto de combinación convexa es el problema.* El SCM clásico restringe $w_j >= 0$ y $sum_j w_j = 1$, lo que impide extrapolar: si la unidad tratada es extrema en alguna característica —el estado más rico, la región más urbana— ninguna combinación convexa de donantes la reproduce, y el ajuste pre-tratamiento será pobre haga lo que haga el optimizador. Dos líneas de trabajo relajan la restricción. #cite(<doudchenko2016balancing>, form: "prose") muestran que SCM, DiD y varios estimadores de emparejamiento son casos particulares de una misma familia de regresiones lineales sobre las unidades de control, que se distinguen exactamente por qué restricciones imponen sobre los pesos (no negatividad, suma unitaria, intercepto); ver la familia completa aclara qué se está suponiendo al elegir uno u otro. #cite(<benmichael2021augmented>, form: "prose") proponen el *control sintético aumentado*, que corrige el sesgo residual del ajuste imperfecto añadiendo un modelo de resultado —la misma lógica de _augmentation_ doblemente robusta del @cap-dml, trasladada al panel—: si el SCM ajusta bien, la corrección es despreciable; si ajusta mal, la corrige explícitamente en lugar de dejar el sesgo sin tratar.
 
 == Riesgos, límites y mitigación
-<sec-cap14_riesgos>
+<sec-cap28_riesgos>
 
 #riesgos[
   #figure(
@@ -252,7 +251,7 @@ La misma referencia añade un refinamiento necesario: los placebos con mal ajust
       [Mal ajuste pre-tratamiento], [SCM inválido: el contrafactual no reproduce la trayectoria previa, y el "efecto" mide el error de ajuste], [Gráfico pre-tratamiento y RMSPE previo comparado con la magnitud del efecto], [Descartar SCM, ampliar el conjunto de donantes, o usar control sintético aumentado @benmichael2021augmented],
       [Pocos donantes], [Control débil *y* $p$-valor de placebo acotado por abajo en $1\/(J+1)$], [Número de donantes con ajuste pre-tratamiento comparable; distribución de pesos (¿concentrada en 1-2 unidades?)], [Ampliar el conjunto de donantes; reportar explícitamente el $p$-valor mínimo alcanzable],
       [Unidad tratada fuera de la envolvente convexa], [Ningún vector de pesos convexos la reproduce; sesgo irreducible bajo SCM clásico], [Comparar covariables de la tratada con el rango de los donantes], [Relajar restricciones sobre los pesos @doudchenko2016balancing o aumentar con un modelo de resultado],
-      [Low-rank falso o $lambda$ mal elegido], [MC sesgado, o sobreajuste del ruido pre-tratamiento proyectado al post], [Validación cruzada con enmascaramiento en bloque (@sec-cap14_rango); curva efecto vs. $lambda$], [Elegir $lambda$ por CV con patrón de faltante realista; reportar la sensibilidad y placebos],
+      [Low-rank falso o $lambda$ mal elegido], [MC sesgado, o sobreajuste del ruido pre-tratamiento proyectado al post], [Validación cruzada con enmascaramiento en bloque (@sec-cap28_rango); curva efecto vs. $lambda$], [Elegir $lambda$ por CV con patrón de faltante realista; reportar la sensibilidad y placebos],
       table.hline(stroke: 0.8pt),
     )
   ) <tab-riesgos-cap14>
@@ -276,7 +275,7 @@ La misma referencia añade un refinamiento necesario: los placebos con mal ajust
 ]
 
 == Ejercicios propuestos
-<sec-cap14_ejercicios>
+<sec-cap28_ejercicios>
 
 + Replique el listado @lst-scm-texas sobre el dataset #code[texas] completo. Reporte el efecto post-tratamiento.
 
@@ -287,6 +286,6 @@ La misma referencia añade un refinamiento necesario: los placebos con mal ajust
 + Aplique matrix completion al dataset #code[abortion] (efecto de legalización del aborto sobre fertilidad).
 
 == Lecturas complementarias
-<sec-cap14_lecturas>
+<sec-cap28_lecturas>
 
 #cite(<abadie2003economic>, form: "prose") y #cite(<abadie2010synthetic>, form: "prose") son las referencias de SCM clásico; #cite(<abadie2015comparative>, form: "prose") desarrolla la inferencia por permutación de placebos y las correcciones por ajuste pre-tratamiento que la hacen utilizable. #cite(<doudchenko2016balancing>, form: "prose") sitúan SCM, DiD y emparejamiento dentro de una familia común de estimadores de pesos, y son la mejor lectura para entender qué se supone al elegir cada uno. #cite(<benmichael2021augmented>, form: "prose") proponen el control sintético aumentado para el caso de ajuste pre-tratamiento imperfecto. #cite(<athey2021matrix>, form: "prose") introduce matrix completion y su relación con los estimadores anteriores. #cite(<arkhangelsky2021synthetic>, form: "prose") propone Synthetic DiD como híbrido entre control sintético y diferencias-en-diferencias. Sobre la conexión con la literatura de DiD con adopción escalonada —los mismos problemas vistos desde el otro extremo del espectro de número de unidades tratadas— véase el @cap-panel-dmliv y sus referencias.

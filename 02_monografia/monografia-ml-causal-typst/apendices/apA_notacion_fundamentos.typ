@@ -29,7 +29,7 @@ A lo largo de esta monografía se emplean las siguientes convenciones notacional
     [$"Cov"(dot.c, dot.c)$], [Covarianza],
     [$bb(P)_n$], [Medida empírica $(1 / n) sum_(i=1)^n delta_(W_i)$],
     [$bb(G)_n$], [Proceso empírico $sqrt(n)(bb(P)_n - P)$],
-    [$O_p(dot.c)$, $o_p(dot.c)$], [Órdenes en probabilidad],
+    [$O_(p)(dot.c)$, $o_(p)(dot.c)$], [Órdenes en probabilidad],
     [$O(dot.c)$, $o(dot.c)$], [Órdenes deterministas],
     [$arrow.r^(p)$], [Convergencia en probabilidad],
     [$arrow.r^(d)$], [Convergencia en distribución],
@@ -60,7 +60,7 @@ Para variables aleatorias se usan mayúsculas ($X$, $Y$, $D$) y para realizacion
 ]
 
 #definition(name: [Convergencia en distribución])[
-  $X_n arrow.r^(d) X$ si $F_(X_n)(x) -> F_X(x)$ en todos los puntos de continuidad de $F_X$.
+  $X_n arrow.r^(d) X$ si $F_(X_n)(x) -> F_(X)(x)$ en todos los puntos de continuidad de $F_X$.
 ]
 
 #definition(name: [Convergencia en $L^2$])[
@@ -137,7 +137,7 @@ La _honesty_ (capítulo @cap-causal-forests) es el análogo para árboles del _c
 == Norma nuclear y matrix completion
 <sec-apA_norma_nuclear>
 
-La _norma nuclear_ de una matriz $L$ es $norm(L)_* = sum_i sigma_i(L)$, donde $sigma_i$ son los valores singulares. Es la envolvente convexa del _rank_, lo que permite formular el problema de _matrix completion_ (capítulo @cap-scm-mc) como optimización convexa.
+La _norma nuclear_ de una matriz $L$ es $norm(L)_* = sum_i sigma_(i)(L)$, donde $sigma_i$ son los valores singulares. Es la envolvente convexa del _rank_, lo que permite formular el problema de _matrix completion_ (capítulo @cap-scm-mc) como optimización convexa.
 
 #theorem(name: [Recht, Fazel & Parrilo, 2010])[
   Bajo _incoherence_ y muestreo aleatorio suficientemente denso, la minimización de norma nuclear recupera exactamente la matriz de bajo rango subyacente.
@@ -148,7 +148,7 @@ La _norma nuclear_ de una matriz $L$ es $norm(L)_* = sum_i sigma_i(L)$, donde $s
 
 Un modelo causal estructural describe cada variable como función de sus causas directas más ruido:
 $
-X_j = f_j("PA"_j, U_j)
+X_j = f_(j)("PA"_j, U_j)
 $
 donde $"PA"_j$ son los padres causales de $X_j$ y $U_j$ son factores no observados independientes.
 
@@ -171,7 +171,7 @@ $
 - *ATE bajo IRM:* $psi_i = mu_1(X_i) - mu_0(X_i) + (D_i (Y_i - mu_1(X_i))) / (e(X_i)) - ((1 - D_i)(Y_i - mu_0(X_i))) / (1 - e(X_i)) - theta$
 - *PLR (Robinson):* $psi_i = v_i (u_i - theta v_i)$, con $v_i = D_i - e(X_i)$, $u_i = Y_i - l(X_i)$
 
-Ambas IF alcanzan la cota semiparamétrica de sus funcionales: el Teorema de eficiencia del DML-IRM (@sec-cap04_score) para IRM, y @chernozhukov2018double para PLR.
+Ambas IF alcanzan la cota semiparamétrica de sus funcionales: el Teorema de eficiencia del DML-IRM (@sec-cap11_score) para IRM, y @chernozhukov2018double para PLR.
 
 La varianza asintótica es $cal(V) = E[psi_i^2]$. La ortogonalidad garantiza que errores en $eta$ no contaminan $theta$ en primer orden.
 

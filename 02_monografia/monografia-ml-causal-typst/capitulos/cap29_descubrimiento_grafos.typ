@@ -1,5 +1,4 @@
 // Capítulo 29 — Descubrimiento causal y grafos
-// (La numeración `cap15` del nombre de archivo es histórica: proviene de la edición corta anterior y se conserva para no romper referencias.)
 #import "../template/template.typ": *
 
 #chapter[Descubrimiento causal y grafos]
@@ -28,7 +27,7 @@ Todo el curso, hasta aquí, asumió que el grafo causal —o al menos el conjunt
 ]
 
 == Motivación aplicada
-<sec-cap15_motivacion>
+<sec-cap29_motivacion>
 
 Una economista del Banco Mundial estudia los determinantes de la pobreza infantil. Tiene 30 variables (ingreso familiar, educación parental, acceso a salud, nutrición, entorno barrial, etc.) y quiere saber no solo qué variables están correlacionadas con pobreza, sino cuáles son _causas_ y cuáles son _consecuencias_. Esta es la pregunta del _causal discovery_: inferir la estructura causal (grafo) a partir de datos observacionales.
 
@@ -37,10 +36,10 @@ A diferencia del resto del curso, donde el grafo causal se asume conocido y el p
 Este capítulo presenta los fundamentos de DAGs, el algoritmo PC, y NOTEARS, con implementaciones en #code[dowhy] y #code[causal-learn]. Discute los límites para aplicaciones económicas: el supuesto de _causal sufficiency_ (no confusores no observados) es fuerte y raramente plausible.
 
 == Marco teórico formal
-<sec-cap15_marco_teorico>
+<sec-cap29_marco_teorico>
 
 === DAGs y el criterio de puerta trasera
-<sec-cap15_dags>
+<sec-cap29_dags>
 
 Un _DAG_ es un grafo dirigido acíclico $G = (V, E)$ donde los nodos son variables y las aristas $X_i arrow.r X_j$ indican causalidad directa. La distribución conjunta factoriza según el DAG:
 $
@@ -58,7 +57,7 @@ $
 ] <def-backdoor>
 
 === Algoritmo PC
-<sec-cap15_pc>
+<sec-cap29_pc>
 
 El algoritmo PC (Spirtes & Glymour, 1991) construye un DAG en tres pasos:
 
@@ -85,7 +84,7 @@ Los algoritmos de referencia incluyen:
 ]
 
 === Pseudocódigo: PC skeleton
-<sec-cap15_pc_skeleton>
+<sec-cap29_pc_skeleton>
 
 El siguiente algoritmo detalla la fase de esqueleto del algoritmo PC — la etapa central donde se determina qué aristas del grafo completo sobreviven tras los tests de independencia condicional.
 
@@ -117,7 +116,7 @@ El siguiente algoritmo detalla la fase de esqueleto del algoritmo PC — la etap
 El test de independencia condicional puede ser un test de correlación parcial (bajo normalidad) o un test basado en entropía (no paramétrico). La elección de $alpha$ controla la densidad del grafo estimado: $alpha$ pequeños producen grafos más dispersos. Los sets separadores $"sep"(X_i, X_j)$ se preservan para la etapa posterior de orientación de colisionadores.
 
 === NOTEARS
-<sec-cap15_notears>
+<sec-cap29_notears>
 
 #cite(<zheng2018dags>, form: "prose") reformulan el descubrimiento causal como optimización continua. La aciclicidad se impone con la restricción:
 $
@@ -131,15 +130,15 @@ $
 La ventaja: se resuelve con métodos de optimización continua (augmented Lagrangian), evitando la búsqueda combinatoria de PC.
 
 === Límites: causal sufficiency
-<sec-cap15_causal_sufficiency>
+<sec-cap29_causal_sufficiency>
 
 Todos los métodos asumen _causal sufficiency_: no hay confusores no observados que afecten a dos o más variables del grafo. En aplicaciones económicas este supuesto es fuerte.
 
 == Implementación en Python
-<sec-cap15_implementacion>
+<sec-cap29_implementacion>
 
 === Construcción de DAGs con dowhy
-<sec-cap15_dowhy>
+<sec-cap29_dowhy>
 
 #figure(
   kind: raw,
@@ -180,7 +179,7 @@ print(identified_estimand)
 ) <lst-dowhy-dag>
 
 === NOTEARS y PC con causal-learn
-<sec-cap15_notears_py>
+<sec-cap29_notears_py>
 
 La librería #code[causal-learn] (implementación Python del Tetrad original) provee implementaciones eficientes de PC, NOTEARS y otros algoritmos de descubrimiento causal.
 
@@ -219,10 +218,10 @@ print("W estimado (NOTEARS):\n", np.round(W_est, 2))
 La función #code[pc] de #code[causal-learn] implementa el algoritmo completo con los tres pasos (esqueleto, colisionadores, reglas de Meek). El argumento #code[indep_test] permite elegir entre tests paramétricos (#code[fisherz]) y no paramétricos (#code[kci], #code[chisq]). NOTEARS requiere que los datos estén normalizados.
 
 == Caso empírico y validación
-<sec-cap15_caso_empirico>
+<sec-cap29_caso_empirico>
 
 === Evaluación de grafos estimados
-<sec-cap15_evaluacion_grafos>
+<sec-cap29_evaluacion_grafos>
 
 Cuando el grafo verdadero es conocido (simulaciones), la calidad del grafo estimado se mide con tres métricas estándar:
 
@@ -255,12 +254,12 @@ En datos reales, donde el grafo verdadero es desconocido, la validación se apoy
 
 === Caso de estudio: DAGs y descubrimiento causal
 
-La figura @fig-cap15-dag muestra dos elementos complementarios. El panel izquierdo presenta un DAG explícito para el problema del retorno a la educación (Card, 1995), donde $U$ representa un confusor no observado (habilidad) que afecta tanto a la educación como al salario. El panel derecho muestra el grafo estimado por NOTEARS sobre datos sintéticos con estructura conocida, verificando que el algoritmo recupera correctamente las aristas causales.
+La figura @fig-cap29-dag muestra dos elementos complementarios. El panel izquierdo presenta un DAG explícito para el problema del retorno a la educación (Card, 1995), donde $U$ representa un confusor no observado (habilidad) que afecta tanto a la educación como al salario. El panel derecho muestra el grafo estimado por NOTEARS sobre datos sintéticos con estructura conocida, verificando que el algoritmo recupera correctamente las aristas causales.
 
 #figure(
-  image("../figuras/fig_cap15_dag.png", width: 100%),
+  image("../figuras/fig_cap29_dag.png", width: 100%),
   caption: [Izquierda: DAG para el retorno a la educación (Card, 1995); $U$ denota un confusor no observado. Derecha: DAG ponderado estimado por NOTEARS sobre datos sintéticos con estructura conocida ($X_0 arrow.r X_1$, $X_1 arrow.r X_2$, $X_3 arrow.r X_2$, $X_4 arrow.r X_1$); las etiquetas en las aristas son los pesos estimados.],
-) <fig-cap15-dag>
+) <fig-cap29-dag>
 
 *Interpretación.* El DAG del panel izquierdo formaliza la estructura causal del problema: el instrumento #code[nearc4] afecta la educación pero no directamente el salario (exclusión); el confusor no observado $U$ (habilidad) afecta a ambos, generando el sesgo de variable omitida que justifica el uso de IV. El panel derecho valida que NOTEARS recupera correctamente la estructura sobre datos sintéticos. Sobre el dataset #code[close_college], aplicar NOTEARS requiere cuidado: el supuesto de causal sufficiency raramente se satisface en datos económicos, y el grafo estimado debe interpretarse como una guía exploratoria, no como evidencia definitiva.
 
@@ -289,7 +288,7 @@ Si todos los caminos entre $X$ e $Y$ están bloqueados, $X perp perp Y | Z$.
 ]
 
 == Riesgos, límites y sensibilidad
-<sec-cap15_riesgos>
+<sec-cap29_riesgos>
 
 === Tabla de riesgos
 
@@ -324,7 +323,7 @@ Causal discovery en economía es difícil por la presencia ubicua de confusores 
 Para la práctica de este curso se siguen dos reglas. Primera, *ningún grafo descubierto se reporta como un objeto único*: se reporta la familia de grafos obtenida al variar $alpha$ (o $lambda$) en un rango declarado, y las aristas se clasifican por su estabilidad a través de esa familia y de submuestras bootstrap. Segunda, *el output del descubrimiento no alimenta directamente la estimación*: una arista descubierta es una hipótesis para discutir con conocimiento de dominio, no un supuesto de identificación validado. Dejar que un algoritmo de descubrimiento fije el conjunto de puerta trasera que luego usará el DML es trasladar al algoritmo exactamente la responsabilidad que el @cap-scm-pch demostró que no puede tener.
 
 == Ejercicios propuestos
-<sec-cap15_ejercicios>
+<sec-cap29_ejercicios>
 
 + Construya un DAG para el dataset #code[nhefs] justificando las relaciones entre variables. Identifique el set de control óptimo vía criterio de puerta trasera.
 
@@ -335,8 +334,8 @@ Para la práctica de este curso se siguen dos reglas. Primera, *ningún grafo de
 + Use #code[dowhy] para identificar el efecto de #code[educ] sobre #code[lwage] bajo tres DAGs distintos. ¿Cómo cambia el set de control recomendado?
 
 == Lecturas complementarias
-<sec-cap15_lecturas>
+<sec-cap29_lecturas>
 
 #cite(<pearl2009causality>, form: "prose") es la referencia canónica para DAGs, $d$-separación y clases de equivalencia. #cite(<spirtes2000causation>, form: "prose") introduce el algoritmo PC y el marco de descubrimiento basado en restricciones; #cite(<kalisch2007estimating>, form: "prose") establece su consistencia en alta dimensión y es la referencia a citar cuando se aplica PC con $p$ grande. #cite(<chickering2002optimal>, form: "prose") demuestra la consistencia de GES y es la entrada a la familia de métodos basados en score, complementaria a las otras dos. #cite(<zheng2018dags>, form: "prose") reformulan el problema como optimización continua con la restricción de aciclicidad diferenciable (NOTEARS).
 
-Sobre los límites prácticos del campo, #cite(<machlanski2024robustness>, form: "prose") documentan la sensibilidad a hiperparámetros discutida en la @sec-cap15_riesgos y son lectura obligada antes de tomar cualquier _benchmark_ de descubrimiento al pie de la letra. #cite(<sharma2020dowhy>, form: "prose") documenta #code[dowhy]. Para la implementación en Python, #code[causal-learn] (#link("https://github.com/py-why/causal-learn")[https://github.com/py-why/causal-learn]) es la librería de referencia, con implementaciones de PC, FCI, GES, NOTEARS y otros algoritmos de descubrimiento causal.
+Sobre los límites prácticos del campo, #cite(<machlanski2024robustness>, form: "prose") documentan la sensibilidad a hiperparámetros discutida en la @sec-cap29_riesgos y son lectura obligada antes de tomar cualquier _benchmark_ de descubrimiento al pie de la letra. #cite(<sharma2020dowhy>, form: "prose") documenta #code[dowhy]. Para la implementación en Python, #code[causal-learn] (#link("https://github.com/py-why/causal-learn")[https://github.com/py-why/causal-learn]) es la librería de referencia, con implementaciones de PC, FCI, GES, NOTEARS y otros algoritmos de descubrimiento causal.

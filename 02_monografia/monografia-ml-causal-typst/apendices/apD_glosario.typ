@@ -74,8 +74,8 @@
   [*IPS (Inverse Propensity Scoring)*], [Ponderación por la inversa del _propensity score_.],
   [*SNIPS (Self-Normalized IPS)*], [Versión normalizada de IPS.],
   [*$e_0(x)$*], [Propensity score: $e_0(x) = E[D | X = x]$. En el modelo PLR se denota también como $m_0(x)$.],
-  [*$mu_d(x)$*], [_Outcome_ condicional: $mu_d(x) = E[Y | X = x, D = d]$. Equivalente a $mu(d, x)$.],
-  [*$omega_i(x)$*], [Pesos locales inducidos por un bosque causal / _Generalized Random Forest_. El estimador del CATE se obtiene resolviendo $sum_i omega_i(x) dot.c psi_i(hat(theta)(x)) = 0$.],
+  [*$mu_(d)(x)$*], [_Outcome_ condicional: $mu_(d)(x) = E[Y | X = x, D = d]$. Equivalente a $mu(d, x)$.],
+  [*$omega_(i)(x)$*], [Pesos locales inducidos por un bosque causal / _Generalized Random Forest_. El estimador del CATE se obtiene resolviendo $sum_i omega_(i)(x) dot.c psi_(i)(hat(theta)(x)) = 0$.],
   [*$Y_i^star$ (_Transformed outcome_)*], [$Y_i^star = Y_i dot.c (D_i - e_0(X_i)) / (e_0(X_i)(1 - e_0(X_i)))$. Su esperanza condicional es $E[Y^star | X] = tau(X)$.],
   [*$cal(C)$*], [Conjunto de ajuste que satisface el criterio de puerta trasera de Pearl.],
   [*$zeta$*], [Error del instrumento en el modelo PLIV: $Z = r_0(X) + zeta$.],
@@ -91,7 +91,7 @@
   [*RDD (Regression Discontinuity Design)*], [Diseño causal basado en un umbral.],
   [*Fuzzy RDD*], [RDD con cumplimiento imperfecto del umbral; se estima como IV local.],
   [*Off-policy evaluation*], [Estimación del valor de una política usando datos generados por otra política.],
-  [*Nuclear norm*], [$norm(L)_* = sum_i sigma_i(L)$. Envolvente convexa del _rank_. Usada en _matrix completion_.],
+  [*Nuclear norm*], [$norm(L)_* = sum_i sigma_(i)(L)$. Envolvente convexa del _rank_. Usada en _matrix completion_.],
   table.hline(stroke: 0.8pt),
 )
 

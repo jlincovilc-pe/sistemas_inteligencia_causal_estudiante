@@ -113,4 +113,4 @@ La _model card_ Markdown es para personas; el endpoint `/metadata` (@lst-metadat
   ```
 ) <lst-apG-schema>
 
-El CI del curso valida: (i) el esquema sintáctico; (ii) que cada supuesto declarado tenga evidencia asociada; (iii) que el _hash_ coincida con el dataset de referencia versionado (@cap-cicd-causal). El campo `dml_variant` exige nombrar DML1/DML2 (Nota técnica @sec-cap03_teorema_dml), cerrando el círculo entre la teoría y lo que el artefacto declara.
+El CI del curso valida: (i) el esquema sintáctico; (ii) que cada supuesto declarado tenga evidencia asociada; (iii) que el _hash_ coincida con el dataset de referencia versionado (@cap-cicd-causal). El campo `dml_variant` exige nombrar DML1/DML2 (Nota técnica @sec-cap10_teorema_dml), cerrando el círculo entre la teoría y lo que el artefacto declara.

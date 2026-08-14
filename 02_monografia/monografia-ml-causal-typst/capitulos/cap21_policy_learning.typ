@@ -1,5 +1,4 @@
 // Capítulo 21 — Aprendizaje de políticas óptimas (Policy Learning)
-// (La numeración `cap11` del nombre de archivo es histórica: proviene de la edición corta anterior y se conserva para no romper referencias.)
 #import "../template/template.typ": *
 
 #chapter[Aprendizaje de políticas óptimas]
@@ -16,8 +15,8 @@
     [*Estimando:*], [Policy value $V(pi)$, welfare regret],
     [*Identificación:*], [No confusión, SUTVA, soporte común],
     [*Método:*], [Policy tree, estimación doubly robust del policy value],
-    [*Nuisance:*], [$mu_d(x)$, $e(x)$, CATE $tau(x)$],
-    [*Garantía:*], [Regret $O_p(sqrt("VC"(Pi) \/ n))$ sobre una clase $Pi$ de VC-dimensión finita (Kitagawa & Tetenov, 2018; extendido con _nuisance_ estimados por ML en Athey & Wager, 2021)],
+    [*Nuisance:*], [$mu_(d)(x)$, $e(x)$, CATE $tau(x)$],
+    [*Garantía:*], [Regret $O_(p)(sqrt("VC"(Pi) \/ n))$ sobre una clase $Pi$ de VC-dimensión finita (Kitagawa & Tetenov, 2018; extendido con _nuisance_ estimados por ML en Athey & Wager, 2021)],
     [*Librerías:*], [#code[econml.policy]],
     [*Validación:*], [Hold-out, cross-fitting, DR policy value],
   )
@@ -28,7 +27,7 @@ Con la Parte IV completa —el estimador causal ya se puede publicar y operar en
 ]
 
 == Motivación aplicada
-<sec-cap11-motivacion>
+<sec-cap21-motivacion>
 
 Un ministerio debe decidir a qué hogares ofrecer un programa de capacitación laboral. El programa es costoso (\$1\,000 por hogar) y solo puede cubrir al 30% de la población. El CATE estimado varía ampliamente: en algunos hogares el efecto sobre ingresos es de \$2\,500; en otros es cercano a cero. La pregunta de política es: _dada una restricción presupuestaria, ¿qué regla de asignación maximiza el bienestar agregado?_
 
@@ -37,10 +36,10 @@ Este es el problema de _policy learning_: encontrar una regla $pi: cal(X) -> {0,
 Este capítulo desarrolla la teoría del policy learning, presenta la implementación con #code[econml.policy], y discute las extensiones a restricciones presupuestarias y equidad.
 
 == Teoría, supuestos y garantías
-<sec-cap11-teoria>
+<sec-cap21-teoria>
 
 === Policy value y welfare regret
-<sec-cap11-policy-value>
+<sec-cap21-policy-value>
 
 Para una regla $pi$, el policy value es:
 $
@@ -58,7 +57,7 @@ $
 $
 
 === Estimación del policy value
-<sec-cap11-estimacion>
+<sec-cap21-estimacion>
 
 Bajo no confusión, $V(pi)$ es identificable a partir de datos observacionales. El estimador _doubly robust_ es:
 $
@@ -72,7 +71,7 @@ Conviene separar con cuidado dos resultados que se citan a menudo de forma inter
   $
   psi_pi (W) = mu_(pi(X))(X) + (bold(1){D = pi(X)}) / (e_(pi(X))(X)) dot.op (Y - mu_(pi(X))(X)) - V(pi),
   $
-  caso particular de la forma canónica de la Nota técnica @sec-cap03_teorema_dml. Por tanto
+  caso particular de la forma canónica de la Nota técnica @sec-cap10_teorema_dml. Por tanto
   $
   sqrt(n) (hat(V)(pi) - V(pi)) arrow.r^(d) cal(N)(0, E[psi_pi^2]),
   $
@@ -83,7 +82,7 @@ Conviene separar con cuidado dos resultados que se citan a menudo de forma inter
   con varianzas estimadas por la _influence function_ de cada una sobre las mismas observaciones. El capítulo compara hasta aquí _welfare_ puntuales en _hold-out_ sin test; este es el test que faltaba, y el que el Listado @lst-policy-learning debe reportar junto al _welfare_.
 ] <prop-policy-value-inference>
 
-El teorema de **regret óptimo** $O_p (n^(-1/2))$ para clases de políticas con VC-dimension finita se debe a @kitagawa2018should (Kitagawa & Tetenov 2018). Los métodos basados en GRF para policy learning (@athey2021policy, Athey & Wager 2021) implementan esta teoría mediante árboles de decisión honestos.
+El teorema de *regret óptimo* $O_p (n^(-1/2))$ para clases de políticas con VC-dimension finita se debe a @kitagawa2018should (Kitagawa & Tetenov 2018). Los métodos basados en GRF para policy learning (@athey2021policy, Athey & Wager 2021) implementan esta teoría mediante árboles de decisión honestos.
 
 #theorem(name: [Kitagawa & Tetenov, 2018 — Empirical Welfare Maximization])[
   Sea $Pi$ una clase de políticas con VC-dimensión finita $"VC"(Pi)$, y sea
@@ -102,17 +101,17 @@ Dos precisiones sobre este enunciado, ambas importantes en la práctica. Primera
 El resultado de #cite(<athey2021policy>, form: "prose") extiende este marco al caso que interesa a este curso: cuando $hat(V)$ se construye con _nuisance_ ($hat(mu)_d$, $hat(e)$) estimados con _machine learning_ en vez de conocidos.
 
 #theorem(name: [Athey & Wager, 2021 — policy learning con nuisance estimados])[
-  Si $hat(pi)$ maximiza el estimador doblemente robusto @eq-policy-value-dr sobre una clase $Pi$ de VC-dimensión finita, con _nuisance_ estimados por cross-fitting a tasas que satisfacen la condición de producto $sqrt(n) a_n^2 -> 0$, entonces el regret respecto a la mejor política de la clase conserva la tasa $O_p(sqrt("VC"(Pi) \/ n))$: el error de estimación de los _nuisance_ entra solo a segundo orden.
+  Si $hat(pi)$ maximiza el estimador doblemente robusto @eq-policy-value-dr sobre una clase $Pi$ de VC-dimensión finita, con _nuisance_ estimados por cross-fitting a tasas que satisfacen la condición de producto $sqrt(n) a_n^2 -> 0$, entonces el regret respecto a la mejor política de la clase conserva la tasa $O_(p)(sqrt("VC"(Pi) \/ n))$: el error de estimación de los _nuisance_ entra solo a segundo orden.
 ] <thm-policy-learning>
 
 La estructura del argumento es la misma que la del @cap-ortogonalidad —ortogonalidad más cross-fitting hacen que el error de los _nuisance_ sea de segundo orden— aplicada ahora a un problema de optimización sobre una clase de funciones en lugar de a la estimación de un escalar. Ese es el aporte específico de Athey y Wager; la garantía de regret con clases de VC-dimensión finita es de Kitagawa y Tetenov.
 
 === Restricciones presupuestarias
-<sec-cap11-restricciones>
+<sec-cap21-restricciones>
 
 Si la restricción es tratar a lo más el 30% de la población, la política óptima es:
 $
-pi^*_"budget"(x) = bold(1){tau(x) > c},
+pi^*_("budget")(x) = bold(1){tau(x) > c},
 $
 donde $c$ es el cuantil 70% de $tau(X)$ (tratar a los que tienen $tau$ en el top 30%).
 
@@ -132,10 +131,10 @@ donde $c$ es el cuantil 70% de $tau(X)$ (tratar a los que tienen $tau$ en el top
 ]
 
 == Implementación en Python
-<sec-cap11-implementacion>
+<sec-cap21-implementacion>
 
 === Policy learning con econml
-<sec-cap11-policy-econml>
+<sec-cap21-policy-econml>
 
 #advertencia[
 *Este listado es sintético, no aplicado.* El código toma las covariables numéricas del dataset `gov_transfers` pero *simula* el tratamiento y el resultado a partir de un CATE conocido. Esa elección es deliberada y tiene una razón metodológica, no de conveniencia: el objetivo aquí es evaluar el *policy learning* comparando la política aprendida contra el _welfare_ verdadero, y ese contraste solo es posible cuando $tau(x)$ se conoce por construcción. Con datos reales no existe _ground truth_ del CATE (@cap-validacion) y lo único que puede reportarse es un policy value estimado, no un regret. Léase, pues, como una verificación de que el procedimiento recupera la política correcta cuando *sabemos* cuál es —no como evidencia sobre el efecto real de las transferencias gubernamentales—.
@@ -221,7 +220,7 @@ print(f"IC 95% del policy value en hold-out: {welfare_test:.4f} +/- {1.96 * se_p
 ] <alg-policy-tree-budget>
 
 === Restricción presupuestaria
-<sec-cap11-budget-python>
+<sec-cap21-budget-python>
 
 #figure(
   kind: raw,
@@ -239,21 +238,21 @@ print(f"Welfare de no tratar a nadie: 0.0")
 ) <lst-budget-policy>
 
 == Caso empírico y validación
-<sec-cap11-caso>
+<sec-cap21-caso>
 
-La figura @fig-cap11-policy-value muestra el policy value esperado en función del presupuesto (fracción tratada), comparando tres estrategias: (i) targeting óptimo por CATE (top por $hat(tau)$), (ii) tratamiento aleatorio al mismo presupuesto, y (iii) tratar a todos. La estrategia de targeting domina claramente a las alternativas cuando el presupuesto es escaso, y converge a ``tratar a todos'' cuando el presupuesto es abundante.
+La figura @fig-cap21-policy-value muestra el policy value esperado en función del presupuesto (fracción tratada), comparando tres estrategias: (i) targeting óptimo por CATE (top por $hat(tau)$), (ii) tratamiento aleatorio al mismo presupuesto, y (iii) tratar a todos. La estrategia de targeting domina claramente a las alternativas cuando el presupuesto es escaso, y converge a ``tratar a todos'' cuando el presupuesto es abundante.
 
 #figure(
-  image("../figuras/fig_cap11_policy_value.png", width: 85%),
+  image("../figuras/fig_cap21_policy_value.png", width: 85%),
   caption: [Policy value vs. presupuesto de tratamiento. La línea azul es la estrategia óptima (targeting por CATE estimado); la gris punteada es tratamiento aleatorio; la roja punteada es ``tratar a todos''. DGP sintético que simula targeting de transferencias gubernamentales ($n = 5\,000$). Las curvas muestran el policy value esperado al variar la fracción de la población tratada.],
-) <fig-cap11-policy-value>
+) <fig-cap21-policy-value>
 
-*Interpretación.* Con un presupuesto del 30% de la población, el targeting por CATE obtiene un welfare por individuo aproximadamente 3 veces mayor que el tratamiento aleatorio, y supera a la regla ``tratar a todos'' mientras el CATE medio condicional al top-30% supere al CATE medio poblacional. Sobre las covariables de #code[gov_transfers] con el DGP sintético de la @sec-cap11-policy-econml, el policy learning con #code[PolicyTree] produce reglas interpretables basadas en ingreso inicial y composición familiar que dominan a la regla naïve.
+*Interpretación.* Con un presupuesto del 30% de la población, el targeting por CATE obtiene un welfare por individuo aproximadamente 3 veces mayor que el tratamiento aleatorio, y supera a la regla ``tratar a todos'' mientras el CATE medio condicional al top-30% supere al CATE medio poblacional. Sobre las covariables de #code[gov_transfers] con el DGP sintético de la @sec-cap21-policy-econml, el policy learning con #code[PolicyTree] produce reglas interpretables basadas en ingreso inicial y composición familiar que dominan a la regla naïve.
 
 *Una advertencia sobre la forma de la curva.* Que el targeting domine al tratamiento aleatorio en todo el rango de presupuesto no es un hallazgo empírico sino una consecuencia mecánica de que $hat(tau)$ ordene mejor que el azar; una curva así no valida nada por sí sola. Lo informativo es lo contrario: si la curva de targeting *no* se separa de la aleatoria, la conclusión correcta es que no hay heterogeneidad accionable, y la política óptima es tratar a todos o a nadie según el signo del ATE — un resultado perfectamente respetable que el _baseline_ de efecto constante del @cap-validacion está diseñado para detectar antes de invertir en un sistema de _targeting_ que no aporta valor.
 
 == Riesgos, límites y sensibilidad
-<sec-cap11-riesgos>
+<sec-cap21-riesgos>
 
 #riesgos[
   #figure(
@@ -276,7 +275,7 @@ La figura @fig-cap11-policy-value muestra el policy value esperado en función d
 *Límites.* Policy learning requiere no confusión. Si hay variables confusoras no observadas, la política aprendida puede estar sesgada. Adicionalmente, las garantías de regret son asintóticas; con muestras pequeñas, la política aprendida puede estar lejos de la óptima.
 
 == Ejercicios propuestos
-<sec-cap11-ejercicios>
+<sec-cap21-ejercicios>
 
 + Replique el listado @lst-policy-learning sobre #code[nsw_mixtape]. ¿Qué regla de política se aprende?
 
@@ -287,6 +286,6 @@ La figura @fig-cap11-policy-value muestra el policy value esperado en función d
 + Discuta: ¿cómo modificaría el algoritmo para imponer _equalized CATE_ entre dos grupos demográficos?
 
 == Lecturas complementarias
-<sec-cap11-lecturas>
+<sec-cap21-lecturas>
 
 #cite(<kitagawa2018should>, form: "prose") introducen la _Empirical Welfare Maximization_ y la cota de regret sobre clases de VC-dimensión finita; #cite(<athey2021policy>, form: "prose") la extienden al caso con _nuisance_ estimados por ML mediante el score doblemente robusto, que es la versión usada en este capítulo. Leer ambos en ese orden evita la confusión de atribución más común en la literatura aplicada. #cite(<zhang2012estimating>, form: "prose") es un precursor importante por la vía de reformular la elección de política como un problema de clasificación ponderada. Para policy learning bajo restricciones —presupuestarias, de equidad o de forma de la regla—, #cite(<kitagawa2021constrained>, form: "prose") tratan el caso general de clasificación restringida, y el @cap-etica-interpretabilidad retoma el trade-off entre _welfare_ y equidad que de ahí se sigue. La conexión con la teoría de la decisión estadística —policy learning como caso particular de reglas de tratamiento bajo identificación parcial— se desarrolla en el @cap-decisiones-estructurales.

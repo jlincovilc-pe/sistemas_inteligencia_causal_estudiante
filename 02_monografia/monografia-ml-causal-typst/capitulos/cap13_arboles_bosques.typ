@@ -1,5 +1,4 @@
 // Capítulo 13 — Árboles y bosques causales
-// (La numeración `cap06` del nombre de archivo es histórica: proviene de la edición corta anterior y se conserva para no romper referencias.)
 #import "../template/template.typ": *
 
 #chapter[Árboles y bosques causales]
@@ -17,7 +16,7 @@
     [*Estimando:*], [$"CATE"(x)$],
     [*Identificación:*], [No confusión, soporte común, SUTVA],
     [*Método:*], [Causal trees, causal forests, GRF],
-    [*Nuisance:*], [$mu_d(x), e(x)$],
+    [*Nuisance:*], [$mu_(d)(x), e(x)$],
     [*Garantía:*], [Normalidad asintótica local],
     [*Librerías:*], [#code[econml], #code[grf] (R)],
     [*Validación:*], [Honesty, feature importance, policy trees],
@@ -29,21 +28,21 @@ Los meta-learners del @cap-meta-learners reutilizan _learners_ genéricos de fue
 ]
 
 == Motivación aplicada
-<sec-cap06_motivacion>
+<sec-cap13_motivacion>
 
 Un organismo gubernamental desea identificar subgrupos de la población donde un programa de transferencias condicionadas tiene el mayor efecto sobre la asistencia escolar. El CATE promedio puede ser modesto (3 puntos porcentuales), pero la heterogeneidad podría ser grande: en algunos subgrupos el efecto es nulo, en otros supera los 10 puntos. Identificar esos subgrupos permite focalizar el programa y mejorar su costo-efectividad.
 
 Los _causal trees_ @athey2016recursive y los _causal forests_ / _Generalized Random Forests_ @athey2019generalized son métodos diseñados específicamente para estimar CATEs con garantías de inferencia válidas. La innovación clave es la _honesty_: la partición del árbol se decide usando una submuestra distinta de la que se usa para estimar el efecto dentro de cada hoja. Esto evita el _overfitting_ estructural de los árboles estándar y permite construir intervalos de confianza asintóticamente válidos.
 
-Conviene ubicar la contribución con precisión, porque el nombre "bosque causal" sugiere una analogía con el bosque aleatorio predictivo que es engañosa. Un bosque aleatorio predice promediando predicciones; un bosque causal, en su formulación canónica, *no* promedia estimaciones de $tau$ producidas por cada árbol. Lo que hace es usar la estructura de árboles para inducir una función de *pesos de vecindad* $omega_i(x)$ —cuán a menudo la observación $i$ cae en la misma hoja que el punto de consulta $x$— y luego resolver una ecuación de momento local ponderada con esos pesos. El bosque, en otras palabras, es un procedimiento adaptativo para elegir *qué vecinos son relevantes* para estimar el efecto en $x$; la estimación propiamente dicha la hace el score causal, no el árbol. Esta distinción, que la @sec-cap06_grf desarrolla, es la que explica por qué el método admite intervalos de confianza mientras que un T-learner con bosques aleatorios no.
+Conviene ubicar la contribución con precisión, porque el nombre "bosque causal" sugiere una analogía con el bosque aleatorio predictivo que es engañosa. Un bosque aleatorio predice promediando predicciones; un bosque causal, en su formulación canónica, *no* promedia estimaciones de $tau$ producidas por cada árbol. Lo que hace es usar la estructura de árboles para inducir una función de *pesos de vecindad* $omega_(i)(x)$ —cuán a menudo la observación $i$ cae en la misma hoja que el punto de consulta $x$— y luego resolver una ecuación de momento local ponderada con esos pesos. El bosque, en otras palabras, es un procedimiento adaptativo para elegir *qué vecinos son relevantes* para estimar el efecto en $x$; la estimación propiamente dicha la hace el score causal, no el árbol. Esta distinción, que la @sec-cap13_grf desarrolla, es la que explica por qué el método admite intervalos de confianza mientras que un T-learner con bosques aleatorios no.
 
 Este capítulo desarrolla la teoría de árboles y bosques causales, presenta la implementación con #code[econml.dml.CausalForestDML], y discute cuándo el método es apropiado frente a alternativas como meta-learners o DML lineal.
 
 == Teoría, supuestos y garantías
-<sec-cap06_teoria>
+<sec-cap13_teoria>
 
 === Árboles causales honestos
-<sec-cap06_arboles_causales>
+<sec-cap13_arboles_causales>
 
 Un _causal tree_ es un árbol de decisión que particiona el espacio de covariables $X$ en hojas $cal(L)_1, ..., cal(L)_M$. Dentro de cada hoja $cal(L)_m$, el CATE se estima como la diferencia de medias entre tratados y controles:
 $
@@ -75,7 +74,7 @@ La _honesty_ exige que la muestra usada para decidir las divisiones (_splitting 
 ] <alg-causal-tree-honest>
 
 === El criterio de splitting
-<sec-cap06_splitting>
+<sec-cap13_splitting>
 
 El criterio estándar para árboles predictivos es la reducción de varianza. Para árboles causales, @athey2016recursive proponen maximizar la varianza _entre hojas_ del CATE estimado, que es un estimador de la varianza del CATE verdadero:
 $
@@ -84,21 +83,21 @@ $ <eq-causal-tree-criterion>
 donde $overline(tau)$ es el CATE promedio. La división óptima maximiza $hat(V)_tau$ sujeto a restricciones de tamaño mínimo de hoja y balance entre tratados y controles.
 
 == Estimador y score
-<sec-cap06_estimador>
+<sec-cap13_estimador>
 
 === Causal forests y Generalized Random Forests
-<sec-cap06_grf>
+<sec-cap13_grf>
 
 Un _causal forest_ es un ensemble de $B$ árboles causales honestos, cada uno entrenado en una submuestra bootstrap. El CATE estimado es el promedio sobre los árboles:
 $
-hat(tau)_"CF"(x) = 1/B sum_(b=1)^B hat(tau)_b(x).
+hat(tau)_("CF")(x) = 1/B sum_(b=1)^B hat(tau)_(b)(x).
 $ <eq-cf-average>
 
 #intuicion[
-  La expresión anterior corresponde a la intuición de bosque causal clásico: promediar predicciones de árboles honestos. Bajo honesty y condiciones de submuestreo, este promedio puede ser consistente. Sin embargo, en Generalized Random Forests [@athey2019generalized], la formulación canónica no se presenta como un simple promedio de $hat(tau)_b(x)$, sino como un estimador local ponderado. El bosque induce pesos adaptativos $omega_i(x)$, y $hat(theta)(x)$ se obtiene resolviendo una ecuación de momento local:
+  La expresión anterior corresponde a la intuición de bosque causal clásico: promediar predicciones de árboles honestos. Bajo honesty y condiciones de submuestreo, este promedio puede ser consistente. Sin embargo, en Generalized Random Forests [@athey2019generalized], la formulación canónica no se presenta como un simple promedio de $hat(tau)_(b)(x)$, sino como un estimador local ponderado. El bosque induce pesos adaptativos $omega_(i)(x)$, y $hat(theta)(x)$ se obtiene resolviendo una ecuación de momento local:
 
   $
-  sum_i omega_i(x) psi_i(hat(theta)(x)) = 0.
+  sum_i omega_(i)(x) psi_(i)(hat(theta)(x)) = 0.
   $
 
   Para CATE, esto equivale a una estimación local ortogonalizada usando pesos de vecindad inducidos por el bosque.
@@ -109,14 +108,14 @@ $ <eq-cf-average>
 #theorem(name: [Normalidad asintótica local de Causal Forest])[
   Bajo condiciones de honesty, submuestreo, soporte común y suavidad local, existe una varianza estimada $hat(V)(x)$ tal que
   $
-  (hat(tau)_"CF"(x) - tau(x)) / sqrt(hat(V)(x)) arrow.r^(d) N(0, 1).
+  (hat(tau)_("CF")(x) - tau(x)) / sqrt(hat(V)(x)) arrow.r^(d) N(0, 1).
   $
 
   La tasa de convergencia es local y depende de la probabilidad de caer en hojas cercanas a $x$, del tamaño de submuestra y de la suavidad de $tau(x)$. No debe presentarse como una normalización $sqrt(n)$ universal para CATE no paramétrico.
 ] <thm-cf-normality>
 
 === Comparación con meta-learners
-<sec-cap06_comparacion_metalearners>
+<sec-cap13_comparacion_metalearners>
 
 #figure(
   caption: [Causal Forest vs. meta-learners.],
@@ -137,10 +136,10 @@ $ <eq-cf-average>
 ) <tab-cf-vs-meta>
 
 == Implementación en Python
-<sec-cap06_implementacion>
+<sec-cap13_implementacion>
 
 === Estimación con CausalForestDML
-<sec-cap06_causaldml>
+<sec-cap13_causaldml>
 
 #figure(
   kind: raw,
@@ -194,7 +193,7 @@ plt.show()
 ) <lst-causal-forest-nsw>
 
 === Comparación con meta-learners
-<sec-cap06_comparacion_implementacion>
+<sec-cap13_comparacion_implementacion>
 
 #figure(
   kind: raw,
@@ -229,10 +228,10 @@ print(f"XL RMSE: {np.sqrt(np.mean((tau_xl - tau_true)**2)):.4f}")
 ) <lst-cf-vs-r>
 
 == Caso empírico y validación
-<sec-cap06_caso_empirico>
+<sec-cap13_caso_empirico>
 
 === Identificación de subgrupos con #code[feature_importances\_]
-<sec-cap06_feature_importance>
+<sec-cap13_feature_importance>
 
 #figure(
   kind: raw,
@@ -247,7 +246,7 @@ for i in order:
 ) <lst-cf-importance>
 
 === Heterogeneidad en efectos del programa NSW
-<sec-cap06_nsw>
+<sec-cap13_nsw>
 
 *Réplica propia sobre el dataset del repositorio.* Hemos aplicado #code[CausalForestDML] al dataset #code[nsw_mixtape] (Lalonde, 1986), $n = 445$ (185 tratados, 260 controles), con 8 controles observables. Los resultados son:
 
@@ -255,17 +254,17 @@ for i in order:
 - CATE: media \$2,226, desv. estándar \$1,035, rango [\$780, \$4,078].
 - Variables más importantes (_feature importance_): #code[age] (0.43), #code[educ] (0.24), #code[re75] (0.22), #code[re74] (0.08).
 
-La heterogeneidad estructurada es consistente con la teoría: el CATE promedio por nivel educativo crece de \$1,174 (educ=7) a \$3,515 (educ=14), y los efectos son algo mayores en el cuartil de mayor ingreso previo. La figura @fig-cap6-heterogeneidad visualiza esta heterogeneidad.
+La heterogeneidad estructurada es consistente con la teoría: el CATE promedio por nivel educativo crece de \$1,174 (educ=7) a \$3,515 (educ=14), y los efectos son algo mayores en el cuartil de mayor ingreso previo. La figura @fig-cap13-heterogeneidad visualiza esta heterogeneidad.
 
 #figure(
-  image("../figuras/fig_cap6_heterogeneidad.png", width: 100%),
+  image("../figuras/fig_cap13_heterogeneidad.png", width: 100%),
   caption: [Heterogeneidad de CATE estimado por #code[CausalForestDML] sobre #code[nsw_mixtape]. Izquierda: CATE promedio por subgrupo con IC al 95%. Derecha: superficie interpolada de CATE en función de edad y educación. Dataset: #code[nsw_mixtape] (Lalonde, 1986), $n = 445$.],
-) <fig-cap6-heterogeneidad>
+) <fig-cap13-heterogeneidad>
 
 Sobre el dataset #code[gov_transfers], el Causal Forest revela patrones similares de heterogeneidad estructurada en el efecto de las transferencias sobre consumo. Los efectos son mayores en hogares con menor ingreso basal, lo que coincide con la teoría económica de la _función de consumo Keynesiana_ (mayor propensión marginal a consumir en hogares con menor riqueza).
 
 === Policy trees y validación de subgrupos
-<sec-cap06_policy_trees>
+<sec-cap13_policy_trees>
 
 #intuicion[
   *Caja de profundización 6.1: Variable importance y policy trees*
@@ -289,10 +288,10 @@ Sobre el dataset #code[gov_transfers], el Causal Forest revela patrones similare
 ]
 
 == Riesgos, límites y sensibilidad
-<sec-cap06_riesgos>
+<sec-cap13_riesgos>
 
 === Tabla de riesgos
-<sec-cap06_tabla_riesgos>
+<sec-cap13_tabla_riesgos>
 
 La tabla @tab-riesgos-cap06 resume los riesgos principales al usar árboles y bosques causales, junto con sus consecuencias, diagnósticos y estrategias de mitigación.
 
@@ -336,12 +335,12 @@ La tabla @tab-riesgos-cap06 resume los riesgos principales al usar árboles y bo
 ]
 
 === Límites
-<sec-cap06_limites>
+<sec-cap13_limites>
 
 Causal Forest asume no confusión. No maneja instrumentos (usar DMLIV). Para efectos dinámicos en el tiempo, requiere extensiones específicas. Para datos de panel con efectos fijos, usar #code[CausalForestDML] con within-transformation (capítulo @cap-panel-dmliv).
 
 == Ejercicios propuestos
-<sec-cap06_ejercicios>
+<sec-cap13_ejercicios>
 
 + Replique el listado @lst-causal-forest-nsw variando #code[min_samples_leaf] en ${5, 10, 20, 50}$. ¿Cómo cambia la heterogeneidad estimada?
 
@@ -352,6 +351,6 @@ Causal Forest asume no confusión. No maneja instrumentos (usar DMLIV). Para efe
 + Implemente un árbol causal honesto ``a mano'' (sin #code[econml]) dividiendo la muestra en $S_("split")$ y $S_("est")$. Compare con la implementación de #code[econml].
 
 == Lecturas complementarias
-<sec-cap06_lecturas>
+<sec-cap13_lecturas>
 
-#cite(<athey2016recursive>, form: "prose") es el _paper_ fundacional de árboles causales y del criterio de partición honesto. #cite(<wager2018estimation>, form: "prose") establece la consistencia y la normalidad asintótica puntual de los bosques causales, con la estimación de varianza por _infinitesimal jackknife_ que hace posibles los intervalos de la @sec-cap06_grf. #cite(<athey2019generalized>, form: "prose") generaliza el marco a GRF, reinterpretando el bosque como generador de pesos adaptativos para una ecuación de momento local —la lectura que este capítulo adopta—. #cite(<athey2021policy>, form: "prose") es la referencia de los _policy trees_ mencionados en la caja de profundización y se desarrolla en el @cap-policy-learning. #cite(<oprescu2023econml>, form: "prose") documenta la implementación en #code[econml]; la implementación de referencia en R es el paquete `grf` de los propios autores.
+#cite(<athey2016recursive>, form: "prose") es el _paper_ fundacional de árboles causales y del criterio de partición honesto. #cite(<wager2018estimation>, form: "prose") establece la consistencia y la normalidad asintótica puntual de los bosques causales, con la estimación de varianza por _infinitesimal jackknife_ que hace posibles los intervalos de la @sec-cap13_grf. #cite(<athey2019generalized>, form: "prose") generaliza el marco a GRF, reinterpretando el bosque como generador de pesos adaptativos para una ecuación de momento local —la lectura que este capítulo adopta—. #cite(<athey2021policy>, form: "prose") es la referencia de los _policy trees_ mencionados en la caja de profundización y se desarrolla en el @cap-policy-learning. #cite(<oprescu2023econml>, form: "prose") documenta la implementación en #code[econml]; la implementación de referencia en R es el paquete `grf` de los propios autores.

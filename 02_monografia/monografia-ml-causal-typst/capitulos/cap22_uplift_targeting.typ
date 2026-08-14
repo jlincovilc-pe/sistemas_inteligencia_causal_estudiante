@@ -1,5 +1,4 @@
 // Capítulo 22 — Uplift modeling y targeting económico
-// (La numeración `cap12` del nombre de archivo es histórica: proviene de la edición corta anterior y se conserva para no romper referencias.)
 #import "../template/template.typ": *
 
 #chapter[Uplift modeling y targeting económico]
@@ -13,10 +12,10 @@
     align: (left, left),
     stroke: none,
     [*Problema:*], [Asignación óptima de tratamientos con costos diferenciales y presupuesto],
-    [*Estimando:*], [CATE por tratamiento $tau_k(x)$, policy value $V(pi)$],
+    [*Estimando:*], [CATE por tratamiento $tau_(k)(x)$, policy value $V(pi)$],
     [*Identificación:*], [No confusión condicional + soporte común],
     [*Método:*], [Uplift modeling, net score, Qini optimization],
-    [*Nuisance:*], [$hat(mu)_k(x)$, $hat(e)_k(x)$, costos $c_k$],
+    [*Nuisance:*], [$hat(mu)_(k)(x)$, $hat(e)_(k)(x)$, costos $c_k$],
     [*Garantía:*], [Convergencia de $hat(tau)_k$ a $tau_k$ bajo cross-fitting],
     [*Librerías:*], [causalml, econml],
     [*Validación:*], [Curva Qini, AUUC, análisis de costo-efectividad],
@@ -28,7 +27,7 @@ El @cap-policy-learning formalizó la política óptima como problema de decisi�
 ]
 
 == Motivación aplicada
-<sec-cap12_motivacion>
+<sec-cap22_motivacion>
 
 Una empresa de telecomunicaciones desea reducir la _churn_ (baja de clientes). Dispone de tres acciones: (a) no hacer nada, (b) enviar un SMS con descuento, (c) llamar por teléfono con oferta personalizada. El costo de cada acción es distinto: SMS cuesta \$0.5, llamada cuesta \$8. El efecto sobre retención varía por cliente. La pregunta de política: ¿a qué clientes aplicar cada acción, sujeto a un presupuesto total de \$100\,000?
 
@@ -37,10 +36,10 @@ El _uplift modeling_ es el análogo del policy learning en contextos de marketin
 Este capítulo presenta los métodos clásicos de uplift (two-model, transformed outcome, Qini optimization), su implementación con #code[causalml], y la extensión a múltiples tratamientos y restricciones presupuestarias.
 
 == Marco teórico formal
-<sec-cap12_marco_teorico>
+<sec-cap22_marco_teorico>
 
 === Uplift y CATE
-<sec-cap12_uplift_cate>
+<sec-cap22_uplift_cate>
 
 El _uplift_ es matemáticamente equivalente al CATE:
 $
@@ -49,10 +48,10 @@ $ <eq-uplift_cate>
 
 La diferencia con el capítulo @cap-meta-learners es el foco aplicado: uplift modeling se pregunta por el _ranking_ (qué clientes tienen mayor uplift) y por la _cost-effectiveness_ (cuánto uplift se obtiene por dólar invertido), no solo por la estimación puntual del CATE.
 
-Esa diferencia de foco tiene una consecuencia práctica que conviene fijar desde el principio, porque determina qué se puede y qué no se puede hacer con un modelo de uplift. Si la decisión es *a quién tratar con un presupuesto fijo*, basta con que el ranking sea correcto: la escala de $hat(tau)$ es irrelevante, y las métricas de ranking (Qini, AUUC) son el criterio adecuado. Si la decisión es *cuánto presupuesto asignar*, o *qué acción elegir entre varias con costos distintos*, el ranking no basta: hace falta que la *magnitud* de $hat(tau)$ esté bien calibrada, porque el punto de corte óptimo compara $tau_k(x)$ contra un costo $c_k$ medido en las mismas unidades. Un modelo puede tener un AUUC excelente y estar tan mal calibrado que la regla de asignación por _net score_ de la @sec-cap12_algoritmo gaste el doble de lo proyectado. Por eso este capítulo reporta siempre las dos cosas —ranking y calibración— y por eso el _transformed outcome_ del @cap-validacion, que sí da magnitudes insesgadas, reaparece aquí como diagnóstico obligatorio.
+Esa diferencia de foco tiene una consecuencia práctica que conviene fijar desde el principio, porque determina qué se puede y qué no se puede hacer con un modelo de uplift. Si la decisión es *a quién tratar con un presupuesto fijo*, basta con que el ranking sea correcto: la escala de $hat(tau)$ es irrelevante, y las métricas de ranking (Qini, AUUC) son el criterio adecuado. Si la decisión es *cuánto presupuesto asignar*, o *qué acción elegir entre varias con costos distintos*, el ranking no basta: hace falta que la *magnitud* de $hat(tau)$ esté bien calibrada, porque el punto de corte óptimo compara $tau_(k)(x)$ contra un costo $c_k$ medido en las mismas unidades. Un modelo puede tener un AUUC excelente y estar tan mal calibrado que la regla de asignación por _net score_ de la @sec-cap22_algoritmo gaste el doble de lo proyectado. Por eso este capítulo reporta siempre las dos cosas —ranking y calibración— y por eso el _transformed outcome_ del @cap-validacion, que sí da magnitudes insesgadas, reaparece aquí como diagnóstico obligatorio.
 
 === Qini y AUUC: teoría, supuestos y garantías
-<sec-cap12_qini_auuc>
+<sec-cap22_qini_auuc>
 
 La curva Qini y el AUUC (_Area Under Uplift Curve_) son las métricas estándar para evaluar modelos de uplift en ausencia de _ground truth_ individual.
 
@@ -63,7 +62,7 @@ $
 $ <eq-qini>
 donde $hat(e)(x)$ es la propensión estimada. El AUUC integra esta curva sobre $p in [0, 1]$ y normaliza respecto a una asignación aleatoria:
 $
-"AUUC" = integral_0^1 ("uplift"(p) - "uplift"_"aleatorio"(p)) dif p.
+"AUUC" = integral_0^1 ("uplift"(p) - "uplift"_("aleatorio")(p)) dif p.
 $ <eq-auuc>
 
 *Supuestos.* La validez de la curva Qini y el AUUC requiere:
@@ -82,9 +81,9 @@ $ <eq-cw-uplift>
 donde $c(x)$ es el costo del tratamiento para el cliente $x$. Esta métrica permite priorizar acciones con mayor retorno por dólar invertido.
 
 === Multi-treatment uplift
-<sec-cap12_multitreatment>
+<sec-cap22_multitreatment>
 
-Cuando hay $K$ tratamientos posibles, el problema se extiende a estimar $tau_k(x) = E[Y(k) - Y(0) | X = x]$ para $k = 1, ..., K$. La política óptima asigna a cada cliente el tratamiento con mayor $tau_k(x) - c_k(x)$, donde $c_k$ es el costo del tratamiento $k$.
+Cuando hay $K$ tratamientos posibles, el problema se extiende a estimar $tau_(k)(x) = E[Y(k) - Y(0) | X = x]$ para $k = 1, ..., K$. La política óptima asigna a cada cliente el tratamiento con mayor $tau_(k)(x) - c_(k)(x)$, donde $c_k$ es el costo del tratamiento $k$.
 
 #intuicion[
   *Caja de profundización 12.1: Bootstrap para la curva Qini y embeddings como covariables*
@@ -100,20 +99,20 @@ Cuando hay $K$ tratamientos posibles, el problema se extiende a estimar $tau_k(x
 ]
 
 == Algoritmo: Asignación por net score con presupuesto
-<sec-cap12_algoritmo>
+<sec-cap22_algoritmo>
 
 Resolver la asignación óptima de tratamientos con costos distintos y un presupuesto limitado requiere un enfoque de optimización. El método de _net score_ introduce un costo sombra $lambda$ que equilibra el beneficio marginal del tratamiento con su costo.
 
 El problema formal: tenemos $K$ tratamientos con costos $c_k$ y un presupuesto $B$. Queremos asignar a cada persona el tratamiento que maximice el uplift neto—beneficio menos costo— sin exceder $B$.
 
 #algorithm("Asignación por net score con presupuesto")[
-  #kwin[Entrada][$hat(tau)_k(x)$ para cada tratamiento $k = 1, dots, K$, costos $c_k$, presupuesto $B$, datos $cal(D)$ con $N$ observaciones]
+  #kwin[Entrada][$hat(tau)_(k)(x)$ para cada tratamiento $k = 1, dots, K$, costos $c_k$, presupuesto $B$, datos $cal(D)$ con $N$ observaciones]
   #kwout[Salida][Asignación $pi(x) in {0, 1, dots, K}$ que maximiza el uplift total sujeto a $sum_(i=1)^N c_(pi(x_i)) <= B$]
   Inicializar $lambda <- 0$ y $lambda_"max" <- max_k c_k^(-1) B$ \
   *repeat* #h(2pt) hasta $|G - B| < epsilon$ o $lambda_"max" - lambda_"min" < delta$: \
   #h(1.5em) $lambda <- (lambda + lambda_"max") / 2$ \
-  #h(1.5em) Calcular net score $s_k(x) = hat(tau)_k(x) - lambda dot.c c_k(x)$ para cada $x$ y $k$ \
-  #h(1.5em) Asignar $pi(x) = "argmax"_k s_k(x)$ \
+  #h(1.5em) Calcular net score $s_(k)(x) = hat(tau)_(k)(x) - lambda dot.c c_(k)(x)$ para cada $x$ y $k$ \
+  #h(1.5em) Asignar $pi(x) = "argmax"_k s_(k)(x)$ \
   #h(1.5em) Calcular gasto total $G = sum_(i=1)^N c_(pi(x_i))$ \
   #h(1.5em) *if* #h(2pt) $G > B$ *then* #h(2pt) $lambda_"min" <- lambda$ \
   #h(1.5em) *else if* #h(2pt) $G < B$ *then* #h(2pt) $lambda_"max" <- lambda$ \
@@ -124,19 +123,19 @@ El parámetro $lambda$ es el multiplicador de Lagrange (costo sombra) de la rest
 
 La solución de net score es equivalente a resolver:
 $
-pi^*(x) = "argmax"_k { tau_k(x) - lambda^* c_k(x) },
+pi^*(x) = "argmax"_k { tau_(k)(x) - lambda^* c_(k)(x) },
 $ <eq-net-score-opt>
 donde $lambda^*$ es el costo sombra que agota el presupuesto $B$. Nótese que $lambda^*$ no es una penalización de regularización (como en LASSO), sino el precio implícito de relajar la restricción presupuestaria en una unidad.
 
 == Aplicación con Python
-<sec-cap12_python>
+<sec-cap22_python>
 
 === Uplift modeling con causalml
-<sec-cap12_causalml>
+<sec-cap22_causalml>
 
 La biblioteca #code[causalml] @chen2020causalml proporciona implementaciones de meta-learners (S-, T-, X-, R- y DR-learner) y herramientas de validación como la curva Qini y el AUUC. El siguiente listado muestra un flujo completo de estimación y evaluación *con los dos tratamientos del caso* —SMS y llamada—, porque el análisis de costo-efectividad de la sección siguiente requiere una estimación de uplift *por acción*, no una sola.
 
-Este es el punto donde más se equivoca la práctica aplicada, y conviene decirlo explícitamente: no existe forma de derivar $tau_"llamada"(x)$ a partir de $tau_"SMS"(x)$ escalándolo por un factor. Cada acción tiene su propio efecto heterogéneo, con su propio patrón de heterogeneidad, y estimarlo requiere que los datos contengan variación en esa acción. Si el histórico solo tiene SMS, no hay uplift de llamada que estimar, por más columnas que se creen.
+Este es el punto donde más se equivoca la práctica aplicada, y conviene decirlo explícitamente: no existe forma de derivar $tau_("llamada")(x)$ a partir de $tau_("SMS")(x)$ escalándolo por un factor. Cada acción tiene su propio efecto heterogéneo, con su propio patrón de heterogeneidad, y estimarlo requiere que los datos contengan variación en esa acción. Si el histórico solo tiene SMS, no hay uplift de llamada que estimar, por más columnas que se creen.
 
 #figure(
   kind: raw,
@@ -206,7 +205,7 @@ plot_qini(sub_sms[["y", "treatment", "uplift_sms"]], uplift_col="uplift_sms",
 Nótese que cada uplift se *estima* contra el brazo de control sobre su propia submuestra, y solo después se *predice* sobre toda la población. Comparar directamente el brazo de SMS contra el de llamada estimaría $tau_"call" - tau_"SMS"$, una diferencia de efectos que responde una pregunta distinta ("¿cuánto mejor es llamar que enviar un SMS?") y que no sirve para el problema de asignación, donde la alternativa relevante de cada acción es *no hacer nada*.
 
 === Caso empírico y validación: costo-efectividad
-<sec-cap12_costo_efectividad>
+<sec-cap22_costo_efectividad>
 
 El análisis de costo-efectividad extiende la evaluación más allá del ranking: incorpora costos reales de las acciones y restricciones presupuestarias para derivar políticas concretas. El listado @lst-cost-effectiveness implementa la comparación de tres estrategias de targeting (SMS, llamada y mixta) utilizando el algoritmo de net score.
 
@@ -270,19 +269,19 @@ for nombre, asig in [("A (solo SMS)", asig_a), ("B (solo llamadas)", asig_b),
 ```
 ) <lst-cost-effectiveness>
 
-La estrategia C domina a las otras dos por una razón que el multiplicador $lambda^*$ hace transparente: al comparar $tau_k(x) - lambda^* c_k(x)$ entre acciones, la regla asigna la llamada cara solo donde su uplift adicional sobre el SMS justifica los \$7.5 de diferencia, y el SMS barato en el resto. Las estrategias A y B fijan la acción de antemano y solo optimizan a quién alcanzar; C optimiza conjuntamente ambas decisiones, que es el problema real.
+La estrategia C domina a las otras dos por una razón que el multiplicador $lambda^*$ hace transparente: al comparar $tau_(k)(x) - lambda^* c_(k)(x)$ entre acciones, la regla asigna la llamada cara solo donde su uplift adicional sobre el SMS justifica los \$7.5 de diferencia, y el SMS barato en el resto. Las estrategias A y B fijan la acción de antemano y solo optimizan a quién alcanzar; C optimiza conjuntamente ambas decisiones, que es el problema real.
 
-La figura @fig-cap12-uplift ilustra dos elementos clave del uplift modeling aplicado. El panel izquierdo muestra la curva de uplift acumulado: al ordenar la muestra por $hat(tau)$ descendente, el uplift acumulado crece rápidamente al inicio y se estabiliza, indicando que las unidades top concentran la mayor parte del uplift total. El panel derecho muestra el análisis de costo-efectividad: dada una mezcla presupuestaria entre dos acciones (SMS barato vs. llamada cara), existe una asignación óptima que maximiza el uplift total.
+La figura @fig-cap22-uplift ilustra dos elementos clave del uplift modeling aplicado. El panel izquierdo muestra la curva de uplift acumulado: al ordenar la muestra por $hat(tau)$ descendente, el uplift acumulado crece rápidamente al inicio y se estabiliza, indicando que las unidades top concentran la mayor parte del uplift total. El panel derecho muestra el análisis de costo-efectividad: dada una mezcla presupuestaria entre dos acciones (SMS barato vs. llamada cara), existe una asignación óptima que maximiza el uplift total.
 
 #figure(
-  image("../figuras/fig_cap12_uplift.png", width: 100%),
+  image("../figuras/fig_cap22_uplift.png", width: 100%),
   caption: [Izquierda: curva de uplift acumulado ordenando la muestra por CATE estimado (Causal Forest). Derecha: análisis de costo-efectividad de la mezcla entre SMS (\$0.5/unidad) y llamada (\$8/unidad) bajo un presupuesto total de \$100\,000. Dataset sintético tipo churn, $n = 5\,000$.],
-) <fig-cap12-uplift>
+) <fig-cap22-uplift>
 
 *Interpretación.* La curva de uplift acumulado (panel izquierdo) muestra que el top 20% de la muestra por CATE estimado captura aproximadamente el 60% del uplift total, lo que justifica el targeting. El análisis de costo-efectividad (panel derecho) identifica la mezcla óptima: con un presupuesto fijo, conviene asignar la mayoría del presupuesto a SMS (más barato, mayor cobertura) y reservar llamadas para los casos de mayor uplift.
 
 == Riesgos, límites y mitigación
-<sec-cap12_riesgos>
+<sec-cap22_riesgos>
 
 El uso de uplift modeling para targeting con múltiples tratamientos y restricciones presupuestarias presenta riesgos metodológicos que deben diagnosticarse y mitigarse.
 
@@ -296,7 +295,7 @@ El uso de uplift modeling para targeting con múltiples tratamientos y restricci
       table.hline(stroke: 0.8pt),
       table.header([*Riesgo*], [*Consecuencia*], [*Diagnóstico*], [*Mitigación*]),
       table.hline(stroke: 0.4pt),
-      [Multiplicar uplift ad hoc para inferir el efecto de otro tratamiento], [Comparación inválida entre acciones y política subóptima], [Verificar que cada tratamiento tiene su propia columna de $hat(tau)_k$ en los datos], [Estimar $tau_k(x)$ por separado para cada acción $k$ usando meta-learners],
+      [Multiplicar uplift ad hoc para inferir el efecto de otro tratamiento], [Comparación inválida entre acciones y política subóptima], [Verificar que cada tratamiento tiene su propia columna de $hat(tau)_k$ en los datos], [Estimar $tau_(k)(x)$ por separado para cada acción $k$ usando meta-learners],
       [Optimizar solo el ranking (AUUC) sin validar la magnitud del uplift], [Mala calibración; el gasto real no coincide con el proyectado], [Comparar _calibration_ del CATE: $E[Y | D = 1, X] - E[Y | D = 0, X]$ vs.\ $hat(tau)$], [Usar _transformed outcome_ para obtener estimaciones de magnitud insesgadas],
       [Medir costos de forma incorrecta o ignorar costos hundidos], [Política de asignación errónea; se gastan recursos en acciones con retorno negativo], [Análisis de sensibilidad variando $c_k$ en $plus.minus 20%$ y observando cambios en la política óptima], [Utilizar costos reales (contables u operativos) y modelar incertidumbre con bootstrap],
       table.hline(stroke: 0.8pt),
@@ -307,19 +306,19 @@ El uso de uplift modeling para targeting con múltiples tratamientos y restricci
 Además de los riesgos anteriores, es importante considerar la equidad: una estrategia que maximiza el uplift puede excluir sistemáticamente a grupos vulnerables. Se recomienda reportar la distribución demográfica de los tratados y evaluar si existen disparidades injustificadas en la asignación.
 
 == Ejercicios propuestos
-<sec-cap12_ejercicios>
+<sec-cap22_ejercicios>
 
 + Replique el listado @lst-uplift sobre #code[thornton_hiv] (un solo tratamiento). ¿Cuál es el Qini score?
 
 + Sobre el DGP del listado @lst-uplift, compare el uplift promedio de cada acción ($overline(tau)_"SMS")$ frente a $overline(tau)_"llamada"$) con el ranking que produce cada una. Verifique que la acción con mayor efecto promedio *no* es necesariamente la que conviene asignar a cada cliente, y explique por qué en términos del net score.
 
-+ Verifique la calibración de ambos estimadores de uplift contra los valores verdaderos (#code[tau_sms_true], #code[tau_call_true] del DGP). Luego multiplique artificialmente #code[uplift_call] por 3 y vuelva a correr el listado @lst-cost-effectiveness. ¿Cambia el Qini de esa acción? ¿Cambia la asignación óptima y el gasto? Relacione el resultado con la distinción entre ranking y calibración de la @sec-cap12_uplift_cate.
++ Verifique la calibración de ambos estimadores de uplift contra los valores verdaderos (#code[tau_sms_true], #code[tau_call_true] del DGP). Luego multiplique artificialmente #code[uplift_call] por 3 y vuelva a correr el listado @lst-cost-effectiveness. ¿Cambia el Qini de esa acción? ¿Cambia la asignación óptima y el gasto? Relacione el resultado con la distinción entre ranking y calibración de la @sec-cap22_uplift_cate.
 
 + Modifique el listado @lst-cost-effectiveness para imponer la restricción de tratar al menos al 20% de cada grupo demográfico. ¿Cómo cambia el uplift total?
 
 + Discuta: ¿en qué casos el uplift modeling es preferible al policy learning formal?
 
 == Lecturas complementarias
-<sec-cap12_lecturas>
+<sec-cap22_lecturas>
 
-#cite(<radcliffe2007using>, form: "prose") introduce la curva Qini en el contexto de marketing directo, que es donde nace toda esta literatura. #cite(<rzepakowski2012decision>, form: "prose") desarrollan los árboles de uplift con criterios de división específicos (basados en divergencias entre las distribuciones de respuesta de tratados y controles) y son la referencia canónica del caso multi-tratamiento tratado en la @sec-cap12_multitreatment. #cite(<gutierrez2017causal>, form: "prose") revisan la literatura y conectan el vocabulario de uplift de la industria con el de inferencia causal académica —lectura recomendada para quien llegue desde cualquiera de los dos lados—. #cite(<chen2020causalml>, form: "prose") documentan #code[causalml], la librería de Uber usada en este capítulo. Para policy learning con restricciones presupuestarias tratado formalmente, @athey2021policy y el @cap-policy-learning.
+#cite(<radcliffe2007using>, form: "prose") introduce la curva Qini en el contexto de marketing directo, que es donde nace toda esta literatura. #cite(<rzepakowski2012decision>, form: "prose") desarrollan los árboles de uplift con criterios de división específicos (basados en divergencias entre las distribuciones de respuesta de tratados y controles) y son la referencia canónica del caso multi-tratamiento tratado en la @sec-cap22_multitreatment. #cite(<gutierrez2017causal>, form: "prose") revisan la literatura y conectan el vocabulario de uplift de la industria con el de inferencia causal académica —lectura recomendada para quien llegue desde cualquiera de los dos lados—. #cite(<chen2020causalml>, form: "prose") documentan #code[causalml], la librería de Uber usada en este capítulo. Para policy learning con restricciones presupuestarias tratado formalmente, @athey2021policy y el @cap-policy-learning.

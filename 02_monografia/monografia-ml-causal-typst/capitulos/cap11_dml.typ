@@ -1,5 +1,4 @@
 // Capítulo 11 — Double/Debiased Machine Learning
-// (La numeración `cap04` del nombre de archivo es histórica: proviene de la edición corta anterior y se conserva para no romper referencias.)
 #import "../template/template.typ": *
 
 #chapter[Double/Debiased Machine Learning]
@@ -29,17 +28,17 @@ Este capítulo aplica la ortogonalidad de Neyman y el _cross-fitting_ del @cap-o
 ]
 
 == Problema causal, estimando e identificación
-<sec-cap04_problema>
+<sec-cap11_problema>
 
 El Ministerio de Educación desea estimar el efecto causal de una beca sobre el rendimiento académico de estudiantes de secundaria. Dispone de un panel con 60 covariables por estudiante (características familiares, rendimiento previo, características de la escuela, contexto barrial, expectativas subjetivas). La asignación de la beca no fue aleatoria: se priorizó a estudiantes con bajo rendimiento previo, pero también influyeron variables familiares y de contexto. La pregunta de política es: ¿cuál es el efecto promedio de la beca sobre el rendimiento?
 
 En el capítulo @cap-ortogonalidad demostramos que el score ortogonal de Neyman permite estimar $theta_0$ con inferencia válida cuando $g_0$ y $m_0$ se estiman con ML. Este capítulo desarrolla la implementación práctica completa con la librería #code[DoubleML] (Bach, Chernozhukov, Kurz y Spindler, 2021) y #code[econml.dml], cubriendo los dos modelos centrales de la literatura: el modelo parcialmente lineal (PLR) y el modelo interactivo (IRM). Discutimos la elección de _learners_ de _nuisance_, la selección de hiperparámetros, la verificación de _leakage_ en _cross-fitting_, y la sensibilidad de los resultados a estas elecciones.
 
 == Teoría, supuestos y garantías
-<sec-cap04_teoria>
+<sec-cap11_teoria>
 
 === Supuestos
-<sec-cap04_supuestos>
+<sec-cap11_supuestos>
 
 Los supuestos de identificación para DML son los mismos del capítulo @cap-prediccion-causalidad. En particular, se requiere:
 
@@ -50,7 +49,7 @@ Los supuestos de identificación para DML son los mismos del capítulo @cap-pred
 Bajo estos supuestos, el ATE se identifica como $theta_0 = E[E[Y | D = 1, X] - E[Y | D = 0, X]]$.
 
 === Estimador y score
-<sec-cap04_score>
+<sec-cap11_score>
 
 ==== Modelo parcialmente lineal (PLR)
 
@@ -71,7 +70,7 @@ El PLR asume que el efecto de $D$ es constante. Cuando sospechamos heterogeneida
 $
 Y = mu(D, X) + epsilon, quad D tilde "Bernoulli"(e_0(X)),
 $
-donde $mu(d, x) = E[Y | D = d, X = x]$ y $mu_d(x) equiv mu(d, x)$.
+donde $mu(d, x) = E[Y | D = d, X = x]$ y $mu_(d)(x) equiv mu(d, x)$.
 
 Bajo los supuestos de identificación de no confusión condicional–de soporte común del capítulo @cap-prediccion-causalidad, el ATE se identifica como:
 $
@@ -82,7 +81,7 @@ El score ortogonal correspondiente, derivado por @chernozhukov2018double, es:
 $
 psi_(t "IRM")(W, theta, eta) = mu(1, X) - mu(0, X) + (D(Y - mu(1, X)))/e(X) - ((1 - D)(Y - mu(0, X)))/(1 - e(X)) - theta,
 $ <eq-irm-score>
-donde $eta = (mu, e)$. Este score es la combinación clásica _doubly robust_ de @robins1994estimation ajustada para satisfacer ortogonalidad de Neyman. El score @eq-irm-score es la instancia IRM de la forma canónica de la Nota técnica @sec-cap03_teorema_dml; la instancia sin promediar reaparece como $Gamma_i$ del DR-learner (@sec-cap05_drlearner) y como EIF del _policy value_ (@sec-cap11-estimacion).
+donde $eta = (mu, e)$. Este score es la combinación clásica _doubly robust_ de @robins1994estimation ajustada para satisfacer ortogonalidad de Neyman. El score @eq-irm-score es la instancia IRM de la forma canónica de la Nota técnica @sec-cap10_teorema_dml; la instancia sin promediar reaparece como $Gamma_i$ del DR-learner (@sec-cap12_drlearner) y como EIF del _policy value_ (@sec-cap21-estimacion).
 
 #theorem(
   name: [Doble robustez + ortogonalidad]
@@ -99,11 +98,11 @@ donde $eta = (mu, e)$. Este score es la combinación clásica _doubly robust_ de
   $
   V_"eff" = E[(tau(X) - theta_0)^2 + (sigma_1^2(X)) / e(X) + (sigma_0^2(X)) / (1 - e(X))],
   $
-  con $sigma_d^2(x) = "Var"(Y | X = x, D = d)$. La doble robustez (teorema de la @sec-cap04_score) y la eficiencia son propiedades complementarias: la primera protege contra mala especificación de un _nuisance_; la segunda certifica que, cuando ambos _nuisance_ convergen, no se puede hacer mejor. Los ejemplos de IF del Ap. A (@sec-apA_influence_functions) son las instancias de este resultado para IRM y PLR.
+  con $sigma_d^2(x) = "Var"(Y | X = x, D = d)$. La doble robustez (teorema de la @sec-cap11_score) y la eficiencia son propiedades complementarias: la primera protege contra mala especificación de un _nuisance_; la segunda certifica que, cuando ambos _nuisance_ convergen, no se puede hacer mejor. Los ejemplos de IF del Ap. A (@sec-apA_influence_functions) son las instancias de este resultado para IRM y PLR.
 ] <thm-efficiency-irm>
 
 === Garantías
-<sec-cap04_garantias>
+<sec-cap11_garantias>
 
 Bajo condiciones de regularidad y tasas de convergencia de los _learners_ nuisance, el estimador DML satisface:
 $
@@ -143,7 +142,7 @@ La condición $sqrt(n) a_n^2 -> 0$ se satisface para $a_n = n^(-2/5)$ (RF, GBM) 
 Los hiperparámetros de los _learners_ (profundidad de árboles, _learning rate_, $lambda$ de LASSO) se seleccionan típicamente por _cross-validation_ dentro de cada _fold_ de _cross-fitting_. Esto significa que el costo computacional es $K times ("CV interno")$. Una buena práctica es reportar la sensibilidad de los resultados a la elección de _learner_ y de hiperparámetros.
 
 === Diagnósticos cuantitativos de soporte común
-<sec-cap04_soporte_comun>
+<sec-cap11_soporte_comun>
 
 La alerta "$hat(e)$ cerca de 0 o 1" (@tab-riesgos_dml) se vuelve operativa con dos cantidades medibles.
 
@@ -155,10 +154,10 @@ $"ESS"/n << 1$ señala que pocas unidades con $hat(e)$ extremo dominan la estima
 
 *Trimming óptimo.* #cite(<crump2009dealing>, form: "prose") demuestran que recortar observaciones con $hat(e)(X) ∉ [alpha, 1 - alpha]$ minimiza la varianza asintótica del estimador para $alpha^* = (1 - sqrt(1/3))/2 approx 0.057$ bajo condiciones generales. *Atención al estimando:* tras el _trimming_, el efecto identificado es el ATE sobre la población con _overlap_, no el ATE poblacional — declararlo en la _model card_ (@cap-hf-hub) es obligatorio.
 
-*Regla operativa del curso:* reportar $"ESS"/n$ y el rango de $hat(e)$ en todo resultado DML; si $hat(e) ∉ [0.05, 0.95]$ para más del 5% de la muestra, reestimar con _trimming_ y reportar ambas cifras. El mismo diagnóstico se hereda en el DR-learner (@sec-cap05_drlearner) y en el _net score_ del @cap-uplift-targeting.
+*Regla operativa del curso:* reportar $"ESS"/n$ y el rango de $hat(e)$ en todo resultado DML; si $hat(e) ∉ [0.05, 0.95]$ para más del 5% de la muestra, reestimar con _trimming_ y reportar ambas cifras. El mismo diagnóstico se hereda en el DR-learner (@sec-cap12_drlearner) y en el _net score_ del @cap-uplift-targeting.
 
 == Algoritmo e implementación
-<sec-cap04_algoritmo>
+<sec-cap11_algoritmo>
 
 #algorithm("DML con cross-fitting")[
   #kwin[Entrada][$(Y_i, D_i, X_i)_(i=1)^n$, learner $L$, folds $K$]
@@ -319,7 +318,7 @@ Si $D$ es binario, puede usarse un clasificador con #code[predict_proba], pero p
 ]
 
 == Caso empírico y validación
-<sec-cap04_caso>
+<sec-cap11_caso>
 
 El diseño de referencia para esta parte del capítulo es el de @card1995, que instrumenta los años de educación con la proximidad geográfica a una universidad de cuatro años (#code[nearc4]) bajo el argumento de que vivir cerca de una universidad reduce el costo de asistir sin afectar directamente el salario. (Conviene no confundirlo con el otro diseño IV clásico de la literatura de retornos a la educación, el de @angrist1991, que usa el trimestre de nacimiento interactuado con las leyes de escolaridad obligatoria; ambos aparecen en la literatura de DML, pero el dataset #code[close_college] usado aquí y en el resto del curso es el de Card.) #cite(<chernozhukov2018double>, form: "prose") desarrollan la extensión de DML a este tipo de diseño. El modelo es _partial linear IV_:
 $
@@ -338,14 +337,14 @@ Estos números constituyen una _réplica propia_ sobre el dataset del repositori
 Conviene, sin embargo, leer la comparación con cuidado y no como "IV corrige el sesgo de OLS y DML lo corrige mejor". Los tres números estiman objetos distintos. El coeficiente OLS es un efecto parcial bajo no confusión condicional en los cinco controles —supuesto que casi nadie defiende para la educación, por la habilidad no observada—. Los dos estimadores IV recuperan, bajo monotonicidad y exclusión, un *LATE*: el efecto promedio sobre los individuos cuya decisión educativa efectivamente respondió a vivir cerca de una universidad, un subgrupo que no es la población general y que plausiblemente enfrentaba restricciones de crédito más severas. Que el IV sea mayor que el OLS es, por tanto, consistente con al menos dos explicaciones sustantivas distintas —heterogeneidad del efecto concentrada en los _compliers_, o error de medición en `educ` que atenúa el OLS— y la evidencia aquí presentada no las separa. La amplitud del intervalo IV, casi diez veces la del OLS, tiene además una lectura mecánica: es el precio de identificar con la variación limitada que induce un instrumento de fuerza moderada, y anticipa la discusión de instrumentos débiles del @cap-panel-dmliv.
 
 #figure(
-  image("../figuras/fig_cap4_sensibilidad_K.png", width: 80%),
-  caption: [Sensibilidad de la estimación DML-PLIV del retorno a la educación al número de folds $K$ del cross-fitting. Las barras indican IC al 95%. La línea punteada es la estimación OLS con controles (HC1). Dataset: #code[close_college] (Card, 1995), $n = 3\,003$. La sensibilidad a $K$ bajo se mitiga con _repeated cross-fitting_ (Nota técnica @sec-cap03_teorema_dml).],
-) <fig-cap4-sensibilidad-K>
+  image("../figuras/fig_cap11_sensibilidad_K.png", width: 80%),
+  caption: [Sensibilidad de la estimación DML-PLIV del retorno a la educación al número de folds $K$ del cross-fitting. Las barras indican IC al 95%. La línea punteada es la estimación OLS con controles (HC1). Dataset: #code[close_college] (Card, 1995), $n = 3\,003$. La sensibilidad a $K$ bajo se mitiga con _repeated cross-fitting_ (Nota técnica @sec-cap10_teorema_dml).],
+) <fig-cap11-sensibilidad-K>
 
-La figura @fig-cap4-sensibilidad-K muestra que el estimador DML es estable entre $K = 2$ y $K = 10$, con una varianza moderadamente creciente a $K$ bajos. Esto valida la recomendación operacional de usar $K in {4, 5}$ como compromiso entre sesgo (favorece $K$ alto) y varianza (favorece $K$ bajo).
+La figura @fig-cap11-sensibilidad-K muestra que el estimador DML es estable entre $K = 2$ y $K = 10$, con una varianza moderadamente creciente a $K$ bajos. Esto valida la recomendación operacional de usar $K in {4, 5}$ como compromiso entre sesgo (favorece $K$ alto) y varianza (favorece $K$ bajo).
 
 == Riesgos, límites y sensibilidad
-<sec-cap04_riesgos>
+<sec-cap11_riesgos>
 
 #figure(
   caption: [Riesgos comunes en DML],
@@ -357,8 +356,8 @@ La figura @fig-cap4-sensibilidad-K muestra que el estimador DML es estable entre
     table.header([*Riesgo*], [*Descripción*]),
     table.hline(stroke: 0.4pt),
     [Learner único], [Reportar un único _learner_ sin análisis de sensibilidad. Siempre comparar al menos dos _learners_ (lineal + no lineal). Divergencias grandes señalan problemas de especificación.],
-    [_Folds_ insuficientes], [Usar $K=2$ _folds_. Con $K=2$, la varianza del estimador aumenta sustancialmente. Recomendado: $K=4$ o $K=5$, con _repeated cross-fitting_ ($R >= 5$) si la varianza entre particiones es material (Nota técnica @sec-cap03_teorema_dml).],
-    [Soporte común ignorado], [Si $hat(e)(X)$ está muy cerca de 0 o 1, las ponderaciones IPW explotan. Reportar $"ESS"/n$ y rango de $hat(e)$; _trimming_ con $alpha approx 0.057$ (@crump2009dealing, @sec-cap04_soporte_comun).],
+    [_Folds_ insuficientes], [Usar $K=2$ _folds_. Con $K=2$, la varianza del estimador aumenta sustancialmente. Recomendado: $K=4$ o $K=5$, con _repeated cross-fitting_ ($R >= 5$) si la varianza entre particiones es material (Nota técnica @sec-cap10_teorema_dml).],
+    [Soporte común ignorado], [Si $hat(e)(X)$ está muy cerca de 0 o 1, las ponderaciones IPW explotan. Reportar $"ESS"/n$ y rango de $hat(e)$; _trimming_ con $alpha approx 0.057$ (@crump2009dealing, @sec-cap11_soporte_comun).],
     [Confusión no observada], [Asumir que DML "resuelve" la confusión no observada. DML requiere el supuesto de no confusión (de no confusión condicional). Si hay variables confusoras no observadas, DML es tan sesgado como OLS.],
     table.hline(stroke: 0.8pt),
   )
@@ -385,7 +384,7 @@ La figura @fig-cap4-sensibilidad-K muestra que el estimador DML es estable entre
 ]
 
 == Ejercicios y notas bibliográficas
-<sec-cap04_ejercicios>
+<sec-cap11_ejercicios>
 
 + Replique el listado @lst-doubleml-nsw variando $K in {2, 3, 5, 10}$. ¿Cómo cambia el error estándar con $K$?
 

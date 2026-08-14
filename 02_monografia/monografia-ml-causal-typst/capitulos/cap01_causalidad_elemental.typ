@@ -54,7 +54,7 @@ Formalicemos la intuición anterior con la herramienta que usaremos durante todo
 *El problema fundamental de la inferencia causal* @holland1986: para cualquier unidad $i$, solo se observa uno de los dos resultados potenciales —el correspondiente al tratamiento efectivamente recibido— y nunca ambos. Si $i$ recibió el tratamiento, observamos $Y_i (1)$ pero $Y_i (0)$ permanece contrafactual, es decir, no observado y no observable. Si no lo recibió, ocurre lo simétrico.
 ]
 
-Esta afirmación, aunque elemental, tiene una consecuencia que estructura todo el campo: el efecto causal individual $Y_i(1) - Y_i(0)$ *nunca* puede calcularse directamente para ninguna unidad, sin importar cuántos datos se recolecten sobre ella. Lo que sí puede estimarse, bajo supuestos adecuados, es un efecto *poblacional* o *promedio* —por ejemplo, el efecto promedio del tratamiento (ATE), $theta = E[Y(1) - Y(0)]$— comparando grupos de unidades distintas que recibieron y no recibieron el tratamiento.
+Esta afirmación, aunque elemental, tiene una consecuencia que estructura todo el campo: el efecto causal individual $Y_(i)(1) - Y_(i)(0)$ *nunca* puede calcularse directamente para ninguna unidad, sin importar cuántos datos se recolecten sobre ella. Lo que sí puede estimarse, bajo supuestos adecuados, es un efecto *poblacional* o *promedio* —por ejemplo, el efecto promedio del tratamiento (ATE), $theta = E[Y(1) - Y(0)]$— comparando grupos de unidades distintas que recibieron y no recibieron el tratamiento.
 
 Conviene ver, ya en este capítulo introductorio, exactamente *dónde* entra el supuesto que hace legítima esa comparación, porque es la misma estructura lógica que reaparecerá, con aparato técnico creciente, en todos los métodos del curso. Lo que los datos entregan directamente es la *diferencia de medias observada*, $Delta = E[Y | D=1] - E[Y | D=0]$. Aplicando la restricción de consistencia $Y = D Y(1) + (1-D) Y(0)$, esta diferencia se reescribe como
 $
@@ -92,7 +92,7 @@ Este curso dedica su primera mitad a mostrar cómo, bajo supuestos de identifica
 
 + Proponga un ejemplo propio (distinto a los del capítulo) de una correlación espuria generada por una variable confusora. Identifique explícitamente la variable confusora y explique por qué genera la asociación observada.
 
-+ Explique con sus propias palabras por qué el problema fundamental de la inferencia causal (Holland, 1986) implica que ningún algoritmo, por sofisticado que sea, puede calcular el efecto causal individual $Y_i(1) - Y_i(0)$ para una unidad específica a partir de datos observacionales de esa unidad.
++ Explique con sus propias palabras por qué el problema fundamental de la inferencia causal (Holland, 1986) implica que ningún algoritmo, por sofisticado que sea, puede calcular el efecto causal individual $Y_(i)(1) - Y_(i)(0)$ para una unidad específica a partir de datos observacionales de esa unidad.
 
 + Un equipo de datos entrena un modelo de _gradient boosting_ para predecir ventas a partir de si un producto tuvo o no una promoción, alcanzando un $R^2$ de 0.95. El equipo concluye que "la promoción explica el 95% de las ventas" y recomienda aplicarla a todos los productos. ¿Qué está mal en este razonamiento, en términos de los niveles de la escalera de causalidad?
 

@@ -1,5 +1,9 @@
 # Plan de construcción por etapas — Monografía "IA Causal en Producción"
 
+## Actualización 2026-08-14 — Renombrado a la numeración final
+
+Los 32 archivos de `capitulos/` se renombraron para que el número del nombre coincida con el número de capítulo de la edición 2026 (p. ej. `cap01_prediccion_causalidad.typ` → `cap05_prediccion_causalidad.typ`; `cap15d_lado_humano.typ` → `cap32_lado_humano.typ`), y las etiquetas `sec-capNN_*` de los capítulos reubicados se actualizaron al mismo esquema (p. ej. `sec-cap04_score` → `sec-cap11_score`). La tabla de abajo conserva los nombres históricos de la edición corta anterior como registro del proceso. El proyecto compila con Typst 0.15.1 y el PDF final es `monografia.pdf`.
+
 ## Corrección importante sobre la entrega anterior
 
 El documento `esqueleto_monografia.md` entregado antes de este plan tenía un error: al mapear capítulos nuevos a las sesiones del sílabo, **omitió silenciosamente 6 capítulos que ya existen y están completos** en la monografía original (`cap08_pds`, `cap09_panel_dmliv`, `cap10_mapa_decision`, `cap13_deep_causal`, `cap14_scm_matrix_completion`, y no integraba con claridad `cap16_etica_interpretabilidad`). Este plan lo corrige: **ningún capítulo existente se elimina**; todos se reubican dentro de la nueva estructura, y el contenido nuevo (Bareinboim + DMLS) se inserta alrededor de ellos.
