@@ -66,9 +66,32 @@
 
 #cap-codigo-parte(
   titulo: "CausalSchema — parte 1",
-  snippet: "# TODO(sprint): pegar el listado @lst-causal-schema (líneas 55-94 del
-# capítulo fuente): @dataclass CausalSchema con .validate(), .X(), .D(), .Y().
-# Ejemplo: schema para close_college (Card, 1995).",
+  snippet: "from dataclasses import dataclass, field\n"
+    + "import pandas as pd\n\n"
+    + "@dataclass\n"
+    + "class CausalSchema:\n"
+    + "    treatment: str\n"
+    + "    outcome: str\n"
+    + "    covariates: list[str]\n"
+    + "    instruments: list[str] = field(default_factory=list)\n\n"
+    + "    def validate(self, df: pd.DataFrame) -> None:\n"
+    + "        declared = {self.treatment, self.outcome, *self.covariates, *self.instruments}\n"
+    + "        missing = declared - set(df.columns)\n"
+    + "        if missing:\n"
+    + "            raise ValueError(f\"Columnas declaradas ausentes: {missing}\")\n"
+    + "        overlap = set(self.covariates) & {self.treatment, self.outcome}\n"
+    + "        if overlap:\n"
+    + "            raise ValueError(f\"D/Y no pueden ser covariables: {overlap}\")\n\n"
+    + "    def X(self, df): return df[self.covariates]\n"
+    + "    def D(self, df): return df[self.treatment]\n"
+    + "    def Y(self, df): return df[self.outcome]\n\n"
+    + "# Ejemplo: retornos a la educación (Card, 1995)\n"
+    + "schema = CausalSchema(\n"
+    + "    treatment=\"educ\", outcome=\"wage\",\n"
+    + "    covariates=[\"exper\", \"black\", \"south\", \"married\"],\n"
+    + "    instruments=[\"nearc4\"])\n"
+    + "df = pd.read_parquet(\"data/close_college.parquet\")\n"
+    + "schema.validate(df)",
   invariante: "# schema.validate(df)  # lanza ValueError si D/Y quedan también en X",
 )
 

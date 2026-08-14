@@ -63,10 +63,22 @@
 
 #cap-codigo-parte(
   titulo: "Chequeo de balance — SMD y criterio de Rubin",
-  snippet: "# TODO(sprint): pegar el listado @lst-chequeo-balance (reescrito en la
-# mejora de contenido): SMD = (media_trat - media_ctrl) / s_pool; criterio de Rubin
-# |SMD|<0.25 y razon_varianzas en [0.5,2]; correccion de Holm sobre p-valores;
-# faltantes diferenciales tratados/controles.",
+  snippet: "import numpy as np\n"
+    + "from scipy.stats import ttest_ind\n"
+    + "from statsmodels.stats.multitest import multipletests\n\n"
+    + "# SMD: tamano de efecto invariante a n — no un t-test (magnitud, no p)\n"
+    + "def compute_smd(X_T, X_C, col):\n"
+    + "    mean_diff = X_T[col].mean() - X_C[col].mean()\n"
+    + "    pooled_std = np.sqrt((X_T[col].var() + X_C[col].var()) / 2)\n"
+    + "    return mean_diff / pooled_std\n\n"
+    + "smd = {col: abs(compute_smd(X_T, X_C, col)) for col in X_cols}\n"
+    + "var_ratio = {col: X_T[col].var() / X_C[col].var() for col in X_cols}\n"
+    + "# Criterio de Rubin: |SMD| < 0.25 y razon de varianzas en [0.5, 2]\n"
+    + "n_desbalance_smd = sum(1 for v in smd.values() if v > 0.25)\n\n"
+    + "# Correccion de Holm sobre p-valores: NO usar p crudo (0.05p rechazos espurios)\n"
+    + "p_vals = [ttest_ind(X_T[c], X_C[c])[1] for c in X_cols]\n"
+    + "_, p_holm, _, _ = multipletests(p_vals, method=\"holm\")\n"
+    + "# Faltantes diferenciales tratados/controles: missingness MNAR (Rubin 1976)",
   invariante: "# n_desbalance_smd = (smd.abs() > 0.25).sum()  # NO usar solo p<0.05",
 )
 

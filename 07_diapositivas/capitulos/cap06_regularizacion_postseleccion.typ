@@ -96,8 +96,34 @@
 
 #cap-codigo-parte(
   titulo: "Sesgo post-selección — Monte Carlo",
-  snippet: "# TODO(sprint): pegar el listado @lst-post-selection-bias (línea 167 del
-# capítulo fuente): generate_data(), post_selection_ate(), Monte Carlo de 1000 réplicas.",
+  snippet: "import numpy as np\n"
+    + "import statsmodels.api as sm\n"
+    + "from sklearn.linear_model import LassoCV\n\n"
+    + "def generate_data(n=500, p=100, n_confounders=5, seed=42):\n"
+    + "    \"\"\"DGP: theta=1; las primeras variables son confusoras, el resto ruido.\"\"\"\n"
+    + "    rng = np.random.default_rng(seed)\n"
+    + "    X = rng.standard_normal((n, p))\n"
+    + "    beta_D = np.zeros(p); beta_D[:n_confounders] = 0.5\n"
+    + "    gamma_Y = np.zeros(p); gamma_Y[:n_confounders] = 0.7\n"
+    + "    D = (X @ beta_D + rng.standard_normal(n) > 0).astype(float)\n"
+    + "    Y = D + X @ gamma_Y + rng.standard_normal(n)\n"
+    + "    return Y, D, X\n\n"
+    + "def post_selection_ate(Y, D, X):\n"
+    + "    \"\"\"Naive: LASSO de Y sobre [D,X]; luego OLS HC1 con los seleccionados.\"\"\"\n"
+    + "    DX = np.column_stack([D, X])\n"
+    + "    selected = np.abs(LassoCV(cv=5).fit(DX, Y).coef_) > 1e-8\n"
+    + "    selected[0] = True  # forzar el tratamiento en el modelo final\n"
+    + "    ols = sm.OLS(Y, sm.add_constant(DX[:, selected])).fit(cov_type=\"HC1\")\n"
+    + "    return ols.params[1], ols.bse[1]  # D es la 1a columna tras la constante\n\n"
+    + "# Monte Carlo: 1000 replicas — cobertura nominal 0.95\n"
+    + "thetas, covers = [], []\n"
+    + "for b in range(1000):\n"
+    + "    th, se = post_selection_ate(*generate_data(seed=b))\n"
+    + "    thetas.append(th)\n"
+    + "    covers.append(abs(th - 1.0) < 1.96 * se)\n\n"
+    + "thetas = np.array(thetas)\n"
+    + "print(f\"Sesgo post-selección: {thetas.mean() - 1.0:.4f}\")\n"
+    + "print(f\"Cobertura real IC post-selección: {np.mean(covers):.3f}\")",
   invariante: "# assert 0.85 <= cobertura_ic_post_seleccion.mean() <= 0.90  # ≠ 0.95 nominal",
   salida: "Sesgo post-selección: -0.05 a -0.10\nCobertura real IC: 0.85-0.90",
 )

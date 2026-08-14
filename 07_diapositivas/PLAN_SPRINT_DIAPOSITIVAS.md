@@ -12,6 +12,12 @@ trabajo real de la próxima sesión: abrir el `.typ` de la monografía en la rut
 tomar la definición/teorema/listing/tabla de riesgos/ejercicio señalado, y convertirlo a
 la slide correspondiente reemplazando el `// TODO(sprint): ...` del stub.
 
+> **La monografía recibió una Etapa 2 de mejoras (C1–C11) después de que se escribió
+> este plan.** Antes de trabajar cualquier capítulo, revisar el **§5 "Plan de
+> actualización — Etapa 2"** — 11 de los 32 capítulos tienen contenido nuevo que el
+> §3 todavía no refleja (Caps. 10, 11, 12, 14, 15, 17, 19, 20, 21, 27, 30). El §3 sigue
+> siendo válido como esqueleto; el §5 son los *deltas* a aplicar sobre él.
+
 ---
 
 ## 0. Convenciones
@@ -1115,3 +1121,330 @@ puntero de §3) → `revisado` (compila, se leyó en voz alta, cabe en el tiempo
 | 30 | Monitoreo en producción | stub |
 | 31 | Aprendizaje continuo / RL | stub |
 | 32 | Lado humano | stub |
+
+---
+
+## 5. Plan de actualización — Etapa 2 de la monografía (C1–C11)
+
+**Contexto.** Los 32 stubs de `capitulos/` y las secciones §1–§4 de este documento se
+construyeron sobre el estado de la monografía tras la mejora de contenido de "Etapa 1"
+(2026-08-10, ver `CHANGELOG_MEJORA.md` de la monografía). El **11 de agosto de 2026**
+se aplicó una **Etapa 2** (commit `81152e7`, "Auditoria de contenido, mejoras C1-C11 y
+material de sesiones") con 11 mejoras editoriales puntuales (C1–C11), 13 referencias
+nuevas (133 en total, verificado — el changelog de la monografía dice 132; la cifra
+exacta actual es 133 entradas en `bibliografia/refs.yml`) y un cambio cosmético global
+de formato. **Ningún capítulo cambió de número, título o parte** — la tabla maestra del
+§1 sigue siendo válida sin cambios. Lo que cambió es contenido *dentro* de 11
+capítulos y 3 apéndices.
+
+Esta sección es el mismo tipo de artefacto que el §3: por capítulo afectado, qué
+cambió en la fuente, qué stub de `capitulos/` hay que tocar, y qué slide(s) nuevas o
+editadas hacen falta. Los capítulos **no** listados aquí no requieren ninguna acción
+por causa de Etapa 2 (su contenido no fue tocado).
+
+### 5.0 Cambio cosmético global — sin acción requerida
+
+Etapa 2 estandarizó las etiquetas de `#cuadrosinoptico[]`/`#cuadrodecision[]` a la
+forma `[*Clave:*]` (con dos puntos) en los 32 capítulos, y ajustó alineación/tamaños en
+`template.typ` (teoremas, algoritmos, código). Ninguno de los dos afecta a las
+diapositivas: los stubs no copian el formato de esas cajas, solo su contenido como
+parámetros de texto independientes (`decision:`, `alternativas:`, etc.), y
+`plantilla_monografia.typ` es un archivo propio, no comparte `template.typ` con el
+libro. **No hay nada que actualizar por este cambio.**
+
+### 5.1 Resumen de C1–C11 y su alcance
+
+| # | Nombre | Capítulo(s) afectado(s) | Tipo de cambio |
+|---|---|---|---|
+| C1 | Score ortogonal canónico | **10** (nuevo), 11 y 12 (puente) | Tabla nueva + nota técnica |
+| C2 | Condiciones completas + DML1/DML2 | **10** (nuevo), 11 (pie de figura + riesgos) | Nota técnica nueva |
+| C3 | Eficiencia semiparamétrica IRM | **11** (nuevo) | Teorema nuevo |
+| C4 | ESS + trimming de Crump | **11** (nuevo, subsección 11.2.4), 12 (puente) | Sección nueva |
+| C5 | Tests de heterogeneidad BLP/BEST/CLAN | **14** (nuevo, 14.2.7) | Sección nueva |
+| C6 | Intervalos conformes | **14** (nuevo, 14.2.8), 15 y 27 (puente) | Sección nueva |
+| C7 | RATE | **14** (nuevo, tras baselines) | Sección nueva + 4.º baseline |
+| C8 | Sensibilidad en tres niveles | **14** (reestructura el E-value existente) | Sección reescrita |
+| C9 | EIF del policy value | **21** (nuevo) | Proposición nueva + código |
+| C10 | Model card machine-readable | **Ap. G** (nuevo, G.4), 15/19/20 (puente) | Apéndice + puentes |
+| C11 | Inferencia robusta a IV débil | **17** (nuevo), 30 (puente) | Sección nueva |
+
+**Capítulos con acción requerida en `07_diapositivas/`:** 10, 11, 12, 14, 15, 17, 19,
+20, 21, 27, 30. Once capítulos de 32 — el resto no se tocó en Etapa 2.
+
+### 5.2 Actualizaciones por capítulo
+
+#### Cap. 10 — Ortogonalidad de Neyman, cross-fitting e influence functions
+`capitulos/cap10_ortogonalidad_crossfitting.typ` · **C1 + C2, ambos contenido nuevo**
+
+- **C1 — Tabla del score canónico** (`@tab-score-canonico`, tras la prueba de
+  `@thm-plr-orth`): PLR, IRM, DR-learner, R-learner, PLIV y *policy value* son
+  instancias de un único $psi(W,theta,eta)$. **Añadir una slide nueva** entre la actual
+  `cap-teorema` (ortogonalidad PLR) y `cap-demostracion`, con `cap-definicion` o una
+  tabla (`cap-supuestos` reutilizada con columnas Estimando/$psi$/$eta$) listando las 6
+  filas. Es la slide más rentable de añadir: conecta visualmente Caps. 10, 11, 12, 17 y
+  21 en una sola diapositiva — vale la pena citarla de nuevo en esos capítulos como "ver
+  Cap. 10, tabla del score canónico" en vez de repetirla.
+- **C2 — Condiciones completas (C1)–(C4) + DML1 vs. DML2** (nota técnica tras
+  `@thm-dml-main`): las 4 condiciones del Teorema 3.1 de Chernozhukov et al., y la
+  distinción DML1 (mediana por *fold*) vs. DML2 (promedio ponderado, recomendado, con
+  *repeated cross-fitting* $R=5$–10). **Añadir a `cap-demostracion`** un 4.º paso, o una
+  slide nueva de tipo `cap-supuestos` con las 4 condiciones como filas.
+- **Ejercicio nuevo a considerar:** relacionar la varianza creciente a $K$ bajo
+  (Fig. 11.1, ya citada en el Cap. 11) con el *repeated cross-fitting* como mitigación
+  formal — mencionar en `cap-interactivo` o en la discusión.
+- **`cap-mapeo-pch-activo`:** añadir a la métrica "— ver tabla de score canónico
+  (6 instancias)".
+- **`cap-cierre-narrativo` refs:** ninguna referencia nueva (C1/C2 no traen citas
+  nuevas, son reorganización de Chernozhukov et al. 2018, ya citado).
+
+#### Cap. 11 — Double/Debiased Machine Learning
+`capitulos/cap11_dml.typ` · **C1 (puente) + C2 (puente) + C3 (nuevo) + C4 (nuevo)**
+
+- **C1 — puente:** tras `@eq-irm-score`, el libro señala que el score IRM es la
+  instancia de la tabla del Cap. 10 y que su versión sin promediar reaparece como
+  $Gamma_i$ (DR-learner, Cap. 12) y como EIF del *policy value* (Cap. 21). Añadir una
+  frase en `cap-definicion` (score IRM) apuntando a "ver tabla del Cap. 10".
+- **C2 — puente:** el pie de la Figura 11.1 (sensibilidad a $K$) y la tabla de riesgos
+  se actualizaron para mencionar DML1/DML2. Revisar el `salida:`/`nota:` del
+  `cap-codigo-parte` de DML y la tabla de `cap-errores-transiciones` si se cita esa
+  figura.
+- **C3 — Teorema de eficiencia semiparamétrica** (`@thm-efficiency-irm`, nuevo, tras
+  `@thm-dr`): la EIF del ATE-IRM es exactamente el integrando del score IRM; cota de
+  Cramér–Rao semiparamétrica; $V_"eff"$ explícita. **Añadir una segunda `cap-teorema`**
+  inmediatamente después de la actual (doble robustez) — son dos teoremas distintos y
+  complementarios, no uno solo: la doble robustez protege contra mala especificación,
+  la eficiencia certifica el óptimo cuando ambos *nuisance* convergen.
+- **C4 — ESS + trimming de Crump** (nueva subsección `@sec-cap04_soporte_comun`,
+  "Diagnósticos cuantitativos de soporte común"): ESS de Kish
+  ($"ESS" = (sum w_i)^2/sum w_i^2$) y $alpha^* approx 0.057$ (Crump et al., 2009), con
+  la advertencia de que tras el *trimming* el estimando es el ATE sobre la población
+  con *overlap*, no el poblacional. **Añadir una slide nueva** (tipo `cap-definicion` o
+  `cap-validacion`) entre la tabla de *learners* y el bloque de código — es contenido
+  con regla operativa clara ("reportar ESS/n y el rango de ê en todo resultado DML"),
+  buen candidato también para `cap-checklist-alertas` si se prefiere formato checklist.
+- **`cap-errores-transiciones`:** añadir una fila — "ê extremo sin reportar ESS/trimming
+  → varianza inflada sin que el histograma lo delate" (@kish1965, @crump2009dealing).
+- **`cap-mapeo-pch-activo`:** métrica actual "θ0 con IC vía influence function" →
+  ampliar a "...; ESS/n y trimming ($alpha^*≈0.057$) para el diagnóstico de soporte
+  común".
+- **`cap-cierre-narrativo` refs:** añadir Crump et al. (2009) y, si se detalla la
+  eficiencia, mencionar la cota de Cramér-Rao semiparamétrica del Ap. A.
+
+#### Cap. 12 — Meta-learners para efectos de tratamiento heterogéneos
+`capitulos/cap12_metalearners.typ` · **C1 + C4, ambos puente (sin sección nueva)**
+
+- **C1 — puente:** el DR-learner ($Gamma_i$) se identifica explícitamente como la
+  instancia sin promediar del score canónico del Cap. 10. Añadir una frase en la
+  `cap-teorema` del DR-learner: "Γ_i es la fila 'CATE, DR-learner' de la tabla de score
+  canónico del Cap. 10 — el mismo objeto, sin promediar."
+- **C4 — puente:** el mismo diagnóstico ESS/trimming del Cap. 11 se hereda en el
+  DR-learner (denominadores $hat(e)(X)$ y $1-hat(e)(X)$ en $Gamma_i$). Añadir una
+  cláusula en `cap-errores-transiciones` ("propensity extremo") apuntando al ESS del
+  Cap. 11 en vez de solo mencionar *trimming* en abstracto.
+- No se requiere ninguna slide nueva en este capítulo — son dos frases-puente.
+
+#### Cap. 14 — Validación, refutación y sensibilidad
+`capitulos/cap14_validacion.typ` · **C5 + C6 + C7 + C8, los cuatro contenido nuevo —
+el capítulo con más cambios de Etapa 2**
+
+Este capítulo pasa de ~14 a probablemente 18–20 slides si se incorpora todo C5–C8 con
+el mismo nivel de detalle que el resto del mazo. Evaluar si conviene dividirlo en dos
+sesiones de contenido (ranking/Qini + E-value, ya cubierto; heterogeneidad/conformal/
+RATE, todo nuevo) para no saturar los 20-25 min de exposición del esqueleto estándar.
+
+- **C8 — Sensibilidad en tres niveles** (`@sec-cap07_evalue` **reescrita**, ya no es
+  solo "E-value" sino "Sensibilidad a confusión no observada: protocolo de tres
+  niveles"): Nivel 1 = E-value (ya cubierto en el stub actual); **Nivel 2 nuevo** = $R^2$
+  parcial de Cinelli–Hazlett/Imbens — benchmarking contra el confusor observado más
+  fuerte, en la escala del propio modelo; **Nivel 3 nuevo** = *bounds* de Manski bajo
+  $Y in [0,1]$ sin supuesto de no confusión. **Actualizar la slide `cap-teorema`
+  existente** (actualmente solo E-value) para declarar los tres niveles, o dividirla en
+  `cap-teorema` (Nivel 1, ya escrito) + una `cap-definicion` nueva (Niveles 2 y 3).
+- **C5 — BLP/BEST/CLAN** (nueva subsección `@sec-cap07_tests_heterogeneidad`): Qini
+  evalúa *ranking*; BLP/BEST/CLAN (Chernozhukov et al., 2020) dan tests con control de
+  tipo I sobre si la heterogeneidad detectada es distinguible de cero, vía
+  *sample-splitting*. **Añadir una `cap-teorema` o `cap-codigo-parte` nueva** después de
+  la sección de Qini/AUUC — fila nueva en la suite de refutación
+  (`@tab-refutation-suite`) y en el checklist F.3 del Apéndice F (sin diapositiva
+  propia, pero mencionar el vínculo en `cap-checklist-alertas` si se añade una).
+- **C6 — Intervalos conformes** (nueva subsección `@sec-cap07_conformal`,
+  "Intervalos conformes para efectos individuales"): *split conformal* sobre el
+  *transformed outcome*, con `@prop-conformal-coverage` y dos advertencias (cobertura es
+  del *transformed outcome*, no de $Y_i(1)-Y_i(0)$ literal; requiere *conformal*
+  ponderado si $hat(e)$ es estimado). **Añadir una `cap-definicion` o `cap-teorema`
+  nueva** — es el puente directo hacia `ic_individual` en el Cap. 15 y hacia el Cap. 27
+  (mitigación de "reportar $hat(tau)(x)$ sin incertidumbre").
+- **C7 — RATE** (nueva sección tras *baselines* obligatorios, antes de "Versionado del
+  proceso"): *Rank-Weighted Average Treatment Effect* (Yadlowsky et al., 2021) como
+  criterio formal de selección de estimadores de CATE en datos reales, complementando
+  al RMSE (que exige *ground truth* sintético). **Añadir como 4.º baseline** en la
+  slide/tabla de *baselines* obligatorios si el stub la desarrolla, o como
+  `cap-codigo-parte` nueva.
+- **`cap-mapeo-pch-activo`:** métrica actual "Qini/AUUC (ranking), E-value
+  (sensibilidad), transformed outcome (RMSE)" → ampliar a "...; BLP/BEST/CLAN
+  (heterogeneidad formal); RATE (selección de estimador); conformal (IC individual);
+  sensibilidad en 3 niveles (E-value/R²/Manski)".
+- **`cap-cierre-narrativo` refs:** añadir Chernozhukov et al. (2020, BLP/BEST/CLAN),
+  Yadlowsky et al. (2021, RATE), y al menos una de {Lei & Candès / Tibshirani et al.,
+  conformal}; Cinelli & Hazlett (2020) para el Nivel 2 de sensibilidad.
+- **Nuevo `cap-discusion-ejercicio` candidato:** "¿Por qué el Nivel 2 (R² parcial) se
+  reporta contra un *benchmark* observado y el E-value (Nivel 1) no?" — contraste que
+  no estaba disponible cuando se escribió el stub original.
+
+#### Cap. 15 — Despliegue de un estimador causal como servicio
+`capitulos/cap07b_despliegue_servicio.typ` · **C6 (puente) + C10 (puente)**
+
+- **C6 — puente:** el endpoint `/predict` puede incluir `ic_individual` cuando existe
+  calibración conforme del Cap. 14. Añadir una línea al `cap-codigo-parte` de
+  `app.py`/`inference.py`: comentario `# ic_individual: solo si hay calibracion
+  conforme (Cap. 14)`.
+- **C10 — puente:** `/metadata` ahora declara explícitamente que valida contra
+  `causal-model-card-v1.schema.json` (Ap. G.4). Añadir esa línea al
+  `cap-codigo-parte` de `/metadata` ya existente en el stub (`@lst-metadata-endpoint`).
+- No se requiere ninguna slide nueva — dos líneas de código a sumar en los bloques ya
+  planificados.
+
+#### Cap. 17 — Machine learning causal en datos de panel
+`capitulos/cap17_panel_dmliv.typ` · **C11, contenido nuevo**
+
+- **C11 — Anderson–Rubin y alternativas para muchos instrumentos**: el IC de
+  Anderson–Rubin es válido cualquiera sea la fuerza del instrumento (a costa de poder
+  ser un conjunto, no un intervalo); con muchos instrumentos, Kleibergen–Paap y
+  Stock–Yogo (tamaño de test) reemplazan al $F$ de un solo instrumento. **Regla
+  operativa del libro:** si $F <= 10$, reportar el IC-AR junto al de Wald; si difieren
+  materialmente, declarar sensibilidad y que el Cap. 30 lo monitorea con doble umbral.
+  **Añadir una `cap-teorema` o `cap-demostracion` nueva** inmediatamente después del
+  contenido de instrumentos débiles ya planificado (Stock & Yogo, $F>10$) — es una
+  extensión directa de esa misma slide, no un tema nuevo.
+- **Nota de housekeeping (no requiere acción):** la fuente tiene una sección
+  "Diseños con tiempos de tratamiento escalonados" que repite, casi literalmente, el
+  contenido de la caja de profundización sobre Goodman-Bacon/TWFE que el stub ya
+  cubre — es una duplicación conocida y no resuelta del lado del libro (ver
+  `CHANGELOG_MEJORA.md` Etapa 2, "Qué no se hizo"). No añadir una segunda slide por
+  esto; el stub actual ya captura el contenido sustantivo.
+- **`cap-errores-transiciones`:** la fila de "instrumento débil" ya planificada debe
+  actualizarse: mitigación pasa de "reportar el F" a "reportar el F; IC de
+  Anderson–Rubin junto al Wald si $F<=10$; con muchos instrumentos, diagnósticos
+  específicos (Kleibergen-Paap/Stock-Yogo)".
+- **`cap-cierre-narrativo` refs:** añadir Andrews et al. (2019) y/o Stock (2002) para
+  Anderson-Rubin y el caso de muchos instrumentos.
+
+#### Cap. 19 — Model cards causales y publicación en Hugging Face Hub
+`capitulos/cap19_hf_hub.typ` · **C10, puente**
+
+- El checklist del libro añadió: "El *bundle* publicado incluye el JSON Schema
+  validado (Ap. G.4), no solo el Markdown." **Añadir este ítem** a
+  `cap-checklist-alertas` (el stub ya tiene 4 ítems; este sería el 5.º, o reemplaza uno
+  si se prefiere mantener 4).
+- Sin slide nueva — un ítem de checklist.
+
+#### Cap. 20 — CI/CD para modelos causales
+`capitulos/cap20_cicd.typ` · **C10, puente**
+
+- El *workflow* de CI ahora incluye un paso `python scripts/validar_schema.py` (valida
+  el JSON Schema de la *model card* contra `causal-model-card-v1.schema.json`) dentro
+  del job `tests-estadisticos`. **Añadir esa línea** al `cap-codigo-parte` del workflow
+  YAML ya planificado en el stub.
+- Sin slide nueva.
+
+#### Cap. 21 — Aprendizaje de políticas óptimas
+`capitulos/cap21_policy_learning.typ` · **C9, contenido nuevo**
+
+- **C9 — EIF del policy value** (`@prop-policy-value-inference`, nueva, tras
+  `@eq-policy-value-dr`): normalidad asintótica del estimador DR de $V(pi)$ vía su
+  *efficient influence function*, y un test formal para comparar dos políticas
+  ($V(pi_1)$ vs. $V(pi_2)$) — no solo reportar cada *welfare* por separado. **Añadir una
+  `cap-teorema` nueva** (o extender la actual "EWM vs. Athey-Wager" con un tercer
+  bloque) inmediatamente después de la fórmula de policy value doblemente robusta.
+  Conecta directamente con la tabla de score canónico del Cap. 10 (fila "Policy
+  value").
+- **`cap-codigo-parte` (parte 1, policy learning):** el Listado 21.1 ahora incluye un
+  bloque de código para el IC del policy value — añadir esas líneas al snippet ya
+  planificado.
+- **`cap-mapeo-pch-activo`:** métrica actual "V(π), regret sobre clase Π" → añadir
+  "; IC vía EIF para comparar dos políticas".
+- **`cap-discusion-ejercicio` candidato nuevo:** "¿Cuándo un test formal de
+  comparación de políticas cambia la decisión que tomaría comparar solo los dos
+  *welfare* estimados con sus IC individuales?"
+- **`cap-cierre-narrativo` refs:** sin referencia nueva propia (C9 es resultado del
+  propio libro, aplicando la EIF ya introducida en el Cap. 11/Ap. A).
+
+#### Cap. 27 — Deep learning para inferencia causal
+`capitulos/cap27_deep_causal.typ` · **C6, puente**
+
+- La fila de riesgos "reportar $hat(tau)(x)$ sin incertidumbre" ahora incluye, además de
+  "usar la red como *nuisance* dentro de DML" y "*bootstrap*", una tercera mitigación:
+  **intervalos conformes para decisiones individuales** (Cap. 14, `@sec-cap07_conformal`).
+  Añadir esa cláusula a `cap-errores-transiciones`.
+- Sin slide nueva — una cláusula adicional en una fila ya planificada.
+
+#### Cap. 30 — Monitoreo de supuestos causales en producción
+`capitulos/cap30_monitoreo.typ` · **C11, puente**
+
+- El docstring de `fuerza_instrumento()` ahora documenta un **doble umbral**: además de
+  `F < 10` (alerta simple), el monitoreo puede reportar también el IC de
+  Anderson–Rubin (Cap. 17) cuando $F<=10$. **Actualizar el `cap-codigo-parte`** de
+  `fuerza_instrumento` en el stub para reflejar el doble umbral, no solo el `F<10`
+  binario ya planificado.
+- Sin slide nueva.
+
+### 5.3 Apéndices — sin slides propias, pero citados desde capítulos ★
+
+El curso no tiene mazos de diapositivas por apéndice (A–H), pero tres cambios de
+Etapa 2 viven en apéndices y se citan desde capítulos que sí tienen slides — quedan
+cubiertos como referencias/puentes en el §5.2 de arriba, no requieren un mazo nuevo:
+
+- **Ap. A** (`apA_notacion_fundamentos.typ`): nota-puente de C3 (ambas *influence
+  functions*, PLR e IRM, alcanzan la cota semiparamétrica) — referenciada desde el Cap.
+  11.
+- **Ap. B** (`apB_librerias_entorno.typ`): actualización de C7 (RScorer) — referenciada
+  desde el Cap. 14.
+- **Ap. E** (`apE_proyecto_rubrica.typ`): actualización de C8 (protocolo de tres
+  niveles) — referenciada desde el Cap. 14.
+- **Ap. G** (`apG_model_card_causal.typ`): **sección G.4 completa, nueva** — JSON
+  Schema `causal-model-card-v1` con campo `dml_variant`. Es la fuente de los puentes en
+  Caps. 15, 19 y 20 (§5.2). Si en algún momento se decide dar una slide propia a la
+  *model card* como artefacto (fuera del Cap. 19), G.4 es el contenido a usar.
+
+### 5.4 Bibliografía — 13 referencias nuevas de Etapa 2
+
+Ninguna de las 32 diapositivas cita claves bibliográficas directamente (los stubs usan
+prosa: "Chernozhukov et al., 2020", no `@chernozhukov2020generic`), así que esta lista
+es solo para completar las líneas de `refs:` en `cap-cierre-narrativo` de los
+capítulos afectados (ya indicado capítulo por capítulo en el §5.2):
+
+`andrews2019robust`, `chernozhukov2020generic`, `cinellihazlett2020`,
+`crump2009dealing`, `imbens2003sensitivity`, `kish1965`, `leicandes2021`,
+`lei2018distribution`, `manski1990nonparametric`, `romano2019conformalized`,
+`stock2002survey`, `tibshirani2019conformal`, `yadlowsky2021rate`.
+
+### 5.5 Checklist de sincronización Etapa 2 (independiente del §4)
+
+El §4 rastrea avance de contenido general (`stub` → `contenido` → `revisado` →
+`listo`). Esta tabla rastrea, aparte, si cada capítulo afectado por Etapa 2 ya
+incorporó su contenido nuevo — un capítulo puede estar "listo" en §4 con una versión
+pre-Etapa 2 y aun así necesitar esta sincronización.
+
+| Cap. | Cambios a incorporar | Slides nuevas est. | Estado |
+|--:|---|:-:|---|
+| 10 | C1 (tabla score canónico) + C2 (condiciones + DML1/DML2) | +1 (tabla nueva; DML1/DML2 fue 4.º paso en `cap-demostracion`) | listo |
+| 11 | C1 (puente) + C2 (puente) + C3 (teorema eficiencia) + C4 (ESS/trimming) | +2 | listo |
+| 12 | C1 (puente) + C4 (puente) | +0 (solo frases) | listo |
+| 14 | C5 (BLP/BEST/CLAN) + C6 (conformal) + C7 (RATE) + C8 (3 niveles) | +4 (18 slides totales) | listo |
+| 15 | C6 (puente) + C10 (puente) | +0 (solo líneas de código) | listo |
+| 17 | C11 (Anderson-Rubin) | +1 | listo |
+| 19 | C10 (puente) | +0 (1 ítem de checklist) | listo |
+| 20 | C10 (puente) | +0 (1 línea de YAML) | listo |
+| 21 | C9 (EIF policy value) | +1 | listo |
+| 27 | C6 (puente) | +0 (1 cláusula) | listo |
+| 30 | C11 (puente) | +0 (actualizar docstring) | listo |
+
+Verificado: `./build.sh` → 32 OK, 0 FAIL (2026-08-12). Los 11 capítulos afectados
+compilan limpio con el contenido de Etapa 2 incorporado; el resto de `capitulos/`
+sigue con `// TODO(sprint)` sin tocar, como antes de esta sincronización.
+
+**Total estimado:** 5 capítulos con al menos una slide nueva (10, 11, 14, 17, 21 — el
+Cap. 14 suma 3–4 slides nuevas por sí solo, el resto del listado); 6 capítulos con solo
+actualizaciones puntuales de texto/código, sin slide nueva (12, 15, 19, 20, 27, 30).
+Ningún capítulo requiere reescribir slides ya planificadas desde cero; todos los
+cambios son *aditivos* sobre el plan del §3.

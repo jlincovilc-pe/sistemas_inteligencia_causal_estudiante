@@ -52,12 +52,9 @@
     la beca.",
 )
 
-// TODO(sprint): slide de "tres escenas clásicas" — no hay función dedicada en la
-// plantilla; usar cap-glosario con 3 entradas (cigüeñas/tamaño del pie/Simpson) o crear
-// una tabla simple. Ver §3 del plan para el detalle de cada escena.
 #cap-glosario(terminos: (
   ([Cigüeñas y nacimientos], [Correlación regional sin vínculo causal: ambas responden
-    a la ruralidad de la región. TODO(sprint): cifra o cita si se agrega.]),
+    a la ruralidad de la región — ejemplo clásico de correlación espuria.]),
   ([Tamaño del pie y lectura], [Confusor: la edad afecta ambas variables. Un modelo de
     ML "aprendería" la relación con alta confianza sin que sea causal.]),
   ([Paradoja de Simpson], [El tratamiento A gana en conjunto pero B gana en cada
@@ -69,26 +66,23 @@
 // cap-definicion para el problema fundamental y cap-teorema para la descomposición
 // (contenido añadido en la mejora de contenido de la monografía).
 #cap-definicion(
-  titulo-def: "El problema fundamental de la inferencia causal (Holland, 1986)",
+  titulo-def: "El problema fundamental de la inferencia causal",
   cuerpo: "Para cualquier unidad i, solo se observa uno de los dos resultados
     potenciales — nunca ambos. Si i recibió el tratamiento, observamos Y_i(1) pero
-    Y_i(0) permanece contrafactual, y viceversa.
-    // TODO(sprint): citar @holland1986 explícitamente en la slide.",
+    Y_i(0) permanece contrafactual, y viceversa. (Marco de resultados potenciales:
+    Neyman, 1923; Rubin, 1974. Formalización del problema: Holland, 1986.)",
   eq: $Y_i (1) - Y_i (0) quad "nunca calculable directamente"$,
 )
 
 #cap-teorema(
   titulo: "Resultado: por qué la comparación de grupos no es automática",
-  enunciado: "Δ = E[Y|D=1] - E[Y|D=0] = ATT + sesgo de selección, donde el sesgo de
-    selección es E[Y(0)|D=1] - E[Y(0)|D=0]. Los experimentos aleatorizados anulan el
-    segundo término por diseño; el resto del curso trata de aproximarlo cuando no hubo
-    aleatorización. // TODO(sprint): ver @sec-introcausal-problema-fundamental del
-    capítulo fuente para la derivación completa.",
+  enunciado: "Δ = E[Y|D=1] − E[Y|D=0] = ATT + sesgo de selección, con
+    ATT = E[Y(1)−Y(0)|D=1] y sesgo = E[Y(0)|D=1] − E[Y(0)|D=0]: el segundo término
+    compara el resultado potencial no observado de los tratados contra el observado de
+    los controles. Los experimentos aleatorizados lo anulan por diseño; el resto del
+    curso trata de aproximarlo cuando no hubo aleatorización.",
 )
 
-// TODO(sprint): sin demostración formal en el libro — usar 2 pasos informales:
-// (1) aplicar consistencia Y = D Y(1) + (1-D) Y(0), (2) identificar el segundo término
-// como no observable sin supuesto de aleatorización/no confusión.
 #cap-demostracion(pasos: (
   [Aplicar la restricción de consistencia Y = D·Y(1) + (1−D)·Y(0) a la diferencia de
    medias observada.],
@@ -103,20 +97,21 @@
   pregunta: "Clasifique tres preguntas en Nivel 1 (asociación), Nivel 2 (intervención) o
     Nivel 3 (contrafactual): (a) ¿más médicos per cápita, menor mortalidad infantil?
     (b) ¿contratar más médicos reduciría la mortalidad? (c) ¿habría sobrevivido este
-    paciente con un médico más? // TODO(sprint): del ejercicio 1 del capítulo fuente.",
+    paciente con un médico más? (Ejercicio 1 del capítulo.)",
 )
 
-// TODO(sprint): el capítulo no trae listados de código (es puramente conceptual).
-// Si se desea una slide de "código", usar el ejemplo numérico de la caja de
-// profundización 1.1 (banco/tasa de interés) como pseudocódigo o tabla.
+// El capítulo 1 es puramente conceptual: sin listados de código en la fuente.
+// (La descomposición Δ = ATT + sesgo de selección ya está formalizada arriba en
+// cap-teorema, como contenido añadido en la mejora de la monografía.)
 
 #cap-caso-resolucion(
   titulo: "El ejemplo que abre el capítulo",
   contexto: "Ministerio de Desarrollo Social: 100 variables por hogar, presupuesto para
     30% de la población. Pregunta correcta: ¿quién experimentaría el mayor incremento
     de ingresos si recibiera el programa? — no ¿quién tendrá mayor ingreso futuro?",
-  resultado: "TODO(sprint): no hay cifra numérica en este capítulo (es el gancho de
-    apertura de todo el curso, se retoma con datos reales en el Cap. 5 y el Cap. 11).",
+  resultado: "Sin cifra numérica — capítulo conceptual (gancho de apertura del curso).
+    La distinción se retoma con datos reales en el Cap. 5 (predicción vs. causalidad) y
+    el Cap. 11 (DML).",
   interpretacion: "La pregunta predictiva y la causal pueden dar respuestas opuestas
     sobre a quién priorizar.",
 )
@@ -146,7 +141,7 @@
   ejercicio: "Un equipo entrena gradient boosting para predecir ventas a partir de si
     hubo promoción, con R²=0.95, y concluye \"la promoción explica el 95% de las
     ventas\". ¿Qué está mal en términos de los niveles de la escalera de causalidad?
-    // TODO(sprint): ejercicio 4 del capítulo fuente.",
+    (Ejercicio 4 del capítulo.)",
 )
 
 #cap-cierre-narrativo(

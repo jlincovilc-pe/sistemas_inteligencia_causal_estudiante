@@ -133,6 +133,7 @@ Curso online asíncrono; dos sesiones semanales de 1 h 30. Formato orientativo: 
   [Serie A (casos)], [#code[03_notebooks_caso_estudio/]], [4 entregas: identificación, DML, CATE, policy],
   [Serie B (HF)], [#code[04_notebooks_produccion_hf/]], [4 entregas: API, Hub/CI, Space, monitor],
   [Datos], [#code[data_benchmark_causal/…/datasets/]], [Jobs, IHDP, etc. (benchmark documentado)],
+  [Diapositivas], [#code[07_diapositivas/capitulos/]], [Mazo Touying por sesión ★; plan y novedades de la última edición en #code[07_diapositivas/PLAN_SPRINT_DIAPOSITIVAS.md]],
   [Proyecto], [#code[06_proyecto_final/]], [Sistema causal en HF (40%)],
   [Planes], [#code[PLAN_CURSO_COMPLETO.md] y #code[PLAN_INTEGRACION_MONOGRAFIA.md]], [Práctica + integración libro↔repo],
   [Cronograma semanal], [#code[CHRONOGRAMA_SEMANAL.md]], [Uso de materiales por rol (profesor / estudiante)],
@@ -142,7 +143,9 @@ Curso online asíncrono; dos sesiones semanales de 1 h 30. Formato orientativo: 
 
 = 7. Planificación clase a clase
 
-*Convención.* *Lectura* = capítulo de la monografía (numeración del PDF 2026). *Lab* = carpeta `05_labs_sesion/` (prefijo L). *Entrega* = A1–A4 o B1–B4.
+*Convención.* *Lectura* = capítulo de la monografía (numeración del PDF 2026). *Lab* = carpeta `05_labs_sesion/` (prefijo L). *Entrega* = A1–A4 o B1–B4. *Diapositiva* = mazo Touying en #code[07_diapositivas/capitulos/] (un archivo #code[capNN] por capítulo del PDF); hay un mazo por cada capítulo del camino ★, con callout de monorepo en los capítulos de despliegue/producción (4, 9, 15, 19, 20, 30).
+
+*Actualización editorial vigente.* La monografía recibió una segunda pasada de mejoras (Etapa 2, C1–C11: score ortogonal canónico, eficiencia semiparamétrica, soporte común, tests de heterogeneidad, intervalos conformes, RATE, sensibilidad en tres niveles, EIF del *policy value*, *model card* machine-readable, inferencia robusta a instrumentos débiles) que afecta a 11 capítulos — varios de ellos en el bloque de Hugging Face. Las tablas de esta sección ya incorporan las novedades relevantes para la sesión en vivo; el detalle completo capítulo por capítulo está en #code[07_diapositivas/PLAN_SPRINT_DIAPOSITIVAS.md] §5 y en #code[02_monografia/monografia-ml-causal-typst/CHANGELOG_MEJORA.md].
 
 == Módulo 0 — Causalidad elemental y arranque (Semana 1)
 
@@ -180,11 +183,11 @@ Curso online asíncrono; dos sesiones semanales de 1 h 30. Formato orientativo: 
   stroke: 0.5pt + gray.lighten(70%),
   fill: (x, y) => if y == 0 { light } else { white },
   table.header([*S*], [*Tema*], [*Lectura monografía*], [*Lab*], [*Actividad / entrega*]),
-  [S9], [Ortogonalidad de Neyman y cross-fitting], [Cap. *10* Ortogonalidad], [L09], [Residuales OOF; partialling-out],
-  [S10], [Double Machine Learning: PLR e IRM], [Cap. *11* DML], [L10], [PLR mínimo; ATE con IC],
-  [S11], [Evaluación offline: baselines, Qini, placebo], [Cap. *14* Validación], [L11], [*Entrega A2* — DML serializado → B1],
-  [S12], [Despliegue del estimador como servicio (FastAPI + Docker)], [Cap. *15* Despliegue servicio], [L12], [*Arranca B1* — stub /predict],
-  [S13], [Meta-learners S/T/X/R], [Cap. *12* Meta-learners], [L13], [*Arranca A3* — T-learner / CATE],
+  [S9], [Ortogonalidad de Neyman, cross-fitting y el *score ortogonal canónico* (PLR/IRM/DR/R/PLIV/policy value, una misma inferencia)], [Cap. *10* Ortogonalidad], [L09], [Residuales OOF; partialling-out; ubicar cada estimando futuro en la tabla del score canónico],
+  [S10], [DML: PLR e IRM, eficiencia semiparamétrica y diagnóstico cuantitativo de soporte común (ESS/trimming)], [Cap. *11* DML], [L10], [PLR mínimo; ATE con IC; reportar ESS/n y trimming ($alpha^* approx 0.057$, Crump et al. 2009)],
+  [S11], [Evaluación offline: baselines (+ RATE), Qini, placebo, sensibilidad en tres niveles (E-value / $R^2$ / Manski)], [Cap. *14* Validación], [L11], [*Entrega A2* — DML serializado → B1; profundización opcional: BLP/BEST/CLAN, intervalos conformes],
+  [S12], [Despliegue como servicio (FastAPI + Docker); #code[/metadata] ahora machine-readable], [Cap. *15* Despliegue servicio], [L12], [*Arranca B1* — stub #code[/health] #code[/predict] #code[/metadata] (valida contra JSON Schema, Ap. G.4)],
+  [S13], [Meta-learners S/T/X/R/DR (el DR-learner como instancia del score canónico del Cap. 10)], [Cap. *12* Meta-learners], [L13], [*Arranca A3* — T-learner / CATE],
   [S14], [Árboles y bosques causales], [Cap. *13* Bosques causales], [L14], [*Entrega B1* + avance A3],
 )
 
@@ -208,8 +211,8 @@ Curso online asíncrono; dos sesiones semanales de 1 h 30. Formato orientativo: 
   stroke: 0.5pt + gray.lighten(70%),
   fill: (x, y) => if y == 0 { light } else { white },
   table.header([*S*], [*Tema*], [*Lectura monografía*], [*Lab*], [*Actividad / entrega*]),
-  [S17], [HF Hub y model cards *causales* (supuestos, no solo accuracy)], [Cap. *19* Hub y model cards · Ap. G], [L17], [*Arranca B2*],
-  [S18], [CI/CD: Actions, tests de humo, publicación condicionada], [Cap. *20* CI/CD], [L18], [*Entrega B2*],
+  [S17], [HF Hub y model cards *causales* (supuestos, no solo accuracy); ahora con *JSON Schema* machine-readable (Ap. G.4)], [Cap. *19* Hub y model cards · Ap. G (incl. G.4)], [L17], [*Arranca B2* — completar card y validarla contra el schema],
+  [S18], [CI/CD: Actions, tests de humo, *validación de schema* antes de publicar], [Cap. *20* CI/CD], [L18], [*Entrega B2*],
 )
 
 == Módulo 4 — Explicación, decisión, policy y uplift (Semanas 10–12)
@@ -223,7 +226,7 @@ Curso online asíncrono; dos sesiones semanales de 1 h 30. Formato orientativo: 
   [S19], [Explicación causal vs asociativa; equidad], [Cap. *23* Explicación y equidad], [L19], [Casos: SHAP ≠ efecto],
   [S20], [Interpretabilidad y fairness sobre estimadores causales], [Cap. *24* Ética e interpretabilidad], [L20], [Auditoría de importancia (asociativa) con advertencia],
   [S21], [Decisiones estructurales bajo incertidumbre], [Cap. *25* Decisiones estructurales], [L21], [Formalizar la decisión de negocio],
-  [S22], [Policy learning y presupuesto], [Cap. *21* Policy learning], [L22], [*Arranca A4* — top-k B=20%],
+  [S22], [Policy learning y presupuesto; inferencia formal del *policy value* (EIF) para comparar dos políticas, no solo el punto], [Cap. *21* Policy learning], [L22], [*Arranca A4* — top-k B=20%; reportar IC de la comparación contra baseline],
   [S23], [Uplift y targeting; Space de política], [Cap. *22* Uplift], [L23], [*Entrega A4* · *Arranca B3* (Gradio/Space)],
   [S24], [Transportabilidad entre dominios], [Cap. *26* Generalización], [L24], [¿El efecto vale en *mi* mercado?],
 )
@@ -236,7 +239,7 @@ Curso online asíncrono; dos sesiones semanales de 1 h 30. Formato orientativo: 
   stroke: 0.5pt + gray.lighten(70%),
   fill: (x, y) => if y == 0 { light } else { white },
   table.header([*S*], [*Tema*], [*Lectura monografía*], [*Lab*], [*Actividad / entrega*]),
-  [S25], [Drift de covariables y estabilidad del efecto en producción], [Cap. *30* Monitoreo], [L25], [*Arranca B4* — métricas KS],
+  [S25], [Drift de covariables y estabilidad del efecto en producción; si el sistema usa PLIV, monitorear también la fuerza del instrumento (doble umbral F y test de Anderson-Rubin, Cap. 17)], [Cap. *30* Monitoreo (+ Cap. *17* PLIV ◇)], [L25], [*Arranca B4* — métricas KS + chequeo de fuerza de instrumento si aplica],
   [S26], [Descubrimiento de estructura (PC/NOTEARS; lab con esqueleto)], [Cap. *29* Discovery], [L26], [*Entrega B3* · avanza B4],
   [S27], [Continual learning; panorama RL causal], [Cap. *31* Aprendizaje continuo], [L27], [Reentrenar vs alertar],
   [S28], [Lado humano: comunicación y responsabilidad], [Cap. *32* Lado humano], [L28], [*Entrega B4* — comunicar ATE],
@@ -250,11 +253,39 @@ Curso online asíncrono; dos sesiones semanales de 1 h 30. Formato orientativo: 
   stroke: 0.5pt + gray.lighten(70%),
   fill: (x, y) => if y == 0 { light } else { white },
   table.header([*S*], [*Tema*], [*Lectura monografía*], [*Lab*], [*Actividad / entrega*]),
-  [S29], [Trabajo autónomo + mentoría], [Ap. E, G, H · guía #code[06_proyecto_final/]], [P1], [Repo + identificación + baseline],
+  [S29], [Trabajo autónomo + mentoría], [Ap. E, G (incl. G.4), H · guía #code[06_proyecto_final/]], [P1], [Repo + identificación + baseline],
   [S30], [Peer review estructurado], [Rúbrica del curso], [P2], [Evaluar 2–3 proyectos (10%)],
   [S31], [Defensa del sistema causal en HF], [—], [P3], [*Entrega final 40%* + humo],
   [S32], [Cierre y frontera (CRL, RL causal — panorama)], [Caps. electivos 27–28 si aplica], [P4], [Encuesta; límites y trabajo futuro],
 )
+
+== 7.1 Foco Hugging Face: qué construimos y qué cambió (Etapa 2)
+
+La Serie B entrega cuatro piezas de producción sobre Hugging Face (Hub, Spaces,
+Actions), cada una construida sobre la anterior. La segunda pasada de mejoras de la
+monografía (Etapa 2) tocó específicamente lo que se documenta y valida en el Hub —
+no la arquitectura del despliegue, que no cambió.
+
+#table(
+  columns: (auto, 0.9fr, 2.2fr, 1.1fr),
+  align: left,
+  stroke: 0.5pt + gray.lighten(70%),
+  fill: (x, y) => if y == 0 { light } else { white },
+  table.header([*Entrega*], [*Sesiones*], [*Qué se construye*], [*Lectura / diapositiva*]),
+  [*B1* — API], [Arranca S12 · Entrega S14], [FastAPI + Docker; endpoints #code[/health], #code[/predict] y #code[/metadata] — este último ahora *machine-readable* y validado contra el JSON Schema de la model card.], [Cap. 15],
+  [*B2* — Hub / CI], [Arranca S17 · Entrega S18], [Model card causal (supuestos, población, IC — no solo accuracy) serializada según el nuevo *JSON Schema* #code[causal-model-card-v1.schema.json] (Ap. G.4); GitHub Actions corre el smoke test *y* valida el schema antes de permitir publicar.], [Cap. 19, Cap. 20],
+  [*B3* — Space], [Arranca S23 · Entrega S26], [Gradio Space que expone la *política* (top-k con presupuesto), no solo una predicción puntual — el decisor interactúa con el resultado de A4.], [Cap. 22],
+  [*B4* — Monitor], [Arranca S25 · Entrega S28], [Dashboard de drift de covariables (KS) y estabilidad del efecto en producción; si el sistema usa PLIV, agrega el *doble umbral* (F de primera etapa + Anderson-Rubin, Cap. 17) para no reportar un efecto sobre un instrumento débil.], [Cap. 30 (+ Cap. 17 ◇)],
+  [Proyecto final], [S29–S32], [Integra B1–B4 en un sistema único; obligatorio comparar ranking predictivo vs. política causal y pasar la prueba de humo con la model card ya validada por schema.], [Síntesis Caps. 15/19/20/22/30],
+)
+
+*Qué cambió en Etapa 2 (y por qué importa para B2 en particular):* antes, la model
+card causal era una convención de prosa (qué campos incluir, sin forma verificable).
+Ahora es un JSON Schema publicado (Ap. G.4) que el pipeline de CI puede validar
+automáticamente — la diferencia entre "recordarle al estudiante que documente los
+supuestos" y "el CI rechaza el *merge* si la card no los documenta en el campo
+correcto". Detalle capítulo por capítulo de las 11 áreas afectadas por Etapa 2:
+#code[07_diapositivas/PLAN_SPRINT_DIAPOSITIVAS.md] §5.
 
 = 8. Evaluación
 
@@ -282,6 +313,7 @@ El proyecto *no se aprueba* si el sistema no pasa la prueba de humo (endpoint o 
   - Python 3.10+, pandas, NumPy, scikit-learn; monorepo #code[lib/] del curso.
   - EconML / DoubleML (recomendados; hay fallback sklearn en el monorepo).
   - Hugging Face Hub, Spaces, Gradio; FastAPI + Docker; GitHub Actions.
+  - #code[jsonschema] (Python) para validar la model card contra #code[causal-model-card-v1.schema.json] (Ap. G.4) en B2 y en CI.
   - Datos: solo #code[data_benchmark_causal/causal_benchmark_synthetic/datasets/] en entregas del curso.
   - Auditoría local: #code[bash scripts/audit_repo.sh].
 ]
@@ -318,7 +350,7 @@ El proyecto *no se aprueba* si el sistema no pasa la prueba de humo (endpoint o 
   table.header([*Paso*], [*Artefacto*], [*Sesiones*], [*Pregunta de valor*]),
   [1], [A1 Identificación (Jobs)], [S4–S6], [¿Es estimable el efecto del programa?],
   [2], [A2 DML (IHDP-medium)], [S8–S11], [¿Cuánto mueve en promedio (ATE + IC)?],
-  [3], [B1 API + B2 Hub/CI], [S12–S18], [¿Se puede consultar, documentar y no publicar roto?],
+  [3], [B1 API + B2 Hub/CI], [S12–S18], [¿Se puede consultar, documentar con supuestos validables por schema, y no publicar roto?],
   [4], [A3 CATE + A4 policy], [S13–S15, S22–S23], [¿A quién priorizar con 20% de capacidad?],
   [5], [B3 Space + B4 monitor], [S23–S28], [¿Un decisor lo usa? ¿Sigue valiendo el efecto?],
   [6], [Proyecto final HF], [S29–S32], [¿Tu caso de negocio en producción?],
@@ -354,15 +386,15 @@ Cómo *usar* los materiales del monorepo cada semana. Detalle ampliado (checklis
   [2], [S3–S4], [3–4 / L03–L04], [A1 arranca], [PCH (L03); Jobs como caso; abrir A1 + #code[CausalSchema]], [L03–L04; A1 EDA/DAG; #code[real/jobs]],
   [3], [S5–S6], [6(+16◇)–7 / L05–L06], [*A1*], [Rúbrica A1; Cap. 16 solo si hay tiempo], [L05–L06; *entregar A1* (solo observed)],
   [4], [S7–S8], [8–9 / L07–L08], [A2 arranca], [Abstenerse si no hay ID; demo leakage; abrir A2], [L07–L08; A2 sin fugas; #code[ihdp_medium]],
-  [5], [S9–S10], [10–11 / L09–L10], [A2 curso], [Cross-fitting + ortogonalidad; ATE→go/no-go], [L09–L10; A2 PLR + K-fold],
-  [6], [S11–S12], [14–15 / L11–L12], [*A2* · B1], [Cerrar A2 (joblib); demo B1 /health /predict], [*A2* + sync; L11–L12; carpeta B1],
+  [5], [S9–S10], [10–11 / L09–L10], [A2 curso], [Cross-fitting + score ortogonal canónico; ESS/trimming (Crump) → ATE→go/no-go], [L09–L10; A2 PLR + K-fold; reportar ESS/n],
+  [6], [S11–S12], [14–15 / L11–L12], [*A2* · B1], [Cerrar A2 (joblib); sensibilidad (E-value/$R^2$/Manski); demo B1 /health /predict /metadata], [*A2* + sync; L11–L12; carpeta B1],
   [7], [S13–S14], [12–13 / L13–L14], [A3 · *B1*], [CATE ≠ riesgo predicho; autograder B1], [A3 T-learner; *B1*; L13–L14],
   [8], [S15–S16], [Repaso / — · L15], [*A3* · parcial], [Checklist A1–A3+B1; parcial solo ★], [*A3*; L15; estudiar ★ (no deep)],
-  [9], [S17–S18], [19–20 / L17–L18], [*B2*], [Model card = supuestos; CI que falla humo], [L17–L18; *B2* card+Actions],
+  [9], [S17–S18], [19–20 / L17–L18], [*B2*], [Model card = supuestos, ahora con JSON Schema; CI que falla humo y schema], [L17–L18; *B2* card+Actions],
   [10], [S19–S20], [23–24 / L19–L20], [—], [SHAP de Ŷ ≠ efecto; preparar policy], [L19–L20; releer card B2],
   [11], [S21–S22], [25+21 / L21–L22], [A4 arranca], [Decisión de negocio antes de λ; B=20%], [L21–L22; A4 con scores A3],
   [12], [S23–S24], [22+26 / L23–L24], [*A4* · B3], [A4: causal vs random vs outcome; demo Space], [*A4*; L23–L24; B3 Gradio],
-  [13], [S25–S26], [30+29 / L25–L26], [B4 · *B3*], [200 OK ≠ efecto válido; cerrar B3], [*B3*; L25–L26; B4],
+  [13], [S25–S26], [30+29 / L25–L26], [B4 · *B3*], [200 OK ≠ efecto válido; doble umbral F/AR si hay PLIV; cerrar B3], [*B3*; L25–L26; B4],
   [14], [S27–S28], [31–32 / L27–L28], [*B4*], [Ops L27; comunicación 3 capas; brief proyecto], [L27–L28; *B4*; elegir caso P],
   [15], [S29–S30], [Ap. E/G/H · guía proyecto], [P1 · P2], [Mentoría ID+humo+disrupción; pares peer], [P1 repo; P2 rúbrica; HF],
   [16], [S31–S32], [— / elect. ◇], [*P3* · P4], [Humo + sección disrupción irrenunciables], [*P3* sistema HF + video; encuesta],
@@ -380,10 +412,10 @@ Cómo *usar* los materiales del monorepo cada semana. Detalle ampliado (checklis
   [6], [*A2*], [DML → artefacto B1],
   [7], [*B1*], [API + Docker (Serie B 15%)],
   [8], [*A3* · parcial], [CATE → A4; parcial camino ★],
-  [9], [*B2*], [Model card + CI HF],
+  [9], [*B2*], [Model card + CI HF (valida contra JSON Schema, Ap. G.4)],
   [12], [*A4*], [Policy B=20% → B3],
   [13], [*B3*], [Space Gradio],
-  [14], [*B4*], [Monitor drift/supuestos],
+  [14], [*B4*], [Monitor drift/supuestos; doble umbral F/Anderson-Rubin si el sistema usa PLIV],
   [15], [P1 · P2], [Baseline + peer review 10%],
   [16], [*P3* (+ P4)], [Proyecto final 40% + humo],
 )

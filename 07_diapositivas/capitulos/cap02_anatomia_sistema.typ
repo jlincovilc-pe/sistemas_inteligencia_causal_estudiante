@@ -64,14 +64,23 @@
     que el servicio esté \"arriba\".",
 )
 
-// TODO(sprint): código = árbol de directorios del esqueleto de repo (líneas 72-86 del
-// capítulo fuente). No es Python ejecutable; usar cap-codigo-parte con snippet: el
-// árbol como texto preformateado, o cap-diagrama si se prefiere un cetz/fletcher tree.
+// Código = árbol de directorios del esqueleto de repo (líneas 72-86 del capítulo
+// fuente). No es Python ejecutable: se muestra como texto preformateado.
 #cap-codigo-parte(
   titulo: "El esqueleto de repositorio del curso",
-  snippet: "# TODO(sprint): pegar el árbol de proyecto-causal/ del capítulo fuente
-# (líneas 72-86): data/, notebooks/serie_a|b, src/identification|estimation|service,
-# tests/, .github/workflows/, Dockerfile, model_card.md",
+  snippet: "proyecto-causal/\n"
+    + "├── data/                 # datos crudos y procesados (no versionados en git salvo muestras pequeñas)\n"
+    + "├── notebooks/\n"
+    + "│   ├── serie_a_caso_estudio/     # A1–A4: identificación y estimación\n"
+    + "│   └── serie_b_produccion/       # B1–B4: despliegue en Hugging Face\n"
+    + "├── src/\n"
+    + "│   ├── identification/   # DAGs, diagnósticos de no confusión y soporte común\n"
+    + "│   ├── estimation/       # DML, meta-learners, bosques causales\n"
+    + "│   └── service/          # función de inferencia, app FastAPI\n"
+    + "├── tests/                # pruebas de humo y de sanidad estadística\n"
+    + "├── .github/workflows/    # CI/CD (se detalla en el Capítulo 20)\n"
+    + "├── Dockerfile\n"
+    + "└── model_card.md         # plantilla del Apéndice G",
   nota: "Lab 0: dejar este esqueleto funcionando localmente, con Docker verificado
     (docker run hello-world).",
 )

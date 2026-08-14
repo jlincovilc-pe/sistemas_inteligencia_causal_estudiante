@@ -48,19 +48,54 @@
     el rol causal de educ, da un \"efecto predictivo\" de 0.04.",
 )
 
-#cap-definicion(
-  titulo-def: "Régimen predictivo vs. régimen causal",
-  cuerpo: "Objetivo: minimizar error fuera de muestra (predicción) vs. estimar τ(x) con
-    IC válido (causalidad). Estimando: E[Y|X] vs. E[Y(1)-Y(0)|X]. Regularización:
-    bienvenida en predicción, peligrosa en causalidad (sesga τ).
-    // TODO(sprint): tabla completa @tab-pred-causal, líneas 41-61 del capítulo fuente.",
-)
+// La definición del capítulo ES la tabla @tab-pred-causal (líneas 43-63 del capítulo
+// fuente): se renderiza como slide con tabla (patrón de la slide del score canónico
+// del Cap. 10) en vez de cap-definicion, porque la tabla completa no cabe en un string.
+#slide(title: [Régimen predictivo vs. régimen causal])[
+  #text(fill: texto, size: 10.5pt)[La distinción entre régimen predictivo y régimen
+    causal estructura todo el curso: mismas variables, preguntas y garantías
+    distintas.]
+  #v(0.3em)
+  #set text(size: sz-table)
+  #table(
+    columns: (1.1fr, 1.5fr, 1.8fr),
+    align: (left + top, left + top, left + top),
+    stroke: 0.4pt + borde,
+    fill: (_, y) => if y == 0 { navy } else if calc.odd(y) { light } else { white },
+    table.header(
+      text(fill: white, weight: "bold", size: 9.5pt)[Dimensión],
+      text(fill: white, weight: "bold", size: 9.5pt)[Predicción],
+      text(fill: white, weight: "bold", size: 9.5pt)[Causalidad],
+    ),
+    text(fill: navy, weight: "bold", size: 8.5pt)[Objetivo],
+      text(size: 8.5pt)[Minimizar error fuera de muestra],
+      text(size: 8.5pt)[Estimar $tau(x)$ con IC válido],
+    text(fill: navy, weight: "bold", size: 8.5pt)[Estimando],
+      text(size: 8.5pt)[$E[Y | X]$],
+      text(size: 8.5pt)[$E[Y(1) - Y(0) | X]$],
+    text(fill: navy, weight: "bold", size: 8.5pt)[Métrica de éxito],
+      text(size: 8.5pt)[RMSE, accuracy, AUC],
+      text(size: 8.5pt)[Sesgo, cobertura, RMSE en $tau$],
+    text(fill: navy, weight: "bold", size: 8.5pt)[Datos requeridos],
+      text(size: 8.5pt)[Solo $Y, X$ observados],
+      text(size: 8.5pt)[Requiere $Y(0), Y(1)$ — no se observan simultáneamente],
+    text(fill: navy, weight: "bold", size: 8.5pt)[Supuestos clave],
+      text(size: 8.5pt)[IID, estacionariedad],
+      text(size: 8.5pt)[No confusión, soporte común, SUTVA],
+    text(fill: navy, weight: "bold", size: 8.5pt)[Regularización],
+      text(size: 8.5pt)[Bienvenida (mejora generalización)],
+      text(size: 8.5pt)[Peligrosa (introduce sesgo en $tau$)],
+    text(fill: navy, weight: "bold", size: 8.5pt)[Validación],
+      text(size: 8.5pt)[Cross-validation estándar],
+      text(size: 8.5pt)[Placebos, Qini, comparación con benchmarks],
+  )
+  #v(0.2em)
+  #text(fill: muted, size: 9pt, style: "italic")[Fuente: monografía, capítulo
+    "Predicción y causalidad", tabla completa régimen predictivo vs. causal.]
+]
 
-// TODO(sprint): contenido central del capítulo — el criterio de Kleinberg et al.
-// (2015): \"si la decisión cambia la variable sobre la que se razona, la pregunta es
-// causal; si la decisión solo depende de un estado del mundo que ocurriría de todos
-// modos, la pregunta es predictiva\". Ejemplo: operar una cadera a un paciente
-// terminal (predictivo) vs. focalizar un subsidio por quién se beneficia (causal).
+// Contenido central del capítulo (mejora de contenido de la monografía): el criterio
+// de Kleinberg et al. (2015) para distinguir predicción de causalidad.
 #cap-teorema(
   titulo: "Criterio de Kleinberg, Ludwig, Mullainathan & Obermeyer (2015)",
   enunciado: "Si la decisión cambia la variable sobre la que se razona, la pregunta es

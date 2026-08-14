@@ -60,9 +60,8 @@
   eq: $M = (U, V, F, P(u))$,
 )
 
-// TODO(sprint): no hay #assumption formal en este capítulo; usar cap-supuestos con la
-// tabla de los tres niveles (P(v) / P(y|do(x)) / P(y_x|e), líneas 51-59 del capítulo
-// fuente) en vez de una tabla de supuestos de identificación.
+// Sin #assumption formal en el libro: la slide de supuestos es la tabla de los tres
+// niveles de la PCH (P(v) / P(y|do(x)) / P(y_x|e), líneas 51-59 del capítulo fuente).
 #cap-supuestos(supuestos: (
   ([L1 — Asociación], [Se calcula con los datos observados, sin modificar M],
    [Filtrar df[df.D==1] ≠ intervenir]),
@@ -99,9 +98,24 @@
 
 #cap-codigo-parte(
   titulo: "SCM simulado: asociación vs. intervención — parte 1",
-  snippet: "# TODO(sprint): pegar el listado @lst-scm-do-simulacion (líneas 77-110 del
-# capítulo fuente): U motivación no observada, D_obs depende de U, Y_obs depende de
-# D_obs y U (efecto causal verdadero = 0.4). Calcular P(Y|D=1) vs. P(Y|do(D=1)).",
+  snippet: "import numpy as np\n"
+    + "rng = np.random.default_rng(7)\n"
+    + "n = 50_000\n\n"
+    + "# U: motivación no observada (confusor de D y de Y)\n"
+    + "U = rng.normal(size=n)\n"
+    + "# D (beca): depende de U -- estudiantes mas motivados piden mas becas\n"
+    + "D_obs = (U + rng.normal(size=n) > 0.3).astype(int)\n"
+    + "# Y (calificacion): depende de D (efecto causal verdadero = 0.4) y de U\n"
+    + "Y_obs = 0.4 * D_obs + 0.9 * U + rng.normal(scale=0.5, size=n)\n\n"
+    + "# Nivel 1 (asociacion): P(Y | D=1) observacional\n"
+    + "assoc = Y_obs[D_obs == 1].mean() - Y_obs[D_obs == 0].mean()\n\n"
+    + "# Nivel 2 (intervencion): do(D=1) para TODA la poblacion -- se reemplaza\n"
+    + "# la ecuacion estructural de D por la constante 1\n"
+    + "Y_do1 = 0.4 * 1 + 0.9 * U + rng.normal(scale=0.5, size=n)\n"
+    + "Y_do0 = 0.4 * 0 + 0.9 * U + rng.normal(scale=0.5, size=n)\n"
+    + "intervencion = Y_do1.mean() - Y_do0.mean()\n\n"
+    + "print(f\"Asociacion P(Y|D=1)-P(Y|D=0):  {assoc:.3f}\")\n"
+    + "print(f\"Intervencion P(Y|do(D=1)):     {intervencion:.3f}\")",
   invariante: "# assert abs(intervencion - 0.4) < 0.05  # recupera el efecto verdadero",
 )
 
