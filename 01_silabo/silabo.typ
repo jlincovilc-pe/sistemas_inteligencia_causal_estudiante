@@ -158,7 +158,7 @@ Curso online asíncrono; dos sesiones semanales de 1 h 30. Formato orientativo: 
   fill: (x, y) => if y == 0 { light } else { white },
   table.header([*S*], [*Tema*], [*Lectura monografía*], [*Lab*], [*Actividad / entrega*]),
   [S1], [Correlación ≠ causación; problema fundamental; escalera de Pearl (adelanto)], [Cap. *1* Causalidad elemental], [L01], [Casos espurios + Simpson; pregunta: ¿asociación o efecto?],
-  [S2], [Anatomía de un sistema ML en producción; requisitos de un sistema *causal*], [Cap. *2* Anatomía del sistema], [L02], [Lab 0: entorno Python, Git, HF, monorepo],
+  [S2], [Anatomía de un sistema ML en producción; requisitos de un sistema *causal*], [Cap. *2* Anatomía del sistema], [L02], [Lab 0: entorno Python, Git, HF, monorepo · *Cierre HF (10 min):* crear la cuenta y el token de Hugging Face no es un trámite: es la llave de todo el hilo de producción del curso. Con #code[huggingface_hub] (#code[notebook_login()]) se deja el entorno listo para subir datasets (S5, S8), modelos (S13) y Spaces (S23) sin volver a configurar. Herramienta: #code[huggingface_hub] + token de acceso.],
 )
 
 == Módulo 1 — Fundamentos y datos (Semanas 2–4)
@@ -171,10 +171,10 @@ Curso online asíncrono; dos sesiones semanales de 1 h 30. Formato orientativo: 
   table.header([*S*], [*Tema*], [*Lectura monografía*], [*Lab*], [*Actividad / entrega*]),
   [S3], [SCM y Jerarquía Causal de Pearl (ver / hacer / imaginar)], [Cap. *3* SCM y PCH], [L03], [Clasificar 10 preguntas en la PCH],
   [S4], [Ingeniería de datos: tratamiento, outcome, covariables, trazabilidad], [Cap. *4* Ingeniería de datos], [L04], [*Arranca A1* — roles T/Y/X (Jobs)],
-  [S5], [Regularización y post-selección (PDS); Cap. 16 del PDF es profundización ◇], [Cap. *6* Regularización (+ Cap. *16* PDS ◇)], [L05], [PDS vs OLS vs diff-in-means],
+  [S5], [Regularización y post-selección (PDS); Cap. 16 del PDF es profundización ◇], [Cap. *6* Regularización (+ Cap. *16* PDS ◇)], [L05], [PDS vs OLS vs diff-in-means · *Cierre HF (10 min):* subir el dataset de A1 (Jobs) al Hub como dataset versionado, para que el primer caso del curso quede disponible y trazable. Se usa #code[HfApi().create_repo(..., repo_type="dataset")] + #code[upload_folder()] sobre la carpeta limpia de #code[data/]. Objetivo: que el estudiante vea que "datos listos" ya es un artefacto de producción, no solo un archivo local.],
   [S6], [Datos de entrenamiento, muestreo, etiquetas naturales], [Cap. *7* Datos de entrenamiento], [L06], [*Entrega A1* — identificación + PDS],
   [S7], [Operador do, puertas traseras, contrafactuales], [Cap. *8* Intervención y contrafactual], [L07], [Backdoor vs confusor latente (abstenerse)],
-  [S8], [Features sin fuga causal], [Cap. *9* Features sin fuga], [L08], [*Arranca A2* — cazar leakage],
+  [S8], [Features sin fuga causal], [Cap. *9* Features sin fuga], [L08], [*Arranca A2* — cazar leakage · *Cierre HF (10 min):* subir el dataset limpio de A2 (IHDP) al Hub, ya sin columnas de fuga causal, como dataset versionado. Se usa #code[HfApi().upload_folder(..., repo_type="dataset")] sobre la carpeta auditada por #code[auditar_features()]. Objetivo: el dataset "listo" (sin leakage) queda publicado y reutilizable, cerrando la sesión con un artefacto concreto.],
 )
 
 == Módulo 2 — Estimación causal y primer despliegue HF (Semanas 5–7)
@@ -189,7 +189,7 @@ Curso online asíncrono; dos sesiones semanales de 1 h 30. Formato orientativo: 
   [S10], [DML: PLR e IRM, eficiencia semiparamétrica y diagnóstico cuantitativo de soporte común (ESS/trimming)], [Cap. *11* DML], [L10], [PLR mínimo; ATE con IC; reportar ESS/n y trimming ($alpha^* approx 0.057$, Crump et al. 2009)],
   [S11], [Evaluación offline: baselines (+ RATE), Qini, placebo, sensibilidad en tres niveles (E-value / $R^2$ / Manski)], [Cap. *14* Validación], [L11], [*Entrega A2* — DML serializado → B1; profundización opcional: BLP/BEST/CLAN, intervalos conformes],
   [S12], [Despliegue como servicio (FastAPI + Docker); #code[/metadata] ahora machine-readable], [Cap. *15* Despliegue servicio], [L12], [*Arranca B1* — stub #code[/health] #code[/predict] #code[/metadata] (valida contra JSON Schema, Ap. G.4)],
-  [S13], [Meta-learners S/T/X/R/DR (el DR-learner como instancia del score canónico del Cap. 10)], [Cap. *12* Meta-learners], [L13], [*Arranca A3* — T-learner / CATE],
+  [S13], [Meta-learners S/T/X/R/DR (el DR-learner como instancia del score canónico del Cap. 10)], [Cap. *12* Meta-learners], [L13], [*Arranca A3* — T-learner / CATE · *Cierre HF (10 min):* subir el modelo DML de A2 (#code[.joblib] + #code[feature_list.json]) al Hub como artefacto versionado, para que el estimador "viva" en el Hub antes de la model card formal (S17). Se usa #code[HfApi().upload_file()] sobre #code[artifacts/A2/dml_estimator.joblib]. Objetivo: el modelo ya está publicado; en S17 solo falta documentarlo con la card.],
   [S14], [Árboles y bosques causales], [Cap. *13* Bosques causales], [L14], [*Entrega B1* + avance A3],
 )
 
