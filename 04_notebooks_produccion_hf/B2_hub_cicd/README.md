@@ -20,6 +20,29 @@
 | [`model_card/MODEL_CARD.md`](./model_card/MODEL_CARD.md) | Model card **causal** (estimando, supuestos, límites) |
 | [`templates/b1_smoke.yml`](./templates/b1_smoke.yml) | Plantilla educativa de humo B1 (no CI en la nube del monorepo) |
 | [`scripts/prepare_hub_bundle.sh`](./scripts/prepare_hub_bundle.sh) | Empaqueta archivos para un Hub **opcional** |
+| [`scripts/hf_refuerzos.py`](./scripts/hf_refuerzos.py) | Refuerzos HF del sílabo S2/S5/S8/S13 (setup, dataset A1, dataset A2, modelo A2) — degrada con aviso si falta token |
+
+## Refuerzos HF del sílabo (script)
+
+Los cuatro cierres cortos de Hugging Face (sesiones 2, 5, 8 y 13) viven en
+`scripts/hf_refuerzos.py`. Subida **opcional y manual** (monorepo 100 % local);
+el script degrada con aviso si falta `huggingface_hub` o el token, sin fallar.
+
+```bash
+python scripts/hf_refuerzos.py --help
+python scripts/hf_refuerzos.py setup                 # S2
+python scripts/hf_refuerzos.py dataset-a1 --dry-run  # S5
+python scripts/hf_refuerzos.py dataset-a2            # S8
+python scripts/hf_refuerzos.py model-a2              # S13
+```
+
+Checklist del refuerzo:
+
+- [ ] `setup` confirma la cuenta con el token local (S2)
+- [ ] `dataset-a1` publica observables de Jobs sin truth (S5)
+- [ ] `dataset-a2` publica IHDP medium limpio sin fuga (S8)
+- [ ] `model-a2` publica `dml_estimator.joblib` + sidecars (S13)
+- [ ] `--dry-run` muestra repos y archivos antes de subir nada
 
 ## Checklist estudiante (local)
 
