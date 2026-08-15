@@ -116,7 +116,7 @@ Siete módulos · 16 semanas. Cada semana combina lectura de monografía (Cap. N
 - *Módulo 5* — Monitoreo, discovery y frontera (Semanas 13–14) → *B4*
 - *Módulo 6* — Proyecto final en HF (Semanas 15–16)
 
-*Capítulos electivos del PDF (no bloquean el camino profesional):* Cap. 16 (PDS extendido), 17 (panel/DML-IV), 18 (mapa metodológico), 27 (deep causal), 28 (SCM/matrix completion). Ver plan de integración.
+*Capítulos electivos del PDF (no bloquean el camino profesional):* Cap. 5 (predicción vs. causalidad — solapa con el Cap. 1, que se prioriza en vivo en S1; lectura de refuerzo), 16 (PDS extendido), 17 (panel/DML-IV), 18 (mapa metodológico), 27 (deep causal), 28 (SCM/matrix completion). Ver plan de integración.
 
 = 6. Metodología y materiales del monorepo
 
