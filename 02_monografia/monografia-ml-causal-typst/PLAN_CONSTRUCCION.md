@@ -14,38 +14,38 @@ El documento `esqueleto_monografia.md` entregado antes de este plan tenía un er
 
 | # | Parte | Cap. | Título | Estado | Archivo |
 |---|---|---|---|---|---|
-| 0 | Introducción | 1 | Causalidad elemental y el problema fundamental de la inferencia causal | **N-A ✅ escrito** | `cap00_causalidad_elemental.typ` |
-| 0 | Introducción | 2 | Anatomía de un sistema de ML en producción | **N-B ✅ escrito** | `cap00b_anatomia_sistema.typ` |
-| I | Fundamentos estructurales y de datos | 3 | Modelos Causales Estructurales y la Jerarquía Causal de Pearl | **N-A ✅ escrito** | `cap00c_scm_pch.typ` |
-| I | Fundamentos estructurales y de datos | 4 | Ingeniería de datos para sistemas causales | **N-B ✅ escrito** | `cap00d_ingenieria_datos.typ` |
-| I | Fundamentos estructurales y de datos | 5 | Predicción y causalidad: por qué el ML no es causal por defecto | **E ✅ reubicado** (cap01) | `cap01_prediccion_causalidad.typ` |
-| I | Fundamentos estructurales y de datos | 6 | Regularización y post-selección | **E ✅ reubicado** (cap02) | `cap02_regularizacion_postseleccion.typ` |
-| I | Fundamentos estructurales y de datos | 7 | Datos de entrenamiento en sistemas causales | **N-B ✅ escrito** | `cap02b_datos_entrenamiento.typ` |
-| I | Fundamentos estructurales y de datos | 8 | Razonamiento intervencional y contrafactual | **N-A ✅ escrito** | `cap02c_intervencion_contrafactual.typ` |
-| I | Fundamentos estructurales y de datos | 9 | Ingeniería de *features* sin fuga causal | **N-B ✅ escrito** | `cap02d_features_sin_fuga.typ` |
-| II | Estimación causal flexible y primer despliegue | 10 | Ortogonalidad de Neyman y *cross-fitting* | **E ✅ reubicado** (cap03) | `cap03_ortogonalidad_crossfitting.typ` |
-| II | Estimación causal flexible y primer despliegue | 11 | Double Machine Learning: PLR e IRM | **E ✅ reubicado** (cap04) | `cap04_dml.typ` |
-| II | Estimación causal flexible y primer despliegue | 12 | Meta-learners | **E ✅ reubicado** (cap05) | `cap05_metalearners.typ` |
-| II | Estimación causal flexible y primer despliegue | 13 | Árboles y bosques causales | **E ✅ reubicado** (cap06) | `cap06_arboles_bosques.typ` |
-| II | Estimación causal flexible y primer despliegue | 14 | Validación y evaluación *offline* de estimadores causales | **✅ ampliado** (cap07 + sección N-B) | `cap07_validacion.typ` |
-| II | Estimación causal flexible y primer despliegue | 15 | Despliegue de un estimador causal como servicio | **N-B ✅ escrito** | `cap07b_despliegue_servicio.typ` |
-| III | Diseños de identificación con ML | 16 | Post-Double-Selection | **E ✅ reubicado** (cap08) | `cap08_pds.typ` |
-| III | Diseños de identificación con ML | 17 | Panel y DML-IV | **E ✅ reubicado** (cap09) | `cap09_panel_dmliv.typ` |
-| III | Diseños de identificación con ML | 18 | Mapa de decisión metodológica | **E ✅ reubicado** (cap10) | `cap10_mapa_decision.typ` |
-| IV | Publicación y operación en producción | 19 | *Model cards* causales y publicación en Hugging Face Hub | **N-B ✅ escrito** | `cap10b_hf_hub.typ` |
-| IV | Publicación y operación en producción | 20 | CI/CD para modelos causales | **N-B ✅ escrito** | `cap10c_cicd.typ` |
-| V | Heterogeneidad, políticas y *targeting* | 21 | Policy learning | **E ✅ reubicado** (cap11) | `cap11_policy_learning.typ` |
-| V | Heterogeneidad, políticas y *targeting* | 22 | Uplift/targeting | **E ✅ reubicado** (cap12) | `cap12_uplift_targeting.typ` |
-| VI | Explicación, equidad y decisión estructural | 23 | Explicación causal y equidad algorítmica | **N-A ✅ escrito** | `cap12b_explicacion_equidad.typ` |
-| VI | Explicación, equidad y decisión estructural | 24 | Ética e interpretabilidad en ML causal | **E ✅ reubicado** (cap16) | `cap16_etica_interpretabilidad.typ` |
-| VI | Explicación, equidad y decisión estructural | 25 | Decisiones estructurales bajo incertidumbre | **N-A ✅ escrito** | `cap12c_decisiones_estructurales.typ` |
-| VI | Explicación, equidad y decisión estructural | 26 | Generalización y transportabilidad entre dominios | **N-A ✅ escrito** | `cap12d_generalizacion.typ` |
-| VII | Métodos avanzados | 27 | Deep causal learning | **E ✅ reubicado** (cap13) | `cap13_deep_causal.typ` |
-| VII | Métodos avanzados | 28 | SCM y *matrix completion* | **E ✅ reubicado** (cap14) | `cap14_scm_matrix_completion.typ` |
-| VIII | Estructura, monitoreo y frontera | 29 | Descubrimiento de estructura causal | E (cap15) | `cap15_descubrimiento_grafos.typ` |
-| VIII | Estructura, monitoreo y frontera | 30 | Monitoreo de supuestos causales en producción | N-B | `cap15b_monitoreo.typ` |
-| VIII | Estructura, monitoreo y frontera | 31 | Aprendizaje continuo y panorama de RL causal | N-H | `cap15c_aprendizaje_continuo.typ` |
-| VIII | Estructura, monitoreo y frontera | 32 | El lado humano de los sistemas causales | N-B | `cap15d_lado_humano.typ` |
+| 0 | Introducción | 1 | Causalidad elemental y el problema fundamental de la inferencia causal | **N-A ✅ escrito** | `cap01_causalidad_elemental.typ` |
+| 0 | Introducción | 2 | Anatomía de un sistema de ML en producción | **N-B ✅ escrito** | `cap02_anatomia_sistema.typ` |
+| I | Fundamentos estructurales y de datos | 3 | Modelos Causales Estructurales y la Jerarquía Causal de Pearl | **N-A ✅ escrito** | `cap03_scm_pch.typ` |
+| I | Fundamentos estructurales y de datos | 4 | Ingeniería de datos para sistemas causales | **N-B ✅ escrito** | `cap04_ingenieria_datos.typ` |
+| I | Fundamentos estructurales y de datos | 5 | Predicción y causalidad: por qué el ML no es causal por defecto | **E ✅ reubicado** (cap01) | `cap05_prediccion_causalidad.typ` |
+| I | Fundamentos estructurales y de datos | 6 | Regularización y post-selección | **E ✅ reubicado** (cap02) | `cap06_regularizacion_postseleccion.typ` |
+| I | Fundamentos estructurales y de datos | 7 | Datos de entrenamiento en sistemas causales | **N-B ✅ escrito** | `cap07_datos_entrenamiento.typ` |
+| I | Fundamentos estructurales y de datos | 8 | Razonamiento intervencional y contrafactual | **N-A ✅ escrito** | `cap08_intervencion_contrafactual.typ` |
+| I | Fundamentos estructurales y de datos | 9 | Ingeniería de *features* sin fuga causal | **N-B ✅ escrito** | `cap09_features_sin_fuga.typ` |
+| II | Estimación causal flexible y primer despliegue | 10 | Ortogonalidad de Neyman y *cross-fitting* | **E ✅ reubicado** (cap03) | `cap10_ortogonalidad_crossfitting.typ` |
+| II | Estimación causal flexible y primer despliegue | 11 | Double Machine Learning: PLR e IRM | **E ✅ reubicado** (cap04) | `cap11_dml.typ` |
+| II | Estimación causal flexible y primer despliegue | 12 | Meta-learners | **E ✅ reubicado** (cap05) | `cap12_metalearners.typ` |
+| II | Estimación causal flexible y primer despliegue | 13 | Árboles y bosques causales | **E ✅ reubicado** (cap06) | `cap13_arboles_bosques.typ` |
+| II | Estimación causal flexible y primer despliegue | 14 | Validación y evaluación *offline* de estimadores causales | **✅ ampliado** (cap07 + sección N-B) | `cap14_validacion.typ` |
+| II | Estimación causal flexible y primer despliegue | 15 | Despliegue de un estimador causal como servicio | **N-B ✅ escrito** | `cap15_despliegue_servicio.typ` |
+| III | Diseños de identificación con ML | 16 | Post-Double-Selection | **E ✅ reubicado** (cap08) | `cap16_pds.typ` |
+| III | Diseños de identificación con ML | 17 | Panel y DML-IV | **E ✅ reubicado** (cap09) | `cap17_panel_dmliv.typ` |
+| III | Diseños de identificación con ML | 18 | Mapa de decisión metodológica | **E ✅ reubicado** (cap10) | `cap18_mapa_decision.typ` |
+| IV | Publicación y operación en producción | 19 | *Model cards* causales y publicación en Hugging Face Hub | **N-B ✅ escrito** | `cap19_hf_hub.typ` |
+| IV | Publicación y operación en producción | 20 | CI/CD para modelos causales | **N-B ✅ escrito** | `cap20_cicd.typ` |
+| V | Heterogeneidad, políticas y *targeting* | 21 | Policy learning | **E ✅ reubicado** (cap11) | `cap21_policy_learning.typ` |
+| V | Heterogeneidad, políticas y *targeting* | 22 | Uplift/targeting | **E ✅ reubicado** (cap12) | `cap22_uplift_targeting.typ` |
+| VI | Explicación, equidad y decisión estructural | 23 | Explicación causal y equidad algorítmica | **N-A ✅ escrito** | `cap23_explicacion_equidad.typ` |
+| VI | Explicación, equidad y decisión estructural | 24 | Ética e interpretabilidad en ML causal | **E ✅ reubicado** (cap16) | `cap24_etica_interpretabilidad.typ` |
+| VI | Explicación, equidad y decisión estructural | 25 | Decisiones estructurales bajo incertidumbre | **N-A ✅ escrito** | `cap25_decisiones_estructurales.typ` |
+| VI | Explicación, equidad y decisión estructural | 26 | Generalización y transportabilidad entre dominios | **N-A ✅ escrito** | `cap26_generalizacion.typ` |
+| VII | Métodos avanzados | 27 | Deep causal learning | **E ✅ reubicado** (cap13) | `cap27_deep_causal.typ` |
+| VII | Métodos avanzados | 28 | SCM y *matrix completion* | **E ✅ reubicado** (cap14) | `cap28_scm_matrix_completion.typ` |
+| VIII | Estructura, monitoreo y frontera | 29 | Descubrimiento de estructura causal | E (cap15) | `cap29_descubrimiento_grafos.typ` |
+| VIII | Estructura, monitoreo y frontera | 30 | Monitoreo de supuestos causales en producción | N-B | `cap30_monitoreo.typ` |
+| VIII | Estructura, monitoreo y frontera | 31 | Aprendizaje continuo y panorama de RL causal | N-H | `cap31_aprendizaje_continuo.typ` |
+| VIII | Estructura, monitoreo y frontera | 32 | El lado humano de los sistemas causales | N-B | `cap32_lado_humano.typ` |
 
 Apéndices nuevos: **G** (plantilla de *model card* causal), **H** (checklist de arquitectura de despliegue). Los apéndices A–F existentes se conservan; se revisan en la Etapa 10 por consistencia de referencias cruzadas.
 

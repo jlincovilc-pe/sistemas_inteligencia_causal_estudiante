@@ -112,34 +112,34 @@ La monografía aporta el **porqué** y el **lenguaje de supuestos**. El monorepo
 
 | Sesión | Tema (sílabo) | Cap. monografía (PDF) | Archivo `.typ` | Lab | Entrega | Valor de disrupción (1 línea) |
 |---:|---|---|---|---|---|---|
-| **S1** ★ | Causalidad elemental | **1** Causalidad elemental | `cap00_causalidad_elemental` | L01 | — | Deja de confundir correlación con “qué pasa si actuamos” |
-| **S2** ★ | Sistema ML en producción | **2** Anatomía del sistema | `cap00b_anatomia_sistema` | L02 | Lab 0 | El efecto no sirve si no se puede operar |
-| **S3** ★ | SCM y PCH | **3** SCM y PCH | `cap00c_scm_pch` | L03 | — | Clasifica preguntas: ver / hacer / imaginar |
-| **S4** ★ | Ingeniería de datos causal | **4** Ingeniería de datos | `cap00d_ingenieria_datos` | L04 | **A1 arranca** | Roles T/Y/X = contrato del sistema |
-| **S5** ★ | Regularización y PDS | **6** (+ **16** PDS avanzado ◇) | `cap02_…` / `cap08_pds` | L05 | A1 | Controles en alta dimensión sin “p-hacking” ingenuo |
-| **S6** ★ | Datos de entrenamiento | **7** Datos de entrenamiento | `cap02b_datos_entrenamiento` | L06 | **A1 entrega** | Splits y procedencia = auditabilidad |
-| **S7** ★ | do / contrafactuales | **8** Intervención y contrafactual | `cap02c_…` | L07 | — | Cuándo **no** estimar (abstenerse) |
-| **S8** ★ | Features sin fuga | **9** Features sin fuga | `cap02d_…` | L08 | **A2 arranca** | Evita “efectos” inventados por leakage |
-| **S9** ★ | Neyman / cross-fitting | **10** Ortogonalidad | `cap03_…` | L09 | A2 | Inferencia válida con ML flexible |
-| **S10** ★ | DML PLR/IRM | **11** DML | `cap04_dml` | L10 | A2 | **ATE** accionable con IC |
-| **S11** ★ | Eval offline | **14** Validación offline | `cap07_validacion` | L11 | **A2 entrega** | Confianza sin ground truth de negocio |
-| **S12** ★ | Despliegue servicio | **15** Despliegue como servicio | `cap07b_…` | L12 | **B1** | El efecto se consulta por API |
-| **S13** ★ | Meta-learners | **12** Meta-learners | `cap05_…` | L13 | **A3 arranca** | Heterogeneidad = targeting |
-| **S14** ★ | Bosques causales | **13** Árboles y bosques | `cap06_…` | L14 | **B1 entrega** | CATE robusto + servicio vivo |
+| **S1** ★ | Causalidad elemental | **1** Causalidad elemental | `cap01_causalidad_elemental` | L01 | — | Deja de confundir correlación con “qué pasa si actuamos” |
+| **S2** ★ | Sistema ML en producción | **2** Anatomía del sistema | `cap02_anatomia_sistema` | L02 | Lab 0 | El efecto no sirve si no se puede operar |
+| **S3** ★ | SCM y PCH | **3** SCM y PCH | `cap03_scm_pch` | L03 | — | Clasifica preguntas: ver / hacer / imaginar |
+| **S4** ★ | Ingeniería de datos causal | **4** Ingeniería de datos | `cap04_ingenieria_datos` | L04 | **A1 arranca** | Roles T/Y/X = contrato del sistema |
+| **S5** ★ | Regularización y PDS | **6** (+ **16** PDS avanzado ◇) | `cap06_regularizacion_postseleccion` / `cap16_pds` | L05 | A1 | Controles en alta dimensión sin “p-hacking” ingenuo |
+| **S6** ★ | Datos de entrenamiento | **7** Datos de entrenamiento | `cap07_datos_entrenamiento` | L06 | **A1 entrega** | Splits y procedencia = auditabilidad |
+| **S7** ★ | do / contrafactuales | **8** Intervención y contrafactual | `cap08_intervencion_contrafactual` | L07 | — | Cuándo **no** estimar (abstenerse) |
+| **S8** ★ | Features sin fuga | **9** Features sin fuga | `cap09_features_sin_fuga` | L08 | **A2 arranca** | Evita “efectos” inventados por leakage |
+| **S9** ★ | Neyman / cross-fitting | **10** Ortogonalidad | `cap10_ortogonalidad_crossfitting` | L09 | A2 | Inferencia válida con ML flexible |
+| **S10** ★ | DML PLR/IRM | **11** DML | `cap11_dml` | L10 | A2 | **ATE** accionable con IC |
+| **S11** ★ | Eval offline | **14** Validación offline | `cap14_validacion` | L11 | **A2 entrega** | Confianza sin ground truth de negocio |
+| **S12** ★ | Despliegue servicio | **15** Despliegue como servicio | `cap15_despliegue_servicio` | L12 | **B1** | El efecto se consulta por API |
+| **S13** ★ | Meta-learners | **12** Meta-learners | `cap12_metalearners` | L13 | **A3 arranca** | Heterogeneidad = targeting |
+| **S14** ★ | Bosques causales | **13** Árboles y bosques | `cap13_arboles_bosques` | L14 | **B1 entrega** | CATE robusto + servicio vivo |
 | **S15** ★ | Integración | (repaso Caps. 1–15) | — | L15 | **A3 entrega** | Checklist de sistema causal |
 | **S16** | Examen / checkpoint | — | — | — | Parcial | Síntesis, no nuevo método |
-| **S17** ★ | HF Hub + model card | **19** Model cards y Hub | `cap10b_…` | L17 | **B2** | Documentar supuestos = activo reutilizable |
-| **S18** ★ | CI/CD | **20** CI/CD causal | `cap10c_…` | L18 | **B2 entrega** | No se publica un efecto roto |
-| **S19** ★ | Explicación y equidad | **23** Explicación y equidad | `cap12b_…` | L19 | — | Efecto ≠ importancia SHAP |
-| **S20** ★ | Interpretabilidad / fairness | **24** Ética e interpretabilidad | `cap16_…` | L20 | — | Auditoría responsable del CATE |
-| **S21** ★ | Decisiones estructurales | **25** Decisiones bajo incertidumbre | `cap12c_…` | L21 | — | Formalizar la decisión de negocio |
-| **S22** ★ | Policy learning | **21** Policy learning | `cap11_…` | L22 | **A4 arranca** | Presupuesto → quién tratar |
-| **S23** ★ | Uplift / targeting | **22** Uplift | `cap12_…` | L23 | **A4 + B3** | Política en **Space** HF |
-| **S24** ★ | Transportabilidad | **26** Generalización | `cap12d_…` | L24 | — | ¿El efecto vale en *mi* mercado? |
-| **S25** ★ | Drift / monitoreo | **30** Monitoreo en producción | `cap15b_…` | L25 | **B4** | Detectar cuando el efecto deja de valer |
-| **S26** ★ | Discovery | **29** Descubrimiento de grafos | `cap15_…` | L26 | B3 cierre | Estructura cuando el DAG no está dado |
-| **S27** ★ | Continual / RL panorama | **31** Aprendizaje continuo (+ RL) | `cap15c_…` | L27 | B4 | Reentrenar vs alertar |
-| **S28** ★ | Lado humano | **32** Lado humano | `cap15d_…` | L28 | **B4 entrega** | Comunicar ATE a no técnicos |
+| **S17** ★ | HF Hub + model card | **19** Model cards y Hub | `cap19_hf_hub` | L17 | **B2** | Documentar supuestos = activo reutilizable |
+| **S18** ★ | CI/CD | **20** CI/CD causal | `cap20_cicd` | L18 | **B2 entrega** | No se publica un efecto roto |
+| **S19** ★ | Explicación y equidad | **23** Explicación y equidad | `cap23_explicacion_equidad` | L19 | — | Efecto ≠ importancia SHAP |
+| **S20** ★ | Interpretabilidad / fairness | **24** Ética e interpretabilidad | `cap24_etica_interpretabilidad` | L20 | — | Auditoría responsable del CATE |
+| **S21** ★ | Decisiones estructurales | **25** Decisiones bajo incertidumbre | `cap25_decisiones_estructurales` | L21 | — | Formalizar la decisión de negocio |
+| **S22** ★ | Policy learning | **21** Policy learning | `cap21_policy_learning` | L22 | **A4 arranca** | Presupuesto → quién tratar |
+| **S23** ★ | Uplift / targeting | **22** Uplift | `cap22_uplift_targeting` | L23 | **A4 + B3** | Política en **Space** HF |
+| **S24** ★ | Transportabilidad | **26** Generalización | `cap26_generalizacion` | L24 | — | ¿El efecto vale en *mi* mercado? |
+| **S25** ★ | Drift / monitoreo | **30** Monitoreo en producción | `cap30_monitoreo` | L25 | **B4** | Detectar cuando el efecto deja de valer |
+| **S26** ★ | Discovery | **29** Descubrimiento de grafos | `cap29_descubrimiento_grafos` | L26 | B3 cierre | Estructura cuando el DAG no está dado |
+| **S27** ★ | Continual / RL panorama | **31** Aprendizaje continuo (+ RL) | `cap31_aprendizaje_continuo` | L27 | B4 | Reentrenar vs alertar |
+| **S28** ★ | Lado humano | **32** Lado humano | `cap32_lado_humano` | L28 | **B4 entrega** | Comunicar ATE a no técnicos |
 | **S29–S32** ★ | Proyecto final | Ap. E + G/H + guía `06_` | — | P1–P4 | **40%** | Sistema causal en HF de punta a punta |
 
 ### 3.1 Capítulos de monografía **fuera del camino crítico** (profundización ◇)

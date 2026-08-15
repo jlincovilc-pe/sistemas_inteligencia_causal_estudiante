@@ -655,14 +655,14 @@ Insistir en que `identification.json` del benchmark es una **anotación de dise�
 
 ## 11. Mapeo a monografía y sílabo
 
-| Notebook | Capítulos monografía (esqueleto) | Módulo sílabo |
+| Notebook | Capítulos monografía | Módulo sílabo |
 |---|---|---|
-| A1 | Cap. 1, 4, 5 (causal elemental, datos, PDS) | Módulo 1 |
-| A2 | Cap. 9–10 (Neyman, DML) | Módulo 2 |
-| A3 | Cap. 13–14 (meta-learners, bosques) | Módulo 2 |
-| A4 | Cap. 20–21 (policy, uplift) | Módulo 4 |
+| A1 | Cap. 1, 4, 6 (+16 opcional) (causal elemental, datos, regularización/PDS) | Módulo 1 |
+| A2 | Cap. 10–11 (Neyman, DML) | Módulo 2 |
+| A3 | Cap. 12–13 (meta-learners, bosques) | Módulo 2 |
+| A4 | Cap. 21–22 (policy, uplift) | Módulo 4 |
 
-La evaluación offline sin truth (A3) enlaza con Cap. 11 híbrido del esqueleto.
+La evaluación offline sin truth (A3) enlaza con Cap. 14 (Validación).
 
 ---
 

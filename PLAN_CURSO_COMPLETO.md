@@ -41,7 +41,7 @@ Si hay conflicto entre un doc antiguo y **este archivo**, gana **este archivo**.
 ### 1.2 Qué SÍ es (modelo en capas)
 
 ```text
-Capa 0  Monografía          26 capítulos  ↔  sesiones de contenido
+Capa 0  Monografía          32 capítulos  ↔  sesiones de contenido
 Capa 1  Labs de sesión      L01–L28       30–50 min, smoke ligero
 Capa 2  Entregas Serie A    A1–A4         caso de estudio (estimación)
 Capa 3  Entregas Serie B    B1–B4         producción Hugging Face
@@ -297,30 +297,30 @@ A4 policy.joblib:
 | 1 | S2 | Sistema ML en producción | 2B | L02 | Lab 0 entorno |
 | 2 | S3 | SCM y PCH | 3A | L03 | — |
 | 2 | S4 | Ingeniería de datos causal | 4B | L04 | **arranca A1** |
-| 3 | S5 | Regularización y PDS | 5A | L05 | A1 |
-| 3 | S6 | Datos de entrenamiento | 6B | L06 | **entrega A1** |
-| 4 | S7 | do-calculus / contrafactuales | 7A | L07 | — |
-| 4 | S8 | Features sin fuga causal | 8B | L08 | **arranca A2** |
-| 5 | S9 | Neyman / cross-fitting | 9A | L09 | A2 |
-| 5 | S10 | DML PLR/IRM | 10A | L10 | A2 |
-| 6 | S11 | Eval offline causal | 11 | L11 | **entrega A2** |
-| 6 | S12 | Despliegue servicio | 12B | L12 | **arranca B1** |
-| 7 | S13 | Meta-learners | 13A | L13 | **arranca A3** |
-| 7 | S14 | Bosques causales | 14A | L14 | **entrega B1** · A3 |
+| 3 | S5 | Regularización y PDS | 6A (+16 ◇) | L05 | A1 |
+| 3 | S6 | Datos de entrenamiento | 7B | L06 | **entrega A1** |
+| 4 | S7 | do-calculus / contrafactuales | 8A | L07 | — |
+| 4 | S8 | Features sin fuga causal | 9B | L08 | **arranca A2** |
+| 5 | S9 | Neyman / cross-fitting | 10A | L09 | A2 |
+| 5 | S10 | DML PLR/IRM | 11A | L10 | A2 |
+| 6 | S11 | Eval offline causal | 14A | L11 | **entrega A2** |
+| 6 | S12 | Despliegue servicio | 15B | L12 | **arranca B1** |
+| 7 | S13 | Meta-learners | 12A | L13 | **arranca A3** |
+| 7 | S14 | Bosques causales | 13A | L14 | **entrega B1** · A3 |
 | 8 | S15 | Integración | — | L15 | **entrega A3** |
 | 8 | S16 | Checkpoint / parcial | — | — | Examen 15% |
-| 9 | S17 | HF Hub + model cards | 15B | L17 | **arranca B2** |
-| 9 | S18 | CI/CD causal | 16B | L18 | **entrega B2** |
-| 10 | S19 | Explicación y equidad | 17A | L19 | — |
-| 10 | S20 | SHAP / fairness | 18A | L20 | — |
-| 11 | S21 | Decisiones estructurales | 19A | L21 | — |
-| 11 | S22 | Policy learning | 20A | L22 | **arranca A4** |
-| 12 | S23 | Uplift / targeting | 21A | L23 | **entrega A4** · **arranca B3** |
-| 12 | S24 | Transportabilidad | 22A | L24 | — |
-| 13 | S25 | Drift / monitoreo causal | 23B | L25 | **arranca B4** |
-| 13 | S26 | Discovery PC/NOTEARS | 24A | L26 | **entrega B3** |
-| 14 | S27 | Continual learning / RL panorama | 25 | L27 | B4 |
-| 14 | S28 | Lado humano | 26B | L28 | **entrega B4** |
+| 9 | S17 | HF Hub + model cards | 19B | L17 | **arranca B2** |
+| 9 | S18 | CI/CD causal | 20B | L18 | **entrega B2** |
+| 10 | S19 | Explicación y equidad | 23A | L19 | — |
+| 10 | S20 | SHAP / fairness | 24A | L20 | — |
+| 11 | S21 | Decisiones estructurales | 25A | L21 | — |
+| 11 | S22 | Policy learning | 21A | L22 | **arranca A4** |
+| 12 | S23 | Uplift / targeting | 22A | L23 | **entrega A4** · **arranca B3** |
+| 12 | S24 | Transportabilidad | 26A | L24 | — |
+| 13 | S25 | Drift / monitoreo causal | 30B (+17 ◇) | L25 | **arranca B4** |
+| 13 | S26 | Discovery PC/NOTEARS | 29A | L26 | **entrega B3** |
+| 14 | S27 | Continual learning / RL panorama | 31B | L27 | B4 |
+| 14 | S28 | Lado humano | 32B | L28 | **entrega B4** |
 | 15 | S29 | Proyecto + mentoría | — | P1 | Proyecto |
 | 15 | S30 | Peer review | — | P2 | 10% |
 | 16 | S31 | Presentaciones finales | — | P3 | **entrega final 40%** |
@@ -481,7 +481,7 @@ El monorepo de práctica se considera **listo para dictar el curso** cuando:
 
 ## 17. Resumen en 10 líneas
 
-1. El curso tiene **32 sesiones** y **26 capítulos**; la práctica calificada son **8 notebooks (4A+4B)**, no 32.
+1. El curso tiene **32 sesiones** y **32 capítulos**; la práctica calificada son **8 notebooks (4A+4B)**, no 32.
 2. La intuición “cada semana causal + producción” se realiza con **labs L##** + monografía, no con 32 entregas.
 3. **Serie A ya está construida** sobre JOBS / IHDP_M / IHDP del monorepo.
 4. **Serie B** despliega A2→API/Hub y A4→Space, más monitoreo.
