@@ -53,6 +53,13 @@ docker build -f 04_notebooks_produccion_hf/B1_fastapi_dml/Dockerfile -t causal-b
 docker run --rm -p 8000:8000 causal-b1
 ```
 
+## Hugging Face Spaces (manual)
+
+1. Crear Space en Hugging Face con **SDK: Docker** (CPU).  
+2. Subir el `Dockerfile` de esta carpeta y el código de `app/` (más `requirements.txt` y el artefacto `artifacts/dml_estimator.joblib`).  
+3. HF Spaces con SDK Docker espera el servicio en el puerto **7860**: el `Dockerfile` actual expone `8000` (`EXPOSE 8000` y `CMD … --port 8000`), por lo que hay que alinearlo (cambiar a `--port 7860` y `EXPOSE 7860`, o mapear) para que el Space responda en `https://<usuario>-<space>.hf.space/`.  
+4. Confirmar en la pestaña *App* que `/health`, `/metadata` y `/predict` responden; el humo local (`grade_b1.py`) sigue siendo la prueba de validación.
+
 ## Humo (DoD B1)
 
 - [x] `GET /health` → `status=ok`

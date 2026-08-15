@@ -37,4 +37,11 @@ python ../autograder/grade_b4.py
 2. **Tasa de tratamiento** en ventana  
 3. **Proxy de contraste** (ilustrativo; no sustituye ATE de B1)
 
+## Hugging Face Spaces (manual)
+
+1. Crear Space en Hugging Face con **SDK: Streamlit** (CPU).  
+2. Subir `app.py`, `requirements.txt` y la carpeta `data/` (baseline `ihdp_medium` + drift simulado) necesaria para arrancar el dashboard.  
+3. HF Spaces ejecuta `streamlit run app.py` automáticamente; el puerto lo gestiona la plataforma (7860).  
+4. Advertencia: si el Space queda **público**, los datos de `data/` son **sintéticos** y el drift es **simulado solo con fines docentes** — no representan ningún sistema real en producción. Mantener ese aviso visible en la UI.
+
 Humo: con drift inyectado, ≥1 alerta KS sobre umbral configurable.

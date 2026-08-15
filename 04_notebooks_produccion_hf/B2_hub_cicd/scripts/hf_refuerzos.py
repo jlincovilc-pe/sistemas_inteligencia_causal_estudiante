@@ -29,9 +29,12 @@ Degradación (no falla)
 ----------------------
 - Si ``huggingface_hub`` no está instalado: aviso + exit 0 (nada se sube).
 - Si no hay token configurado (``AuthorizationError``): aviso con el comando
-  para configurarlo + exit 0 (nada se sube).
+  para configurarlo + exit 0 (nada se sube). Este chequeo ocurre **antes** de
+  cualquier ``create_repo``/``upload_*`` en todos los comandos.
 - Si el artefacto de origen no existe (p. ej. A2 joblib aún no exportado):
   aviso + exit 0 para no romper el flujo de una sesión que corre antes que A2.
+- Si no se puede resolver el namespace (``who["name"]`` ausente) y no se pasó
+  ``--repo-id``: aviso + exit 0 (nada se sube).
 - Cualquier otro error real (red, repo duplicado sin ``exist_ok``, etc.):
   exit 1 con el mensaje.
 
@@ -45,7 +48,11 @@ Uso
     python scripts/hf_refuerzos.py dataset-a1            # S5
     python scripts/hf_refuerzos.py dataset-a2            # S8
     python scripts/hf_refuerzos.py model-a2              # S13
-    python scripts/hf_refuerzos.py todo --repo-id-base eco490-2026
+    python scripts/hf_refuerzos.py todo --repo-id <usuario>/mis-repos-a1
+
+Los repos por defecto usan el **namespace de la cuenta autenticada**
+(``who["name"]``), p. ej. ``<usuario>/jobs-observed``. Si no se puede obtener
+el namespace, el script avisa y exige ``--repo-id`` con la cuenta propia.
 
 Checklist de entrega del refuerzo HF (script)
 ---------------------------------------------
@@ -125,6 +132,40 @@ def _authenticated(api) -> Optional[Dict]:
         return None
 
 
+def _get_api_and_who(args: argparse.Namespace):
+    """Devuelve ``(api, who)`` con degradación: ``(None, None)`` si falta
+    ``huggingface_hub`` o el token (el aviso ya se imprime). Nunca sube nada
+    sin autenticación."""
+    HfApi, _ = _huggingface_hub()
+    if HfApi is None:
+        return None, None
+    api = HfApi()
+    who = _authenticated(api)
+    if who is None:
+        return None, None
+    return api, who
+
+
+def _default_repo_id(api, who: Optional[Dict], args: argparse.Namespace, name: str) -> Optional[str]:
+    """Repo id por defecto con el namespace del usuario autenticado.
+
+    Si se pasó ``--repo-id``, se respeta. Si no, usa ``who["name"]`` (el
+    namespace de la cuenta autenticada, no una org fija del curso). Si no se
+    puede obtener el namespace, avisa que hay que pasar ``--repo-id`` y
+    devuelve ``None`` (nada se sube).
+    """
+    if args.repo_id:
+        return args.repo_id
+    ns = (who or {}).get("name")
+    if not ns:
+        _warning(
+            "no se pudo obtener tu namespace de Hugging Face. "
+            f"Pasa --repo-id con tu cuenta, p. ej. --repo-id <usuario>/{name}."
+        )
+        return None
+    return f"{ns}/{name}"
+
+
 def _scenario_files_ready(scenario_dir: Path) -> List[Path]:
     """Lista los archivos observables existentes de un escenario (sin truth)."""
     return [scenario_dir / name for name in DATASET_FILES if (scenario_dir / name).is_file()]
@@ -148,8 +189,14 @@ def _readme_for_dataset(scenario_id: str, title: str, description: str) -> str:
 
 
 def _publish_dataset(api, repo_id: str, scenario_dir: Path, scenario_id: str,
-                     title: str, description: str, *, dry_run: bool) -> None:
-    """Crea/actualiza un repo de tipo dataset con los observables del escenario."""
+                     title: str, description: str, *, session_tag: str,
+                     dry_run: bool) -> None:
+    """Crea/actualiza un repo de tipo dataset con los observables del escenario.
+
+    ``session_tag`` identifica la sesión del refuerzo (``S05`` o ``S08``) para
+    el mensaje de commit, de modo que cada dataset quede etiquetado con su
+    sesión real y no con un rótulo genérico.
+    """
     files = _scenario_files_ready(scenario_dir)
     if not files:
         _warning(f"no hay archivos observables en {scenario_dir}; nada que publicar")
@@ -173,7 +220,7 @@ def _publish_dataset(api, repo_id: str, scenario_dir: Path, scenario_id: str,
             repo_id=repo_id,
             repo_type="dataset",
             folder_path=str(tmp_path),
-            commit_message=f"Refuerzo HF S05/S08 — {title}",
+            commit_message=f"Refuerzo HF {session_tag} — {title}",
         )
     print(f"  ✓ publicado: https://huggingface.co/datasets/{repo_id}")
 
@@ -243,14 +290,8 @@ def _publish_model(api, repo_id: str, artifact_dir: Path, *, dry_run: bool) -> N
 
 def cmd_setup(args: argparse.Namespace) -> int:
     """S2 — verificar cuenta y token."""
-    HfApi, notebook_login = _huggingface_hub()
-    if HfApi is None:
-        return 0
-    api = HfApi()
-    who = _authenticated(api)
-    if who is None:
-        if args.dry_run:
-            print("[setup] dry-run: verificaría la cuenta con el token configurado")
+    api, who = _get_api_and_who(args)
+    if api is None:
         return 0
     name = who.get("name") or who.get("fullname") or "unknown"
     print(f"[setup] Sesión 2 OK — cuenta HF autenticada: {name}")
@@ -260,9 +301,14 @@ def cmd_setup(args: argparse.Namespace) -> int:
 
 def cmd_dataset_a1(args: argparse.Namespace) -> int:
     """S5 — dataset de A1 (Jobs) ya procesado."""
-    repo_id = args.repo_id or "eco490-a1/jobs-observed"
+    api, who = _get_api_and_who(args)
+    if api is None:
+        return 0  # degradación: aviso de autenticación ya impreso
+    repo_id = _default_repo_id(api, who, args, "jobs-observed")
+    if repo_id is None:
+        return 0
     _publish_dataset(
-        _huggingface_hub()[0](),
+        api,
         repo_id,
         SCENARIO_A1,
         scenario_id="real_jobs",
@@ -271,6 +317,7 @@ def cmd_dataset_a1(args: argparse.Namespace) -> int:
             "Escenario `real/jobs` del Causal Benchmark Ecosystem: programa de "
             "capacitación laboral (n=1722, ATE generador ≈ 1600). Solo observables."
         ),
+        session_tag="S05",
         dry_run=args.dry_run,
     )
     return 0
@@ -278,9 +325,14 @@ def cmd_dataset_a1(args: argparse.Namespace) -> int:
 
 def cmd_dataset_a2(args: argparse.Namespace) -> int:
     """S8 — dataset limpio de A2 (IHDP medium, sin fuga de truth)."""
-    repo_id = args.repo_id or "eco490-a2/ihdp-medium-observed"
+    api, who = _get_api_and_who(args)
+    if api is None:
+        return 0
+    repo_id = _default_repo_id(api, who, args, "ihdp-medium-observed")
+    if repo_id is None:
+        return 0
     _publish_dataset(
-        _huggingface_hub()[0](),
+        api,
         repo_id,
         SCENARIO_A2,
         scenario_id="synthetic_inference_ihdp_medium",
@@ -290,6 +342,7 @@ def cmd_dataset_a2(args: argparse.Namespace) -> int:
             "Publicado tras la auditoría de features sin fuga causal del Cap. 9 "
             "(solo columnas observables; sin `truth_*.csv`)."
         ),
+        session_tag="S08",
         dry_run=args.dry_run,
     )
     return 0
@@ -297,9 +350,14 @@ def cmd_dataset_a2(args: argparse.Namespace) -> int:
 
 def cmd_model_a2(args: argparse.Namespace) -> int:
     """S13 — modelo DML de A2 al Hub como artefacto versionado."""
-    repo_id = args.repo_id or "eco490-a2/dml-plr-ate"
+    api, who = _get_api_and_who(args)
+    if api is None:
+        return 0
+    repo_id = _default_repo_id(api, who, args, "dml-plr-ate")
+    if repo_id is None:
+        return 0
     _publish_model(
-        _huggingface_hub()[0](),
+        api,
         repo_id,
         ARTIFACTS_A2,
         dry_run=args.dry_run,
