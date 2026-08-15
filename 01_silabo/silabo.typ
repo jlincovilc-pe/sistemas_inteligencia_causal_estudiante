@@ -32,7 +32,7 @@
         #text(font: sans-font, size: 10.5pt)[
           *Audiencia:* Profesionales (data / ML / product / analytics / risk / ops) \
           *Modalidad:* Online, asíncrona con checkpoints síncronos \
-          *Duración:* 16 semanas (4 meses) · 32 sesiones de 1 h 30 \
+          *Duración:* 16 semanas (4 meses) · 32 sesiones de 1 h 30 · *48 horas cronológicas* \
           *Balance:* 50% teoría causal · 50% práctica (casos + HF) \
           *Curso:* ECO-490 / ECON-540 — Edición 2026
         ]
@@ -121,6 +121,8 @@ Siete módulos · 16 semanas. Cada semana combina lectura de monografía (Cap. N
 = 6. Metodología y materiales del monorepo
 
 Curso online asíncrono; dos sesiones semanales de 1 h 30. Formato orientativo: 20 min concepto · 50–60 min práctica (lab) · 10–20 min cierre. Los pipelines completos son entregas quincenales, no actividades de una sola sesión.
+
+*Carga horaria total:* *48 horas cronológicas* (32 sesiones × 1 h 30), distribuidas en 16 semanas. Sobre ese total, el formato orientativo reserva ≈ 1/3 a concepto y ≈ 2/3 a práctica guiada y cierre.
 
 #table(
   columns: (1.2fr, 2.5fr, 2fr),
