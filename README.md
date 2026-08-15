@@ -35,6 +35,7 @@ Esta tabla es el mapa **por documento** (qué archivo manda en general). Para el
 | [`04_notebooks_produccion_hf/`](./04_notebooks_produccion_hf/) | Serie B (B1–B4): API, card/CI plantilla, Space, monitor |
 | [`05_labs_sesion/`](./05_labs_sesion/) | 27 labs L01–L28 (sin L16) |
 | [`06_proyecto_final/`](./06_proyecto_final/) | Guía + rúbrica + checklist humo |
+| [`07_diapositivas/`](./07_diapositivas/) | 32 mazos Touying por capítulo (PDF 1–32) |
 | [`data_benchmark_causal/`](./data_benchmark_causal/) | Datasets del curso (Jobs, IHDP, sintéticos, …) |
 | [`scripts/audit_repo.sh`](./scripts/audit_repo.sh) | Auditoría local de práctica |
 
@@ -67,6 +68,14 @@ Semanas 15–16  →  proyecto final (HF opcional)        (40%)
 | B2 | B1 | Model card + plantilla CI (sin Actions en la nube) |
 | B3 | A4 policy | Gradio Space (local; push HF opcional) |
 | B4 | drift sim. | Dashboard de monitoreo (local) |
+
+### Hugging Face como hilo conductor
+
+El curso tiene **10 puntos de contacto** con Hugging Face: **4 de refuerzo corto**
+(cierre de 10 min) en S2 (setup cuenta/token), S5 (dataset A1 al Hub), S8 (dataset
+limpio A2 al Hub) y S13 (modelo DML A2 al Hub); y **6 de contenido central** en S12
+(endpoint B1), S17 (Hub/model cards B2), S18 (CI/CD B2), S23 (Space B3), S25
+(monitoreo B4) y S31 (aprendizaje continuo/RL). Detalle en el sílabo §7.1.
 
 ### Entorno (local)
 

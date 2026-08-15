@@ -108,6 +108,10 @@ CAUSAL_ML_PRODUCTION/
 │   ├── guia_proyecto.md
 │   ├── rubrica_proyecto.md
 │   └── checklist_humo.md
+├── 07_diapositivas/                ← 32 mazos Touying por capítulo
+│   ├── plantilla_monografia.typ
+│   ├── build.sh
+│   └── capitulos/cap01…cap32.typ
 └── data_benchmark_causal/          ← datasets (existente)
 ```
 

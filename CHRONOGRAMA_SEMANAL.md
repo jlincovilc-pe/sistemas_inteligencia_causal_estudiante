@@ -10,6 +10,7 @@
 | Labs | `05_labs_sesion/Lxx/lab.ipynb` (+ `lab_core.py`) |
 | Serie A | `03_notebooks_caso_estudio/notebooks/` |
 | Serie B | `04_notebooks_produccion_hf/` |
+| Diapositivas | `07_diapositivas/capitulos/` (mazo Touying por capítulo) |
 | Proyecto | `06_proyecto_final/` |
 | Integración | `PLAN_INTEGRACION_MONOGRAFIA.md` |
 | Instructors | `docs/NOTA_INSTRUCTORS.md` |

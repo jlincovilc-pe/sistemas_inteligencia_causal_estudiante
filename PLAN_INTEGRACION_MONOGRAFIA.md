@@ -269,6 +269,14 @@ La monografía aporta el **porqué** y el **lenguaje de supuestos**. El monorepo
 | README corto “uso en el curso profesional” (Jobs/IHDP como *casos de decisión*) | P1 |
 | No requiere cambio de esquema en v1 | — |
 
+### 5.9 Diapositivas (`07_diapositivas/`)
+
+| Acción | Prioridad |
+|---|---|
+| 32 mazos Touying por capítulo (PDF 1–32), completos y compilando (`./build.sh` → 32 OK) | ✅ hecho |
+| Mantener la numeración de archivos alineada al PDF (cap01–cap32), no a los nombres históricos | P0 |
+| Si la monografía cambia, revisar los labels citados en cada mazo contra el capítulo fuente | P1 |
+
 ---
 
 ## 6. Hilo de producto único (storyline que unifica libro y repo)

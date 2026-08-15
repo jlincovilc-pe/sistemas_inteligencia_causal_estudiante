@@ -1,8 +1,14 @@
 # Plan de sprint — Diapositivas de *IA Causal en Producción*
 
+> **Estado (2026-08-15):** el sprint de contenido está **completado**. Los 32 mazos
+> (`07_diapositivas/capitulos/cap01…cap32.typ`) ya tienen su contenido profundo
+> trasladado de la monografía y compilan (`./build.sh` → 32 OK). Este documento queda
+> como **registro del plan** (qué se decidió y cómo) y como referencia de los punteros
+> de contenido fuente; ya no hay `// TODO(sprint)` pendientes.
+
 Plan de contenido, capítulo a capítulo, para los 32 mazos de diapositivas del curso
 (ECO-490/ECON-540). Este documento es el artefacto de planificación; la implementación
-Typst vive en `07_diapositivas/capitulos/capNN_slug.typ` (stubs ya creados, ver §0) y se
+Typst vive en `07_diapositivas/capitulos/capNN_slug.typ` (mazos ya completados, ver §0) y se
 construye sobre `07_diapositivas/plantilla_monografia.typ`.
 
 **Cómo usar este documento en el sprint:** cada entrada de capítulo trae (a) metadata de
