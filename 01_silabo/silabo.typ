@@ -268,6 +268,16 @@ Actions), cada una construida sobre la anterior. La segunda pasada de mejoras de
 monografía (Etapa 2) tocó específicamente lo que se documenta y valida en el Hub —
 no la arquitectura del despliegue, que no cambió.
 
+*Hugging Face como hilo conductor.* A lo largo del curso hay *10 puntos de contacto*
+con Hugging Face: *4 de refuerzo corto* (cierre de 10 minutos) en las sesiones *2*
+(setup de cuenta/token), *5* (subir dataset de A1 al Hub), *8* (subir dataset limpio
+de A2 sin fuga al Hub) y *13* (subir el modelo DML de A2 al Hub como artefacto); y
+*6 de contenido central* en las sesiones *12* (despliegue del endpoint, B1), *17*
+(Hub y model cards, B2), *18* (CI/CD, B2), *23* (Space de política, B3), *25*
+(monitoreo, B4) y *31* (aprendizaje continuo / RL). Los refuerzos cortos repiten el
+mismo patrón —subir un artefacto con #code[huggingface_hub]— para que el estudiante
+llegue a la model card formal de S17 con el flujo ya familiar.
+
 #table(
   columns: (auto, 0.9fr, 2.2fr, 1.1fr),
   align: left,
