@@ -37,6 +37,9 @@ META = {
             "Versionar entorno y datos es lo que permite que otro equipo reproduzca la decisión, no solo el número.",
             "Sin este andamiaje, cualquier resultado causal queda como anécdota, no como activo reutilizable por la organización.",
         ],
+        "checklist_extra": [
+            "Cuenta HF creada y token configurado en S2 (llave del hilo de producción; lo verifica `check_hf_setup()`)",
+        ],
     },
     "L03_pch_clasificar": {
         "session": "S3",
@@ -350,13 +353,21 @@ def _code(text: str) -> dict:
     }
 
 
+def _extra_checklist(meta: dict) -> str:
+    """Ítems extra del checklist (p. ej. el paso HF obligatorio de L02)."""
+    items = meta.get("checklist_extra", [])
+    if not items:
+        return ""
+    return "".join(f"- [ ] {item}\n" for item in items) + "\n"
+
+
 def build_notebook(lab_dir: Path, meta: dict) -> dict:
     name = lab_dir.name
     title = name.replace("_", " ")
     header = f"""# {name}
 
-**Sesión:** {meta['session']} · **Lectura monografía:** {meta['cap']}  
-**Entrega / hito:** {meta['entrega']}  
+**Sesión:** {meta['session']} · **Lectura monografía:** {meta['cap']}
+**Entrega / hito:** {meta['entrega']}
 **Código de referencia:** `lab_core.py` · **Smoke:** `checks.py`
 
 ### Pregunta de valor (disrupción)
@@ -365,7 +376,7 @@ def build_notebook(lab_dir: Path, meta: dict) -> dict:
 
 ### Aviso sobre los datos
 
-Los escenarios del monorepo son **benchmarks documentados** (a menudo sintéticos con semántica de literatura).  
+Los escenarios del monorepo son **benchmarks documentados** (a menudo sintéticos con semántica de literatura).
 Ver `metadata.json` → `what_is_real` / `what_is_synthetic` cuando aplique. No uses `truth_*` fuera de evaluación.
 """
     setup = """from pathlib import Path
@@ -407,7 +418,7 @@ print("all checks OK")
 - [ ] `run_lab()` y checks en verde
 - [ ] Repasé la implicación de negocio (§4)
 - [ ] Sé qué entrega alimenta: **{meta['entrega']}**
-
+{_extra_checklist(meta)}
 ## Siguiente
 
 Consulta el sílabo (`01_silabo/silabo.pdf`) y `PLAN_INTEGRACION_MONOGRAFIA.md`.
