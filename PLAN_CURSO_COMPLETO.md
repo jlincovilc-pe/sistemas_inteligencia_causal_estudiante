@@ -71,7 +71,7 @@ Capa 4  Proyecto final      P             S29–S32 (ensambla A+B)
 ## 3. Estructura de carpetas objetivo del monorepo
 
 ```text
-CAUSAL_ML_PRODUCTION/
+SISTEMA_INTELIGENCIA_CAUSAL/
 ├── PLAN_CURSO_COMPLETO.md          ← este documento (fuente de verdad)
 ├── README.md                       ← índice corto → apunta aquí
 ├── 01_silabo/
@@ -498,4 +498,4 @@ El monorepo de práctica se considera **listo para dictar el curso** cuando:
 
 ---
 
-*Plan único — Sistema de Inteligencia Causal · monorepo CAUSAL_ML_PRODUCTION · 2026.*
+*Plan único — Sistema de Inteligencia Causal · monorepo SISTEMA_INTELIGENCIA_CAUSAL · 2026.*

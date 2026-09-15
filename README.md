@@ -95,7 +95,7 @@ máquina, no se comparte entre SO.
 
 ```bash
 git clone <URL-del-repo>
-cd repositorio_causal_ml_produccion_estudiante
+cd repositorio_sistema_inteligencia_causal
 ```
 
 ### Linux
