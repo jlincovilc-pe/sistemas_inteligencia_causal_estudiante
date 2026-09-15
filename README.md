@@ -1,4 +1,4 @@
-# IA Causal en Producción — Monorepo del curso
+# Sistema de Inteligencia Causal — Monorepo del curso
 
 Curso ECO-490 / ECON-540 (2026): causalidad estructural + estimación con ML + ingeniería de sistemas en Hugging Face.  
 **16 semanas · 32 sesiones · 50% teoría / 50% producción.**

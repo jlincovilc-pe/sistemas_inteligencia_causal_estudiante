@@ -11,7 +11,7 @@ library_name: sklearn
 
 # Model card causal — Estimador DML (Serie A2 → B1/B2)
 
-> **Curso:** IA Causal en Producción (ECO-490 / ECON-540)  
+> **Curso:** Sistema de Inteligencia Causal (ECO-490 / ECON-540)  
 > **Artefacto:** `dml_estimator.joblib` (PLR / partialling-out)  
 > **Servicio:** B1 FastAPI (`/predict`, `/health`, `/metadata`)  
 > **Uso previsto: profesional / educativo — NO uso clínico.** Este estimador entrena sobre un benchmark sintético (IHDP-*style*) y sirve para practicar el flujo estimar→servir→documentar de un sistema causal en producción; no está validado para decidir tratamientos clínicos ni políticas públicas reales.

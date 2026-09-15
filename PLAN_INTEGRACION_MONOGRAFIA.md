@@ -1,6 +1,6 @@
 # Plan profesional de integración — Monografía × Monorepo
 
-**Documento de integración** del curso *IA Causal en Producción* (ECO-490 / ECON-540, 2026).  
+**Documento de integración** del curso *Sistema de Inteligencia Causal* (ECO-490 / ECON-540, 2026).  
 Complementa (no reemplaza) [`PLAN_CURSO_COMPLETO.md`](./PLAN_CURSO_COMPLETO.md). Cuando haya conflicto de **calendario o de práctica**, gana el plan de práctica; cuando haya conflicto de **numeración de capítulos del libro**, gana este documento + el PDF en `02_monografia/`.
 
 **Uso semana a semana (profesor / estudiante):** [`CHRONOGRAMA_SEMANAL.md`](./CHRONOGRAMA_SEMANAL.md) y §12 de [`01_silabo/silabo.pdf`](./01_silabo/silabo.pdf).
@@ -451,4 +451,4 @@ Una auditoría independiente (evidencia contra código, no contra este checklist
 
 ---
 
-*Plan de integración monografía × monorepo — IA Causal en Producción · enfoque profesional · 2026.*
+*Plan de integración monografía × monorepo — Sistema de Inteligencia Causal · enfoque profesional · 2026.*

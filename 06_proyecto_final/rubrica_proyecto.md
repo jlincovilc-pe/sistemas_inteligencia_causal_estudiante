@@ -15,7 +15,7 @@
 | Peer review (calidad de feedback) | 5 | S30 |
 | **Total** | **100** | |
 
-**¿Por qué 5 pts de diferencia?** El curso se llama *IA Causal en Producción* con foco en **Hugging Face**: el despliegue real (Hub o Space, con URL pública o log de subida) es la vía esperada y se premia con el techo completo de 18 pts. La opción **local documentada** queda como *resguardo ante fallas de conectividad el día de la entrega*, no como alternativa gratuita: quien la use entrega un sistema que no es consultable desde afuera, y por eso su techo es 13 pts. Los 5 pts de diferencia salen del propio criterio de Despliegue — el total sigue sumando **100**.
+**¿Por qué 5 pts de diferencia?** El curso se llama *Sistema de Inteligencia Causal* con foco en **Hugging Face**: el despliegue real (Hub o Space, con URL pública o log de subida) es la vía esperada y se premia con el techo completo de 18 pts. La opción **local documentada** queda como *resguardo ante fallas de conectividad el día de la entrega*, no como alternativa gratuita: quien la use entrega un sistema que no es consultable desde afuera, y por eso su techo es 13 pts. Los 5 pts de diferencia salen del propio criterio de Despliegue — el total sigue sumando **100**.
 
 **No aprueba** si el humo falla (endpoint/Space caído o predicciones absurdas), **o** si falta la sección de disrupción predictivo vs causal.
 

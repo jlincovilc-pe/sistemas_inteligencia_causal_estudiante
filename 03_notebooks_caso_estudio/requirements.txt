@@ -1,4 +1,4 @@
-# Serie A — notebooks de caso de estudio (IA Causal en Producción)
+# Serie A — notebooks de caso de estudio (Sistema de Inteligencia Causal)
 # No FastAPI / Docker / Gradio / huggingface_hub (those belong to Serie B).
 
 numpy>=1.24

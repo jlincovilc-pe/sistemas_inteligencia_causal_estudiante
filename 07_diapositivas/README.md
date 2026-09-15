@@ -1,4 +1,4 @@
-# Diapositivas — *IA Causal en Producción* (ECO-490 / ECON-540)
+# Diapositivas — *Sistema de Inteligencia Causal* (ECO-490 / ECON-540)
 
 32 mazos de diapositivas (uno por capítulo de la monografía), compilados en PDF.
 

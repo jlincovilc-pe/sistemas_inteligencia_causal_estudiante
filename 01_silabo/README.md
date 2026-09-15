@@ -1,4 +1,4 @@
-# Sílabo — IA Causal en Producción
+# Sílabo — Sistema de Inteligencia Causal
 
 | Artefacto | Ruta |
 |---|---|

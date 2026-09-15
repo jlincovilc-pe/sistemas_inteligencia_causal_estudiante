@@ -1,6 +1,6 @@
 # Rúbrica — Notebook A3: CATE (meta-learners y bosque causal)
 
-**Curso:** IA Causal en Producción (ECO-490 / ECON-540)  
+**Curso:** Sistema de Inteligencia Causal (ECO-490 / ECON-540)  
 **Notebook:** `notebooks/A3_cate_meta_learners_ihdp.ipynb`  
 **Dataset:** `real/ihdp` (`scenario_id`: `real_ihdp`)  
 **Peso total:** 100 puntos  

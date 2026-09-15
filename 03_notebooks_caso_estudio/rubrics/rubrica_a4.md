@@ -1,6 +1,6 @@
 # Rúbrica — Notebook A4: Policy learning y uplift (IHDP)
 
-**Curso:** IA Causal en Producción (ECO-490 / ECON-540)  
+**Curso:** Sistema de Inteligencia Causal (ECO-490 / ECON-540)  
 **Notebook:** `notebooks/A4_policy_uplift_ihdp.ipynb`  
 **Dataset:** `real/ihdp` (`scenario_id`: `real_ihdp`; continúa A3)  
 **Peso total:** 100 puntos  

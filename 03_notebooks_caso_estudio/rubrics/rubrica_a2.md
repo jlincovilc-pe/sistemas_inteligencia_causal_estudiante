@@ -1,6 +1,6 @@
 # Rúbrica — Notebook A2: Double Machine Learning (PLR)
 
-**Curso:** IA Causal en Producción (ECO-490 / ECON-540)  
+**Curso:** Sistema de Inteligencia Causal (ECO-490 / ECON-540)  
 **Notebook:** `notebooks/A2_dml_ihdp_medium.ipynb`  
 **Dataset:** `synthetic/inference/ihdp_medium` (`scenario_id`: `synthetic_inference_ihdp_medium`)  
 **Peso total:** 100 puntos  

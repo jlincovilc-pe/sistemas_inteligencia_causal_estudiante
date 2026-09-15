@@ -1,6 +1,6 @@
 # Nota para instructors — camino profesional ★ vs electivos ◇
 
-**Curso:** IA Causal en Producción (ECO-490 / ECON-540, 2026)  
+**Curso:** Sistema de Inteligencia Causal (ECO-490 / ECON-540, 2026)  
 **Audiencia:** profesionales (data / ML / product / analytics / risk / ops), no perfil de investigación básica.
 
 ## Fuentes de verdad

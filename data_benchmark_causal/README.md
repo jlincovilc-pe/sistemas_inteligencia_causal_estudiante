@@ -14,7 +14,7 @@ Repositorio monolítico para **evaluación reproducible** de algoritmos de descu
 
 ---
 
-## Uso en el curso profesional (IA Causal en Producción)
+## Uso en el curso profesional (Sistema de Inteligencia Causal)
 
 Este ecosistema es el **repositorio de datos** del monorepo del curso (`../README.md`). Solo dos escenarios alimentan el hilo de producto (CDS) de las entregas A/B — el resto queda disponible para exploración o proyecto final:
 

@@ -1,4 +1,4 @@
-# IA Causal en Producción — Edición 2026
+# Sistema de Inteligencia Causal — Edición 2026
 
 Monografía del Curso ECO-490 / ECON-540. Título anterior: *Machine Learning Causal para Economistas*. Esta edición integra la filosofía pedagógica de *Designing Machine Learning Systems* (Chip Huyen) y el aparato conceptual de *Causal Artificial Intelligence* (Elias Bareinboim) con el contenido original de estimación causal, con un balance de 50% teoría / 50% ingeniería de producción.
 

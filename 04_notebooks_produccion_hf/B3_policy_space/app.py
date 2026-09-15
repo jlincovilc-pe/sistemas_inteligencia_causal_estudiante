@@ -146,7 +146,7 @@ def load_card_excerpt(max_chars: int = 2500) -> str:
 DISCLAIMER = """
 ### Aviso (obligatorio)
 
-Esta interfaz es un **artefacto docente** del curso *IA Causal en Producción*, pensado para que un **decisor de negocio** (no solo un analista) explore la política sin código.
+Esta interfaz es un **artefacto docente** del curso *Sistema de Inteligencia Causal*, pensado para que un **decisor de negocio** (no solo un analista) explore la política sin código.
 
 - Los datos del escenario IHDP en el monorepo son **sintéticos** (nombres estilo Hill).
 - La política refleja una **capacidad limitada: solo se puede atender al 20% de la población**, y prioriza por **efecto estimado**, no por quién tiene peor pronóstico.

@@ -1,4 +1,4 @@
-# Cronograma semana a semana — IA Causal en Producción
+# Cronograma semana a semana — Sistema de Inteligencia Causal
 
 **Curso:** ECO-490 / ECON-540 · Edición 2026 · 16 semanas · 32 sesiones  
 **Audiencia:** profesionales · **Norte:** casos de estudio + producción en Hugging Face + utilidad del **efecto causal**

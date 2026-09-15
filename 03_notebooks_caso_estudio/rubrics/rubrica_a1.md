@@ -1,6 +1,6 @@
 # Rúbrica — Notebook A1: Identificación causal (Jobs)
 
-**Curso:** IA Causal en Producción (ECO-490 / ECON-540)  
+**Curso:** Sistema de Inteligencia Causal (ECO-490 / ECON-540)  
 **Notebook:** `notebooks/A1_identificacion_jobs.ipynb`  
 **Dataset:** `real/jobs` (`scenario_id`: `real_jobs`)  
 **Peso total:** 100 puntos  

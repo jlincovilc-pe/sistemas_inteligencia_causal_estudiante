@@ -1,4 +1,4 @@
-# Plan único del curso — IA Causal en Producción
+# Plan único del curso — Sistema de Inteligencia Causal
 
 **Documento canónico de la práctica** del monorepo. Unifica sílabo (32 sesiones), labs, Serie A/B, datasets, evaluación y orden de construcción de código.
 
@@ -498,4 +498,4 @@ El monorepo de práctica se considera **listo para dictar el curso** cuando:
 
 ---
 
-*Plan único — IA Causal en Producción · monorepo CAUSAL_ML_PRODUCTION · 2026.*
+*Plan único — Sistema de Inteligencia Causal · monorepo CAUSAL_ML_PRODUCTION · 2026.*

@@ -1,6 +1,6 @@
 # Serie A — Notebooks de caso de estudio
 
-Material de **diseño e implementación** de los cuatro notebooks de caso de estudio del curso *IA Causal en Producción*.
+Material de **diseño e implementación** de los cuatro notebooks de caso de estudio del curso *Sistema de Inteligencia Causal*.
 
 **Base dir (esta carpeta):** `03_notebooks_caso_estudio/`  
 **Datos (obligatorio, monorepo):** `../data_benchmark_causal/causal_benchmark_synthetic/datasets/`  
