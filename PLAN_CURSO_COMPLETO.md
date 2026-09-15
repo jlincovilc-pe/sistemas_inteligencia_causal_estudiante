@@ -21,7 +21,7 @@
 | Carpeta / archivo | Rol residual |
 |---|---|
 | `01_silabo/silabo.typ` | Texto oficial del sílabo (evaluación, bibliografía) |
-| `02_monografia/monografia-ml-causal-typst/` | Monografía Typst **32 caps.** + PDF compilado |
+| `02_monografia/` | Monografía Typst **32 caps.** + PDF compilado |
 | `02_monografia/HISTORICO.md` | Nota: esqueleto antiguo no es canónico |
 | `03_notebooks_caso_estudio/` | Serie A implementada + plan A histórico |
 | `04_notebooks_produccion_hf/propuesta_*.md` | Detalle B1–B4 (se implementa según §6) |

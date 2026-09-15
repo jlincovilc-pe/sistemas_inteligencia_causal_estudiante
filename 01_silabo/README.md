@@ -2,15 +2,7 @@
 
 | Artefacto | Ruta |
 |---|---|
-| Fuente Typst | [`silabo.typ`](./silabo.typ) |
 | **PDF** | [`silabo.pdf`](./silabo.pdf) |
-
-## Compilar
-
-```bash
-cd 01_silabo
-typst compile silabo.typ silabo.pdf
-```
 
 ## Alineación (edición 2026)
 

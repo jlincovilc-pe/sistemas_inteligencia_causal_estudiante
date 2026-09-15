@@ -197,7 +197,7 @@ La monografía aporta el **porqué** y el **lenguaje de supuestos**. El monorepo
 
 ## 5. Integración por artefacto (qué tocar en cada carpeta)
 
-### 5.1 Monografía (`02_monografia/monografia-ml-causal-typst/`)
+### 5.1 Monografía (`02_monografia/`)
 
 | Acción | Prioridad | Descripción |
 |---|---|---|

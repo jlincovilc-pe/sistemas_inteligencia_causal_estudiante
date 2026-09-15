@@ -8,12 +8,14 @@
 | Datos y transparencia | 8 | monorepo (o esquema equivalente); `what_is_real` / synthetic |
 | Estimación correcta (ATE y/o CATE) | 15 | código reproducible; sin fuga de truth en entrenamiento |
 | **Disrupción: predictivo vs causal** | **15** | *Obligatorio* — ver § abajo |
-| Despliegue (API y/o Space en HF o local documentado) | 18 | humo obligatorio |
+| Despliegue (API y/o Space en **HF real** o local documentado) | 18 / 13 | **18 pts solo con push real verificable a HF Hub/Space (URL pública o log de subida); 13 pts como techo si es local documentado.** Humo obligatorio en ambos casos |
 | Model card causal | 10 | estimando, supuestos, límites (Ap. G) |
 | Monitoreo o límites operativos | 8 | drift / alertas / “cuándo no usar” |
 | Defensa y claridad (negocio + técnico) | 9 | video + README en 3 capas (Cap. 32) |
 | Peer review (calidad de feedback) | 5 | S30 |
 | **Total** | **100** | |
+
+**¿Por qué 5 pts de diferencia?** El curso se llama *IA Causal en Producción* con foco en **Hugging Face**: el despliegue real (Hub o Space, con URL pública o log de subida) es la vía esperada y se premia con el techo completo de 18 pts. La opción **local documentada** queda como *resguardo ante fallas de conectividad el día de la entrega*, no como alternativa gratuita: quien la use entrega un sistema que no es consultable desde afuera, y por eso su techo es 13 pts. Los 5 pts de diferencia salen del propio criterio de Despliegue — el total sigue sumando **100**.
 
 **No aprueba** si el humo falla (endpoint/Space caído o predicciones absurdas), **o** si falta la sección de disrupción predictivo vs causal.
 

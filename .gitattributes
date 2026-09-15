@@ -1,0 +1,19 @@
+# Normaliza finales de línea a LF en el repo y al hacer checkout,
+# sin importar el sistema operativo (Windows/macOS/Linux).
+* text=auto eol=lf
+
+# Scripts de shell: forzar LF explícitamente (un CRLF rompe el shebang en Linux/macOS).
+*.sh text eol=lf
+
+# Binarios: nunca tocar finales de línea ni intentar diff de texto.
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.joblib binary
+*.pkl binary
+*.parquet binary
+*.gz binary
+*.zip binary

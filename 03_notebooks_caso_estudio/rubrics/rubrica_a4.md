@@ -125,7 +125,3 @@ La nota final la define la rúbrica humana; `grade_a4.py` es un **filtro de sani
 2. `artifacts/A4/policy.joblib` con interfaz `predict` → B3.  
 3. `policy_card.md` auditable + `uplift_curve.png` + `equity_table.csv`.  
 4. Discusión de límites + sección final de welfare oracle marcada.
-
----
-
-*Alineada con `PLAN_NOTEBOOKS_SERIE_A.md` §6.4.*

@@ -8,7 +8,7 @@ Entregar un **sistema de IA causal en producción** orientado a *profesionales*,
 
 1. Pregunta causal + identificación (estilo A1)  
 2. Estimación ATE y/o CATE (estilo A2/A3)  
-3. Servicio o Space desplegable en **Hugging Face** o local documentado (estilo B1 y/o B3)  
+3. Servicio o Space desplegable en **Hugging Face (vía preferida y recomendada)** — Hub o Space con URL pública; el **local documentado es vía de contingencia** ante fallas de conectividad, no una opción equivalente (estilo B1 y/o B3; rúbrica: 18 pts con push real vs 13 pts local)  
 4. Model card causal (estilo B2 / Ap. G)  
 5. Al menos una señal de monitoreo (estilo B4)  
 6. **Sección obligatoria:** comparación *ranking predictivo vs política causal* bajo el mismo presupuesto (disrupción del efecto)  

@@ -120,7 +120,3 @@ La nota final la define la rúbrica humana; el script `grade_a1.py` es un **filt
 2. DAG + lista de supuestos.  
 3. Tabla de estimadores (DIM, OLS, PDS) y mención al scorecard.  
 4. Justificación escrita de identificación (~½ página).
-
----
-
-*Alineada con `PLAN_NOTEBOOKS_SERIE_A.md` §6.1.*

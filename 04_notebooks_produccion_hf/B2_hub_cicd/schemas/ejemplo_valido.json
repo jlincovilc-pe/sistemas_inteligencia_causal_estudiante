@@ -1,0 +1,38 @@
+{
+  "schema_version": "causal-model-card-v1",
+  "estimando": {
+    "tipo": "ATE",
+    "formula": "E[Y(1) - Y(0)]"
+  },
+  "diseno_identificacion": {
+    "tipo": "observacional",
+    "metodo": "DML-PLR con cross-fitting (K=5, LassoCV nuisances)"
+  },
+  "supuestos": [
+    {"nombre": "no_confusion", "covariables": ["x1", "x2", "x3", "x4", "x5"]},
+    {"nombre": "soporte_comun", "verificado": true, "evidencia": "ESS/n=0.82"}
+  ],
+  "poblacion": {
+    "variables_delimitadoras": {"scenario_id": "synthetic_inference_ihdp_medium"},
+    "fuente": "data_benchmark_causal/causal_benchmark_synthetic, split train, n=1200"
+  },
+  "metricas": {
+    "efecto": 3.528,
+    "ic95": [2.886, 4.169],
+    "n": 1200,
+    "spec": {"learner": "LassoCV", "K": 5, "dml_variant": "DML2"}
+  },
+  "validacion": {
+    "placebo": {"paso": true, "fecha": "2026-08-14"},
+    "blp_beta2_pvalor": 0.03
+  },
+  "no_usar_para": [
+    "Decisiones clinicas o de politica publica reales",
+    "Poblaciones fuera del escenario synthetic_inference_ihdp_medium",
+    "Decisiones individuales sin considerar el intervalo de confianza"
+  ],
+  "version": {
+    "modelo": "v1.0",
+    "hash_datos_entrenamiento": "sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+  }
+}

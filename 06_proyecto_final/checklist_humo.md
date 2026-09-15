@@ -8,6 +8,11 @@
 - [ ] Model card con estimando + supuestos + población + límites  
 - [ ] Aviso de datos sintéticos visible  
 
+## Despliegue real en Hugging Face (opcional, pero visible)
+
+- [ ] URL del Space o del repo del Hub **viva** antes de la defensa en video (S31): abrir `https://huggingface.co/<usuario>/<repo>` y confirmar que la App / README carga y responde  
+- [ ] (Si aplica) guardar el log de subida o la URL pública como evidencia verificable del push (rúbrica: 18 pts con push real vs 13 pts local)  
+
 ## Script de ejemplo (API)
 
 ```bash

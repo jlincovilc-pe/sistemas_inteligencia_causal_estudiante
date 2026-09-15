@@ -10,7 +10,6 @@ Sin internet ni datasets externos en el flujo del estudiante.
 
 | Documento | Contenido |
 |---|---|
-| [`PLAN_NOTEBOOKS_SERIE_A.md`](./PLAN_NOTEBOOKS_SERIE_A.md) | Plan de construcción (datasets, estructura, rúbricas, autograder, DoD) |
 | [`../PLAN_CURSO_COMPLETO.md`](../PLAN_CURSO_COMPLETO.md) | Plan de práctica del monorepo (sesiones, A/B, labs) |
 
 ## Datasets (decisión del plan)
@@ -41,7 +40,6 @@ Todos los notebooks usan escenarios de:
 ```text
 03_notebooks_caso_estudio/
 ├── README.md
-├── PLAN_NOTEBOOKS_SERIE_A.md
 ├── requirements.txt
 ├── environment.yml
 ├── lib/                          # helpers importables (sin estado de kernel)
@@ -179,7 +177,6 @@ Los JSON de meta usan **rutas relativas al monorepo** (no paths absolutos de má
 
 ## Estado
 
-- [x] Planificación (`PLAN_NOTEBOOKS_SERIE_A.md`)
 - [x] Infra `lib/` + requirements
 - [x] Notebooks A1–A4
 - [x] Autograders, rúbricas, `expected_ranges.yaml`

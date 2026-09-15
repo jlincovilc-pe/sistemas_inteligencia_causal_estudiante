@@ -125,7 +125,3 @@ La nota final la define la rúbrica humana; `grade_a3.py` es un **filtro de sani
 2. Gráfico comparativo de distribuciones de CATE.  
 3. `artifacts/A3/cate_scores_test.csv` (y plots) para A4.  
 4. Discusión de elección de learner + sección final PEHE marcada.
-
----
-
-*Alineada con `PLAN_NOTEBOOKS_SERIE_A.md` §6.3.*

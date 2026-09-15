@@ -118,7 +118,3 @@ La nota final la define la rúbrica humana; `grade_a2.py` es un **filtro de sani
 2. Tabla comparativa de especificaciones.  
 3. Artefactos en `artifacts/A2/` para B1.  
 4. Model card / reflexión metodológica no vacía.
-
----
-
-*Alineada con `PLAN_NOTEBOOKS_SERIE_A.md` §6.2.*

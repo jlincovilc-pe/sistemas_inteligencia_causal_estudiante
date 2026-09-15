@@ -3,7 +3,7 @@
 Curso ECO-490 / ECON-540 (2026): causalidad estructural + estimación con ML + ingeniería de sistemas en Hugging Face.  
 **16 semanas · 32 sesiones · 50% teoría / 50% producción.**
 
-> **Uso local.** Este monorepo vive **solo en tu máquina**. No hay remoto GitHub configurado, ni CI en la nube, ni publicación automática.  
+> **Sin CI en la nube.** Este monorepo se ejecuta y audita en local; no hay publicación automática configurada.  
 > La Serie B *enseña* conceptos de HF (API, model card, Space, monitor); el push a Hub es **opcional y manual** del estudiante en su propia cuenta.
 
 ## Fuente de verdad
@@ -77,27 +77,107 @@ limpio A2 al Hub) y S13 (modelo DML A2 al Hub); y **6 de contenido central** en 
 (endpoint B1), S17 (Hub/model cards B2), S18 (CI/CD B2), S23 (Space B3), S25
 (monitoreo B4) y S31 (aprendizaje continuo/RL). Detalle en el sílabo §7.1.
 
-### Entorno (local)
+---
+
+## Instalación
+
+Requisitos comunes a los tres sistemas operativos:
+
+- **Git** (para clonar el repo).
+- **Python 3.10+** (probado con 3.10–3.12).
+- **Docker** — solo si vas a levantar el servicio B1 en contenedor (opcional; Docker Desktop en macOS/Windows, Docker Engine en Linux).
+
+Cada carpeta de entrega (`03_notebooks_caso_estudio/`, `04_notebooks_produccion_hf/B*/`) trae su propio
+`requirements.txt` (o `environment.yml`) y usa un `.venv` **local, no versionado** — se recrea en cada
+máquina, no se comparte entre SO.
+
+### Clonar el repositorio (igual en los tres SO)
 
 ```bash
-# Serie A
+git clone <URL-del-repo>
+cd repositorio_causal_ml_produccion_estudiante
+```
+
+### Linux
+
+```bash
 cd 03_notebooks_caso_estudio
-python3 -m venv .venv && source .venv/bin/activate
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 pytest tests/ -q
+```
 
-# B1
-cd ../04_notebooks_produccion_hf/B1_fastapi_dml
-python3 -m venv .venv && source .venv/bin/activate
+Si `econml`/`doubleml` fallan al compilar, instala las cabeceras de build de tu distro
+(ej. Ubuntu/Debian: `sudo apt install build-essential python3-dev`) o usa la alternativa
+conda de abajo.
+
+### macOS
+
+```bash
+cd 03_notebooks_caso_estudio
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+pytest tests/ -q
+```
+
+Requiere las Command Line Tools de Xcode para compilar `econml`/`doubleml`
+(`xcode-select --install` si no las tienes). En Apple Silicon, si `pip install` falla
+para algún paquete científico, usa la alternativa conda de abajo (Miniforge).
+
+### Windows
+
+**PowerShell** (nativo, sin WSL):
+
+```powershell
+cd 03_notebooks_caso_estudio
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+pytest tests/ -q
+```
+
+Si PowerShell bloquea la activación del entorno (`No se puede cargar el archivo... no
+está firmado digitalmente`), habilita scripts para tu usuario una vez:
+`Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`.
+
+`econml`/`doubleml` pueden requerir los **Microsoft C++ Build Tools**
+([visualstudio.microsoft.com/visual-cpp-build-tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/))
+para compilar dependencias nativas. Si prefieres evitarlo, usa la alternativa conda de
+abajo, que trae binarios precompilados.
+
+Los dos scripts en Bash del repo (`scripts/audit_repo.sh` y
+`04_notebooks_produccion_hf/B2_hub_cicd/scripts/prepare_hub_bundle.sh`) **no corren en
+PowerShell/CMD nativos** — necesitas [Git Bash](https://git-scm.com/downloads) (se
+instala junto con Git para Windows) o WSL para ejecutarlos.
+
+### Alternativa multiplataforma: conda/mamba (recomendada si `pip` da problemas)
+
+Evita compilar nada a mano; usa binarios precompilados en cualquier SO:
+
+```bash
+cd 03_notebooks_caso_estudio
+conda env create -f environment.yml
+conda activate causal-serie-a
+pytest tests/ -q
+```
+
+### B1 (FastAPI + Docker) — mismos comandos en los tres SO
+
+```bash
+cd 04_notebooks_produccion_hf/B1_fastapi_dml
+python -m venv .venv          # Windows: python  |  Linux/macOS: python3
+source .venv/bin/activate     # Windows PowerShell: .venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 pytest tests/ -q && python ../autograder/grade_b1.py
 ```
 
-Los `.venv` **no** se versionan; se recrean con los `requirements.txt` / `environment.yml`.
-
 ---
 
 ## Auditoría local
+
+Linux/macOS, o Windows vía Git Bash/WSL:
 
 ```bash
 bash scripts/audit_repo.sh
@@ -110,17 +190,17 @@ Plantilla educativa de CI (no activa):
 
 ---
 
-## Git (solo local)
+## Git
 
 ```bash
-# Ya inicializado en esta carpeta, sin remoto.
 git status
-# No hacer: git remote add …  /  git push
+git pull
 ```
 
 ---
 
 ## Licencia y citación
 
-Código de benchmarks: MIT (ver `data_benchmark_causal/`).  
+Todo el repositorio se publica bajo licencia **MIT** — ver [`LICENSE`](./LICENSE).  
+Los benchmarks en `data_benchmark_causal/` incluyen además su propio `LICENSE` (MIT) por submódulo.  
 Citar fuentes originales de escenarios (Sachs, Hill, LaLonde, etc.) según `CITATION.cff`.

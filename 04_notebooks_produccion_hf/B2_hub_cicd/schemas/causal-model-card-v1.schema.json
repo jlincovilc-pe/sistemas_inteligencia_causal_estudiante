@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/curso-ia-causal/monorepo/blob/main/04_notebooks_produccion_hf/B2_hub_cicd/schemas/causal-model-card-v1.schema.json",
+  "title": "Causal Model Card v1",
+  "description": "Contrato machine-readable de la model card causal (02_monografia/apendices/apG_model_card_causal.typ, sec-apG-schema). Corresponde 1:1 con los campos obligatorios de la tabla de sec-apG-campos y con el endpoint /metadata del Cap. 15.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "estimando",
+    "diseno_identificacion",
+    "supuestos",
+    "poblacion",
+    "metricas",
+    "validacion",
+    "no_usar_para",
+    "version"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "causal-model-card-v1"
+    },
+    "estimando": {
+      "type": "object",
+      "description": "Que cantidad causal exacta estima el modelo (no basta con nombrar la variable de resultado).",
+      "required": ["tipo", "formula"],
+      "additionalProperties": false,
+      "properties": {
+        "tipo": {
+          "type": "string",
+          "enum": ["ATE", "ATT", "CATE", "LATE", "policy_value"]
+        },
+        "formula": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "diseno_identificacion": {
+      "type": "object",
+      "description": "Experimental, cuasi-experimental u observacional puro.",
+      "required": ["tipo", "metodo"],
+      "additionalProperties": false,
+      "properties": {
+        "tipo": {
+          "type": "string",
+          "enum": ["RCT", "cuasi", "observacional"]
+        },
+        "metodo": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "supuestos": {
+      "type": "array",
+      "description": "Lista explicita de supuestos declarados (no confusion, soporte comun, exclusion del instrumento, tendencias paralelas, etc.).",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["nombre"],
+        "properties": {
+          "nombre": { "type": "string", "minLength": 1 },
+          "covariables": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "verificado": { "type": "boolean" },
+          "evidencia": { "type": "string" }
+        },
+        "if": {
+          "properties": { "verificado": { "const": true } },
+          "required": ["verificado"]
+        },
+        "then": {
+          "required": ["evidencia"],
+          "properties": {
+            "evidencia": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    },
+    "poblacion": {
+      "type": "object",
+      "description": "Poblacion de entrenamiento: variables delimitadoras y fuente de datos.",
+      "required": ["variables_delimitadoras", "fuente"],
+      "additionalProperties": false,
+      "properties": {
+        "variables_delimitadoras": {
+          "type": "object",
+          "minProperties": 1
+        },
+        "fuente": { "type": "string", "minLength": 1 }
+      }
+    },
+    "metricas": {
+      "type": "object",
+      "description": "Efecto puntual, IC, tamano de muestra y especificacion del estimador.",
+      "required": ["efecto", "ic95", "n", "spec"],
+      "additionalProperties": false,
+      "properties": {
+        "efecto": { "type": "number" },
+        "ic95": {
+          "type": "array",
+          "items": { "type": "number" },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "n": { "type": "integer", "minimum": 1 },
+        "spec": {
+          "type": "object",
+          "required": ["learner", "K", "dml_variant"],
+          "additionalProperties": false,
+          "properties": {
+            "learner": { "type": "string", "minLength": 1 },
+            "K": { "type": "integer", "minimum": 2 },
+            "dml_variant": {
+              "type": "string",
+              "description": "DML1 (mediana por fold) o DML2 (promedio ponderado, recomendado) -- Nota tecnica sec-cap10_teorema_dml.",
+              "enum": ["DML1", "DML2"]
+            }
+          }
+        }
+      }
+    },
+    "validacion": {
+      "type": "object",
+      "description": "Resultados de la suite de refutacion mas reciente (Cap. 14).",
+      "required": ["placebo"],
+      "additionalProperties": false,
+      "properties": {
+        "placebo": {
+          "type": "object",
+          "required": ["paso", "fecha"],
+          "additionalProperties": false,
+          "properties": {
+            "paso": { "type": "boolean" },
+            "fecha": { "type": "string" }
+          }
+        },
+        "blp_beta2_pvalor": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "no_usar_para": {
+      "type": "array",
+      "description": "Usos indebidos previsibles: poblaciones fuera de rango, decisiones individuales sin IC, ATE reinterpretado como efecto garantizado.",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "version": {
+      "type": "object",
+      "description": "Identificador de version del modelo y hash del dataset de entrenamiento (para verificar contra el dataset de referencia versionado, Cap. 20).",
+      "required": ["modelo", "hash_datos_entrenamiento"],
+      "additionalProperties": false,
+      "properties": {
+        "modelo": { "type": "string", "minLength": 1 },
+        "hash_datos_entrenamiento": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        }
+      }
+    }
+  }
+}
